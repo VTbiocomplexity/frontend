@@ -33,9 +33,9 @@ jobs:
       - run:
           name: Generate code coverage
           command: './node_modules/.bin/codeclimate-test-reporter < coverage/lcov.info'
-      #- store_artifacts:
-      #    path: test-results.xml
-      #    prefix: tests
+      - store_artifacts:
+          path: test-results.xml
+          prefix: tests
       - store_artifacts:
           path: coverage
           prefix: coverage
