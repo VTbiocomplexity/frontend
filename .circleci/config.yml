@@ -29,7 +29,7 @@ jobs:
       - checkout
       - run:
           name: Test
-          command: yarn install --production=false && npm test
+          command: npm install -g yarn@next && yarn install --production=false && npm test
       - run:
           name: Generate code coverage
           command: './node_modules/.bin/codeclimate-test-reporter < coverage/lcov.info'
