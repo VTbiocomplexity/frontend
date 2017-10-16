@@ -24,6 +24,10 @@ a:hover {
   color: #009c3a;
 }
 
+button:hover {
+  background-color: #80dfff;
+}
+
 section {
   margin: 0 20px;
 }
