@@ -1,5 +1,5 @@
 import {App} from '../../src/app';
-import {AuthStub, HttpMock} from './commons';
+import {AuthStub, HttpMock, RouterStub} from './commons';
 const Counter = require('assertions-counter');
 
 // function testAsync(runAsync) {
@@ -47,15 +47,10 @@ describe('the App module', () => {
     })());
   });
 
-  // it('gets the current route', testAsync(async function() {
-  //   //console.log(app1);
-  //   //await app1.activate();
-  //   let configStub = {options: {pushState: true}, addPipelineStep(){}, map(){}, fallbackRoute(){}};
-  //   //let routerStub = {};
-  //   await app1.configureRouter(configStub, RouterStub);
-  //   //console.log('current instruction ' + app1.router.currentInstruction);
-  //   let route = await app1.currentRoute;
-  //   expect(route).toBe(route);
-  //   //expect(route).toBe('yoyo');
-  // }));
+  it('configures the router', (done) => {
+    let configStub = {options: {pushState: true}, addPipelineStep(){}, map(){}, fallbackRoute(){}};
+    app1.configureRouter(configStub, RouterStub);
+    expect(app1.router).toBeDefined;
+    done();
+  });
 });

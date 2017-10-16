@@ -24,7 +24,7 @@ module.exports = function (config) {
     * we are building the test environment in ./spec-bundle.js
     */
     files: [
-      { pattern: 'test/karma-unit/*spec.js', watched: false }
+      { pattern: 'test/karma-bundle.js', watched: false }
     ],
 
     /*
@@ -32,7 +32,7 @@ module.exports = function (config) {
     * available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     */
     preprocessors: {
-      'test/karma-unit/*spec.js': [ 'webpack', 'sourcemap' ]
+      'test/karma-bundle.js': [ 'webpack', 'sourcemap' ]
     },
 
     webpack: require('../webpack.config')({ coverage: !process.argv.some(isDebug) }),
