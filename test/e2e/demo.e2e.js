@@ -14,7 +14,7 @@ describe('aurelia skeleton app', function() {
   });
 
   it('should load the page and display the initial page title', async () => {
-    await expect(poSkeleton.getCurrentPageTitle()).toBe('Montage');
+    await expect(poSkeleton.getCurrentPageTitle()).toBe('NDSSL');
   });
 
   // it('should display greeting', () => {
@@ -57,6 +57,6 @@ describe('aurelia skeleton app', function() {
 
   it('should navigate to Login page', async () => {
     await poSkeleton.navigateTo('/login');
-    await expect(poSkeleton.getCurrentPageTitle()).toBe('Login | Montage');
+    await expect(poSkeleton.getCurrentPageTitle()).toBe('Login | NDSSL');
   });
 });

@@ -2,11 +2,11 @@ import {App} from '../../src/app';
 import {AuthStub, HttpMock, RouterStub} from './commons';
 const Counter = require('assertions-counter');
 
-// function testAsync(runAsync) {
-//   return (done) => {
-//     runAsync().then(done, (e) => { fail(e); done(); });
-//   };
-// }
+function testAsync(runAsync) {
+  return (done) => {
+    runAsync().then(done, (e) => { fail(e); done(); });
+  };
+}
 
 describe('the App module', () => {
   let app1;
@@ -53,4 +53,19 @@ describe('the App module', () => {
     expect(app1.router).toBeDefined;
     done();
   });
+
+  // it('should display the logout button if authenticated', testAsync(async function() {
+  //   await app.authenticate('google');
+  //   login.app.checkUser();
+  //   expect(login.app.authenticated).toBe(true);
+  // }));
+
+  it('should logout and then display the login button', testAsync(async function() {
+    await app1.logout();
+    await app1.checkUser();
+    //login.app.checkUser();
+    expect(app1.auth.authenticated).toBe(false);
+    expect(app1.authenticated).toBe(false);
+    //done();
+  }));
 });

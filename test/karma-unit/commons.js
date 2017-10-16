@@ -43,6 +43,7 @@ class AuthStub {
   }
   logout(data) {
     const response = 'user logged out';
+    this.authenticated = false;
     return new Promise((resolve) => {
       resolve({json: () => response});
     });
@@ -58,7 +59,6 @@ class AuthStub {
     return response;
   }
   isAuthenticated() {
-    this.authenticated = true;
     return this.authenticated;
   }
   }
