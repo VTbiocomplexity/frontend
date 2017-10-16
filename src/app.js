@@ -13,6 +13,7 @@ export class App {
     this.dashboardTitle = 'Dashboard';
     this.role = '';
     this.configHttpClient();
+    this.checkUser();
   }
 
   configHttpClient() {
@@ -37,7 +38,7 @@ export class App {
   }
 
   configureRouter(config, router) {
-    config.title = 'Montage';
+    config.title = 'NDSSL';
     config.options.pushState = true;
     config.options.root = '/';
     config.addPipelineStep('authorize', AuthorizeStep);//Is the actually Authorization to get into the /dashboard
@@ -52,4 +53,36 @@ export class App {
     config.fallbackRoute('/');
     this.router = router;
   }
+
+
+  async checkUser(){
+    if (this.auth.isAuthenticated()) {
+      this.authenticated = true; //Logout element is reliant upon a local var;
+      let uid = this.auth.getTokenPayload().sub;
+      console.log(uid);
+      //this.user = await this.appState.getUser(uid);
+      // if (this.user !== undefined){
+      //   this.role = this.user.userType;
+      // }
+    }
+  }
+
+  logout() {
+    //this.appState.setUser({});
+    this.authenticated = false;
+    //if (this.role !== 'Charity' && this.role !== 'Volunteer'){
+    this.auth.logout('/')
+    .then(() => {
+      console.log('Promise fulfilled, logged out');
+    });
+    // } else {
+    //   this.auth.logout('/ohaf')
+    //   .then(() => {
+    //     console.log('Promise fulfilled, logged out');
+    //   });
+    //  }
+    //this.role =  '';
+    //this.appState.isOhafLogin = false;
+  }
+  
 }
