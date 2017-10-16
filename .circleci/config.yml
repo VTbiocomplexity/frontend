@@ -11,7 +11,7 @@ jobs:
       - checkout
       - run:
           name: Update npm
-          command: 'npm install -g npm@latest && npm install -g yarn@latest && npm install -g yarn codeclimate-test-reporter && curl -s https://raw.githubusercontent.com/chronogolf/circleci-google-chrome/master/use_chrome_stable_version.sh | bash'
+          command: 'sudo npm install -g npm@latest && sudo npm install -g yarn@latest && sudo npm install -g codeclimate-test-reporter && sudo curl -s https://raw.githubusercontent.com/chronogolf/circleci-google-chrome/master/use_chrome_stable_version.sh | bash'
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
