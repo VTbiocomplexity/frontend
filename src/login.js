@@ -24,6 +24,7 @@ export class Login {
     //}
     ret.then((data) => {
       this.app.auth.setToken(data.token);
+      //this.app.checkUser();
     }, undefined);
     return ret;
   }

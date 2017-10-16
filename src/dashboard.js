@@ -1,4 +1,10 @@
+import {inject} from 'aurelia-framework';
+import {App} from './app';
+@inject(App)
 export class Dashboard {
+  constructor(app, controllerFactory, validator){
+    this.app = app;
+  }
   //heading = 'Welcome to the Montage App';
   // firstName = 'John';
   // lastName = 'Doe';
