@@ -32,7 +32,7 @@ jobs:
           command: 'sudo npm install -g yarn@latest && yarn global add npm@latest && yarn global add codeclimate-test-reporter && yarn install'
       - run:
           name: chome install
-          command: 'sudo apt-get update && sudo apt-get install libgconf2-4 libnss3-1d libxss1 && curl -s https://raw.githubusercontent.com/chronogolf/circleci-google-chrome/master/use_chrome_stable_version.sh | bash && sudo apt-get install -f'
+          command: 'sudo apt-get update && sudo apt-get install apt-get install -y --no-install-recommends apt-utils libgconf2-4 libnss3-1d libxss1 && curl -s https://raw.githubusercontent.com/chronogolf/circleci-google-chrome/master/use_chrome_stable_version.sh | bash && sudo apt-get install -f'
       - run:
           name: test karma
           command: npm test
