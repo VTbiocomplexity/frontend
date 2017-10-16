@@ -32,7 +32,7 @@ jobs:
           command: 'sudo npm install -g yarn@latest && yarn global add npm@latest && yarn global add codeclimate-test-reporter && yarn install'
       - run:
           name: ubuntu dependancies
-          command: 'sudo apt-get update -y && apt install -y dirmngr wget git curl apt-utils'
+          command: 'sudo apt-get update -y && sudo apt-get install -y apt-utils'
       - run:
           name: install chrome
           command: 'curl -s https://raw.githubusercontent.com/chronogolf/circleci-google-chrome/master/use_chrome_stable_version.sh | bash'
