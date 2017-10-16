@@ -23,8 +23,8 @@
     "eslint-fix": "./node_modules/eslint/bin/eslint.js --fix .",
     "fix:aurelia-val": "rm -rf ./node_modules/aurelia-validation/node_modules",
     "postinstall": "npm run fix:aurelia-val",
-    "preinstall": "npm install -g npm && npm install -g yarn",
-    "cleaninstall": "rm -rf bower_components && rm -rf yarn.lock && rm -rf node_modules && yarn cache clean && yarn install",
+    "installglobals": "npm install -g npm && npm install -g yarn",
+    "cleaninstall": "rm -rf bower_components && rm -rf yarn.lock && rm -rf node_modules && yarn cache clean && npm run installglobals && yarn install",
     "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
