@@ -5,15 +5,27 @@ import {inject} from 'aurelia-framework';
 import {AuthorizeStep} from 'aurelia-auth';
 import {AuthService} from 'aurelia-auth';
 import {HttpClient} from 'aurelia-fetch-client';
+import {AppState} from './classes/AppState.js';
 @inject(AuthService, HttpClient)
 export class App {
   constructor(auth, httpClient) {
     this.auth = auth;
     this.httpClient = httpClient;
-    this.dashboardTitle = 'Dashboard';
-    this.role = '';
+    //this.dashboardTitle = 'Dashboard';
+    //this.role = '';
+    //this.configHttpClient();
+    //this.checkUser();
+  }
+
+  dashboardTitle = 'Dashboard';
+  role = '';
+  authenticated = false;
+
+  async activate() {
     this.configHttpClient();
-    this.checkUser();
+    this.appState = new AppState(this.httpClient);
+    //this.userAccess = new UserAccess(this.appState);
+    await this.checkUser();
   }
 
   configHttpClient() {
@@ -59,8 +71,8 @@ export class App {
     if (this.auth.isAuthenticated()) {
       this.authenticated = true; //Logout element is reliant upon a local var;
       let uid = this.auth.getTokenPayload().sub;
-      console.log(uid);
-      //this.user = await this.appState.getUser(uid);
+      //console.log(uid);
+      this.user = await this.appState.getUser(uid);
       // if (this.user !== undefined){
       //   this.role = this.user.userType;
       // }
