@@ -1,34 +1,72 @@
 import {inject} from 'aurelia-framework';
 import {App} from './app';
+import {json} from 'aurelia-fetch-client';
 @inject(App)
 export class Dashboard {
-  constructor(app, controllerFactory, validator){
+  constructor(app){
     this.app = app;
   }
-  //heading = 'Welcome to the Montage App';
-  // firstName = 'John';
-  // lastName = 'Doe';
-  // previousValue = this.fullName;
+  async activate() {
+    this.userTypes = JSON.parse(process.env.userRoles).roles;
+    this.uid = this.app.auth.getTokenPayload().sub;
+    this.user = await this.app.appState.getUser(this.uid);
+    /* istanbul ignore else */
+    if (this.user.userType === 'Developer'){
+      this.userTypes.push('Developer');
+    }
+    //console.log('dashboard user type is ' + this.user.userType);
+    // this.states = [ 'Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'District of Columbia',
+    //   'Federated States of Micronesia', 'Florida', 'Georgia', 'Guam', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine',
+    //   'Marshall Islands', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey',
+    //   'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Northern Mariana Islands', 'Ohio', 'Oklahoma', 'Oregon', 'Palau', 'Pennsylvania', 'Puerto Rico',
+    //   'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virgin Island', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'];
+    //this.states.sort();
+    // if (this.user.userType !== undefined && this.user.userType !== ''){
+    //   this.childRoute();
+    // }
+    //this.setupValidation();
+    console.log(this.user);
+  }
 
-  //Getters can't be directly observed, so they must be dirty checked.
-  //However, if you tell Aurelia the dependencies, it no longer needs to dirty check the property.
-  //To optimize by declaring the properties that this getter is computed from, uncomment the line below
-  //as well as the corresponding import above.
-  //@computedFrom('firstName', 'lastName')
-  // get fullName() {
-  //   return `${this.firstName} ${this.lastName}`;
-  // }
+  // childRoute(){
+  //   if (this.user.userType === undefined || this.user.userType === ''){
+  //     return;
+      // if (this.user.isOhafUser){
+      //   this.user.userType = 'Volunteer';
+      //   this.user.userDetails = 'newUser';
+      //   return this.updateUser();
+      // }
+    //}
+    //else {
+    /* istanbul ignore else */
+    // if (this.user.userType === 'Area1-Student'){
+    //   this.app.router.navigate('dashboard/area1-student');
+    // } else if (this.user.userType === 'Area1-Prof'){
+    //   this.app.router.navigate('dashboard/area1-prof');
+    // } else if (this.user.userType === 'Area2-Student'){
+    //   this.app.router.navigate('dashboard/area2-student');
+    // } else if (this.user.userType === 'Area2-Prof'){
+    //   this.app.router.navigate('dashboard/area2-prof');
+    // } else if (this.user.userType === 'Developer'){
+    //   this.app.router.navigate('dashboard/developer');
+    // }
+    //else {
+    //   this.setupValidation();
+    //}
+//  }
 
-  // submit() {
-  //   this.previousValue = this.fullName;
-  //   // eslint-disable-next-line no-alert
-  //   alert(`Welcome, ${this.fullName}!`);
-  // }
-
-  // canDeactivate() {
-  //   if (this.fullName !== this.previousValue) {
-  //     // eslint-disable-next-line no-alert
-  //     return confirm('Are you sure you want to leave?');
-  //   }
-  // }
+  async updateUser(){
+    await fetch;
+    this.app.httpClient.fetch('/user/' + this.uid, {
+      method: 'put',
+      body: json(this.user)
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      this.app.appState.setUser(this.user);
+      //this.app.appState.checkUserRole();
+      //this.app.appState.newUser = false;
+      this.activate();
+    });
+  }
 }

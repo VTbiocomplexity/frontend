@@ -1,5 +1,5 @@
 import {App} from '../../src/app';
-import {AuthStub, HttpMock, RouterStub} from './commons';
+import {AuthStub, HttpMock, RouterStub, AppStateStub} from './commons';
 const Counter = require('assertions-counter');
 
 function testAsync(runAsync) {
@@ -13,8 +13,9 @@ describe('the App module', () => {
   //let app2;
   beforeEach(() => {
     app1 = new App(new AuthStub(), new HttpMock());
-    app1.auth.setToken('No token');
-    //app1.activate();
+    app1.auth.setToken({sub: 'token'});
+    app1.activate();
+    app1.appState = new AppStateStub();
     //app1.appState = new AppStateStub();
     //app2 = new App(new AuthStub2(), new HttpMock());
     //app2.activate();
@@ -53,12 +54,6 @@ describe('the App module', () => {
     expect(app1.router).toBeDefined;
     done();
   });
-
-  // it('should display the logout button if authenticated', testAsync(async function() {
-  //   await app.authenticate('google');
-  //   login.app.checkUser();
-  //   expect(login.app.authenticated).toBe(true);
-  // }));
 
   it('should logout and then display the login button', testAsync(async function() {
     await app1.logout();
