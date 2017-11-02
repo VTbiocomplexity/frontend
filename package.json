@@ -10,7 +10,7 @@
   "author": "Biocomplexity",
   "license": "MIT",
   "engines": {
-    "node": "8.7.0",
+    "node": "8.9.0",
     "npm": "5.5.1",
     "yarn": "1.2.1"
   },
@@ -23,7 +23,7 @@
     "eslint-fix": "./node_modules/eslint/bin/eslint.js --fix .",
     "fix:aurelia-val": "rm -rf ./node_modules/aurelia-validation/node_modules",
     "postinstall": "npm run fix:aurelia-val && npm start -- build",
-    "installglobals": "npm install -g npm && npm install -g yarn",
+    "installglobals": "npm install -g yarn",
     "cleaninstall": "rm -rf bower_components && rm -rf yarn.lock && rm -rf node_modules && yarn cache clean && npm run installglobals && yarn install",
     "prepublish": "npm run snyk-protect"
   },
