@@ -28,3 +28,4 @@ exclude_paths:
 - coverage/
 - dist/
 - bower_components/
+- webpack.config.js
