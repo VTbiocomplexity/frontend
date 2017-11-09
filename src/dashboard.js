@@ -10,6 +10,7 @@ export class Dashboard {
     this.userTypes = JSON.parse(process.env.userRoles).roles;
     this.uid = this.app.auth.getTokenPayload().sub;
     this.user = await this.app.appState.getUser(this.uid);
+    //console.log(this.user);
     /* istanbul ignore else */
     if (this.user.userType === 'Developer'){
       this.userTypes.push('Developer');
@@ -21,39 +22,20 @@ export class Dashboard {
     //   'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Northern Mariana Islands', 'Ohio', 'Oklahoma', 'Oregon', 'Palau', 'Pennsylvania', 'Puerto Rico',
     //   'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virgin Island', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'];
     //this.states.sort();
-    // if (this.user.userType !== undefined && this.user.userType !== ''){
-    //   this.childRoute();
-    // }
-    //this.setupValidation();
     console.log(this.user);
+    if (this.user.userType !== undefined && this.user.userType !== '' && this.user.userType !== null){
+      this.childRoute();
+    }
+    //this.setupValidation();
   }
 
-  // childRoute(){
-  //   if (this.user.userType === undefined || this.user.userType === ''){
-  //     return;
-      // if (this.user.isOhafUser){
-      //   this.user.userType = 'Volunteer';
-      //   this.user.userDetails = 'newUser';
-      //   return this.updateUser();
-      // }
-    //}
-    //else {
-    /* istanbul ignore else */
-    // if (this.user.userType === 'Area1-Student'){
-    //   this.app.router.navigate('dashboard/area1-student');
-    // } else if (this.user.userType === 'Area1-Prof'){
-    //   this.app.router.navigate('dashboard/area1-prof');
-    // } else if (this.user.userType === 'Area2-Student'){
-    //   this.app.router.navigate('dashboard/area2-student');
-    // } else if (this.user.userType === 'Area2-Prof'){
-    //   this.app.router.navigate('dashboard/area2-prof');
-    // } else if (this.user.userType === 'Developer'){
-    //   this.app.router.navigate('dashboard/developer');
-    // }
-    //else {
-    //   this.setupValidation();
-    //}
-//  }
+  childRoute(){
+    if (this.user.userType === 'Developer'){
+      this.app.router.navigate('dashboard/developer');
+    } else {
+      this.app.router.navigate('/');
+    }
+  }
 
   async updateUser(){
     await fetch;
