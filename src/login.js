@@ -19,8 +19,11 @@ export class Login {
     // if (this.app.appState.isOhafLogin){
     //   ret = this.app.auth.authenticate(name, false, {'isOhafUser': true });
     // } else {
-    //TODO set isDeveloper to true if node env is development
-    ret = this.app.auth.authenticate(name, false, {'isDeveloper': false });
+    // let developer = false;
+    // if (process.env.NODE_ENV === 'development'){
+    //
+    // }
+    ret = this.app.auth.authenticate(name, false, {'role': process.env.role });
     //}
     ret.then((data) => {
       this.app.auth.setToken(data.token);
