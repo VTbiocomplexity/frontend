@@ -10,6 +10,7 @@ export class Dashboard {
     this.userTypes = JSON.parse(process.env.userRoles).roles;
     this.uid = this.app.auth.getTokenPayload().sub;
     this.user = await this.app.appState.getUser(this.uid);
+    this.newUser = false;
     //console.log(this.user);
     /* istanbul ignore else */
     if (this.user.userType === 'Developer'){
@@ -22,14 +23,16 @@ export class Dashboard {
     //   'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Northern Mariana Islands', 'Ohio', 'Oklahoma', 'Oregon', 'Palau', 'Pennsylvania', 'Puerto Rico',
     //   'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virgin Island', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'];
     //this.states.sort();
+    this.childRoute();
     console.log(this.user);
-    if (this.user.userType !== undefined && this.user.userType !== '' && this.user.userType !== null){
-      this.childRoute();
-    }
     //this.setupValidation();
   }
 
   childRoute(){
+    if (this.user.userType === undefined || this.user.userType === '' || this.user.userType === null){
+      this.newUser = true;
+      return console.log('new user');
+    } this.newUser = false;
     if (this.user.userType === 'Developer'){
       this.app.router.navigate('dashboard/developer');
     } else {
