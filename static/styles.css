@@ -14,7 +14,14 @@ body.montage {
   overflow: auto;
 }
 
-a,
+a {
+  text-decoration: underline;
+  text-align: center;
+  cursor: pointer;
+  cursor: hand;
+  border: none !important;
+}
+
 a:visited {
   color: #333;
   text-decoration: none;

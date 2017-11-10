@@ -1,5 +1,5 @@
 const Fetch = require('isomorphic-fetch');
-class Register {
+export class Register {
   constructor() {
     this.backendUrl = 'http://localhost:7000';
     this.fetch = Fetch;
@@ -43,11 +43,13 @@ class Register {
     '<tr><th colspan="2">Interests</th></tr><tr><td colspan="2"><div><textarea class="interests" rows="5" cols="50" name="interests" style="height:75px;" value=""></textarea></div></td></tr>' +
     '</tbody></table><p><span style="color:red">*</span> <i>Indicates required field</i></p></div><div style="text-align:center;padding:2px;margin:10px;">' +
     '<div><button type="button" class="registerbutton" onclick="registerClass.createUser(&apos;' + appName + '&apos;)" style="display:none; margin-bottom:-22px">Register New User</button>' +
-    '<button type="button" onclick="registerClass.nevermind(&apos;RegistrationForm&apos;)">Cancel</button></div></div></form>' +
+    '<button class="nevermind" type="button" onclick="registerClass.nevermind(&apos;RegistrationForm&apos;)">Cancel</button></div></div></form>' +
     '<div class="registererror" style="color:red"></div>';
     const home = document.getElementsByClassName('home');
     home[0].insertBefore(regform, home[0].childNodes[0]);
-    //console.log(home[0].firstChild);
+    if (appName !== 'PATRIC'){
+      document.getElementsByClassName('nevermind')[0].style.display = 'none';
+    }
   }
 
   validateReg() {
@@ -60,9 +62,6 @@ class Register {
     let validpass = document.getElementsByClassName('password')[0];
     let registbutton = document.getElementsByClassName('registerbutton')[0];
     if (fname !== '' && lname !== '' && email !== '' && password !== '') {
-      //console.log('valid');
-      //console.log(registbutton);
-      //console.log(validemail.checkValidity());
       if (validemail.checkValidity() && validpass.checkValidity()) {
         registbutton.style.display = 'block';
       } else {
@@ -144,7 +143,7 @@ class Register {
     this.nevermind('RegistrationForm');
     let useridrow = '';
     let useremailinput = '<tr><th style="border:none">Email</th></tr><tr><td>' +
-  '<input class="loginemail" type="email" name="email" style="width:300px;" value="" required onchange="registerClass.validateLogin()" onfocus="registerClass.validateLogin()" onkeydown="registerClass.validateLogin()" onkeyup="registerClass.validateLogin()"></td></tr>';
+  '<input class="loginemail" type="email" name="email" style="width:300px;" value="" required onchange="registerClass.validateLogin()" onfocus="this.validateLogin()" onkeydown="registerClass.validateLogin()" onkeyup="registerClass.validateLogin()"></td></tr>';
     if (appName === 'PATRIC') {
       useridrow = '<tr><th style="border:none">Email or Userid</th></tr><tr><td>' +
     '<input class="userid" name="userid" style="width:300px;" value="" required onchange="registerClass.validateLogin()" onfocus="registerClass.validateLogin()" onkeydown="registerClass.validateLogin()" onkeyup="registerClass.validateLogin()">';
@@ -160,10 +159,13 @@ class Register {
   '</tbody></table></div><div style="text-align:center;padding:2px;margin:10px;">' +
   '<div><button style="display:none; margin-bottom:-22px;" type="button" class="loginbutton" onclick="registerClass.logMeIn(&apos;' + appName + '&apos;)">Login</button>' +
   '<button style="display:none;margin-top:34px" class="resetpass" type="button" onclick="registerClass.resetpass(&apos;' + appName + '&apos;)">Reset Password</button></div></div></form>' +
-  '<button style="margin-left:12px;margin-top:20px" type="button" onclick="registerClass.nevermind(&apos;LoginForm&apos;)">Cancel</button></div></div></form>' +
+  '<button class="nevermind" style="margin-left:12px;margin-top:20px" type="button" onclick="registerClass.nevermind(&apos;LoginForm&apos;)">Cancel</button></div></div></form>' +
   '<div class="loginerror" style="color:red"></div>';
     let home = document.getElementsByClassName('home');
     home[0].insertBefore(loginform, home[0].childNodes[0]);
+    if (appName !== 'PATRIC'){
+      document.getElementsByClassName('nevermind')[0].style.display = 'none';
+    }
   }
 
   validateLogin() {
@@ -237,12 +239,9 @@ class Register {
   }
 
   logMeIn(appName) {
-  //let useridInput = null;
     let useridValue = '';
     let emailValue = '';
     const passwordValue = document.getElementsByClassName('loginpass')[0].value;
-  //console.log('this is the password given ' + passwordValue);
-  //useridInput = document.getElementsByClassName('userid');
     if (document.getElementsByClassName('userid')[0] !== undefined) {
       useridValue = document.getElementsByClassName('userid')[0].value;
       console.log(useridValue);
@@ -326,4 +325,4 @@ class Register {
 
 }
 
-module.exports = Register;
+// module.exports = Register;
