@@ -131,7 +131,7 @@ module.exports = ({production, server, extractCss, coverage} = {}) => ({
     }),
     new CopyWebpackPlugin(
       [{ from: 'static/favicon.ico', to: 'favicon.ico' },
-    // { from: 'static/includes.html', to: 'includes.html' },
+    // { from: 'src/classes/register_.js', to: 'register_.js' },
     { from: 'static/imgs', to: 'static/imgs' }]
   ),
     new webpack.EnvironmentPlugin(['NODE_ENV', 'AuthProductionBaseURL', 'PORT', 'BackendUrl', 'GoogleClientId', 'userRoles', 'role']),
