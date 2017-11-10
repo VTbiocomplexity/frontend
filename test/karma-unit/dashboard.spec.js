@@ -36,6 +36,24 @@ describe('the Dashboard module', () => {
     await dashboard.updateUser(thisuser);
     expect(dashboard.user.userType).toBe('Developer');
   }));
-  //it should not route the user away from the dashboard if userType has not been defined yet
-  //it should route the user to the homepage if they are not a developer
+  it('it should not route the user away from the dashboard if userType has not been defined yet', testAsync(async function() {
+    await dashboard.activate();
+    dashboard.user.userType = '';
+    dashboard.childRoute();
+    //await dashboard2.activate();
+    expect(dashboard.newUser).toBe(true);
+  }));
+  it('it should not route the user to homepage if they are not a developer', testAsync(async function() {
+    //auth = new AuthStub();
+    //auth.setToken({sub: '3456'});
+    //app = new App(auth, new HttpMock());
+    //await app.activate();
+    //dashboard = new Dashboard(app);
+    //dashboard.app.appState = new AppStateStub();
+    await dashboard.activate();
+    dashboard.user.userType = 'fun';
+    dashboard.childRoute();
+    //await dashboard2.activate();
+    //expect(dashboard.app.router.currentInstruction.config.name).toBe('home');
+  }));
 });
