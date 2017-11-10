@@ -1,5 +1,5 @@
 const Fetch = require('isomorphic-fetch');
-export class Register {
+class Register {
   constructor() {
     this.backendUrl = 'http://localhost:7000';
     this.fetch = Fetch;
@@ -30,17 +30,17 @@ export class Register {
     regform.innerHTML = '<h2 style="margin:0px;padding:4px;font-size:1.2em;text-align:center;background:#eee;">PATRIC User Registration</h2>' +
     '<form class=""><div style="padding:2px; margin:10px;"><table><tbody>' +
     //'<tr><th>USERNAME</th></tr><tr><td><input type="text" name="username" style="width:150px;"></td></tr>' +
-    '<tr><th>First Name <span style="color:red">*</span></th><th>Last Name <span style="color:red">*</span></th></tr><tr><td>' +
-    '<input class="firstname" type="text" name="first_name" style="width:300px;" onchange="registerClass.validateReg()">' +
-    '</td><td><input class="lastname" type="text" name="last_name" style="width:300px;" onchange="registerClass.validateReg()">' +
+    '<tr><th>First Name <span style="color:red">*</span></th><th>Last Name <span style="color:red">*</span></th></tr><tr><td width="150px">' +
+    '<input class="firstname" type="text" name="first_name" style="width:150px;" required>' +
+    '</td><td><input class="lastname" type="text" name="last_name" style="width:150px;" required>' +
     '</td></tr><tr><th colspan="1">Email Address <span style="color:red">*</span></th></tr><tr><td colspan="1">' +
-    '<input class="email" type="email" name="email" style="width:100%;" onchange="registerClass.validateReg()" required>' +
+    '<input class="email" type="email" name="email" style="width:100%;" required>' +
     '</td></tr><tr><th colspan="1">Password <span style="color:red">*</span></th></tr><tr><td colspan="1">' +
-    '<input class="password" pattern=".{8,}" title="8 characters minimum" type="password" name="password" style="width:100%;" onchange="registerClass.validateReg()" onfocus="registerClass.validateReg()" onkeydown="registerClass.validateReg()" onkeyup="registerClass.validateReg()"required>' +
+    '<input class="password" pattern=".{8,}" title="8 characters minimum" type="password" name="password" style="width:100%;" required>' +
     '</td></tr>' + useridrow +
     '<tr><th colspan="2">Organization</th></tr><tr><td colspan="2"><div style="width:100%"><input class="organization" type="text" name="affiliation" value=""></div></td></tr>' +
-    '<tr><th colspan="2">Organisms</th></tr><tr><td colspan="2"><div><input class="organisms" type="text" name="organisms" value=""></div></td></tr>' +
-    '<tr><th colspan="2">Interests</th></tr><tr><td colspan="2"><div><textarea class="interests" rows="5" cols="50" name="interests" style="height:75px;" value=""></textarea></div></td></tr>' +
+    '<tr><th colspan="2">Organisms</th></tr><tr><td colspan="2"><div><input style="width:97%;" class="organisms" type="text" name="organisms" value=""></div></td></tr>' +
+    '<tr><th colspan="2">Interests</th></tr><tr><td colspan="2"><div><textarea style="width:97%;" class="interests" rows="5" cols="50" name="interests" style="height:75px;" value=""></textarea></div></td></tr>' +
     '</tbody></table><p><span style="color:red">*</span> <i>Indicates required field</i></p></div><div style="text-align:center;padding:2px;margin:10px;">' +
     '<div><button type="button" class="registerbutton" onclick="registerClass.createUser(&apos;' + appName + '&apos;)" style="display:none; margin-bottom:-22px">Register New User</button>' +
     '<button class="nevermind" type="button" onclick="registerClass.nevermind(&apos;RegistrationForm&apos;)">Cancel</button></div></div></form>' +
@@ -50,10 +50,37 @@ export class Register {
     if (appName !== 'PATRIC'){
       document.getElementsByClassName('nevermind')[0].style.display = 'none';
     }
+    let firstNameInput = document.getElementsByClassName('firstname')[0];
+    //console.log(firstNameInput);
+    firstNameInput.addEventListener('change', this.validateReg);
+    firstNameInput.addEventListener('focus', this.validateReg);
+    firstNameInput.addEventListener('keydown', this.validateReg);
+    firstNameInput.addEventListener('keyup', this.validateReg);
+    let lastNameInput = document.getElementsByClassName('lastname')[0];
+    lastNameInput.addEventListener('change', this.validateReg);
+    lastNameInput.addEventListener('focus', this.validateReg);
+    lastNameInput.addEventListener('keydown', this.validateReg);
+    lastNameInput.addEventListener('keyup', this.validateReg);
+    let emailInput = document.getElementsByClassName('email')[0];
+    emailInput.addEventListener('change', this.validateReg);
+    emailInput.addEventListener('focus', this.validateReg);
+    emailInput.addEventListener('keydown', this.validateReg);
+    emailInput.addEventListener('keyup', this.validateReg);
+    let passInput = document.getElementsByClassName('password')[0];
+    passInput.addEventListener('change', this.validateReg);
+    passInput.addEventListener('focus', this.validateReg);
+    passInput.addEventListener('keydown', this.validateReg);
+    passInput.addEventListener('keyup', this.validateReg);
+    /* istanbul ignore if */
+    if (process.env.NODE_ENV !== 'test'){
+      regform.scrollIntoView();
+    }
+    // onchange="registerClass.validateReg()" onfocus="registerClass.validateReg()"
+    // onkeydown="registerClass.validateReg()" onkeyup="registerClass.validateReg()"
   }
 
   validateReg() {
-    //console.log('validating reg');
+    console.log('validating reg');
     let fname = document.getElementsByClassName('firstname')[0].value;
     let lname = document.getElementsByClassName('lastname')[0].value;
     let email = document.getElementsByClassName('email')[0].value;
@@ -143,10 +170,10 @@ export class Register {
     this.nevermind('RegistrationForm');
     let useridrow = '';
     let useremailinput = '<tr><th style="border:none">Email</th></tr><tr><td>' +
-  '<input class="loginemail" type="email" name="email" style="width:300px;" value="" required onchange="registerClass.validateLogin()" onfocus="this.validateLogin()" onkeydown="registerClass.validateLogin()" onkeyup="registerClass.validateLogin()"></td></tr>';
+  '<input class="loginemail" type="email" name="email" style="width:300px;" value="" required></td></tr>';
     if (appName === 'PATRIC') {
       useridrow = '<tr><th style="border:none">Email or Userid</th></tr><tr><td>' +
-    '<input class="userid" name="userid" style="width:300px;" value="" required onchange="registerClass.validateLogin()" onfocus="registerClass.validateLogin()" onkeydown="registerClass.validateLogin()" onkeyup="registerClass.validateLogin()">';
+    '<input class="userid" name="userid" style="width:300px;" value="" required>';
       useremailinput = '';
     }
     let loginform = document.createElement('div');
@@ -155,7 +182,7 @@ export class Register {
   '<form><div style="padding:2px; margin:10px;"><table><tbody>' + useridrow +
   '<tr><td>&nbsp;</td></tr>' + useremailinput +
   '<tr><td>&nbsp;</td></tr><tr><th style="border:none">Password</th></tr><tr><td>' +
-  '<input class="loginpass" pattern=".{8,}" title="8 characters minimum" type="password" name="password" style="width:300px;" value="" required onchange="registerClass.validateLogin()" onfocus="registerClass.validateLogin()" onkeydown="registerClass.validateLogin()" onkeyup="registerClass.validateLogin()"></td></tr>' +
+  '<input class="loginpass" pattern=".{8,}" title="8 characters minimum" type="password" name="password" style="width:300px;" value="" required></td></tr>' +
   '</tbody></table></div><div style="text-align:center;padding:2px;margin:10px;">' +
   '<div><button style="display:none; margin-bottom:-22px;" type="button" class="loginbutton" onclick="registerClass.logMeIn(&apos;' + appName + '&apos;)">Login</button>' +
   '<button style="display:none;margin-top:34px" class="resetpass" type="button" onclick="registerClass.resetpass(&apos;' + appName + '&apos;)">Reset Password</button></div></div></form>' +
@@ -165,7 +192,23 @@ export class Register {
     home[0].insertBefore(loginform, home[0].childNodes[0]);
     if (appName !== 'PATRIC'){
       document.getElementsByClassName('nevermind')[0].style.display = 'none';
+      let emailInput = document.getElementsByClassName('loginemail')[0];
+      emailInput.addEventListener('change', this.validateLogin);
+      emailInput.addEventListener('focus', this.validateLogin);
+      emailInput.addEventListener('keydown', this.validateLogin);
+      emailInput.addEventListener('keyup', this.validateLogin);
+    } else {
+      let useridInput = document.getElementsByClassName('userid')[0];
+      useridInput.addEventListener('change', this.validateLogin);
+      useridInput.addEventListener('focus', this.validateLogin);
+      useridInput.addEventListener('keydown', this.validateLogin);
+      useridInput.addEventListener('keyup', this.validateLogin);
     }
+    let passwordInput = document.getElementsByClassName('loginpass')[0];
+    passwordInput.addEventListener('change', this.validateLogin);
+    passwordInput.addEventListener('focus', this.validateLogin);
+    passwordInput.addEventListener('keydown', this.validateLogin);
+    passwordInput.addEventListener('keyup', this.validateLogin);
   }
 
   validateLogin() {
@@ -325,4 +368,4 @@ export class Register {
 
 }
 
-// module.exports = Register;
+module.exports = Register;
