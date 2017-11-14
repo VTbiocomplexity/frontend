@@ -29,45 +29,49 @@ test('generates a reset password form with email already filled in', () => {
 test('it validates the reset password form', () => {
   user.formType = 'reset';
   document.getElementsByClassName('email')[0].checkValidity = function() {return true;};
-  document.getElementsByClassName('code')[0].checkValidity = function() {return true;};
+  document.getElementsByClassName('code')[0].value = 12345;
   document.getElementsByClassName('loginpass')[0].checkValidity = function() {return true;};
-  user.validateForm();
+  let evt = {target: {formType: 'reset'}};
+  user.validateForm(evt);
   let sbutton = document.getElementsByClassName('regbutton')[0];
   expect(sbutton.style.display).toBe('block');
 });
 
 test('it validates the email varification form', () => {
   user.formType = 'email';
+  let evt = {target: {formType: 'email'}};
   document.getElementsByClassName('email')[0].value = 'joe@smith.com';
   document.getElementsByClassName('code')[0].value = '12345';
   document.getElementsByClassName('email')[0].checkValidity = function() {return true;};
   document.getElementsByClassName('code')[0].checkValidity = function() {return true;};
   document.getElementsByClassName('loginpass')[0].checkValidity = function() {return true;};
-  user.validateForm();
+  user.validateForm(evt);
   let sbutton = document.getElementsByClassName('regbutton')[0];
   expect(sbutton.style.display).toBe('block');
 });
 
 test('it hides submit button if the email varification form is invalid', () => {
   user.formType = 'email';
+  let evt = {target: {formType: 'email'}};
   document.getElementsByClassName('email')[0].value = 'joesmith.com';
   document.getElementsByClassName('code')[0].value = '12345';
   document.getElementsByClassName('email')[0].checkValidity = function() {return false;};
   document.getElementsByClassName('code')[0].checkValidity = function() {return true;};
   document.getElementsByClassName('loginpass')[0].checkValidity = function() {return true;};
-  user.validateForm();
+  user.validateForm(evt);
   let sbutton = document.getElementsByClassName('regbutton')[0];
   expect(sbutton.style.display).toBe('none');
 });
 
 test('it hides submit button if the reset password form is invalid', () => {
   user.formType = 'reset';
+  let evt = {target: {formType: 'reset'}};
   document.getElementsByClassName('email')[0].value = 'joesmith.com';
   document.getElementsByClassName('code')[0].value = '12345';
   document.getElementsByClassName('email')[0].checkValidity = function() {return true;};
   document.getElementsByClassName('code')[0].checkValidity = function() {return true;};
   document.getElementsByClassName('loginpass')[0].checkValidity = function() {return false;};
-  user.validateForm();
+  user.validateForm(evt);
   let sbutton = document.getElementsByClassName('regbutton')[0];
   expect(sbutton.style.display).toBe('none');
 });
@@ -145,8 +149,8 @@ test('it updates the user', () => {
       json: () => Promise.resolve({})
     });
   };
-  user.fetch = mockfetch;
-  user.updateUser().then(() => {
+  let evt = {target: {fetchClient: mockfetch}};
+  user.updateUser(evt).then(() => {
     let messagediv = document.getElementsByClassName('loginerror')[0];
     expect(messagediv.innerHTML).toBe('');
   });
@@ -162,8 +166,8 @@ test('it displays error message on updates the user PUT', () => {
       json: () => Promise.resolve({message: 'wrong email'})
     });
   };
-  user.fetch = mockfetch;
-  user.updateUser().then(() => {
+  let evt = {target: {fetchClient: mockfetch}};
+  user.updateUser(evt).then(() => {
     let messagediv = document.getElementsByClassName('loginerror')[0];
     expect(messagediv.innerHTML).toMatch(/wrong email/);
     messagediv.innerHTML = '';
@@ -180,8 +184,8 @@ test('it catches errors on update the user PUT', () => {
       json: () => Promise.reject({error: 'big problem'})
     });
   };
-  user.fetch = mockfetch;
-  return user.updateUser()
+  let evt = {target: {fetchClient: mockfetch}};
+  return user.updateUser(evt)
   .catch((e) => expect(e).toBeTruthy());
 });
 
@@ -338,7 +342,7 @@ test('it sends PUT request to change user email and catches error', () => {
 
   //return user.changeUserEmail().then(() => {
   return user.changeUserEmail()
-    .catch((e) => expect(e).toBeTruthy());
+  .catch((e) => expect(e).toBeTruthy());
 });
 test('it sends PUT request to varify the changed email with pin', () => {
   mockfetch = function(url, data) {
@@ -352,10 +356,10 @@ test('it sends PUT request to varify the changed email with pin', () => {
   };
   user.fetch = mockfetch;
   document.body.innerHTML = '<input class="email" value="new@email.com">' +
-    '<input class="code" value="12345"><div class="loginerror"></div>';
-    //document.getElementsByClassName('uprofEmail')[0].value = 'new@email.com';
+  '<input class="code" value="12345"><div class="loginerror"></div>';
+  //document.getElementsByClassName('uprofEmail')[0].value = 'new@email.com';
 
-    //return user.changeUserEmail().then(() => {
+  //return user.changeUserEmail().then(() => {
   return user.verifyChangeEmail().then(() => {
     expect(document.getElementsByClassName('loginerror')[0].innerHTML).toBe('');
   });
@@ -373,7 +377,7 @@ test('it sends PUT request to varify the changed email with pin and displays err
   };
   user.fetch = mockfetch;
   document.body.innerHTML = '<input class="email" value="new@email.com">' +
-      '<input class="code" value="12345"><div class="loginerror"></div>';
+  '<input class="code" value="12345"><div class="loginerror"></div>';
   return user.verifyChangeEmail().then(() => {
     expect(document.getElementsByClassName('loginerror')[0].innerHTML).toBe('<p style="text-align:left; padding-left:12px">incorrect pin</p>');
   });
@@ -391,5 +395,5 @@ test('it sends PUT request to varify the changed email with pin and catches erro
   };
   user.fetch = mockfetch;
   return user.verifyChangeEmail()
-          .catch((e) => expect(e).toBeTruthy());
+  .catch((e) => expect(e).toBeTruthy());
 });

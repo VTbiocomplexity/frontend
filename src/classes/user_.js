@@ -23,12 +23,12 @@ class User {
     if (this.formType === 'reset') {
       formTitle = 'Reset Your Password';
       passInput = '<tr><th style="border:none; text-align:left">Password</th></tr><tr><td><input class="loginpass" pattern=".{8,}" title="8 characters minimum" type="password" name="password" style="width:300px;" value="" required onchange="userClass.validateForm()" onfocus="userClass.validateForm()" onkeydown="userClass.validateForm()" onkeyup="userClass.validateForm()"></td></tr>';
-      formButton = 'userClass.resetPasswd()';
+      formButton = 'this.resetPasswd()';
     } else {
       formTitle = 'Verify Your Email Address';
-      formButton = 'userClass.updateUser()';
+      formButton = 'this.updateUser';
       if (this.changeEmail !== '' && this.changeEmail !== null && this.changeEmail !== undefined) {
-        formButton = 'userClass.verifyChangeEmail()';
+        formButton = 'this.verifyChangeEmail()';
       }
     }
 
@@ -37,7 +37,7 @@ class User {
     '<div style="padding:2px; margin:10px;"><table><tbody><tr><th style="text-align:left">Email</th></tr><tr><td>' +
     '<input class="email" type="email" name="email" style="width:250px;" required value="" required onchange="userClass.validateForm()" onfocus="userClass.validateForm()" onkeydown="userClass.validateForm()" onkeyup="userClass.validateForm()" onpaste="userClass.validateForm()">' +
     '</td></tr><tr><td> </td></tr>' + passInput + '<tr><td> </td></tr><tr><th style="text-align:left">Code</th></tr><tr><td>' +
-    '<input type="text" pattern=".{5,}" title="5 digit code" name="code" class="code" style="width:150px;" required onchange="userClass.validateForm()" onfocus="userClass.validateForm()" onkeydown="userClass.validateForm()" onkeyup="userClass.validateForm()" onpaste="userClass.validateForm()"></td></tr>' +
+    '<input type="number" title="5 digit code" name="code" class="code" style="width:150px;" required" value=""></td></tr>' +
     '</tbody></table></div><div style="text-align:center;padding:2px;margin:10px;">' +
     '<div><button style="display:none; margin-bottom:-22px;" type="button" class="regbutton" onclick="' + formButton + '">Submit</button><button type="button" onclick="userClass.nevermind(&apos;RegistrationForm&apos;)">Cancel</button></div></div></form>' +
     '<div class="loginerror" style="color:red"></div>';
@@ -57,7 +57,86 @@ class User {
       } else {
         this.populateForm();
       }
+    } else {
+      let verifyCode = document.getElementsByClassName('code')[0];
+      verifyCode.formType = this.formType;
+      verifyCode.addEventListener('change', this.validateForm);
+      verifyCode.addEventListener('focus', this.validateForm);
+      verifyCode.addEventListener('keydown', this.validateForm);
+      verifyCode.addEventListener('keyup', this.validateForm);
+      verifyCode.addEventListener('paste', this.validateForm);
+      let submitButton = document.getElementsByClassName('regbutton')[0];
+      submitButton.fetchClient = this.fetch;
+      if (formTitle === 'Verify Your Email Address'){
+        submitButton.addEventListener('click', this.updateUser);
+      }
+      //onchange="userClass.validateForm()" onfocus="userClass.validateForm()" onkeydown="userClass.validateForm()" onkeyup="userClass.validateForm()" onpaste="userClass.validateForm()
     }
+  }
+
+  validateForm(evt) {
+    let newpasswd = '';
+    this.formType = evt.target.formType;
+    if (this.formType === 'reset') {
+      newpasswd = document.getElementsByClassName('loginpass')[0];
+    }
+    let isemailvalid = document.getElementsByClassName('email')[0].checkValidity();
+    let emValue = document.getElementsByClassName('email')[0].value;
+    let edot = emValue.split('.');
+    let isvalidcode = document.getElementsByClassName('code')[0].value;
+    let submitbutton = document.getElementsByClassName('regbutton')[0];
+    console.log(isemailvalid);
+    console.log(isvalidcode);
+    console.log(edot.length);
+    if (isemailvalid && isvalidcode !== '' && edot.length > 1 && isvalidcode > 9999 && isvalidcode < 100000) {
+      submitbutton.style.display = 'block';
+    } else {
+      submitbutton.style.display = 'none';
+    }
+    if (this.formType === 'reset') {
+      if (newpasswd.checkValidity() && isemailvalid && edot.length > 1 && isvalidcode > 9999 && isvalidcode < 100000) {
+        submitbutton.style.display = 'block';
+      } else {
+        submitbutton.style.display = 'none';
+      }
+    }
+  }
+
+  updateUser(evt) {
+    console.log('trying to valide the user email with a code');
+    let fetchClient = evt.target.fetchClient;
+    let bodyData = {'email': document.getElementsByClassName('email')[0].value, 'resetCode': document.getElementsByClassName('code')[0].value };
+    let fetchData = {
+      method: 'PUT',
+      body: JSON.stringify(bodyData),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    };
+
+    return fetchClient('http://localhost:7000' + '/auth/validemail', fetchData)
+  //.then(handleErrors)
+  .then((response) => response.json())
+  .then((data) => {
+    if (data.message) {
+      //console.log(data.message);
+      let messagediv = document.getElementsByClassName('loginerror')[0];
+      messagediv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';
+    } else {
+      //this.nevermind('RegistrationForm');
+      //let regform1 = [];
+      let regform1 = document.getElementsByClassName('RegistrationForm');
+      if (regform1.length > 0) {
+        regform1[0].style.display = 'none';
+      }
+      window.location.href = 'http://localhost:9000' + '/';
+    }
+  })
+  .catch((error) => {
+    console.log(error);
+    //console.log
+  });
   }
 
   populateForm() {
@@ -143,40 +222,6 @@ class User {
     });
   }
 
-  validateForm() {
-    //console.log('validating form');
-    let newpasswd = '';
-    if (this.formType === 'reset') {
-      newpasswd = document.getElementsByClassName('loginpass')[0];
-    }
-    //let fname = document.getElementsByClassName('firstname')[0].value;
-    //let lname = document.getElementsByClassName('lastname')[0].value;
-    let isemailvalid = document.getElementsByClassName('email')[0].checkValidity();
-    let emValue = document.getElementsByClassName('email')[0].value;
-    let edot = emValue.split('.');
-    //let email = document.getElementsByClassName('email')[0].value;
-    //let validemail = document.getElementsByClassName('email')[0];
-    //let codenumber = document.getElementsByClassName('code')[0].value;
-    let isvalidcode = document.getElementsByClassName('code')[0].checkValidity();
-    let submitbutton = document.getElementsByClassName('regbutton')[0];
-    //if (email !== '' && codenumber !== '') {
-    console.log(isemailvalid);
-    console.log(isvalidcode);
-    console.log(edot.length);
-    if (isemailvalid && isvalidcode && edot.length > 1) {
-      submitbutton.style.display = 'block';
-    } else {
-      submitbutton.style.display = 'none';
-    }
-    if (this.formType === 'reset') {
-      if (newpasswd.checkValidity() && isemailvalid && edot.length > 1 && isvalidcode) {
-        submitbutton.style.display = 'block';
-      } else {
-        submitbutton.style.display = 'none';
-      }
-    }
-  }
-
   resetPasswd() {
     let bodyData = {'email': document.getElementsByClassName('email')[0].value,
       'resetCode': document.getElementsByClassName('code')[0].value,
@@ -201,36 +246,6 @@ class User {
       // return data.message;
     }
     this.nevermind('RegistrationForm');
-  })
-  .catch((error) => {
-    console.log(error);
-    //console.log
-  });
-  }
-
-  updateUser() {
-    let bodyData = {'email': document.getElementsByClassName('email')[0].value, 'resetCode': document.getElementsByClassName('code')[0].value };
-    let fetchData = {
-      method: 'PUT',
-      body: JSON.stringify(bodyData),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    };
-
-    return this.fetch(this.backendUrl + '/auth/validemail', fetchData)
-  //.then(handleErrors)
-  .then((response) => response.json())
-  .then((data) => {
-    if (data.message) {
-      //console.log(data.message);
-      let messagediv = document.getElementsByClassName('loginerror')[0];
-      messagediv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';
-    } else {
-      this.nevermind('RegistrationForm');
-      //window.location.href = this.frontendUrl + '/';
-    }
   })
   .catch((error) => {
     console.log(error);
