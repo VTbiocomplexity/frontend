@@ -3,11 +3,42 @@ const Register = require('../../src/classes/register_.js');
 
 let reg = new Register();
 
-test('generates a registration form', () => {
+test('generates a registration form for PATRIC', () => {
   document.body.innerHTML = '<div class="home"></div>';
   reg.register('PATRIC');
   let regform = document.getElementsByClassName('RegistrationForm');
   expect(regform[0]).toBeDefined();
+  //document.body.innerHTML = '';
+  //expect(sum(1, 2)).toBe(3);
+});
+
+test('generates a registration form for another app', () => {
+  document.body.innerHTML = '<div class="home"></div>';
+  reg.register();
+  let regform = document.getElementsByClassName('RegistrationForm');
+  expect(regform[0]).toBeDefined();
+  //document.body.innerHTML = '';
+  //expect(sum(1, 2)).toBe(3);
+});
+
+test('updates the registration form after selection of primary app is PATRIC', () => {
+  document.body.innerHTML = '<div class="home"></div>';
+  reg.register('');
+  document.getElementsByClassName('pas')[0].value = 'PATRIC';
+  reg.updateRegForm();
+  let uidRowStuff = document.getElementsByClassName('userIdRow')[0];
+  expect(uidRowStuff.innerHTML).not.toBe('');
+  //document.body.innerHTML = '';
+  //expect(sum(1, 2)).toBe(3);
+});
+
+test('updates the registration form after selection of primary app is not PATRIC', () => {
+  document.body.innerHTML = '<div class="home"></div>';
+  reg.register('');
+  document.getElementsByClassName('pas')[0].value = '';
+  reg.updateRegForm();
+  let uidRowStuff = document.getElementsByClassName('userIdRow')[0];
+  expect(uidRowStuff.innerHTML).toBe('');
   //document.body.innerHTML = '';
   //expect(sum(1, 2)).toBe(3);
 });
@@ -24,9 +55,38 @@ test('generates a registration form without userid', () => {
   //expect(sum(1, 2)).toBe(3);
 });
 
-test('hides the submit butten when registration form is not valid', () => {
+test('hides the submit butten when registration form is not valid email', () => {
+  document.body.innerHTML = '<div class="home"></div>';
+  reg.register('');
+  document.getElementsByClassName('email')[0].value = 'google.@gmail.com';
+  reg.validateReg();
+  let registbutton = document.getElementsByClassName('registerbutton')[0];
+  expect(registbutton.style.display).toBe('none');
+  document.body.innerHTML = '';
+  //expect(sum(1, 2)).toBe(3);
+});
+
+test('hides the submit butten when registration form is not valid name', () => {
   document.body.innerHTML = '<div class="home"></div>';
   reg.register('PATRIC');
+  //document.getElementsByClassName('email')[0].value = 'google.@gb.com';
+  //document.getElementsByClassName('email')[0].checkValidity = function() {return true;};
+  document.getElementsByClassName('firstname')[0].value = '';
+  reg.validateReg();
+  let registbutton = document.getElementsByClassName('registerbutton')[0];
+  expect(registbutton.style.display).toBe('none');
+  document.body.innerHTML = '';
+  //expect(sum(1, 2)).toBe(3);
+});
+
+test('hides the submit butten when registration form is not valid password', () => {
+  document.body.innerHTML = '<div class="home"></div>';
+  reg.register('PATRIC');
+  document.getElementsByClassName('email')[0].value = 'google.@gb.com';
+  document.getElementsByClassName('firstname')[0].value = 'Bob';
+  document.getElementsByClassName('lastname')[0].value = 'Smith';
+  document.getElementsByClassName('email')[0].checkValidity = function() {return true;};
+  document.getElementsByClassName('password')[0].checkValidity = function() {return false;};
   reg.validateReg();
   let registbutton = document.getElementsByClassName('registerbutton')[0];
   expect(registbutton.style.display).toBe('none');
@@ -52,7 +112,26 @@ test('shows the submit butten when registration form is valid', () => {
   document.body.innerHTML = '';
 });
 
-test('shows the hides butten when email format is not valid', () => {
+test('shows the submit butten when registration form uses a Google email with PATRIC', () => {
+  document.body.innerHTML = '<div class="home"></div>';
+  reg.register('PATRIC');
+  document.getElementsByClassName('firstname')[0].value = 'Joe';
+  document.getElementsByClassName('lastname')[0].value = 'Smith';
+  document.getElementsByClassName('email')[0].value = 'joe@gmail.com';
+  document.getElementsByClassName('password')[0].value = '123456789';
+  //document.getElementsByClassName('pas')[0].value = 'PATRIC';
+  const mockvalidity = function() {
+    return true;
+  };
+  document.getElementsByClassName('password')[0].checkValidity = mockvalidity;
+  document.getElementsByClassName('email')[0].checkValidity = mockvalidity;
+  reg.validateReg();
+  let registbutton = document.getElementsByClassName('registerbutton')[0];
+  expect(registbutton.style.display).toBe('block');
+  document.body.innerHTML = '';
+});
+
+test('hides register butten when email format is not valid', () => {
   document.body.innerHTML = '<div class="home"></div>';
   reg.register('PATRIC');
   document.getElementsByClassName('firstname')[0].value = 'Joe';
@@ -68,6 +147,32 @@ test('shows the hides butten when email format is not valid', () => {
   let registbutton = document.getElementsByClassName('registerbutton')[0];
   expect(registbutton.style.display).toBe('none');
   document.body.innerHTML = '';
+});
+
+test('create a new user for another app', () => {
+  document.body.innerHTML = '<div class="home"></div>';
+  reg.appName = '';
+  reg.register();
+  document.getElementsByClassName('firstname')[0].value = 'Joe';
+  document.getElementsByClassName('lastname')[0].value = 'Smith';
+  document.getElementsByClassName('email')[0].value = 'joe@smith.com';
+  document.getElementsByClassName('password')[0].value = '123456789';
+  document.getElementsByClassName('pas')[0].value = 'CoolApp';
+  const mockfetch = function(url, data) {
+    this.headers = {};
+    this.headers.url = url;
+    this.headers.method = data.method;
+    return Promise.resolve({
+      Headers: this.headers,
+      json: () => Promise.resolve({success: true })
+    });
+  };
+  let evt = {target: {fetchClient: mockfetch}};
+  //reg.fetch = mockfetch;
+  reg.createUser(evt).then(() => {
+    let messagediv1 = document.getElementsByClassName('registererror')[0];
+    expect(messagediv1.innerHTML).toBe('');
+  });
 });
 
 test('it does not create a new user when there is an response error message from post', () => {
@@ -86,8 +191,9 @@ test('it does not create a new user when there is an response error message from
       json: () => Promise.resolve({message: 'error' })
     });
   };
-  reg.fetch = mockfetch;
-  reg.createUser('PATRIC').then(() => {
+  let evt = {target: {fetchClient: mockfetch}};
+  //reg.fetch = mockfetch;
+  reg.createUser(evt).then(() => {
     let messagediv1 = document.getElementsByClassName('registererror')[0];
     expect(messagediv1.innerHTML).toMatch(/error/);
   });
@@ -109,8 +215,8 @@ test('it catches error on create a new user', () => {
       json: () => Promise.reject({error: 'rejected' })
     });
   };
-  reg.fetch = mockfetch;
-  return reg.createUser('OtherApp')
+  let evt = {target: {fetchClient: mockfetch}};
+  return reg.createUser(evt)
   .catch((e) => expect(e).toBeTruthy());
 });
 
@@ -130,8 +236,8 @@ test('it initiates an email varification', () => {
       json: () => Promise.resolve({email: 'joe@smith.com' })
     });
   };
-  reg.fetch = mockfetch;
-  reg.createUser().then((data) => {
+  let evt = {target: {fetchClient: mockfetch}};
+  reg.createUser(evt).then((data) => {
     expect(data.email).toBe('joe@smith.com');
   });
 });
@@ -152,8 +258,8 @@ test('it does not initiates an email varification', () => {
       json: () => Promise.resolve({})
     });
   };
-  reg.fetch = mockfetch;
-  reg.createUser().then((data) => {
+  let evt = {target: {fetchClient: mockfetch}};
+  reg.createUser(evt).then((data) => {
     expect(data.email).toBe(null);
   });
 });
