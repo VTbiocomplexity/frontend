@@ -189,9 +189,9 @@ test('it catches errors on update the user PUT', () => {
   .catch((e) => expect(e).toBeTruthy());
 });
 
-test('if the element does not exist, it does not try to hide it', () => {
-  user.nevermind('yoyo');
-});
+// test('if the element does not exist, it does not try to hide it', () => {
+//   user.nevermind('yoyo');
+// });
 
 test('it displays the user profile', () => {
   user.formType = 'prefs';
@@ -275,15 +275,9 @@ test('it validates the user prefs form and email when fields are invalid', () =>
 
 test('it displays a email varification form for a change email request', () => {
   document.body.innerHTML = '<div><div class="home"></div></div><div class="UserProfileForm"></div>';
-  //document.getElementsByClassName('email')[0].value = '';
   user.userEmail = '';
   user.changeEmail = 'bob@smith.com';
-  //document.getElementsByClassName('uprofEmail')[0].checkValidity = function() {return false;};
-  //user.validateUserPrefs();
-  //let emailbutton = document.getElementsByClassName('updateemailbutton')[0];
-  //let userprofbutton = document.getElementsByClassName('updateprofbutton')[0];
   user.verifyEmail();
-  //expect(emailbutton.style.display).toBe('none');
   expect(document.getElementsByClassName('email')[0].value).toBe('bob@smith.com');
 });
 test('it sends PUT request to change user email', () => {
@@ -298,8 +292,6 @@ test('it sends PUT request to change user email', () => {
   };
   user.fetch = mockfetch;
   document.body.innerHTML = '<input class="uprofEmail" value="new@email.com"><div class="loginerror"></div>';
-  //document.getElementsByClassName('uprofEmail')[0].value = 'new@email.com';
-
   return user.changeUserEmail().then(() => {
     let messagediv = document.getElementsByClassName('loginerror')[0];
     expect(messagediv.innerHTML).toBe('');

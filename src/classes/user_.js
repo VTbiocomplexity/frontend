@@ -127,9 +127,9 @@ class User {
       //this.nevermind('RegistrationForm');
       //let regform1 = [];
       let regform1 = document.getElementsByClassName('RegistrationForm');
-      if (regform1.length > 0) {
-        regform1[0].style.display = 'none';
-      }
+      //if (regform1.length > 0) {
+      regform1[0].style.display = 'none';
+      //}
       window.location.href = 'http://localhost:9000' + '/';
     }
   })
@@ -256,9 +256,9 @@ class User {
   nevermind(className) {
     let regform1 = [];
     regform1 = document.getElementsByClassName(className);
-    if (regform1.length > 0) {
-      regform1[0].style.display = 'none';
-    }
+    //if (regform1.length > 0) {
+    regform1[0].style.display = 'none';
+    //}
     window.location.href = this.frontendUrl + '/';
   }
 
