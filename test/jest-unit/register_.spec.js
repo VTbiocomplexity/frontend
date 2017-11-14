@@ -390,6 +390,48 @@ test('validates a login form without userid', () => {
   expect(resetpassButton.style.display).toBe('block');
 });
 
+test('validates a login form without userid and invalid email (missing period)', () => {
+  document.body.innerHTML = '<div class="home"></div>';
+  reg.loginUser('OtherApp');
+  document.getElementsByClassName('loginemail')[0].value = 'joe@smithcom';
+  document.getElementsByClassName('loginemail')[0].checkValidity = function() {return true;};
+  document.getElementsByClassName('loginpass')[0].value = '123456789';
+  document.getElementsByClassName('loginpass')[0].checkValidity = function() {return true;};
+  let logbutton = document.getElementsByClassName('loginbutton')[0];
+  let resetpassButton = document.getElementsByClassName('resetpass')[0];
+  reg.validateLogin();
+  expect(logbutton.style.display).toBe('none');
+  expect(resetpassButton.style.display).toBe('none');
+});
+
+test('validates a login form without userid and invalid email (Google)', () => {
+  document.body.innerHTML = '<div class="home"></div>';
+  reg.loginUser('OtherApp');
+  document.getElementsByClassName('loginemail')[0].value = 'joe@gmail.com';
+  document.getElementsByClassName('loginemail')[0].checkValidity = function() {return true;};
+  document.getElementsByClassName('loginpass')[0].value = '123456789';
+  document.getElementsByClassName('loginpass')[0].checkValidity = function() {return true;};
+  let logbutton = document.getElementsByClassName('loginbutton')[0];
+  let resetpassButton = document.getElementsByClassName('resetpass')[0];
+  reg.validateLogin();
+  expect(logbutton.style.display).toBe('none');
+  expect(resetpassButton.style.display).toBe('none');
+});
+
+test('validates a login form without userid and invalid email (missing @)', () => {
+  document.body.innerHTML = '<div class="home"></div>';
+  reg.loginUser('OtherApp');
+  document.getElementsByClassName('loginemail')[0].value = 'joegma.com';
+  document.getElementsByClassName('loginemail')[0].checkValidity = function() {return false;};
+  document.getElementsByClassName('loginpass')[0].value = '123456789';
+  document.getElementsByClassName('loginpass')[0].checkValidity = function() {return true;};
+  let logbutton = document.getElementsByClassName('loginbutton')[0];
+  let resetpassButton = document.getElementsByClassName('resetpass')[0];
+  reg.validateLogin();
+  expect(logbutton.style.display).toBe('none');
+  expect(resetpassButton.style.display).toBe('none');
+});
+
 test('validates a login form without useremail and invalid password', () => {
   document.body.innerHTML = '<div class="home"></div>';
   reg.loginUser('PATRIC');
@@ -446,10 +488,10 @@ test('login the PATRIC user', () => {
     this.headers.method = data.method;
     return Promise.resolve({
       Headers: this.headers,
-      json: () => Promise.resolve({ token: 'lsdfldjflsdjlfdjfsjdlf' })
+      json: () => Promise.resolve({ token: 'lsdfldjflsdjlfdjfsjdlf', email: 'joe@smith.com' })
     });
   };
-  reg.fetch = mockfetch;
+  let evt = {target: {fetchClient: mockfetch, appName: 'PATRIC', checkIfLoggedIn: function(){}, generateSession: function(email){}}};
   const mockStorage = {setItem: function(item, value) {
     //do nothing
   }, getItem: function(item, value) {
@@ -457,7 +499,7 @@ test('login the PATRIC user', () => {
   }};
   window.localStorage = mockStorage;
   document.body.innerHTML += '<div class="ShowWAuth"></div><div class="HideWAuth"></div>';
-  reg.logMeIn('PATRIC').then((data) => {
+  reg.logMeIn(evt).then((data) => {
     expect(data.token).toBe('lsdfldjflsdjlfdjfsjdlf');
     let showA = document.getElementsByClassName('ShowWAuth')[0];
     expect(showA.style.display).toBe('block');
@@ -479,7 +521,7 @@ test('login the other app user', () => {
       json: () => Promise.resolve({ token: 'lsdfldjflsdjlfdjfsjdlf' })
     });
   };
-  reg.fetch = mockfetch;
+  let evt = {target: {fetchClient: mockfetch, appName: 'CoolApp'}};
   const mockStorage = {setItem: function(item, value) {
     //do nothing
   }, getItem: function(item, value) {
@@ -487,7 +529,7 @@ test('login the other app user', () => {
   }};
   window.localStorage = mockStorage;
   document.body.innerHTML += '<div class="ShowWAuth"></div><div class="HideWAuth"></div>';
-  reg.logMeIn('OtherApp').then((data) => {
+  reg.logMeIn(evt).then((data) => {
     expect(data.token).toBe('lsdfldjflsdjlfdjfsjdlf');
     let showA = document.getElementsByClassName('ShowWAuth')[0];
     expect(showA.style.display).toBe('block');
@@ -509,12 +551,12 @@ test('displays error message if login fails', () => {
       json: () => Promise.resolve({ message: 'incorrect email or password' })
     });
   };
-  reg.fetch = mockfetch;
+  let evt = {target: {fetchClient: mockfetch, appName: 'PATRIC'}};
   const mockStorage = {setItem: function(item, value) {
     //do nothing
   }};
   window.localStorage = mockStorage;
-  reg.logMeIn('PATRIC').then((data) => {
+  reg.logMeIn(evt).then((data) => {
     expect(data.message).toBe('incorrect email or password');
   });
 });
@@ -534,13 +576,12 @@ test('catches any login errors', () => {
       json: () => Promise.reject({ error: 'incorrect email or password' })
     });
   };
-  reg.fetch = mockfetch;
+  let evt = {target: {fetchClient: mockfetch, appName: 'PATRIC'}};
   const mockStorage = {setItem: function(item, value) {
     //do nothing
   }};
   window.localStorage = mockStorage;
-
-  return reg.logMeIn('PATRIC')
+  return reg.logMeIn(evt)
   .catch((e) => expect(e).toBeTruthy());
 });
 
@@ -588,6 +629,19 @@ test('it displays account and logout buttons when the user is logged in', () => 
   reg.checkIfLoggedIn();
   expect(document.getElementsByClassName('ShowWAuth')[0].style.display).toBe('block');
   expect(document.getElementsByClassName('HideWAuth')[0].style.display).toBe('none');
+});
+
+test('it does nothing when account and logout buttons do not exist', () => {
+  const mockStorage = {getItem: function(item, value) {
+    return '12345';
+  }, removeItem: function(item) {
+    //do nothing
+  }};
+  window.localStorage = mockStorage;
+  document.body.innerHTML = '';
+  reg.checkIfLoggedIn();
+  expect(document.getElementsByClassName('ShowWAuth').length).toBe(0);
+  expect(document.getElementsByClassName('HideWAuth').length).toBe(0);
 });
 
 test('it does not displays account and logout buttons when the user is not logged in', () => {

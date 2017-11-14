@@ -10,12 +10,17 @@ class Register {
   checkIfLoggedIn() {
     console.log('checking if I am already logged in');
     if (localStorage.getItem('token') !== null) {
-      let hideWithAuth = document.getElementsByClassName('HideWAuth')[0];
+      //let hideWithAuth = [];
+      let hideWithAuth = document.getElementsByClassName('HideWAuth');
       console.log('this is local storage :' + localStorage.getItem('token'));
-      hideWithAuth.style.display = 'none';
+      if (hideWithAuth.length > 0){
+        hideWithAuth[0].style.display = 'none';
+      }
       console.log('this is the hide with auth element' + hideWithAuth);
-      let showWithAuth = document.getElementsByClassName('ShowWAuth')[0];
-      showWithAuth.style.display = 'block';
+      let showWithAuth = document.getElementsByClassName('ShowWAuth');
+      if (showWithAuth.length > 0){
+        showWithAuth[0].style.display = 'block';
+      }
     }
   }
   register(appName) {
@@ -229,13 +234,13 @@ class Register {
     }
     let loginform = document.createElement('div');
     loginform.className = 'LoginForm';
-    loginform.innerHTML = '<h2 style="margin:0px;padding:4px;font-size:1.2em;text-align:center;background:#eee;">PATRIC Login</h2>' +
+    loginform.innerHTML = '<h2 style="margin:0px;padding:4px;font-size:1.2em;text-align:center;background:#eee;">User Login</h2>' +
     '<form><div style="padding:2px; margin:10px;"><table><tbody>' + useridrow +
     '<tr><td>&nbsp;</td></tr>' + useremailinput +
     '<tr><td>&nbsp;</td></tr><tr><th style="border:none">Password</th></tr><tr><td>' +
     '<input class="loginpass" pattern=".{8,}" title="8 characters minimum" type="password" name="password" style="width:300px;" value="" required></td></tr>' +
     '</tbody></table></div><div style="text-align:center;padding:2px;margin:10px;">' +
-    '<div><button style="display:none; margin-bottom:-22px;" type="button" class="loginbutton" onclick="registerClass.logMeIn(&apos;' + appName + '&apos;)">Login</button>' +
+    '<div><button style="display:none; margin-bottom:-22px;" type="button" class="loginbutton">Login</button>' +
     '<button style="display:none;margin-top:34px" class="resetpass" type="button" onclick="registerClass.resetpass(&apos;' + appName + '&apos;)">Reset Password</button></div></div></form>' +
     '<button class="nevermind" style="margin-left:12px;margin-top:20px" type="button" onclick="registerClass.nevermind(&apos;LoginForm&apos;)">Cancel</button></div></div></form>' +
     '<div class="loginerror" style="color:red"></div>';
@@ -244,6 +249,7 @@ class Register {
     if (appName !== 'PATRIC'){
       document.getElementsByClassName('nevermind')[0].style.display = 'none';
       let emailInput = document.getElementsByClassName('loginemail')[0];
+      emailInput.appName = appName;
       emailInput.addEventListener('change', this.validateLogin);
       emailInput.addEventListener('focus', this.validateLogin);
       emailInput.addEventListener('keydown', this.validateLogin);
@@ -260,43 +266,74 @@ class Register {
     passwordInput.addEventListener('focus', this.validateLogin);
     passwordInput.addEventListener('keydown', this.validateLogin);
     passwordInput.addEventListener('keyup', this.validateLogin);
+    let loginButton = document.getElementsByClassName('loginbutton')[0];
+    loginButton.appName = appName;
+    loginButton.fetchClient = this.fetch;
+    loginButton.checkIfLoggedIn = this.checkIfLoggedIn;
+    loginButton.generateSession = this.generateSession;
+    loginButton.addEventListener('click', this.logMeIn);
   }
 
-  validateLogin() {
+  validateLogin(evt) {
+    //let appName = evt.target.appName;
     let useridValue = '';
     if (document.getElementsByClassName('userid')[0] !== undefined) {
       useridValue = document.getElementsByClassName('userid')[0];
     }
-    let validemail = '';
-    if (document.getElementsByClassName('loginemail').length > 0) {
-      validemail = document.getElementsByClassName('loginemail')[0];
-    }
     let validpass = document.getElementsByClassName('loginpass')[0];
     let logbutton = document.getElementsByClassName('loginbutton')[0];
+    let loginErrorMessage = document.getElementsByClassName('loginerror')[0];
+    let validemail = false;
+    let emailValue = '';
+    let edot = '';
+    if (document.getElementsByClassName('loginemail').length > 0) {
+      emailValue = document.getElementsByClassName('loginemail')[0].value;
+      let emailInput = document.getElementsByClassName('loginemail')[0];
+      validemail = emailInput.checkValidity();
+      edot = emailValue.split('.');
+      console.log(edot.length);
+      if (edot.length === 1){
+        validemail = false;
+        loginErrorMessage.innerHTML = '<p>Invalid email or password</p>';
+      }
+      if (emailValue.split('@gmail').length > 1 || emailValue.split('@vt.edu').length > 1 || emailValue.split('@bi.vt.edu').length > 1){
+        validemail = false;
+        loginErrorMessage.innerHTML = '<p>Please click the Login with Google button</p>';
+      }
+    }
+    //let edot = validemail.split('.');
     let resetpassButton = document.getElementsByClassName('resetpass')[0];
-    if (validemail !== '') {
-      if (validemail.checkValidity() && validpass.checkValidity()) {
+    if (emailValue !== '') {
+      if (validemail && validpass.checkValidity()) {
         logbutton.style.display = 'block';
+        loginErrorMessage.innerHTML = '';
       } else {
         logbutton.style.display = 'none';
+        if (loginErrorMessage.innerHTML === ''){
+          loginErrorMessage.innerHTML = '<p>Invalid email or password</p>';
+        }
       }
     }
     if (useridValue !== '') {
       if (validpass.checkValidity()) {
         logbutton.style.display = 'block';
+        loginErrorMessage.innerHTML = '';
       } else {
         logbutton.style.display = 'none';
+        loginErrorMessage.innerHTML = '<p>Invalid password</p>';
       }
     }
-    if (validemail !== '') {
-      if (validemail.checkValidity()) {
+    if (emailValue !== '') {
+      if (validemail) {
         resetpassButton.style.display = 'block';
+        //loginErrorMessage.innerHTML = '';
       } else {
         resetpassButton.style.display = 'none';
       }
     }
     if (useridValue !== '') {
       resetpassButton.style.display = 'block';
+      //loginErrorMessage.innerHTML = '';
     }
   }
 
@@ -332,7 +369,12 @@ class Register {
     });
   }
 
-  logMeIn(appName) {
+  logMeIn(evt) {
+    console.log('going to log you in');
+    let fetchClient = evt.target.fetchClient;
+    let appName = evt.target.appName;
+    let checkIfLoggedIn = evt.target.checkIfLoggedIn;
+    let generateSession = evt.target.generateSession;
     let useridValue = '';
     let emailValue = '';
     const passwordValue = document.getElementsByClassName('loginpass')[0].value;
@@ -344,35 +386,35 @@ class Register {
       emailValue = document.getElementsByClassName('loginemail')[0].value;
     }
     let bodyData = {'email': emailValue, 'password': passwordValue, 'id': useridValue };
-    //var cookieToken = getCookieToken();
     let fetchData = {
       method: 'POST',
-      //credentials: 'same-origin',
       body: JSON.stringify(bodyData),
       headers: {
-        //'X-CSRFTOKEN': cookieToken,
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       }
     };
-    return this.fetch(this.backendUrl + '/auth/login', fetchData)
+    return fetchClient('http://localhost:7000' + '/auth/login', fetchData)
     .then((response) => response.json())
     .then((data) => {
       if (data.token !== undefined) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('useremail', data.email);
-        this.checkIfLoggedIn();
-        this.nevermind('LoginForm');
         if (appName === 'PATRIC') {
-          this.generateSession(data.email);
+          checkIfLoggedIn();
+          generateSession(data.email);
         }
+        let regform1 = [];
+        regform1 = document.getElementsByClassName('LoginForm');
+        //if (regform1.length > 0) {
+        regform1[0].style.display = 'none';
+        //}
+        window.location.href = 'http://localhost:9000' + '/';
       }
       if (data.message) {
-        //console.log(data.message);
         let messagediv = document.getElementsByClassName('loginerror')[0];
         messagediv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';
       }
-      //loginUser();
     })
     .catch((error) => {
       console.log(error);
