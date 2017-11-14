@@ -276,9 +276,8 @@ test('generates a login form', () => {
 test('generates a login form without userid', () => {
   document.body.innerHTML = '<div class="home"></div>';
   reg.loginUser('AdifferentApp');
-  let useridInput = [];
-  if (document.getElementsByClassName('userid')[0] !== undefined) {useridInput.push(document.getElementsByClassName('userid')[0]);}
-  expect(useridInput.length).toBe(0);
+  let useridInput = document.getElementsByClassName('uidinput')[0];
+  expect(useridInput.style.display).toBe('none');
 });
 
 test('initiates a reset password request', () => {
@@ -295,8 +294,8 @@ test('initiates a reset password request', () => {
       json: () => Promise.resolve({})
     });
   };
-  reg.fetch = mockfetch;
-  reg.resetpass('PATRIC').then((data) => {
+  let evt = {target: {fetchClient: mockfetch, appName: 'PATRIC', messageDiv: '<div></div>'}};
+  reg.resetpass(evt).then((data) => {
     expect(data.message).toBe(null);
   });
 });
@@ -315,8 +314,8 @@ test('initiates a reset password request for other app', () => {
       json: () => Promise.resolve({})
     });
   };
-  reg.fetch = mockfetch;
-  reg.resetpass('otherapp').then((data) => {
+  let evt = {target: {fetchClient: mockfetch, appName: 'otherapp', messageDiv: '<div></div>'}};
+  reg.resetpass(evt).then((data) => {
     expect(data.message).toBe(null);
   });
 });
@@ -334,8 +333,8 @@ test('Does not initiates a reset password request with invalid email', () => {
       json: () => Promise.resolve({ message: 'incorrect email address' })
     });
   };
-  reg.fetch = mockfetch;
-  reg.resetpass('PATRIC').then((data) => {
+  let evt = {target: {fetchClient: mockfetch, appName: 'PATRIC', messageDiv: '<div></div>'}};
+  reg.resetpass(evt).then((data) => {
     expect(data.message).toBe('incorrect email address');
   });
 });
@@ -356,8 +355,8 @@ test('it catches error on reset password', () => {
       json: () => Promise.reject({error: 'rejected' })
     });
   };
-  reg.fetch = mockfetch;
-  return reg.resetpass('PATRIC')
+  let evt = {target: {fetchClient: mockfetch, appName: 'PATRIC', messageDiv: '<div></div>'}};
+  return reg.resetpass(evt)
   .catch((e) => expect(e).toBeTruthy());
 });
 
@@ -659,4 +658,11 @@ test('it does not displays account and logout buttons when the user is not logge
 
 test('it navigates to the user preferences page', () => {
   reg.userAccount();
+});
+
+test('it hides the registration form', () => {
+  document.body.innerHTML = '<div><div class="home"></div></div>';
+  reg.register('otherapp');
+  reg.nevermind('RegistrationForm');
+  expect(document.getElementsByClassName('RegistrationForm')[0].style.display).toBe('none');
 });
