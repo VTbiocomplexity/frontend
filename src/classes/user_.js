@@ -16,14 +16,15 @@ class User {
 
   verifyEmail() {
     let formTitle = '';
-    let passInput = '';
+    let passInput = '<tr class="pwheader"><th style="border:none; text-align:left">Password</th></tr>' +
+    '<tr class="pwinput"><td><input class="loginpass" pattern=".{8,}" title="8 characters minimum" type="password" name="password" style="width:300px;" value="" required></td></tr>';
+
     let formButton = '';
     //console.log('going to verify this address: ' + userEmail);
     let emailVarifyForm = document.createElement('div');
     if (this.formType === 'reset') {
       formTitle = 'Reset Your Password';
-      passInput = '<tr><th style="border:none; text-align:left">Password</th></tr><tr><td><input class="loginpass" pattern=".{8,}" title="8 characters minimum" type="password" name="password" style="width:300px;" value="" required onchange="userClass.validateForm()" onfocus="userClass.validateForm()" onkeydown="userClass.validateForm()" onkeyup="userClass.validateForm()"></td></tr>';
-      formButton = 'this.resetPasswd()';
+      formButton = 'this.resetPasswd';
     } else {
       formTitle = 'Verify Your Email Address';
       formButton = 'this.updateUser';
@@ -35,7 +36,7 @@ class User {
     emailVarifyForm.className = 'RegistrationForm';
     emailVarifyForm.innerHTML = '<h2 style="margin:0px;padding:4px;font-size:1.2em;text-align:center;background:#eee;">' + formTitle + '</h2><form>' +
     '<div style="padding:2px; margin:10px;"><table><tbody><tr><th style="text-align:left">Email</th></tr><tr><td>' +
-    '<input class="email" type="email" name="email" style="width:250px;" required value="" required onchange="userClass.validateForm()" onfocus="userClass.validateForm()" onkeydown="userClass.validateForm()" onkeyup="userClass.validateForm()" onpaste="userClass.validateForm()">' +
+    '<input class="email" type="email" name="email" style="width:250px;" value="" required>' +
     '</td></tr><tr><td> </td></tr>' + passInput + '<tr><td> </td></tr><tr><th style="text-align:left">Code</th></tr><tr><td>' +
     '<input type="number" title="5 digit code" name="code" class="code" style="width:150px;" required" value=""></td></tr>' +
     '</tbody></table></div><div style="text-align:center;padding:2px;margin:10px;">' +
@@ -58,6 +59,18 @@ class User {
         this.populateForm();
       }
     } else {
+      let pWInput = document.getElementsByClassName('loginpass')[0];
+      pWInput.addEventListener('change', this.validateForm);
+      pWInput.addEventListener('focus', this.validateForm);
+      pWInput.addEventListener('keydown', this.validateForm);
+      pWInput.addEventListener('keyup', this.validateForm);
+      pWInput.addEventListener('paste', this.validateForm);
+      let emailInput = document.getElementsByClassName('email')[0];
+      emailInput.addEventListener('change', this.validateForm);
+      emailInput.addEventListener('focus', this.validateForm);
+      emailInput.addEventListener('keydown', this.validateForm);
+      emailInput.addEventListener('keyup', this.validateForm);
+      emailInput.addEventListener('paste', this.validateForm);
       let verifyCode = document.getElementsByClassName('code')[0];
       verifyCode.formType = this.formType;
       verifyCode.addEventListener('change', this.validateForm);
@@ -70,7 +83,10 @@ class User {
       if (formTitle === 'Verify Your Email Address'){
         submitButton.addEventListener('click', this.updateUser);
       }
-      //onchange="userClass.validateForm()" onfocus="userClass.validateForm()" onkeydown="userClass.validateForm()" onkeyup="userClass.validateForm()" onpaste="userClass.validateForm()
+    }
+    if (this.formType !== 'reset') {
+      document.getElementsByClassName('pwheader')[0].style.display = 'none';
+      document.getElementsByClassName('pwinput')[0].style.display = 'none';
     }
   }
 
