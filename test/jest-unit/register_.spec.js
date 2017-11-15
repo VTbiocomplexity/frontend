@@ -21,6 +21,16 @@ test('generates a registration form for another app', () => {
   //expect(sum(1, 2)).toBe(3);
 });
 
+test('hides a registration form with click Cancel button', () => {
+  document.body.innerHTML = '<div class="home"></div>';
+  reg.register();
+  document.getElementsByClassName('nevermind')[0].click();
+  let regform = document.getElementsByClassName('RegistrationForm');
+  expect(regform[0].style.display).toBe('none');
+  //document.body.innerHTML = '';
+  //expect(sum(1, 2)).toBe(3);
+});
+
 test('updates the registration form after selection of primary app is PATRIC', () => {
   document.body.innerHTML = '<div class="home"></div>';
   reg.register('');
@@ -95,7 +105,7 @@ test('hides the submit button when registration form is not valid password', () 
   //expect(sum(1, 2)).toBe(3);
 });
 
-test('shows the submit butten when registration form is valid', () => {
+test('shows the submit button when registration form is valid', () => {
   document.body.innerHTML = '<div class="home"></div>';
   reg.register('PATRIC');
   document.getElementsByClassName('firstname')[0].value = 'Joe';
@@ -113,7 +123,7 @@ test('shows the submit butten when registration form is valid', () => {
   document.body.innerHTML = '';
 });
 
-test('shows the submit butten when registration form uses a Google email with PATRIC', () => {
+test('shows the submit button when registration form uses a Google email with PATRIC', () => {
   document.body.innerHTML = '<div class="home"></div>';
   reg.register('PATRIC');
   document.getElementsByClassName('firstname')[0].value = 'Joe';
@@ -132,7 +142,7 @@ test('shows the submit butten when registration form uses a Google email with PA
   document.body.innerHTML = '';
 });
 
-test('hides register butten when email format is not valid', () => {
+test('hides register button when email format is not valid', () => {
   document.body.innerHTML = '<div class="home"></div>';
   reg.register('PATRIC');
   document.getElementsByClassName('firstname')[0].value = 'Joe';
@@ -274,6 +284,16 @@ test('generates a login form', () => {
   //expect(sum(1, 2)).toBe(3);
 });
 
+test('hides a login form with click Cancel button', () => {
+  document.body.innerHTML = '<div class="home"></div>';
+  reg.loginUser();
+  document.getElementsByClassName('nevermind')[0].click();
+  let regform = document.getElementsByClassName('LoginForm');
+  expect(regform[0].style.display).toBe('none');
+  //document.body.innerHTML = '';
+  //expect(sum(1, 2)).toBe(3);
+});
+
 test('generates a login form without userid', () => {
   document.body.innerHTML = '<div class="home"></div>';
   reg.loginUser('AdifferentApp');
@@ -369,9 +389,10 @@ test('validates a login form with userid and no email', () => {
   //document.getElementsByClassName('loginemail')[0].checkValidity = function() {return false;};
   document.getElementsByClassName('loginpass')[0].value = '123456789';
   document.getElementsByClassName('loginpass')[0].checkValidity = function() {return true;};
+  document.getElementsByClassName('loginemail')[0].checkValidity = function() {return false;};
   let logbutton = document.getElementsByClassName('loginbutton')[0];
-  //let resetpassButton = document.getElementsByClassName('resetpass')[0];
-  reg.validateLogin();
+  let evt = {target: {appName: 'PATRIC'}};
+  reg.validateLogin(evt);
   expect(logbutton.style.display).toBe('block');
   //expect(resetpassButton.style.display).toBe('block');
 });
@@ -385,7 +406,8 @@ test('validates a login form without userid', () => {
   document.getElementsByClassName('loginpass')[0].checkValidity = function() {return true;};
   let logbutton = document.getElementsByClassName('loginbutton')[0];
   let resetpassButton = document.getElementsByClassName('resetpass')[0];
-  reg.validateLogin();
+  let evt = {target: {appName: 'OtherApp'}};
+  reg.validateLogin(evt);
   expect(logbutton.style.display).toBe('block');
   expect(resetpassButton.style.display).toBe('block');
 });
@@ -399,7 +421,8 @@ test('validates a login form without userid and invalid email (missing period)',
   document.getElementsByClassName('loginpass')[0].checkValidity = function() {return true;};
   let logbutton = document.getElementsByClassName('loginbutton')[0];
   let resetpassButton = document.getElementsByClassName('resetpass')[0];
-  reg.validateLogin();
+  let evt = {target: {appName: 'OtherApp'}};
+  reg.validateLogin(evt);
   expect(logbutton.style.display).toBe('none');
   expect(resetpassButton.style.display).toBe('none');
 });
@@ -413,7 +436,8 @@ test('validates a login form without userid and invalid email (Google)', () => {
   document.getElementsByClassName('loginpass')[0].checkValidity = function() {return true;};
   let logbutton = document.getElementsByClassName('loginbutton')[0];
   let resetpassButton = document.getElementsByClassName('resetpass')[0];
-  reg.validateLogin();
+  let evt = {target: {appName: 'OtherApp'}};
+  reg.validateLogin(evt);
   expect(logbutton.style.display).toBe('none');
   expect(resetpassButton.style.display).toBe('none');
 });
@@ -427,7 +451,8 @@ test('validates a login form without userid and invalid email (missing @)', () =
   document.getElementsByClassName('loginpass')[0].checkValidity = function() {return true;};
   let logbutton = document.getElementsByClassName('loginbutton')[0];
   let resetpassButton = document.getElementsByClassName('resetpass')[0];
-  reg.validateLogin();
+  let evt = {target: {appName: 'OtherApp'}};
+  reg.validateLogin(evt);
   expect(logbutton.style.display).toBe('none');
   expect(resetpassButton.style.display).toBe('none');
 });
@@ -439,9 +464,27 @@ test('validates a login form without useremail and invalid password', () => {
   //document.getElementsByClassName('loginemail')[0].checkValidity = function() {return true;};
   document.getElementsByClassName('loginpass')[0].value = '123456789';
   document.getElementsByClassName('loginpass')[0].checkValidity = function() {return false;};
+  document.getElementsByClassName('loginemail')[0].checkValidity = function() {return false;};
   let logbutton = document.getElementsByClassName('loginbutton')[0];
   let resetpassButton = document.getElementsByClassName('resetpass')[0];
-  reg.validateLogin();
+  let evt = {target: {appName: 'PATRIC'}};
+  reg.validateLogin(evt);
+  expect(logbutton.style.display).toBe('none');
+  expect(resetpassButton.style.display).toBe('block');
+});
+
+test('does not displya the login button with invalid password and valid email', () => {
+  document.body.innerHTML = '<div class="home"></div>';
+  reg.loginUser('OtherApp');
+  document.getElementsByClassName('userid')[0].value = 'joesmith';
+  document.getElementsByClassName('loginemail')[0].value = 'joe@smith.com';
+  document.getElementsByClassName('loginpass')[0].value = '123456789';
+  document.getElementsByClassName('loginpass')[0].checkValidity = function() {return false;};
+  document.getElementsByClassName('loginemail')[0].checkValidity = function() {return true;};
+  let logbutton = document.getElementsByClassName('loginbutton')[0];
+  let resetpassButton = document.getElementsByClassName('resetpass')[0];
+  let evt = {target: {appName: 'OtherApp'}};
+  reg.validateLogin(evt);
   expect(logbutton.style.display).toBe('none');
   expect(resetpassButton.style.display).toBe('block');
 });
@@ -453,11 +496,29 @@ test('It displays reset password button', () => {
   //document.getElementsByClassName('loginemail')[0].checkValidity = function() {return true;};
   document.getElementsByClassName('loginpass')[0].value = '123456789';
   document.getElementsByClassName('loginpass')[0].checkValidity = function() {return true;};
+  document.getElementsByClassName('loginemail')[0].checkValidity = function() {return false;};
   let logbutton = document.getElementsByClassName('loginbutton')[0];
   let resetpassButton = document.getElementsByClassName('resetpass')[0];
-  reg.validateLogin();
+  let evt = {target: {appName: 'PATRIC'}};
+  reg.validateLogin(evt);
   expect(logbutton.style.display).toBe('block');
   expect(resetpassButton.style.display).toBe('block');
+});
+
+test('It does not displays reset password button', () => {
+  document.body.innerHTML = '<div class="home"></div>';
+  reg.loginUser('PATRIC');
+  document.getElementsByClassName('userid')[0].value = '';
+  //document.getElementsByClassName('loginemail')[0].checkValidity = function() {return true;};
+  document.getElementsByClassName('loginpass')[0].value = '123456789';
+  document.getElementsByClassName('loginpass')[0].checkValidity = function() {return true;};
+  document.getElementsByClassName('loginemail')[0].checkValidity = function() {return false;};
+  let logbutton = document.getElementsByClassName('loginbutton')[0];
+  let resetpassButton = document.getElementsByClassName('resetpass')[0];
+  let evt = {target: {appName: 'PATRIC'}};
+  reg.validateLogin(evt);
+  expect(logbutton.style.display).toBe('none');
+  expect(resetpassButton.style.display).toBe('none');
 });
 
 test('login and reset buttons do not display when email is not valid format', () => {
@@ -469,7 +530,8 @@ test('login and reset buttons do not display when email is not valid format', ()
   document.getElementsByClassName('loginpass')[0].checkValidity = function() {return true;};
   let logbutton = document.getElementsByClassName('loginbutton')[0];
   let resetpassButton = document.getElementsByClassName('resetpass')[0];
-  reg.validateLogin();
+  let evt = {target: {appName: 'OtherApp'}};
+  reg.validateLogin(evt);
   expect(logbutton.style.display).toBe('none');
   expect(resetpassButton.style.display).toBe('none');
   document.body.innerHTML = '';
