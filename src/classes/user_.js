@@ -14,20 +14,19 @@ class User {
     this.verifyEmail();
   }
 
-  verifyEmail() {
+  createVerifyCodeForm(){
     let formTitle = '';
     let passInput = '<tr class="pwheader"><th style="border:none; text-align:left">Password</th></tr>' +
     '<tr class="pwinput"><td><input class="loginpass" pattern=".{8,}" title="8 characters minimum" type="password" name="password" style="width:300px;" value="" required></td></tr>';
-    let formButton = '';
     let emailVarifyForm = document.createElement('div');
     if (this.formType === 'reset') {
       formTitle = 'Reset Your Password';
-      formButton = 'this.resetPasswd';
     } else {
-      formTitle = 'Verify Your Email Address';
-      formButton = 'this.updateUser';
+      //formTitle = 'Verify Your Email Address';
       if (this.changeEmail !== '' && this.changeEmail !== null && this.changeEmail !== undefined) {
-        formButton = 'this.verifyChangeEmail()';
+        formTitle = 'Verify Your New Email Address';
+      } else {
+        formTitle = 'Verify Your Email Address';
       }
     }
     emailVarifyForm.className = 'RegistrationForm';
@@ -37,7 +36,7 @@ class User {
     '</td></tr><tr><td> </td></tr>' + passInput + '<tr><td> </td></tr><tr><th style="text-align:left">Code</th></tr><tr><td>' +
     '<input type="number" title="5 digit code" name="code" class="code" style="width:150px;" required" value=""></td></tr>' +
     '</tbody></table></div><div style="text-align:center;padding:2px;margin:10px;">' +
-    '<div><button style="display:none; margin-bottom:-22px;" type="button" class="regbutton" onclick="' + formButton + '">Submit</button><button type="button" onclick="userClass.nevermind(&apos;RegistrationForm&apos;)">Cancel</button></div></div></form>' +
+    '<div><button style="display:none; margin-bottom:-22px;" type="button" class="regbutton">Submit</button><button type="button" onclick="userClass.nevermind(&apos;RegistrationForm&apos;)">Cancel</button></div></div></form>' +
     '<div class="loginerror" style="color:red"></div>';
     let home = document.getElementsByClassName('home');
     home[0].insertBefore(emailVarifyForm, home[0].childNodes[0]);
@@ -46,6 +45,11 @@ class User {
     } else if (this.changeEmail !== '' && this.changeEmail !== null && this.changeEmail !== undefined) {
       document.getElementsByClassName('email')[0].value = this.changeEmail;
     }
+    return formTitle;
+  }
+
+  verifyEmail() {
+    let formTitle = this.createVerifyCodeForm();
     if (this.formType === 'prefs') {
       document.getElementsByClassName('RegistrationForm')[0].style.display = 'none';
       document.getElementsByClassName('UserProfileForm')[0].style.display = 'block';
@@ -79,11 +83,15 @@ class User {
       verifyCode.addEventListener('paste', this.validateForm);
       let submitButton = document.getElementsByClassName('regbutton')[0];
       submitButton.fetchClient = this.fetch;
+      console.log(formTitle);
       if (formTitle === 'Verify Your Email Address'){
         submitButton.addEventListener('click', this.updateUser);
       }
       if (formTitle === 'Reset Your Password'){
         submitButton.addEventListener('click', this.resetPasswd);
+      }
+      if (formTitle === 'Verify Your New Email Address'){
+        submitButton.addEventListener('click', this.verifyChangeEmail);
       }
     }
     if (this.formType !== 'reset') {
@@ -162,7 +170,7 @@ class User {
     return this.fetch(this.backendUrl + '/user/', fetchData)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      //console.log(data);
       document.getElementsByClassName('uprofFirstName')[0].value = data[0].first_name;
       document.getElementsByClassName('uprofLastName')[0].value = data[0].last_name;
       document.getElementsByClassName('uprofAff')[0].value = data[0].affiliation;

@@ -18,10 +18,15 @@ test('generates a email varification form', () => {
   expect(document.body.innerHTML).toMatch(/Verify Your Email Address/);
 });
 
+test('generates a change email varification form', () => {
+  user.changeEmail = 'joe@smith.com';
+  user.verifyEmail();
+  expect(document.getElementsByClassName('email')[0].value).toBe('joe@smith.com');
+});
+
 test('generates a reset password form with email already filled in', () => {
   user.formType = 'reset';
   user.userEmail = 'joe@smith.com';
-
   user.verifyEmail();
   expect(document.body.innerHTML).toMatch(/Reset Your Password/);
 });
