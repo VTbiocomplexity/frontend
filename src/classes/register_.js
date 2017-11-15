@@ -245,15 +245,10 @@ class Register {
     return fetchClient('http://localhost:7000' + '/auth/signup', fetchData)
     .then((response) => response.json())
     .then((data) => {
-      //console.log(data);
       if (data.message) {
-        //console.log(data.message);
         messagediv.innerHTML = '<p style="text-align:left;padding-left:12px">' + data.message + '</p>';
-        //this.errorMessage = data.message;
       } else {
-        //this.nevermind('RegistrationForm');
         document.getElementsByClassName('RegistrationForm')[0].style.display = 'none';
-        //loginUser();
         if (data.email) {
           window.location.href = 'http://localhost:9000' + '/userutil/?email=' + data.email;
         }
@@ -264,10 +259,6 @@ class Register {
     });
   }
 
-  // verifyEmail(email) {
-  //   window.location.href = this.frontendUrl + '/userutil/?email=' + email;
-  // }
-
   nevermind(className) {
     let regform1 = [];
     regform1 = document.getElementsByClassName(className);
@@ -276,7 +267,7 @@ class Register {
     }
   }
 
-  loginUser(appName) {
+  createLoginForm(appName){
     this.nevermind('LoginForm');
     this.nevermind('RegistrationForm');
     let useridrow = '';
@@ -298,6 +289,10 @@ class Register {
     '<button class="nevermind" style="margin-left:12px;margin-top:20px" type="button">Cancel</button></div></div></form>';
     let home = document.getElementsByClassName('home');
     home[0].insertBefore(loginform, home[0].childNodes[0]);
+  }
+
+  loginUser(appName) {
+    this.createLoginForm(appName);
     if (appName !== 'PATRIC'){
       document.getElementsByClassName('uidheader')[0].style.display = 'none';
       document.getElementsByClassName('uidinput')[0].style.display = 'none';
