@@ -62,42 +62,7 @@ class Register {
   register(appName) {
     this.appName = appName;
     this.createRegistrationForm(this.appName);
-    // //console.log('show me a registration form here!');
-    // this.nevermind('LoginForm');
-    // this.nevermind('RegistrationForm');
-    // if (appName !== null && appName !== undefined){this.appName = appName;}
-    // let useridrow = '';
-    // let primaryAppSelector = '';
-    // if (this.appName === 'PATRIC') {
-    //   useridrow = '<th colspan="2">Userid (optional)</th></tr><tr><td colspan="2"><div style="width:100%"><input class="userid" type="text" name="userid" value=""></div></td>';
-    // } else {
-    //   primaryAppSelector = '<tr><td><label style="display:inline">Primary App </label><select class="pas"><option value=""> </option><option value="PATRIC">PATRIC</option></select></td></tr>';
-    // }
-    // const regform = document.createElement('div');
-    // regform.className = 'RegistrationForm';
-    // regform.innerHTML = '<h2 style="margin:0px;padding:4px;font-size:1.2em;text-align:center;background:#eee;">User Registration</h2>' +
-    // '<form class=""><div style="padding:2px; margin:10px;"><table><tbody>' + primaryAppSelector +
-    // '<tr><th>First Name <span style="color:red">*</span></th><th>Last Name <span style="color:red">*</span></th></tr><tr><td width="150px">' +
-    // '<input class="firstname" type="text" name="first_name" style="width:150px;" required>' +
-    // '</td><td><input class="lastname" type="text" name="last_name" style="width:150px;" required>' +
-    // '</td></tr><tr><th colspan="1">Email Address <span style="color:red">*</span></th><th colspan="1">Password <span style="color:red">*</span></th></tr><tr><td colspan="1">' +
-    // '<input class="email" type="email" name="email" style="width:100%;" required></td>' + '<td><input class="password" pattern=".{8,}" title="8 characters minimum" type="password" name="password" style="width:100%;" required>' +
-    // // '</td></tr><tr></tr><tr><td colspan="1">' +
-    // '</td></tr><tr class="userIdRow">' + useridrow + '</tr>' +
-    // '<tr><th colspan="2">Organization</th></tr><tr><td colspan="2"><div style="width:100%"><input class="organization" type="text" name="affiliation" value=""></div></td></tr>' +
-    // '<tr><th colspan="2">Organisms</th></tr><tr><td colspan="2"><div><input style="width:97%;" class="organisms" type="text" name="organisms" value=""></div></td></tr>' +
-    // '<tr><th colspan="2">Interests</th></tr><tr><td colspan="2"><div><textarea style="width:97%;" class="interests" rows="5" cols="50" name="interests" style="height:75px;" value=""></textarea></div></td></tr>' +
-    // '</tbody></table><p><span style="color:red">*</span> <i>Indicates required field</i></p></div><div style="text-align:center;padding:2px;margin:10px;">' +
-    // '<div class="registererror" style="color:red"></div>' +
-    // '<div><button type="button" class="registerbutton" style="display:none; margin-bottom:-22px">Register New User</button>' +
-    // '<button class="nevermind" type="button">Cancel</button></div></div></form>';
-    // const home = document.getElementsByClassName('home');
-    // home[0].insertBefore(regform, home[0].childNodes[0]);
-    // if (this.appName !== 'PATRIC'){
-    //   document.getElementsByClassName('nevermind')[0].style.display = 'none';
-    // }
     let firstNameInput = document.getElementsByClassName('firstname')[0];
-    //console.log(firstNameInput);
     firstNameInput.addEventListener('change', this.validateReg);
     firstNameInput.addEventListener('focus', this.validateReg);
     firstNameInput.addEventListener('keydown', this.validateReg);
@@ -151,7 +116,6 @@ class Register {
   }
 
   validateReg() {
-    console.log('validating reg');
     let fname = document.getElementsByClassName('firstname')[0].value;
     let fspace = fname.split(' ');
     let lname = document.getElementsByClassName('lastname')[0].value;
@@ -160,7 +124,6 @@ class Register {
     let edot = email.split('.');
     let validemail = document.getElementsByClassName('email')[0];
     let password = document.getElementsByClassName('password')[0].value;
-    let regError = document.getElementsByClassName('registererror')[0];
     let pspace = password.split(' ');
     let primaryApp = '';
     if (document.getElementsByClassName('pas').length > 0){
@@ -174,10 +137,8 @@ class Register {
       if (primaryApp !== 'PATRIC'){
         googleAccount = true;
       }
-      //console.log(this.appName);
     }
     let validpass = document.getElementsByClassName('password')[0];
-    let registbutton = document.getElementsByClassName('registerbutton')[0];
     let nameError = false;
     let pwError = false;
     let emError = false;
@@ -190,16 +151,33 @@ class Register {
     if (!validemail.checkValidity() || edot.length === 1 || email === ''){
       emError = true;
     }
+    this.displayRegError(nameError, emError, pwError, googleAccount);
+    // let registbutton = document.getElementsByClassName('registerbutton')[0];
+    // let regError = document.getElementsByClassName('registererror')[0];
+    // if (!nameError && !emError && !pwError && !googleAccount) {
+    //   registbutton.style.display = 'block';
+    // } else {
+    //   registbutton.style.display = 'none';
+    // }
+    // if (googleAccount){
+    //   regError.innerHTML = '<p>Please scroll up and click the Login with Google button</p>';
+    // } else if (nameError){
+    //   regError.innerHTML = '<p>Name format is not valid</p>';
+    // } else if (emError){
+    //   regError.innerHTML = '<p>Email format is not valid</p>';
+    // } else if (pwError){
+    //   regError.innerHTML = '<p>Password format is not valid</p>';
+    // } else {regError.innerHTML = '';}
+  }
 
+  displayRegError(nameError, emError, pwError, googleAccount){
+    let registbutton = document.getElementsByClassName('registerbutton')[0];
+    let regError = document.getElementsByClassName('registererror')[0];
     if (!nameError && !emError && !pwError && !googleAccount) {
-      // if (validemail.checkValidity() && validpass.checkValidity() && edot.length > 1) {
       registbutton.style.display = 'block';
     } else {
       registbutton.style.display = 'none';
     }
-    // } else {
-    //   registbutton.style.display = 'none';
-    // }
     if (googleAccount){
       regError.innerHTML = '<p>Please scroll up and click the Login with Google button</p>';
     } else if (nameError){
@@ -210,6 +188,7 @@ class Register {
       regError.innerHTML = '<p>Password format is not valid</p>';
     } else {regError.innerHTML = '';}
   }
+
   createUser(evt) {
     let fetchClient = evt.target.fetchClient;
     let firstname = document.getElementsByClassName('firstname')[0].value;
