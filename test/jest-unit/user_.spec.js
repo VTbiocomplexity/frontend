@@ -92,14 +92,14 @@ test('it resets the password', () => {
   document.getElementsByClassName('loginpass')[0].value = 'password1';
   document.getElementsByClassName('code')[0].value = '12345';
   document.getElementsByClassName('email')[0].value = 'joe@smith.com';
-  user.resetPasswd().then(() => {
+  let evt = {target: {formType: 'reset', fetchClient: mockfetch}};
+  user.resetPasswd(evt).then(() => {
     let messagediv = document.getElementsByClassName('loginerror')[0];
     expect(messagediv.innerHTML).toBe('');
   });
 });
 
 test('it displays the error message from reset password PUT', () => {
-  // debugger;
   document.body.innerHTML = '<div><div class="home"></div></div>';
   user = new User();
   user.formType = 'reset';
@@ -114,10 +114,10 @@ test('it displays the error message from reset password PUT', () => {
       json: () => Promise.resolve({message: 'incorrect email'})
     });
   };
-  user.fetch = mockfetch;
+  let evt = {target: {formType: 'reset', fetchClient: mockfetch}};
   document.getElementsByClassName('loginpass')[0].value = 'password1';
   document.getElementsByClassName('code')[0].value = '12345';
-  user.resetPasswd().then(() => {
+  user.resetPasswd(evt).then(() => {
     const messagediv = document.getElementsByClassName('loginerror')[0];
     expect(messagediv.innerHTML).toMatch(/incorrect email/);
     messagediv.innerHTML = '';
@@ -134,8 +134,8 @@ test('it catches the error from reset password PUT', () => {
       json: () => Promise.reject({error: 'server error'})
     });
   };
-  user.fetch = mockfetch;
-  return user.resetPasswd()
+  let evt = {target: {formType: 'reset', fetchClient: mockfetch}};
+  return user.resetPasswd(evt)
   .catch((e) => expect(e).toBeTruthy());
 });
 
