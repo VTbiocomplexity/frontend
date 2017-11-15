@@ -52,7 +52,7 @@ class Register {
     '</tbody></table><p><span style="color:red">*</span> <i>Indicates required field</i></p></div><div style="text-align:center;padding:2px;margin:10px;">' +
     '<div class="registererror" style="color:red"></div>' +
     '<div><button type="button" class="registerbutton" style="display:none; margin-bottom:-22px">Register New User</button>' +
-    '<button class="nevermind" type="button" onclick="registerClass.nevermind(&apos;RegistrationForm&apos;)">Cancel</button></div></div></form>';
+    '<button class="nevermind" type="button">Cancel</button></div></div></form>';
     const home = document.getElementsByClassName('home');
     home[0].insertBefore(regform, home[0].childNodes[0]);
     if (this.appName !== 'PATRIC'){
@@ -82,6 +82,10 @@ class Register {
     let registerEventButton = document.getElementsByClassName('registerbutton')[0];
     registerEventButton.fetchClient = this.fetch;
     registerEventButton.addEventListener('click', this.createUser);
+    let cancelButton = document.getElementsByClassName('nevermind')[0];
+    cancelButton.addEventListener('click', function(){
+      document.getElementsByClassName('RegistrationForm')[0].style.display = 'none';
+    });
     if (this.appName !== 'PATRIC'){
       let pas2 = document.getElementsByClassName('pas')[0];
       pas2.addEventListener('change', this.updateRegForm);
@@ -253,7 +257,7 @@ class Register {
     '<div class="loginerror" style="color:red"></div>' +
     '<div><button style="display:none; margin-bottom:-22px;" type="button" class="loginbutton">Login</button>' +
     '<button style="display:none;margin-top:34px" class="resetpass" type="button">Reset Password</button></div></div></form>' +
-    '<button class="nevermind" style="margin-left:12px;margin-top:20px" type="button" onclick="registerClass.nevermind(&apos;LoginForm&apos;)">Cancel</button></div></div></form>';
+    '<button class="nevermind" style="margin-left:12px;margin-top:20px" type="button">Cancel</button></div></div></form>';
     let home = document.getElementsByClassName('home');
     home[0].insertBefore(loginform, home[0].childNodes[0]);
     if (appName !== 'PATRIC'){
@@ -291,39 +295,44 @@ class Register {
     resetPB.appName = appName;
     resetPB.messageDiv = document.getElementsByClassName('loginerror')[0];
     resetPB.addEventListener('click', this.resetpass);
+    let cancelButton = document.getElementsByClassName('nevermind')[0];
+    cancelButton.addEventListener('click', function(){
+      document.getElementsByClassName('LoginForm')[0].style.display = 'none';
+    });
   }
 
   validateLogin(evt) {
-    //let appName = evt.target.appName;
-    let useridValue = '';
-    useridValue = document.getElementsByClassName('userid')[0].value;
-    console.log('user id value: ' + useridValue);
-    let validpass = document.getElementsByClassName('loginpass')[0];
+    let appName = evt.target.appName;
+    //let useridValue = '';
+    let useridValue = document.getElementsByClassName('userid')[0].value;
+    //console.log('user id value: ' + useridValue);
+    let validpass = document.getElementsByClassName('loginpass')[0].checkValidity();
     let logbutton = document.getElementsByClassName('loginbutton')[0];
     let loginErrorMessage = document.getElementsByClassName('loginerror')[0];
     let resetpassButton = document.getElementsByClassName('resetpass')[0];
-    let validemail = false;
-    let emailValue = '';
-    let edot = '';
-    emailValue = document.getElementsByClassName('loginemail')[0].value;
-    if (emailValue !== ''){
-      let emailInput = document.getElementsByClassName('loginemail')[0];
-      validemail = emailInput.checkValidity();
-      edot = emailValue.split('.');
-      console.log(edot.length);
-      if (edot.length === 1){
-        validemail = false;
-        loginErrorMessage.innerHTML = '<p>Invalid email or password</p>';
-      }
-      if (emailValue.split('@gmail').length > 1 || emailValue.split('@vt.edu').length > 1 || emailValue.split('@bi.vt.edu').length > 1){
-        validemail = false;
-        loginErrorMessage.innerHTML = '<p>Please click the Login with Google button</p>';
-      }
+    //let validemail = false;
+    //let emailValue = '';
+    //let edot = '';
+    let emailValue = document.getElementsByClassName('loginemail')[0].value;
+    let validemail = document.getElementsByClassName('loginemail')[0].checkValidity();
+    //if (emailValue !== ''){
+      //let emailInput = document.getElementsByClassName('loginemail')[0];
+      //validemail = emailInput.checkValidity();
+    let edot = emailValue.split('.');
+      //console.log(edot.length);
+    if (edot.length === 1 || !validemail || emailValue === ''){
+      validemail = false;
+      loginErrorMessage.innerHTML = '<p>Invalid email format</p>';
     }
+    if (emailValue.split('@gmail').length > 1 || emailValue.split('@vt.edu').length > 1 || emailValue.split('@bi.vt.edu').length > 1){
+      validemail = false;
+      loginErrorMessage.innerHTML = '<p>Please click the Login with Google button</p>';
+    }
+  //  }
     //let edot = validemail.split('.');
 
-    if (emailValue !== '' && emailValue !== '1' && emailValue !== 1) {
-      if (validemail && validpass.checkValidity()) {
+    if (appName !== 'PATRIC') {
+      if (validemail && validpass) {
         logbutton.style.display = 'block';
         loginErrorMessage.innerHTML = '';
       } else {
@@ -332,40 +341,52 @@ class Register {
           loginErrorMessage.innerHTML = '<p>Invalid email or password</p>';
         }
       }
+      if (validemail) {
+        resetpassButton.style.display = 'block';
+        //loginErrorMessage.innerHTML = '';
+      } else {
+        resetpassButton.style.display = 'none';
+      }
     }
-    if (useridValue !== '' && useridValue !== '1' && useridValue !== 1) {
-      if (validpass.checkValidity()) {
+    if (appName === 'PATRIC') {
+      if (validpass && useridValue !== '') {
         logbutton.style.display = 'block';
         loginErrorMessage.innerHTML = '';
       } else {
         logbutton.style.display = 'none';
-        loginErrorMessage.innerHTML = '<p>Invalid password</p>';
+        loginErrorMessage.innerHTML = '<p>Invalid password or Userid</p>';
       }
-    }
-    if (emailValue !== '' && emailValue !== '1' && emailValue !== 1 && emailValue !== undefined) {
-      console.log(emailValue);
-      if (validemail) {
+      if (useridValue !== '') {
         resetpassButton.style.display = 'block';
         //loginErrorMessage.innerHTML = '';
       } else {
         resetpassButton.style.display = 'none';
       }
     }
-    if (useridValue !== '' && useridValue !== '1' && useridValue !== 1) {
-      resetpassButton.style.display = 'block';
-      //loginErrorMessage.innerHTML = '';
-    } else {
-      resetpassButton.style.display = 'none';
-    }
-    if (emailValue !== '' && emailValue !== '1' && emailValue !== 1 && emailValue !== undefined) {
-      console.log(emailValue);
-      if (validemail) {
-        resetpassButton.style.display = 'block';
-        //loginErrorMessage.innerHTML = '';
-      } else {
-        resetpassButton.style.display = 'none';
-      }
-    }
+    // if (emailValue !== '' && emailValue !== '1' && emailValue !== 1 && emailValue !== undefined) {
+    //   console.log(emailValue);
+    //   if (validemail) {
+    //     resetpassButton.style.display = 'block';
+    //     //loginErrorMessage.innerHTML = '';
+    //   } else {
+    //     resetpassButton.style.display = 'none';
+    //   }
+    // }
+    // if (useridValue !== '' && useridValue !== '1' && useridValue !== 1) {
+    //   resetpassButton.style.display = 'block';
+    //   //loginErrorMessage.innerHTML = '';
+    // } else {
+    //   resetpassButton.style.display = 'none';
+    // }
+    // if (emailValue !== '' && emailValue !== '1' && emailValue !== 1 && emailValue !== undefined) {
+    //   console.log(emailValue);
+    //   if (validemail) {
+    //     resetpassButton.style.display = 'block';
+    //     //loginErrorMessage.innerHTML = '';
+    //   } else {
+    //     resetpassButton.style.display = 'none';
+    //   }
+    // }
   }
 
   resetpass(evt) {
