@@ -136,22 +136,35 @@ class Register {
     }
     let validpass = document.getElementsByClassName('password')[0];
     let registbutton = document.getElementsByClassName('registerbutton')[0];
-    if (fname !== '' && lname !== '' && email !== '' && password !== '' && fspace.length === 1 && lspace.length === 1 && pspace.length === 1 && !googleAccount) {
-      if (validemail.checkValidity() && validpass.checkValidity() && edot.length > 1) {
-        registbutton.style.display = 'block';
-      } else {
-        registbutton.style.display = 'none';
-      }
+    let nameError = false;
+    let pwError = false;
+    let emError = false;
+    if (fname === '' || lname === '' || fspace.length > 1 || lspace.length > 1){
+      nameError = true;
+    }
+    if (pspace.length > 1 || !validpass.checkValidity() || password === ''){
+      pwError = true;
+    }
+    if (!validemail.checkValidity() || edot.length === 1 || email === ''){
+      emError = true;
+    }
+
+    if (!nameError && !emError && !pwError && !googleAccount) {
+      // if (validemail.checkValidity() && validpass.checkValidity() && edot.length > 1) {
+      registbutton.style.display = 'block';
     } else {
       registbutton.style.display = 'none';
     }
+    // } else {
+    //   registbutton.style.display = 'none';
+    // }
     if (googleAccount){
       regError.innerHTML = '<p>Please scroll up and click the Login with Google button</p>';
-    } else if (fname === '' || lname === '' || fspace.length > 1 || lspace.length > 1){
+    } else if (nameError){
       regError.innerHTML = '<p>Name format is not valid</p>';
-    } else if (!validemail.checkValidity() || edot.length === 1){
+    } else if (emError){
       regError.innerHTML = '<p>Email format is not valid</p>';
-    } else if (pspace.length > 1 || !validpass.checkValidity()){
+    } else if (pwError){
       regError.innerHTML = '<p>Password format is not valid</p>';
     } else {regError.innerHTML = '';}
   }

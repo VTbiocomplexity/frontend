@@ -55,10 +55,12 @@ test('generates a registration form without userid', () => {
   //expect(sum(1, 2)).toBe(3);
 });
 
-test('hides the submit butten when registration form is not valid email', () => {
+test('hides the submit button when registration form is not valid email', () => {
   document.body.innerHTML = '<div class="home"></div>';
   reg.register('');
   document.getElementsByClassName('email')[0].value = 'google.@gmail.com';
+  document.getElementsByClassName('email')[0].checkValidity = function(){return false;};
+  document.getElementsByClassName('password')[0].checkValidity = function(){return true;};
   reg.validateReg();
   let registbutton = document.getElementsByClassName('registerbutton')[0];
   expect(registbutton.style.display).toBe('none');
@@ -66,20 +68,19 @@ test('hides the submit butten when registration form is not valid email', () => 
   //expect(sum(1, 2)).toBe(3);
 });
 
-test('hides the submit butten when registration form is not valid name', () => {
+test('hides the submit button when registration form is not valid name', () => {
   document.body.innerHTML = '<div class="home"></div>';
   reg.register('PATRIC');
-  //document.getElementsByClassName('email')[0].value = 'google.@gb.com';
-  //document.getElementsByClassName('email')[0].checkValidity = function() {return true;};
+  document.getElementsByClassName('password')[0].checkValidity = function(){return true;};
+  document.getElementsByClassName('email')[0].checkValidity = function(){return true;};
   document.getElementsByClassName('firstname')[0].value = '';
   reg.validateReg();
   let registbutton = document.getElementsByClassName('registerbutton')[0];
   expect(registbutton.style.display).toBe('none');
   document.body.innerHTML = '';
-  //expect(sum(1, 2)).toBe(3);
 });
 
-test('hides the submit butten when registration form is not valid password', () => {
+test('hides the submit button when registration form is not valid password', () => {
   document.body.innerHTML = '<div class="home"></div>';
   reg.register('PATRIC');
   document.getElementsByClassName('email')[0].value = 'google.@gb.com';
