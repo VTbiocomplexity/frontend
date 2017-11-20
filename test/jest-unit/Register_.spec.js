@@ -56,11 +56,11 @@ test('updates the registration form after selection of primary app is not PATRIC
 test('generates a registration form without userid', () => {
   document.body.innerHTML = '<div class="home"></div>';
   reg.register('DifferentApp');
-  let useridInput = [];
+  //let useridInput = [];
   //console.log(document.getElementsByClassName('userid')[0]);
-  if (document.getElementsByClassName('userid')[0] !== undefined) {useridInput.push(document.getElementsByClassName('userid')[0]);}
+  let userIdRow = document.getElementsByClassName('userIdRow')[0];
   //useridInput.push(document.getElementsByClassName('userid')[0]);
-  expect(useridInput.length).toBe(0);
+  expect(userIdRow.style.display).toBe('none');
   //document.body.innerHTML = '';
   //expect(sum(1, 2)).toBe(3);
 });
@@ -68,10 +68,13 @@ test('generates a registration form without userid', () => {
 test('hides the submit button when registration form is not valid email', () => {
   document.body.innerHTML = '<div class="home"></div>';
   reg.register('');
+  document.getElementsByClassName('pas')[0].value = 'other';
+  document.getElementsByClassName('pas')[0].style.display = 'block';
   document.getElementsByClassName('email')[0].value = 'google.@gmail.com';
   document.getElementsByClassName('email')[0].checkValidity = function(){return false;};
   document.getElementsByClassName('password')[0].checkValidity = function(){return true;};
-  reg.validateReg();
+  let evt = {target: {displayError: reg.displayRegError}};
+  reg.validateReg(evt);
   let registbutton = document.getElementsByClassName('registerbutton')[0];
   expect(registbutton.style.display).toBe('none');
   document.body.innerHTML = '';
@@ -84,7 +87,8 @@ test('hides the submit button when registration form is not valid name', () => {
   document.getElementsByClassName('password')[0].checkValidity = function(){return true;};
   document.getElementsByClassName('email')[0].checkValidity = function(){return true;};
   document.getElementsByClassName('firstname')[0].value = '';
-  reg.validateReg();
+  let evt = {target: {displayError: reg.displayRegError}};
+  reg.validateReg(evt);
   let registbutton = document.getElementsByClassName('registerbutton')[0];
   expect(registbutton.style.display).toBe('none');
   document.body.innerHTML = '';
@@ -98,7 +102,8 @@ test('hides the submit button when registration form is not valid password', () 
   document.getElementsByClassName('lastname')[0].value = 'Smith';
   document.getElementsByClassName('email')[0].checkValidity = function() {return true;};
   document.getElementsByClassName('password')[0].checkValidity = function() {return false;};
-  reg.validateReg();
+  let evt = {target: {displayError: reg.displayRegError}};
+  reg.validateReg(evt);
   let registbutton = document.getElementsByClassName('registerbutton')[0];
   expect(registbutton.style.display).toBe('none');
   document.body.innerHTML = '';
@@ -117,7 +122,8 @@ test('shows the submit button when registration form is valid', () => {
   };
   document.getElementsByClassName('password')[0].checkValidity = mockvalidity;
   document.getElementsByClassName('email')[0].checkValidity = mockvalidity;
-  reg.validateReg();
+  let evt = {target: {displayError: reg.displayRegError}};
+  reg.validateReg(evt);
   let registbutton = document.getElementsByClassName('registerbutton')[0];
   expect(registbutton.style.display).toBe('block');
   document.body.innerHTML = '';
@@ -136,7 +142,8 @@ test('shows the submit button when registration form uses a Google email with PA
   };
   document.getElementsByClassName('password')[0].checkValidity = mockvalidity;
   document.getElementsByClassName('email')[0].checkValidity = mockvalidity;
-  reg.validateReg();
+  let evt = {target: {displayError: reg.displayRegError}};
+  reg.validateReg(evt);
   let registbutton = document.getElementsByClassName('registerbutton')[0];
   expect(registbutton.style.display).toBe('block');
   document.body.innerHTML = '';
@@ -154,7 +161,8 @@ test('hides register button when email format is not valid', () => {
   };
   document.getElementsByClassName('password')[0].checkValidity = function() {return true;};
   document.getElementsByClassName('email')[0].checkValidity = mockvalidity;
-  reg.validateReg();
+  let evt = {target: {displayError: reg.displayRegError}};
+  reg.validateReg(evt);
   let registbutton = document.getElementsByClassName('registerbutton')[0];
   expect(registbutton.style.display).toBe('none');
   document.body.innerHTML = '';

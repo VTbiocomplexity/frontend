@@ -2,7 +2,7 @@ const Fetch = require('isomorphic-fetch');
 class User_ {
   constructor() {
     this.backendUrl = 'http://localhost:7000';
-    this.frontendUrl = 'http://localhost:3000';
+    //this.frontendUrl = 'http://localhost:3000';
     this.fetch = Fetch;
     this.searchParams = new URLSearchParams(window.location.search);
     this.uid = '';
@@ -50,50 +50,40 @@ class User_ {
 
   verifyEmail() {
     let formTitle = this.createVerifyCodeForm();
-    if (this.formType === 'prefs') {
-      document.getElementsByClassName('RegistrationForm')[0].style.display = 'none';
-      document.getElementsByClassName('UserProfileForm')[0].style.display = 'block';
-      console.log('this is the user token: ' + this.userToken);
-      if (this.userToken === null) {
-        this.nevermind('UserProfileForm');
-      } else {
-        this.populateForm();
-      }
-    } else {
-      let pWInput = document.getElementsByClassName('loginpass')[0];
-      pWInput.addEventListener('change', this.validateForm);
-      pWInput.addEventListener('focus', this.validateForm);
-      pWInput.addEventListener('keydown', this.validateForm);
-      pWInput.addEventListener('keyup', this.validateForm);
-      pWInput.addEventListener('paste', this.validateForm);
-      pWInput.formType = this.formType;
-      let emailInput = document.getElementsByClassName('email')[0];
-      emailInput.addEventListener('change', this.validateForm);
-      emailInput.addEventListener('focus', this.validateForm);
-      emailInput.addEventListener('keydown', this.validateForm);
-      emailInput.addEventListener('keyup', this.validateForm);
-      emailInput.addEventListener('paste', this.validateForm);
-      emailInput.formType = this.formType;
-      let verifyCode = document.getElementsByClassName('code')[0];
-      verifyCode.formType = this.formType;
-      verifyCode.addEventListener('change', this.validateForm);
-      verifyCode.addEventListener('focus', this.validateForm);
-      verifyCode.addEventListener('keydown', this.validateForm);
-      verifyCode.addEventListener('keyup', this.validateForm);
-      verifyCode.addEventListener('paste', this.validateForm);
-      let submitButton = document.getElementsByClassName('regbutton')[0];
-      submitButton.fetchClient = this.fetch;
-      console.log(formTitle);
-      if (formTitle === 'Verify Your Email Address'){
-        submitButton.addEventListener('click', this.updateUser);
-      }
-      if (formTitle === 'Reset Your Password'){
-        submitButton.addEventListener('click', this.resetPasswd);
-      }
-      if (formTitle === 'Verify Your New Email Address'){
-        submitButton.addEventListener('click', this.verifyChangeEmail);
-      }
+    let pWInput = document.getElementsByClassName('loginpass')[0];
+    pWInput.addEventListener('change', this.validateForm);
+    pWInput.addEventListener('focus', this.validateForm);
+    pWInput.addEventListener('keydown', this.validateForm);
+    pWInput.addEventListener('keyup', this.validateForm);
+    pWInput.addEventListener('paste', this.validateForm);
+    pWInput.formType = this.formType;
+    let emailInput = document.getElementsByClassName('email')[0];
+    emailInput.addEventListener('change', this.validateForm);
+    emailInput.addEventListener('focus', this.validateForm);
+    emailInput.addEventListener('keydown', this.validateForm);
+    emailInput.addEventListener('keyup', this.validateForm);
+    emailInput.addEventListener('paste', this.validateForm);
+    emailInput.formType = this.formType;
+    let verifyCode = document.getElementsByClassName('code')[0];
+    verifyCode.formType = this.formType;
+    verifyCode.addEventListener('change', this.validateForm);
+    verifyCode.addEventListener('focus', this.validateForm);
+    verifyCode.addEventListener('keydown', this.validateForm);
+    verifyCode.addEventListener('keyup', this.validateForm);
+    verifyCode.addEventListener('paste', this.validateForm);
+    let submitButton = document.getElementsByClassName('regbutton')[0];
+    submitButton.fetchClient = this.fetch;
+    console.log(formTitle);
+    if (formTitle === 'Verify Your Email Address'){
+      submitButton.addEventListener('click', this.updateUser);
     }
+    if (formTitle === 'Reset Your Password'){
+      submitButton.addEventListener('click', this.resetPasswd);
+    }
+    if (formTitle === 'Verify Your New Email Address'){
+      submitButton.addEventListener('click', this.verifyChangeEmail);
+    }
+    // }
     if (this.formType !== 'reset') {
       document.getElementsByClassName('pwheader')[0].style.display = 'none';
       document.getElementsByClassName('pwinput')[0].style.display = 'none';
@@ -156,144 +146,64 @@ class User_ {
     });
   }
 
-  populateForm() {
-    let bodyData = {'email': localStorage.getItem('useremail') };
-    let fetchData = {
-      method: 'POST',
-      body: JSON.stringify(bodyData),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
-      }
-    };
-    return this.fetch(this.backendUrl + '/user/', fetchData)
-    .then((response) => response.json())
-    .then((data) => {
-      //console.log(data);
-      document.getElementsByClassName('uprofFirstName')[0].value = data[0].first_name;
-      document.getElementsByClassName('uprofLastName')[0].value = data[0].last_name;
-      document.getElementsByClassName('uprofAff')[0].value = data[0].affiliation;
-      document.getElementsByClassName('uprofOrganisms')[0].value = data[0].organisms;
-      document.getElementsByClassName('uprofInterests')[0].value = data[0].interests;
-      document.getElementsByClassName('uprofEmail')[0].value = data[0].email;
-      this.uid = data[0]._id;
-    });
-  }
-
-  validateUserPrefs() {
-    console.log('going to validate firstname, lastname, and email');
-    let profBut = document.getElementsByClassName('updateprofbutton')[0];
-    let emBut = document.getElementsByClassName('updateemailbutton')[0];
-    let fname = document.getElementsByClassName('uprofFirstName')[0].value;
-    let fspace = fname.split(' ');
-    console.log(fspace.length);
-    let lname = document.getElementsByClassName('uprofLastName')[0].value;
-    let lspace = lname.split(' ');
-    let isemailvalid = document.getElementsByClassName('uprofEmail')[0].checkValidity();
-    let emValue = document.getElementsByClassName('uprofEmail')[0].value;
-    let edot = emValue.split('.');
-    console.log(isemailvalid);
-    if (fname !== '' && lname !== '' && fspace.length === 1 && lspace.length === 1) {
-      profBut.style.display = 'block';
-    } else {
-      profBut.style.display = 'none';
-    }
-    if (isemailvalid && edot.length > 1) {
-      emBut.style.display = 'block';
-    } else {
-      emBut.style.display = 'none';
-    }
-  }
-
-  updateUserPrefs() {
-    let fname = document.getElementsByClassName('uprofFirstName')[0].value;
-    let lname = document.getElementsByClassName('uprofLastName')[0].value;
-    let bodyData = {'first_name': fname, 'last_name': lname, 'name': fname + ' ' + lname,
-      'affiliation': document.getElementsByClassName('uprofAff')[0].value, 'organisms': document.getElementsByClassName('uprofOrganisms')[0].value, 'interests': document.getElementsByClassName('uprofInterests')[0].value};
-    let fetchData = {
-      method: 'PUT',
-      body: JSON.stringify(bodyData),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
-      }
-    };
-    return this.fetch(this.backendUrl + '/user/' + this.uid, fetchData)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      this.nevermind('UserProfileForm');
-    });
-  }
-
   resetPasswd(evt) {
     let fetchClient = evt.target.fetchClient;
-    let bodyData = {'email': document.getElementsByClassName('email')[0].value,
-      'resetCode': document.getElementsByClassName('code')[0].value, 'password': document.getElementsByClassName('loginpass')[0].value
-    };
-    let fetchData = {
-      method: 'PUT', body: JSON.stringify(bodyData), headers: {
-        'Accept': 'application/json', 'Content-Type': 'application/json'
-      }
-    };
+    let bodyData = {'email': document.getElementsByClassName('email')[0].value, 'resetCode': document.getElementsByClassName('code')[0].value, 'password': document.getElementsByClassName('loginpass')[0].value };
+    let fetchData = { method: 'PUT', body: JSON.stringify(bodyData), headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}};
     return fetchClient('http://localhost:7000' + '/auth/passwdreset', fetchData)
-  .then((response) => response.json())
-  .then((data) => {
-    if (data.message) {
-      let messagediv = document.getElementsByClassName('loginerror')[0];
-      messagediv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';
-    } else {
-      let regform1 = document.getElementsByClassName('RegistrationForm');
-      regform1[0].style.display = 'none';
-      window.location.href = 'http://localhost:9000' + '/';
-    }
-    // this.nevermind('RegistrationForm');
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.message) {
+        let messagediv = document.getElementsByClassName('loginerror')[0];
+        messagediv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';
+      } else {
+        let regform1 = document.getElementsByClassName('RegistrationForm');
+        regform1[0].style.display = 'none';
+        window.location.href = 'http://localhost:9000' + '/';
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
   nevermind(className) {
     let regform1 = [];
     regform1 = document.getElementsByClassName(className);
     regform1[0].style.display = 'none';
-    window.location.href = this.frontendUrl + '/';
+    window.location.href = 'http://localhost:9000' + '/';
   }
 
-  changeUserEmail() {
-    let bodyData = {'changeemail': document.getElementsByClassName('uprofEmail')[0].value, 'email': localStorage.getItem('useremail') };
-    let fetchData = {
-      method: 'PUT',
-      body: JSON.stringify(bodyData),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    };
-
-    return this.fetch(this.backendUrl + '/auth/changeemail', fetchData)
-  .then((response) => response.json())
-  .then((data) => {
-    if (data.message) {
-      //console.log(data.message);
-      let messagediv = document.getElementsByClassName('loginerror')[0];
-      messagediv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';
-    } else {
-      window.location.href = this.frontendUrl + '/userutil/?changeemail=' + document.getElementsByClassName('uprofEmail')[0].value;
-    }
-  })
-  .catch((error) => {
-    console.log(error);
-  });
-  }
+  // changeUserEmail() {
+  //   let bodyData = {'changeemail': document.getElementsByClassName('uprofEmail')[0].value, 'email': localStorage.getItem('useremail') };
+  //   let fetchData = {
+  //     method: 'PUT',
+  //     body: JSON.stringify(bodyData),
+  //     headers: {
+  //       'Accept': 'application/json',
+  //       'Content-Type': 'application/json'
+  //     }
+  //   };
+  //
+  //   return this.fetch(this.backendUrl + '/auth/changeemail', fetchData)
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     if (data.message) {
+  //       //console.log(data.message);
+  //       let messagediv = document.getElementsByClassName('loginerror')[0];
+  //       messagediv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';
+  //     } else {
+  //       window.location.href = this.frontendUrl + '/userutil/?changeemail=' + document.getElementsByClassName('uprofEmail')[0].value;
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //   });
+  // }
 
   verifyChangeEmail() {
     console.log('using your pin to validate your new email address now ...');
-    let bodyData = {'changeemail': document.getElementsByClassName('email')[0].value, 'resetCode': document.getElementsByClassName('code')[0].value,
-      'email': localStorage.getItem('useremail') };
+    let bodyData = {'changeemail': document.getElementsByClassName('email')[0].value, 'resetCode': document.getElementsByClassName('code')[0].value, 'email': localStorage.getItem('useremail') };
     let fetchData = {
       method: 'PUT',
       body: JSON.stringify(bodyData),
@@ -304,19 +214,19 @@ class User_ {
     };
 
     return this.fetch(this.backendUrl + '/auth/updateemail', fetchData)
-  .then((response) => response.json())
-  .then((data) => {
-    if (data.message) {
-      let messagediv = document.getElementsByClassName('loginerror')[0];
-      messagediv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';
-    } else {
-      localStorage.setItem('useremail', document.getElementsByClassName('email')[0].value);
-      this.nevermind('RegistrationForm');
-    }
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.message) {
+        let messagediv = document.getElementsByClassName('loginerror')[0];
+        messagediv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';
+      } else {
+        localStorage.setItem('useremail', document.getElementsByClassName('email')[0].value);
+        this.nevermind('RegistrationForm');
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
 }

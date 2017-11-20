@@ -28,13 +28,13 @@ class Register_ {
     this.nevermind('LoginForm');
     this.nevermind('RegistrationForm');
     this.appName = appName;
-    let useridrow = '';
-    let primaryAppSelector = '';
-    if (this.appName === 'PATRIC') {
-      useridrow = '<th colspan="2">Userid (optional)</th></tr><tr><td colspan="2"><div style="width:100%"><input class="userid" type="text" name="userid" value=""></div></td>';
-    } else {
-      primaryAppSelector = '<tr><td><label style="display:inline">Primary App </label><select class="pas"><option value=""> </option><option value="PATRIC">PATRIC</option></select></td></tr>';
-    }
+    // let useridrow = '';
+    // let primaryAppSelector = '';
+    // if (this.appName === 'PATRIC') {
+    let useridrow = '<th colspan="2">Userid (optional)</th></tr><tr><td colspan="2"><div style="width:100%"><input class="userid" type="text" name="userid" value=""></div></td>';
+    // } else {
+    let primaryAppSelector = '<tr class="primApSel"><td><label style="display:inline">Primary App </label><select class="pas"><option value=""> </option><option value="PATRIC">PATRIC</option></select></td></tr>';
+    // }
     const regform = document.createElement('div');
     regform.className = 'RegistrationForm';
     regform.innerHTML = '<h2 style="margin:0px;padding:4px;font-size:1.2em;text-align:center;background:#eee;">User Registration</h2>' +
@@ -55,6 +55,13 @@ class Register_ {
     '<button class="nevermind" type="button">Cancel</button></div></div></form>';
     const home = document.getElementsByClassName('home');
     home[0].insertBefore(regform, home[0].childNodes[0]);
+    if (this.appName === 'PATRIC') {
+      document.getElementsByClassName('userIdRow')[0].style.display = 'block';
+      document.getElementsByClassName('primApSel')[0].style.display = 'none';
+    } else {
+      document.getElementsByClassName('userIdRow')[0].style.display = 'none';
+      document.getElementsByClassName('primApSel')[0].style.display = 'block';
+    }
     if (this.appName !== 'PATRIC'){
       document.getElementsByClassName('nevermind')[0].style.display = 'none';
     }
@@ -67,21 +74,25 @@ class Register_ {
     firstNameInput.addEventListener('focus', this.validateReg);
     firstNameInput.addEventListener('keydown', this.validateReg);
     firstNameInput.addEventListener('keyup', this.validateReg);
+    firstNameInput.displayError = this.displayRegError;
     let lastNameInput = document.getElementsByClassName('lastname')[0];
     lastNameInput.addEventListener('change', this.validateReg);
     lastNameInput.addEventListener('focus', this.validateReg);
     lastNameInput.addEventListener('keydown', this.validateReg);
     lastNameInput.addEventListener('keyup', this.validateReg);
+    lastNameInput.displayError = this.displayRegError;
     let emailInput = document.getElementsByClassName('email')[0];
     emailInput.addEventListener('change', this.validateReg);
     emailInput.addEventListener('focus', this.validateReg);
     emailInput.addEventListener('keydown', this.validateReg);
     emailInput.addEventListener('keyup', this.validateReg);
+    emailInput.displayError = this.displayRegError;
     let passInput = document.getElementsByClassName('password')[0];
     passInput.addEventListener('change', this.validateReg);
     passInput.addEventListener('focus', this.validateReg);
     passInput.addEventListener('keydown', this.validateReg);
     passInput.addEventListener('keyup', this.validateReg);
+    passInput.displayError = this.displayRegError;
     let registerEventButton = document.getElementsByClassName('registerbutton')[0];
     registerEventButton.fetchClient = this.fetch;
     registerEventButton.addEventListener('click', this.createUser);
@@ -115,7 +126,8 @@ class Register_ {
     }
   }
 
-  validateReg() {
+  validateReg(evt) {
+    let displayError = evt.target.displayError;
     let fname = document.getElementsByClassName('firstname')[0].value;
     let fspace = fname.split(' ');
     let lname = document.getElementsByClassName('lastname')[0].value;
@@ -126,12 +138,14 @@ class Register_ {
     let password = document.getElementsByClassName('password')[0].value;
     let pspace = password.split(' ');
     let primaryApp = '';
-    if (document.getElementsByClassName('pas').length > 0){
+    if (document.getElementsByClassName('pas')[0].style.display === 'block'){
       primaryApp = document.getElementsByClassName('pas')[0].value;
-    }
-    if (document.getElementsByClassName('pas').length === 0){
+    } else {
       primaryApp = 'PATRIC';
     }
+    // if (document.getElementsByClassName('pas').length === 0){
+    //   primaryApp = 'PATRIC';
+    // }
     let googleAccount = false;
     if (email.split('@gmail').length > 1 || email.split('@vt.edu').length > 1 || email.split('@bi.vt.edu').length > 1){
       if (primaryApp !== 'PATRIC'){
@@ -151,7 +165,7 @@ class Register_ {
     if (!validemail.checkValidity() || edot.length === 1 || email === ''){
       emError = true;
     }
-    this.displayRegError(nameError, emError, pwError, googleAccount);
+    displayError(nameError, emError, pwError, googleAccount);
   }
 
   displayRegError(nameError, emError, pwError, googleAccount){
@@ -177,9 +191,9 @@ class Register_ {
     let fetchClient = evt.target.fetchClient;
     let firstname = document.getElementsByClassName('firstname')[0].value;
     let primaryAppValue = '';
-    if (document.getElementsByClassName('pas').length > 0){
-      primaryAppValue = document.getElementsByClassName('pas')[0].value;
-    }
+    // if (document.getElementsByClassName('pas').length > 0){
+    primaryAppValue = document.getElementsByClassName('pas')[0].value;
+    // }
     let lastname = document.getElementsByClassName('lastname')[0].value;
     let orgString = '';
     orgString += document.getElementsByClassName('organization')[0].value;
@@ -188,9 +202,9 @@ class Register_ {
     let userdetString = '';
     userdetString += document.getElementsByClassName('interests')[0].value;
     let useridValue = '';
-    if (document.getElementsByClassName('userid').length > 0){
-      useridValue = document.getElementsByClassName('userid')[0].value;
-    }
+    // if (document.getElementsByClassName('userid').length > 0){
+    useridValue = document.getElementsByClassName('userid')[0].value;
+    // }
     let messagediv = document.getElementsByClassName('registererror')[0];
     let bodyData = {'name': firstname + ' ' + lastname, 'email': document.getElementsByClassName('email')[0].value, 'password': document.getElementsByClassName('password')[0].value,
       'first_name': firstname, 'last_name': lastname, 'affiliation': orgString, 'organisms': organismString, 'interests': userdetString, 'id': useridValue, 'primaryApp': primaryAppValue};
