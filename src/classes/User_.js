@@ -73,6 +73,7 @@ class User_ {
     verifyCode.addEventListener('paste', this.validateForm);
     let submitButton = document.getElementsByClassName('regbutton')[0];
     submitButton.fetchClient = this.fetch;
+    submitButton.runFetch = this.runFetch;
     console.log(formTitle);
     if (formTitle === 'Verify Your Email Address'){
       submitButton.addEventListener('click', this.updateUser);
@@ -118,8 +119,9 @@ class User_ {
   }
 
   updateUser(evt) {
-    console.log('trying to valide the user email with a code');
+    console.log('trying to validate the user email with a code');
     let fetchClient = evt.target.fetchClient;
+    let runFetch = evt.target.runFetch;
     let bodyData = {'email': document.getElementsByClassName('email')[0].value, 'resetCode': document.getElementsByClassName('code')[0].value };
     let fetchData = {
       method: 'PUT',
@@ -129,28 +131,49 @@ class User_ {
         'Content-Type': 'application/json'
       }
     };
-    return fetchClient('http://localhost:7000' + '/auth/validemail', fetchData)
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.message) {
-        let messagediv = document.getElementsByClassName('loginerror')[0];
-        messagediv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';
-      } else {
-        let regform1 = document.getElementsByClassName('RegistrationForm');
-        regform1[0].style.display = 'none';
-        window.location.href = 'http://localhost:9000' + '/';
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+    return runFetch(fetchClient, 'http://localhost:7000', '/auth/validemail', fetchData);
+    // return fetchClient('http://localhost:7000' + '/auth/validemail', fetchData)
+    // .then((response) => response.json())
+    // .then((data) => {
+    //   if (data.message) {
+    //     let messagediv = document.getElementsByClassName('loginerror')[0];
+    //     messagediv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';
+    //   } else {
+    //     let regform1 = document.getElementsByClassName('RegistrationForm');
+    //     regform1[0].style.display = 'none';
+    //     window.location.href = 'http://localhost:9000' + '/';
+    //   }
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    // });
   }
 
   resetPasswd(evt) {
     let fetchClient = evt.target.fetchClient;
+    let runFetch = evt.target.runFetch;
     let bodyData = {'email': document.getElementsByClassName('email')[0].value, 'resetCode': document.getElementsByClassName('code')[0].value, 'password': document.getElementsByClassName('loginpass')[0].value };
     let fetchData = { method: 'PUT', body: JSON.stringify(bodyData), headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}};
-    return fetchClient('http://localhost:7000' + '/auth/passwdreset', fetchData)
+    return runFetch(fetchClient, 'http://localhost:7000', '/auth/passwdreset', fetchData);
+    // return fetchClient('http://localhost:7000' + '/auth/passwdreset', fetchData)
+    // .then((response) => response.json())
+    // .then((data) => {
+    //   if (data.message) {
+    //     let messagediv = document.getElementsByClassName('loginerror')[0];
+    //     messagediv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';
+    //   } else {
+    //     let regform1 = document.getElementsByClassName('RegistrationForm');
+    //     regform1[0].style.display = 'none';
+    //     window.location.href = 'http://localhost:9000' + '/';
+    //   }
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    // });
+  }
+
+  runFetch(fetchClient, url, route, fetchData){
+    return fetchClient(url + route, fetchData)
     .then((response) => response.json())
     .then((data) => {
       if (data.message) {
@@ -173,33 +196,6 @@ class User_ {
     regform1[0].style.display = 'none';
     window.location.href = 'http://localhost:9000' + '/';
   }
-
-  // changeUserEmail() {
-  //   let bodyData = {'changeemail': document.getElementsByClassName('uprofEmail')[0].value, 'email': localStorage.getItem('useremail') };
-  //   let fetchData = {
-  //     method: 'PUT',
-  //     body: JSON.stringify(bodyData),
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json'
-  //     }
-  //   };
-  //
-  //   return this.fetch(this.backendUrl + '/auth/changeemail', fetchData)
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     if (data.message) {
-  //       //console.log(data.message);
-  //       let messagediv = document.getElementsByClassName('loginerror')[0];
-  //       messagediv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';
-  //     } else {
-  //       window.location.href = this.frontendUrl + '/userutil/?changeemail=' + document.getElementsByClassName('uprofEmail')[0].value;
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     console.log(error);
-  //   });
-  // }
 
   verifyChangeEmail() {
     console.log('using your pin to validate your new email address now ...');
