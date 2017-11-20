@@ -1,5 +1,5 @@
 const Fetch = require('isomorphic-fetch');
-class User {
+class User_ {
   constructor() {
     this.backendUrl = 'http://localhost:7000';
     this.frontendUrl = 'http://localhost:3000';
@@ -321,4 +321,4 @@ class User {
 
 }
 
-module.exports = User;
+module.exports = User_;

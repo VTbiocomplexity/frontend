@@ -1,4 +1,4 @@
-const User = require('./classes/user_.js');
+const User_ = require('./classes/User_.js');
 export class UserUtil {
 //  this.app = app;
   constructor(){
@@ -10,6 +10,6 @@ export class UserUtil {
   //   this.userClass.verifyEmail();
   // }
   attached(){
-    this.userClass = new User();
+    this.userClass = new User_();
   }
 }

@@ -1,7 +1,7 @@
-const Register = require('../../src/classes/register_.js');
+const Register_ = require('../../src/classes/Register_.js');
 //import 'isomorphic-fetch';
 
-let reg = new Register();
+let reg = new Register_();
 
 test('generates a registration form for PATRIC', () => {
   document.body.innerHTML = '<div class="home"></div>';
