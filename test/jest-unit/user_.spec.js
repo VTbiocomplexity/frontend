@@ -1,4 +1,4 @@
-const User = require('../../src/classes/user_.js');
+const User_ = require('../../src/classes/User_.js');
 let mockfetch;
 const mockStorage = {setItem: function(item, value) {
   //do nothing
@@ -11,7 +11,7 @@ const mockStorage = {setItem: function(item, value) {
 window.localStorage = mockStorage;
 
 document.body.innerHTML = '<div><div class="home"></div></div>';
-let user = new User();
+let user = new User_();
 
 test('generates a email varification form', () => {
   user.verifyEmail();
@@ -106,7 +106,7 @@ test('it resets the password', () => {
 
 test('it displays the error message from reset password PUT', () => {
   document.body.innerHTML = '<div><div class="home"></div></div>';
-  user = new User();
+  user = new User_();
   user.formType = 'reset';
   user.userEmail = 'joe@smith.com';
   user.verifyEmail();

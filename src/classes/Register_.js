@@ -1,5 +1,5 @@
 const Fetch = require('isomorphic-fetch');
-class Register {
+class Register_ {
   constructor() {
     this.backendUrl = 'http://localhost:7000';
     this.fetch = Fetch;
@@ -243,4 +243,4 @@ class Register {
 
 }
 
-module.exports = Register;
+module.exports = Register_;
