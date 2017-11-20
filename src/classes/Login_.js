@@ -17,10 +17,9 @@ class Login_ {
   createLoginForm(appName){
     this.nevermind('LoginForm');
     this.nevermind('RegistrationForm');
-    let useridrow = '';
     let useremailinput = '<tr class="emailheader"><th style="border:none">Email</th></tr><tr class="emailinput"><td>' +
     '<input class="loginemail" type="email" name="email" style="width:300px;" value="" required></td></tr>';
-    useridrow = '<tr class="uidheader"><th style="border:none">Email or Userid</th></tr><tr class="uidinput"><td>' +
+    let useridrow = '<tr class="uidheader"><th style="border:none">Email or Userid</th></tr><tr class="uidinput"><td>' +
     '<input class="userid" name="userid" style="width:300px;" value="" required></tr></td>';
     let loginform = document.createElement('div');
     loginform.className = 'LoginForm';
@@ -36,39 +35,42 @@ class Login_ {
     '<button class="nevermind" style="margin-left:12px;margin-top:20px" type="button">Cancel</button></div></div></form>';
     let home = document.getElementsByClassName('home');
     home[0].insertBefore(loginform, home[0].childNodes[0]);
-  }
-
-  loginUser(appName) {
-    this.createLoginForm(appName);
     if (appName !== 'PATRIC'){
       document.getElementsByClassName('uidheader')[0].style.display = 'none';
       document.getElementsByClassName('uidinput')[0].style.display = 'none';
       document.getElementsByClassName('nevermind')[0].style.display = 'none';
-      let emailInput = document.getElementsByClassName('loginemail')[0];
-      emailInput.appName = appName;
-      emailInput.buttonsErrors = this.buttonsErrors;
-      emailInput.addEventListener('change', this.validateLogin);
-      emailInput.addEventListener('focus', this.validateLogin);
-      emailInput.addEventListener('keydown', this.validateLogin);
-      emailInput.addEventListener('keyup', this.validateLogin);
     } else {
       document.getElementsByClassName('emailheader')[0].style.display = 'none';
       document.getElementsByClassName('emailinput')[0].style.display = 'none';
-      let useridInput = document.getElementsByClassName('userid')[0];
-      useridInput.addEventListener('change', this.validateLogin);
-      useridInput.addEventListener('focus', this.validateLogin);
-      useridInput.addEventListener('keydown', this.validateLogin);
-      useridInput.addEventListener('keyup', this.validateLogin);
-      useridInput.appName = appName;
-      useridInput.buttonsErrors = this.buttonsErrors;
     }
+  }
+
+  loginUser(appName) {
+    this.createLoginForm(appName);
+    let emailInput = document.getElementsByClassName('loginemail')[0];
+    this.setEvents(emailInput, appName);
+    // emailInput.appName = appName;
+    // emailInput.buttonsErrors = this.buttonsErrors;
+    // emailInput.addEventListener('change', this.validateLogin);
+    // emailInput.addEventListener('focus', this.validateLogin);
+    // emailInput.addEventListener('keydown', this.validateLogin);
+    // emailInput.addEventListener('keyup', this.validateLogin);
+    let useridInput = document.getElementsByClassName('userid')[0];
+    this.setEvents(useridInput, appName);
+    // useridInput.addEventListener('change', this.validateLogin);
+    // useridInput.addEventListener('focus', this.validateLogin);
+    // useridInput.addEventListener('keydown', this.validateLogin);
+    // useridInput.addEventListener('keyup', this.validateLogin);
+    // useridInput.appName = appName;
+    // useridInput.buttonsErrors = this.buttonsErrors;
     let passwordInput = document.getElementsByClassName('loginpass')[0];
-    passwordInput.addEventListener('change', this.validateLogin);
-    passwordInput.addEventListener('focus', this.validateLogin);
-    passwordInput.addEventListener('keydown', this.validateLogin);
-    passwordInput.addEventListener('keyup', this.validateLogin);
-    passwordInput.appName = appName;
-    passwordInput.buttonsErrors = this.buttonsErrors;
+    this.setEvents(passwordInput, appName);
+    // passwordInput.addEventListener('change', this.validateLogin);
+    // passwordInput.addEventListener('focus', this.validateLogin);
+    // passwordInput.addEventListener('keydown', this.validateLogin);
+    // passwordInput.addEventListener('keyup', this.validateLogin);
+    // passwordInput.appName = appName;
+    // passwordInput.buttonsErrors = this.buttonsErrors;
     let loginButton = document.getElementsByClassName('loginbutton')[0];
     loginButton.appName = appName;
     loginButton.fetchClient = this.fetch;
@@ -84,6 +86,15 @@ class Login_ {
     cancelButton.addEventListener('click', function(){
       document.getElementsByClassName('LoginForm')[0].style.display = 'none';
     });
+  }
+
+  setEvents(element, appName){
+    element.addEventListener('change', this.validateLogin);
+    element.addEventListener('focus', this.validateLogin);
+    element.addEventListener('keydown', this.validateLogin);
+    element.addEventListener('keyup', this.validateLogin);
+    element.appName = appName;
+    element.buttonsErrors = this.buttonsErrors;
   }
 
   validateLogin(evt) {
@@ -113,10 +124,10 @@ class Login_ {
     logbutton.style.display = 'none';
     let loginErrorMessage = document.getElementsByClassName('loginerror')[0];
     loginErrorMessage.innerHTML = message;
-    if (appName !== 'PATRIC') {
-      if (validemail && validpass) {
-        logbutton.style.display = 'block';
-        loginErrorMessage.innerHTML = '';
+    if (appName !== 'PATRIC' && validemail) {
+      // if (validemail && validpass) {
+      logbutton.style.display = 'block';
+      loginErrorMessage.innerHTML = '';
       // } else {
       //   //logbutton.style.display = 'none';
       //   loginErrorMessage.innerHTML = message;
@@ -128,19 +139,20 @@ class Login_ {
       //   resetpassButton.style.display = 'block';
       // } else {
       //   resetpassButton.style.display = 'none';
-      }
+      // }
     }
-    if (appName === 'PATRIC') {
-      if (validpass && useridValue !== '') {
-        logbutton.style.display = 'block';
-        loginErrorMessage.innerHTML = '';
+    if (appName === 'PATRIC' && useridValue !== '') {
+      // if (validpass && useridValue !== '') {
+      logbutton.style.display = 'block';
+      loginErrorMessage.innerHTML = '';
       // } else {
       //   //logbutton.style.display = 'none';
       //   loginErrorMessage.innerHTML = '<p>Invalid password or Userid</p>';
       // }
-      }
+      // }
     }
     if (!validpass){
+      logbutton.style.display = 'none';
       loginErrorMessage.innerHTML = '<p>Invalid password</p>';
     }
     if (useridValue !== '' || validemail) {
