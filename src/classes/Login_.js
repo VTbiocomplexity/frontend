@@ -46,6 +46,7 @@ class Login_ {
       document.getElementsByClassName('nevermind')[0].style.display = 'none';
       let emailInput = document.getElementsByClassName('loginemail')[0];
       emailInput.appName = appName;
+      emailInput.buttonsErrors = this.buttonsErrors;
       emailInput.addEventListener('change', this.validateLogin);
       emailInput.addEventListener('focus', this.validateLogin);
       emailInput.addEventListener('keydown', this.validateLogin);
@@ -59,6 +60,7 @@ class Login_ {
       useridInput.addEventListener('keydown', this.validateLogin);
       useridInput.addEventListener('keyup', this.validateLogin);
       useridInput.appName = appName;
+      useridInput.buttonsErrors = this.buttonsErrors;
     }
     let passwordInput = document.getElementsByClassName('loginpass')[0];
     passwordInput.addEventListener('change', this.validateLogin);
@@ -66,6 +68,7 @@ class Login_ {
     passwordInput.addEventListener('keydown', this.validateLogin);
     passwordInput.addEventListener('keyup', this.validateLogin);
     passwordInput.appName = appName;
+    passwordInput.buttonsErrors = this.buttonsErrors;
     let loginButton = document.getElementsByClassName('loginbutton')[0];
     loginButton.appName = appName;
     loginButton.fetchClient = this.fetch;
@@ -82,32 +85,40 @@ class Login_ {
       document.getElementsByClassName('LoginForm')[0].style.display = 'none';
     });
   }
+
   validateLogin(evt) {
     let appName = evt.target.appName;
-    console.log(appName);
+    let buttonsErrors = evt.target.buttonsErrors;
+    //console.log(appName);
     let useridValue = document.getElementsByClassName('userid')[0].value;
     let validpass = document.getElementsByClassName('loginpass')[0].checkValidity();
-    let logbutton = document.getElementsByClassName('loginbutton')[0];
-    let loginErrorMessage = document.getElementsByClassName('loginerror')[0];
-    let resetpassButton = document.getElementsByClassName('resetpass')[0];
     let emailValue = document.getElementsByClassName('loginemail')[0].value;
     let validemail = document.getElementsByClassName('loginemail')[0].checkValidity();
     let edot = emailValue.split('.');
+    let message = '';
     if (edot.length === 1 || !validemail || emailValue === ''){
       validemail = false;
-      loginErrorMessage.innerHTML = '<p>Invalid email format</p>';
+      message = '<p>Invalid email format</p>';
     }
     if (emailValue.split('@gmail').length > 1 || emailValue.split('@vt.edu').length > 1 || emailValue.split('@bi.vt.edu').length > 1){
       validemail = false;
-      loginErrorMessage.innerHTML = '<p>Please click the Login with Google button</p>';
+      message = '<p>Please click the Login with Google button</p>';
     }
+    buttonsErrors(appName, message, validemail, validpass, useridValue);
+  }
+
+  buttonsErrors(appName, message, validemail, validpass, useridValue){
+    let resetpassButton = document.getElementsByClassName('resetpass')[0];
+    let logbutton = document.getElementsByClassName('loginbutton')[0];
+    let loginErrorMessage = document.getElementsByClassName('loginerror')[0];
     if (appName !== 'PATRIC') {
       if (validemail && validpass) {
         logbutton.style.display = 'block';
         loginErrorMessage.innerHTML = '';
       } else {
         logbutton.style.display = 'none';
-        if (loginErrorMessage.innerHTML === ''){
+        loginErrorMessage.innerHTML = message;
+        if (message === ''){
           loginErrorMessage.innerHTML = '<p>Invalid email or password</p>';
         }
       }
@@ -132,6 +143,7 @@ class Login_ {
       }
     }
   }
+
   resetpass(evt) {
     let appName = evt.target.appName;
     let fetchClient = evt.target.fetchClient;

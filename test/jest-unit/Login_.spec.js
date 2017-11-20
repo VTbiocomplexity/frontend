@@ -115,7 +115,7 @@ test('validates a login form with userid and no email', () => {
   document.getElementsByClassName('loginpass')[0].checkValidity = function() {return true;};
   document.getElementsByClassName('loginemail')[0].checkValidity = function() {return false;};
   let logbutton = document.getElementsByClassName('loginbutton')[0];
-  let evt = {target: {appName: 'PATRIC'}};
+  let evt = {target: {appName: 'PATRIC', buttonsErrors: reg.buttonsErrors}};
   reg.validateLogin(evt);
   expect(logbutton.style.display).toBe('block');
 });
@@ -129,7 +129,7 @@ test('validates a login form without userid', () => {
   document.getElementsByClassName('loginpass')[0].checkValidity = function() {return true;};
   let logbutton = document.getElementsByClassName('loginbutton')[0];
   let resetpassButton = document.getElementsByClassName('resetpass')[0];
-  let evt = {target: {appName: 'OtherApp'}};
+  let evt = {target: {appName: 'OtherApp', buttonsErrors: reg.buttonsErrors}};
   reg.validateLogin(evt);
   expect(logbutton.style.display).toBe('block');
   expect(resetpassButton.style.display).toBe('block');
@@ -144,7 +144,7 @@ test('validates a login form without userid and invalid email (missing period)',
   document.getElementsByClassName('loginpass')[0].checkValidity = function() {return true;};
   let logbutton = document.getElementsByClassName('loginbutton')[0];
   let resetpassButton = document.getElementsByClassName('resetpass')[0];
-  let evt = {target: {appName: 'OtherApp'}};
+  let evt = {target: {appName: 'OtherApp', buttonsErrors: reg.buttonsErrors}};
   reg.validateLogin(evt);
   expect(logbutton.style.display).toBe('none');
   expect(resetpassButton.style.display).toBe('none');
@@ -159,7 +159,7 @@ test('validates a login form without userid and invalid email (Google)', () => {
   document.getElementsByClassName('loginpass')[0].checkValidity = function() {return true;};
   let logbutton = document.getElementsByClassName('loginbutton')[0];
   let resetpassButton = document.getElementsByClassName('resetpass')[0];
-  let evt = {target: {appName: 'OtherApp'}};
+  let evt = {target: {appName: 'OtherApp', buttonsErrors: reg.buttonsErrors}};
   reg.validateLogin(evt);
   expect(logbutton.style.display).toBe('none');
   expect(resetpassButton.style.display).toBe('none');
@@ -174,7 +174,7 @@ test('validates a login form without userid and invalid email (missing @)', () =
   document.getElementsByClassName('loginpass')[0].checkValidity = function() {return true;};
   let logbutton = document.getElementsByClassName('loginbutton')[0];
   let resetpassButton = document.getElementsByClassName('resetpass')[0];
-  let evt = {target: {appName: 'OtherApp'}};
+  let evt = {target: {appName: 'OtherApp', buttonsErrors: reg.buttonsErrors}};
   reg.validateLogin(evt);
   expect(logbutton.style.display).toBe('none');
   expect(resetpassButton.style.display).toBe('none');
@@ -189,7 +189,7 @@ test('validates a login form without useremail and invalid password', () => {
   document.getElementsByClassName('loginemail')[0].checkValidity = function() {return false;};
   let logbutton = document.getElementsByClassName('loginbutton')[0];
   let resetpassButton = document.getElementsByClassName('resetpass')[0];
-  let evt = {target: {appName: 'PATRIC'}};
+  let evt = {target: {appName: 'PATRIC', buttonsErrors: reg.buttonsErrors}};
   reg.validateLogin(evt);
   expect(logbutton.style.display).toBe('none');
   expect(resetpassButton.style.display).toBe('block');
@@ -205,7 +205,7 @@ test('does not display the login button with invalid password and valid email', 
   document.getElementsByClassName('loginemail')[0].checkValidity = function() {return true;};
   let logbutton = document.getElementsByClassName('loginbutton')[0];
   let resetpassButton = document.getElementsByClassName('resetpass')[0];
-  let evt = {target: {appName: 'OtherApp'}};
+  let evt = {target: {appName: 'OtherApp', buttonsErrors: reg.buttonsErrors}};
   reg.validateLogin(evt);
   expect(logbutton.style.display).toBe('none');
   expect(resetpassButton.style.display).toBe('block');
@@ -220,7 +220,7 @@ test('It displays reset password button', () => {
   document.getElementsByClassName('loginemail')[0].checkValidity = function() {return false;};
   let logbutton = document.getElementsByClassName('loginbutton')[0];
   let resetpassButton = document.getElementsByClassName('resetpass')[0];
-  let evt = {target: {appName: 'PATRIC'}};
+  let evt = {target: {appName: 'PATRIC', buttonsErrors: reg.buttonsErrors}};
   reg.validateLogin(evt);
   expect(logbutton.style.display).toBe('block');
   expect(resetpassButton.style.display).toBe('block');
@@ -235,7 +235,7 @@ test('It does not displays reset password button', () => {
   document.getElementsByClassName('loginemail')[0].checkValidity = function() {return false;};
   let logbutton = document.getElementsByClassName('loginbutton')[0];
   let resetpassButton = document.getElementsByClassName('resetpass')[0];
-  let evt = {target: {appName: 'PATRIC'}};
+  let evt = {target: {appName: 'PATRIC', buttonsErrors: reg.buttonsErrors}};
   reg.validateLogin(evt);
   expect(logbutton.style.display).toBe('none');
   expect(resetpassButton.style.display).toBe('none');
@@ -250,7 +250,7 @@ test('login and reset buttons do not display when email is not valid format', ()
   document.getElementsByClassName('loginpass')[0].checkValidity = function() {return true;};
   let logbutton = document.getElementsByClassName('loginbutton')[0];
   let resetpassButton = document.getElementsByClassName('resetpass')[0];
-  let evt = {target: {appName: 'OtherApp'}};
+  let evt = {target: {appName: 'OtherApp', buttonsErrors: reg.buttonsErrors}};
   reg.validateLogin(evt);
   expect(logbutton.style.display).toBe('none');
   expect(resetpassButton.style.display).toBe('none');
