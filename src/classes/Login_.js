@@ -110,37 +110,43 @@ class Login_ {
   buttonsErrors(appName, message, validemail, validpass, useridValue){
     let resetpassButton = document.getElementsByClassName('resetpass')[0];
     let logbutton = document.getElementsByClassName('loginbutton')[0];
+    logbutton.style.display = 'none';
     let loginErrorMessage = document.getElementsByClassName('loginerror')[0];
+    loginErrorMessage.innerHTML = message;
     if (appName !== 'PATRIC') {
       if (validemail && validpass) {
         logbutton.style.display = 'block';
         loginErrorMessage.innerHTML = '';
-      } else {
-        logbutton.style.display = 'none';
-        loginErrorMessage.innerHTML = message;
-        if (message === ''){
-          loginErrorMessage.innerHTML = '<p>Invalid email or password</p>';
-        }
-      }
-      if (validemail) {
-        resetpassButton.style.display = 'block';
-      } else {
-        resetpassButton.style.display = 'none';
+      // } else {
+      //   //logbutton.style.display = 'none';
+      //   loginErrorMessage.innerHTML = message;
+      //   if (message === ''){
+      //     loginErrorMessage.innerHTML = '<p>Invalid email or password</p>';
+      //   }
+      // }
+      // if (validemail) {
+      //   resetpassButton.style.display = 'block';
+      // } else {
+      //   resetpassButton.style.display = 'none';
       }
     }
     if (appName === 'PATRIC') {
       if (validpass && useridValue !== '') {
         logbutton.style.display = 'block';
         loginErrorMessage.innerHTML = '';
-      } else {
-        logbutton.style.display = 'none';
-        loginErrorMessage.innerHTML = '<p>Invalid password or Userid</p>';
+      // } else {
+      //   //logbutton.style.display = 'none';
+      //   loginErrorMessage.innerHTML = '<p>Invalid password or Userid</p>';
+      // }
       }
-      if (useridValue !== '') {
-        resetpassButton.style.display = 'block';
-      } else {
-        resetpassButton.style.display = 'none';
-      }
+    }
+    if (!validpass){
+      loginErrorMessage.innerHTML = '<p>Invalid password</p>';
+    }
+    if (useridValue !== '' || validemail) {
+      resetpassButton.style.display = 'block';
+    } else {
+      resetpassButton.style.display = 'none';
     }
   }
 
