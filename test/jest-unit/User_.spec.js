@@ -97,7 +97,7 @@ test('it resets the password', () => {
   document.getElementsByClassName('loginpass')[0].value = 'password1';
   document.getElementsByClassName('code')[0].value = '12345';
   document.getElementsByClassName('email')[0].value = 'joe@smith.com';
-  let evt = {target: {formType: 'reset', fetchClient: mockfetch}};
+  let evt = {target: {formType: 'reset', fetchClient: mockfetch, runFetch: user.runFetch}};
   user.resetPasswd(evt).then(() => {
     let messagediv = document.getElementsByClassName('loginerror')[0];
     expect(messagediv.innerHTML).toBe('');
@@ -119,7 +119,7 @@ test('it displays the error message from reset password PUT', () => {
       json: () => Promise.resolve({message: 'incorrect email'})
     });
   };
-  let evt = {target: {formType: 'reset', fetchClient: mockfetch}};
+  let evt = {target: {formType: 'reset', fetchClient: mockfetch, runFetch: user.runFetch}};
   document.getElementsByClassName('loginpass')[0].value = 'password1';
   document.getElementsByClassName('code')[0].value = '12345';
   user.resetPasswd(evt).then(() => {
@@ -139,7 +139,7 @@ test('it catches the error from reset password PUT', () => {
       json: () => Promise.reject({error: 'server error'})
     });
   };
-  let evt = {target: {formType: 'reset', fetchClient: mockfetch}};
+  let evt = {target: {formType: 'reset', fetchClient: mockfetch, runFetch: user.runFetch}};
   return user.resetPasswd(evt)
   .catch((e) => expect(e).toBeTruthy());
 });
@@ -154,7 +154,7 @@ test('it updates the user', () => {
       json: () => Promise.resolve({})
     });
   };
-  let evt = {target: {fetchClient: mockfetch}};
+  let evt = {target: {fetchClient: mockfetch, runFetch: user.runFetch}};
   user.updateUser(evt).then(() => {
     let messagediv = document.getElementsByClassName('loginerror')[0];
     expect(messagediv.innerHTML).toBe('');
@@ -171,7 +171,7 @@ test('it displays error message on updates the user PUT', () => {
       json: () => Promise.resolve({message: 'wrong email'})
     });
   };
-  let evt = {target: {fetchClient: mockfetch}};
+  let evt = {target: {fetchClient: mockfetch, runFetch: user.runFetch}};
   user.updateUser(evt).then(() => {
     let messagediv = document.getElementsByClassName('loginerror')[0];
     expect(messagediv.innerHTML).toMatch(/wrong email/);
@@ -189,7 +189,7 @@ test('it catches errors on update the user PUT', () => {
       json: () => Promise.reject({error: 'big problem'})
     });
   };
-  let evt = {target: {fetchClient: mockfetch}};
+  let evt = {target: {fetchClient: mockfetch, runFetch: user.runFetch}};
   return user.updateUser(evt)
   .catch((e) => expect(e).toBeTruthy());
 });
