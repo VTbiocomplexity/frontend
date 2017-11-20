@@ -44,6 +44,20 @@ describe('the Login module', () => {
     }, null);
   });
 
+  it('should display the registeration form', (done) => {
+    document.body.innerHTML = '<div class="home" style="max-width:5in; margin:auto"></div>';
+    login.showRegister('yoyo');
+    expect(document.getElementsByClassName('RegistrationForm')[0].style.display).toBe('');
+    done();
+  });
+
+  it('should display the registeration form', (done) => {
+    document.body.innerHTML = '<div class="home" style="max-width:5in; margin:auto"></div>';
+    login.showLogin('yoyo');
+    expect(document.getElementsByClassName('LoginForm')[0].style.display).toBe('');
+    done();
+  });
+
   it('should provide the route title', (done) => {
     login.attached();
     expect(login.title).toBe('Howdy is cool');
