@@ -186,7 +186,7 @@ test('create a new user for another app', () => {
       json: () => Promise.resolve({success: true })
     });
   };
-  let evt = {target: {fetchClient: mockfetch}};
+  let evt = {target: {fetchClient: mockfetch, runFetch: reg.runFetch}};
   //reg.fetch = mockfetch;
   reg.createUser(evt).then(() => {
     let messagediv1 = document.getElementsByClassName('registererror')[0];
@@ -210,7 +210,7 @@ test('it does not create a new user when there is an response error message from
       json: () => Promise.resolve({message: 'error' })
     });
   };
-  let evt = {target: {fetchClient: mockfetch}};
+  let evt = {target: {fetchClient: mockfetch, runFetch: reg.runFetch}};
   //reg.fetch = mockfetch;
   reg.createUser(evt).then(() => {
     let messagediv1 = document.getElementsByClassName('registererror')[0];
@@ -234,7 +234,7 @@ test('it catches error on create a new user', () => {
       json: () => Promise.reject({error: 'rejected' })
     });
   };
-  let evt = {target: {fetchClient: mockfetch}};
+  let evt = {target: {fetchClient: mockfetch, runFetch: reg.runFetch}};
   return reg.createUser(evt)
   .catch((e) => expect(e).toBeTruthy());
 });
@@ -255,7 +255,7 @@ test('it initiates an email varification', () => {
       json: () => Promise.resolve({email: 'joe@smith.com' })
     });
   };
-  let evt = {target: {fetchClient: mockfetch}};
+  let evt = {target: {fetchClient: mockfetch, runFetch: reg.runFetch}};
   reg.createUser(evt).then((data) => {
     expect(data.email).toBe('joe@smith.com');
   });
@@ -277,7 +277,7 @@ test('it does not initiates an email varification', () => {
       json: () => Promise.resolve({})
     });
   };
-  let evt = {target: {fetchClient: mockfetch}};
+  let evt = {target: {fetchClient: mockfetch, runFetch: reg.runFetch}};
   reg.createUser(evt).then((data) => {
     expect(data.email).toBe(null);
   });
