@@ -2,7 +2,6 @@ const Fetch = require('isomorphic-fetch');
 class User_ {
   constructor() {
     this.backendUrl = 'http://localhost:7000';
-    //this.frontendUrl = 'http://localhost:3000';
     this.fetch = Fetch;
     this.searchParams = new URLSearchParams(window.location.search);
     this.uid = '';
@@ -22,7 +21,6 @@ class User_ {
     if (this.formType === 'reset') {
       formTitle = 'Reset Your Password';
     } else {
-      //formTitle = 'Verify Your Email Address';
       if (this.changeEmail !== '' && this.changeEmail !== null && this.changeEmail !== undefined) {
         formTitle = 'Verify Your New Email Address';
       } else {
@@ -84,7 +82,6 @@ class User_ {
     if (formTitle === 'Verify Your New Email Address'){
       submitButton.addEventListener('click', this.verifyChangeEmail);
     }
-    // }
     if (this.formType !== 'reset') {
       document.getElementsByClassName('pwheader')[0].style.display = 'none';
       document.getElementsByClassName('pwinput')[0].style.display = 'none';
@@ -132,21 +129,6 @@ class User_ {
       }
     };
     return runFetch(fetchClient, 'http://localhost:7000', '/auth/validemail', fetchData);
-    // return fetchClient('http://localhost:7000' + '/auth/validemail', fetchData)
-    // .then((response) => response.json())
-    // .then((data) => {
-    //   if (data.message) {
-    //     let messagediv = document.getElementsByClassName('loginerror')[0];
-    //     messagediv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';
-    //   } else {
-    //     let regform1 = document.getElementsByClassName('RegistrationForm');
-    //     regform1[0].style.display = 'none';
-    //     window.location.href = 'http://localhost:9000' + '/';
-    //   }
-    // })
-    // .catch((error) => {
-    //   console.log(error);
-    // });
   }
 
   resetPasswd(evt) {
@@ -155,21 +137,6 @@ class User_ {
     let bodyData = {'email': document.getElementsByClassName('email')[0].value, 'resetCode': document.getElementsByClassName('code')[0].value, 'password': document.getElementsByClassName('loginpass')[0].value };
     let fetchData = { method: 'PUT', body: JSON.stringify(bodyData), headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}};
     return runFetch(fetchClient, 'http://localhost:7000', '/auth/passwdreset', fetchData);
-    // return fetchClient('http://localhost:7000' + '/auth/passwdreset', fetchData)
-    // .then((response) => response.json())
-    // .then((data) => {
-    //   if (data.message) {
-    //     let messagediv = document.getElementsByClassName('loginerror')[0];
-    //     messagediv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';
-    //   } else {
-    //     let regform1 = document.getElementsByClassName('RegistrationForm');
-    //     regform1[0].style.display = 'none';
-    //     window.location.href = 'http://localhost:9000' + '/';
-    //   }
-    // })
-    // .catch((error) => {
-    //   console.log(error);
-    // });
   }
 
   runFetch(fetchClient, url, route, fetchData){

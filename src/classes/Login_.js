@@ -49,31 +49,14 @@ class Login_ {
     this.createLoginForm(appName);
     let emailInput = document.getElementsByClassName('loginemail')[0];
     this.setEvents(emailInput, appName);
-    // emailInput.appName = appName;
-    // emailInput.buttonsErrors = this.buttonsErrors;
-    // emailInput.addEventListener('change', this.validateLogin);
-    // emailInput.addEventListener('focus', this.validateLogin);
-    // emailInput.addEventListener('keydown', this.validateLogin);
-    // emailInput.addEventListener('keyup', this.validateLogin);
     let useridInput = document.getElementsByClassName('userid')[0];
     this.setEvents(useridInput, appName);
-    // useridInput.addEventListener('change', this.validateLogin);
-    // useridInput.addEventListener('focus', this.validateLogin);
-    // useridInput.addEventListener('keydown', this.validateLogin);
-    // useridInput.addEventListener('keyup', this.validateLogin);
-    // useridInput.appName = appName;
-    // useridInput.buttonsErrors = this.buttonsErrors;
     let passwordInput = document.getElementsByClassName('loginpass')[0];
     this.setEvents(passwordInput, appName);
-    // passwordInput.addEventListener('change', this.validateLogin);
-    // passwordInput.addEventListener('focus', this.validateLogin);
-    // passwordInput.addEventListener('keydown', this.validateLogin);
-    // passwordInput.addEventListener('keyup', this.validateLogin);
-    // passwordInput.appName = appName;
-    // passwordInput.buttonsErrors = this.buttonsErrors;
     let loginButton = document.getElementsByClassName('loginbutton')[0];
     loginButton.appName = appName;
     loginButton.fetchClient = this.fetch;
+    loginButton.runFetch = this.runFetch;
     loginButton.checkIfLoggedIn = this.checkIfLoggedIn;
     loginButton.generateSession = this.generateSession;
     loginButton.addEventListener('click', this.logMeIn);
@@ -100,7 +83,6 @@ class Login_ {
   validateLogin(evt) {
     let appName = evt.target.appName;
     let buttonsErrors = evt.target.buttonsErrors;
-    //console.log(appName);
     let useridValue = document.getElementsByClassName('userid')[0].value;
     let validpass = document.getElementsByClassName('loginpass')[0].checkValidity();
     let emailValue = document.getElementsByClassName('loginemail')[0].value;
@@ -125,31 +107,12 @@ class Login_ {
     let loginErrorMessage = document.getElementsByClassName('loginerror')[0];
     loginErrorMessage.innerHTML = message;
     if (appName !== 'PATRIC' && validemail) {
-      // if (validemail && validpass) {
       logbutton.style.display = 'block';
       loginErrorMessage.innerHTML = '';
-      // } else {
-      //   //logbutton.style.display = 'none';
-      //   loginErrorMessage.innerHTML = message;
-      //   if (message === ''){
-      //     loginErrorMessage.innerHTML = '<p>Invalid email or password</p>';
-      //   }
-      // }
-      // if (validemail) {
-      //   resetpassButton.style.display = 'block';
-      // } else {
-      //   resetpassButton.style.display = 'none';
-      // }
     }
     if (appName === 'PATRIC' && useridValue !== '') {
-      // if (validpass && useridValue !== '') {
       logbutton.style.display = 'block';
       loginErrorMessage.innerHTML = '';
-      // } else {
-      //   //logbutton.style.display = 'none';
-      //   loginErrorMessage.innerHTML = '<p>Invalid password or Userid</p>';
-      // }
-      // }
     }
     if (!validpass){
       logbutton.style.display = 'none';
@@ -198,9 +161,11 @@ class Login_ {
       console.log(error);
     });
   }
+
   logMeIn(evt) {
     console.log('going to log you in');
     let fetchClient = evt.target.fetchClient;
+    let runFetch = evt.target.runFetch;
     let appName = evt.target.appName;
     let checkIfLoggedIn = evt.target.checkIfLoggedIn;
     let generateSession = evt.target.generateSession;
@@ -220,7 +185,11 @@ class Login_ {
         'Content-Type': 'application/json'
       }
     };
-    return fetchClient('http://localhost:7000' + '/auth/login', fetchData)
+    return runFetch(fetchClient, 'http://localhost:7000', '/auth/login', fetchData, checkIfLoggedIn, generateSession, appName);
+  }
+
+  runFetch(fetchClient, url, route, fetchData, checkIfLoggedIn, generateSession, appName){
+    return fetchClient(url + route, fetchData)
     .then((response) => response.json())
     .then((data) => {
       if (data.token !== undefined) {
@@ -244,6 +213,7 @@ class Login_ {
       console.log(error);
     });
   }
+
   generateSession(useremail) {
     console.log('put some cool code here for session and cookie and storage or something for this user: ' + useremail);
     let bodyData = {'email': useremail };

@@ -271,7 +271,7 @@ test('login the PATRIC user', () => {
       json: () => Promise.resolve({ token: 'lsdfldjflsdjlfdjfsjdlf', email: 'joe@smith.com' })
     });
   };
-  let evt = {target: {fetchClient: mockfetch, appName: 'PATRIC', checkIfLoggedIn: function(){}, generateSession: function(email){}}};
+  let evt = {target: {fetchClient: mockfetch, appName: 'PATRIC', runFetch: reg.runFetch, checkIfLoggedIn: function(){}, generateSession: function(email){}}};
   const mockStorage = {setItem: function(item, value) {
     //do nothing
   }, getItem: function(item, value) {
@@ -300,7 +300,7 @@ test('login the other app user', () => {
       json: () => Promise.resolve({ token: 'lsdfldjflsdjlfdjfsjdlf' })
     });
   };
-  let evt = {target: {fetchClient: mockfetch, appName: 'CoolApp'}};
+  let evt = {target: {fetchClient: mockfetch, appName: 'CoolApp', runFetch: reg.runFetch}};
   const mockStorage = {setItem: function(item, value) {
     //do nothing
   }, getItem: function(item, value) {
@@ -329,7 +329,7 @@ test('displays error message if login fails', () => {
       json: () => Promise.resolve({ message: 'incorrect email or password' })
     });
   };
-  let evt = {target: {fetchClient: mockfetch, appName: 'PATRIC'}};
+  let evt = {target: {fetchClient: mockfetch, appName: 'PATRIC', runFetch: reg.runFetch}};
   const mockStorage = {setItem: function(item, value) {
     //do nothing
   }};
@@ -353,7 +353,7 @@ test('catches any login errors', () => {
       json: () => Promise.reject({ error: 'incorrect email or password' })
     });
   };
-  let evt = {target: {fetchClient: mockfetch, appName: 'PATRIC'}};
+  let evt = {target: {fetchClient: mockfetch, appName: 'PATRIC', runFetch: reg.runFetch}};
   const mockStorage = {setItem: function(item, value) {
     //do nothing
   }};
