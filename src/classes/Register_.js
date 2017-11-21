@@ -64,32 +64,12 @@ class Register_ {
     this.createRegistrationForm(this.appName);
     let firstNameInput = document.getElementsByClassName('firstname')[0];
     this.setEvents(firstNameInput);
-    // firstNameInput.addEventListener('change', this.validateReg);
-    // firstNameInput.addEventListener('focus', this.validateReg);
-    // firstNameInput.addEventListener('keydown', this.validateReg);
-    // firstNameInput.addEventListener('keyup', this.validateReg);
-    // firstNameInput.displayError = this.displayRegError;
     let lastNameInput = document.getElementsByClassName('lastname')[0];
     this.setEvents(lastNameInput);
-    // lastNameInput.addEventListener('change', this.validateReg);
-    // lastNameInput.addEventListener('focus', this.validateReg);
-    // lastNameInput.addEventListener('keydown', this.validateReg);
-    // lastNameInput.addEventListener('keyup', this.validateReg);
-    // lastNameInput.displayError = this.displayRegError;
     let emailInput = document.getElementsByClassName('email')[0];
     this.setEvents(emailInput);
-    // emailInput.addEventListener('change', this.validateReg);
-    // emailInput.addEventListener('focus', this.validateReg);
-    // emailInput.addEventListener('keydown', this.validateReg);
-    // emailInput.addEventListener('keyup', this.validateReg);
-    // emailInput.displayError = this.displayRegError;
     let passInput = document.getElementsByClassName('password')[0];
     this.setEvents(passInput);
-    // passInput.addEventListener('change', this.validateReg);
-    // passInput.addEventListener('focus', this.validateReg);
-    // passInput.addEventListener('keydown', this.validateReg);
-    // passInput.addEventListener('keyup', this.validateReg);
-    // passInput.displayError = this.displayRegError;
     let registerEventButton = document.getElementsByClassName('registerbutton')[0];
     registerEventButton.fetchClient = this.fetch;
     registerEventButton.addEventListener('click', this.createUser);
@@ -112,7 +92,6 @@ class Register_ {
     element.addEventListener('keydown', this.validateLogin);
     element.addEventListener('keyup', this.validateLogin);
     element.displayError = this.displayRegError;
-    //element.buttonsErrors = this.buttonsErrors;
   }
 
   updateRegForm(){
@@ -191,18 +170,18 @@ class Register_ {
   createUser(evt) {
     let fetchClient = evt.target.fetchClient;
     let firstname = document.getElementsByClassName('firstname')[0].value;
-    let primaryAppValue = '';
-    primaryAppValue = document.getElementsByClassName('pas')[0].value;
+    let runFetch = evt.target.runFetch;
+    //let primaryAppValue = '';
+    let primaryAppValue = document.getElementsByClassName('pas')[0].value;
     let lastname = document.getElementsByClassName('lastname')[0].value;
-    let orgString = '';
-    orgString += document.getElementsByClassName('organization')[0].value;
-    let organismString = '';
-    organismString += document.getElementsByClassName('organisms')[0].value;
-    let userdetString = '';
-    userdetString += document.getElementsByClassName('interests')[0].value;
-    let useridValue = '';
-    useridValue = document.getElementsByClassName('userid')[0].value;
-    let messagediv = document.getElementsByClassName('registererror')[0];
+    //let orgString = '';
+    let orgString = document.getElementsByClassName('organization')[0].value;
+    //let organismString = '';
+    let organismString = document.getElementsByClassName('organisms')[0].value;
+    //let userdetString = '';
+    let userdetString = document.getElementsByClassName('interests')[0].value;
+    //let useridValue = '';
+    let useridValue = document.getElementsByClassName('userid')[0].value;
     let bodyData = {'name': firstname + ' ' + lastname, 'email': document.getElementsByClassName('email')[0].value, 'password': document.getElementsByClassName('password')[0].value,
       'first_name': firstname, 'last_name': lastname, 'affiliation': orgString, 'organisms': organismString, 'interests': userdetString, 'id': useridValue, 'primaryApp': primaryAppValue};
     let fetchData = {
@@ -213,7 +192,26 @@ class Register_ {
         'Content-Type': 'application/json'
       }
     };
-    return fetchClient('http://localhost:7000' + '/auth/signup', fetchData)
+    return runFetch(fetchClient, 'http://localhost:7000' + '/auth/signup', fetchData);
+    // .then((response) => response.json())
+    // .then((data) => {
+    //   if (data.message) {
+    //     messagediv.innerHTML = '<p style="text-align:left;padding-left:12px">' + data.message + '</p>';
+    //   } else {
+    //     document.getElementsByClassName('RegistrationForm')[0].style.display = 'none';
+    //     if (data.email) {
+    //       window.location.href = 'http://localhost:9000' + '/userutil/?email=' + data.email;
+    //     }
+    //   }
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    // });
+  }
+
+  runFetch(fetchClient, url, route, fetchData){
+    let messagediv = document.getElementsByClassName('registererror')[0];
+    return fetchClient(url, route, fetchData)
     .then((response) => response.json())
     .then((data) => {
       if (data.message) {
