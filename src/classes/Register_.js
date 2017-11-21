@@ -87,11 +87,12 @@ class Register_ {
   }
 
   setEvents(element){
-    element.addEventListener('change', this.validateLogin);
-    element.addEventListener('focus', this.validateLogin);
-    element.addEventListener('keydown', this.validateLogin);
-    element.addEventListener('keyup', this.validateLogin);
+    element.addEventListener('change', this.validateReg);
+    element.addEventListener('focus', this.validateReg);
+    element.addEventListener('keydown', this.validateReg);
+    element.addEventListener('keyup', this.validateReg);
     element.displayError = this.displayRegError;
+    element.validateGoogle = this.validateGoogle;
   }
 
   updateRegForm(){
@@ -111,6 +112,7 @@ class Register_ {
 
   validateReg(evt) {
     let displayError = evt.target.displayError;
+    let validateGoogle = evt.target.validateGoogle;
     let fname = document.getElementsByClassName('firstname')[0].value;
     let fspace = fname.split(' ');
     let lname = document.getElementsByClassName('lastname')[0].value;
@@ -120,18 +122,19 @@ class Register_ {
     let validemail = document.getElementsByClassName('email')[0];
     let password = document.getElementsByClassName('password')[0].value;
     let pspace = password.split(' ');
-    let primaryApp = '';
-    if (document.getElementsByClassName('pas')[0].style.display === 'block'){
-      primaryApp = document.getElementsByClassName('pas')[0].value;
-    } else {
-      primaryApp = 'PATRIC';
-    }
-    let googleAccount = false;
-    if (email.split('@gmail').length > 1 || email.split('@vt.edu').length > 1 || email.split('@bi.vt.edu').length > 1){
-      if (primaryApp !== 'PATRIC'){
-        googleAccount = true;
-      }
-    }
+    let googleAccount = validateGoogle(email);
+    // let primaryApp = '';
+    // if (document.getElementsByClassName('pas')[0].style.display === 'block'){
+    //   primaryApp = document.getElementsByClassName('pas')[0].value;
+    // } else {
+    //   primaryApp = 'PATRIC';
+    // }
+    // let googleAccount = false;
+    // if (email.split('@gmail').length > 1 || email.split('@vt.edu').length > 1 || email.split('@bi.vt.edu').length > 1){
+    //   if (primaryApp !== 'PATRIC'){
+    //     googleAccount = true;
+    //   }
+    // }
     let validpass = document.getElementsByClassName('password')[0];
     let nameError = false;
     let pwError = false;
@@ -147,6 +150,23 @@ class Register_ {
     }
     displayError(nameError, emError, pwError, googleAccount);
   }
+
+  validateGoogle(email){
+    let primaryApp = '';
+    if (document.getElementsByClassName('pas')[0].style.display === 'block'){
+      primaryApp = document.getElementsByClassName('pas')[0].value;
+    } else {
+      primaryApp = 'PATRIC';
+    }
+    let googleAccount = false;
+    if (email.split('@gmail').length > 1 || email.split('@vt.edu').length > 1 || email.split('@bi.vt.edu').length > 1){
+      if (primaryApp !== 'PATRIC'){
+        googleAccount = true;
+      }
+    }
+    return googleAccount;
+  }
+
 
   displayRegError(nameError, emError, pwError, googleAccount){
     let registbutton = document.getElementsByClassName('registerbutton')[0];
