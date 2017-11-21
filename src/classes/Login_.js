@@ -1,11 +1,11 @@
 const Fetch = require('isomorphic-fetch');
+const patric = require('../commons/patric.js');
 class Login_ {
   constructor() {
     this.backendUrl = 'http://localhost:7000';
     this.fetch = Fetch;
     this.frontendUrl = 'http://localhost:3000';
     this.appName = '';
-    //window.onload(this.checkIfLoggedIn());
   }
   nevermind(className) {
     let regform1 = [];
@@ -35,14 +35,17 @@ class Login_ {
     '<button class="nevermind" style="margin-left:12px;margin-top:20px" type="button">Cancel</button></div></div></form>';
     let home = document.getElementsByClassName('home');
     home[0].insertBefore(loginform, home[0].childNodes[0]);
-    if (appName !== 'PATRIC'){
-      document.getElementsByClassName('uidheader')[0].style.display = 'none';
-      document.getElementsByClassName('uidinput')[0].style.display = 'none';
-      document.getElementsByClassName('nevermind')[0].style.display = 'none';
-    } else {
-      document.getElementsByClassName('emailheader')[0].style.display = 'none';
-      document.getElementsByClassName('emailinput')[0].style.display = 'none';
-    }
+    // if (appName !== 'PATRIC'){
+    //   document.getElementsByClassName('uidheader')[0].style.display = 'none';
+    //   document.getElementsByClassName('uidinput')[0].style.display = 'none';
+    //   document.getElementsByClassName('nevermind')[0].style.display = 'none';
+    // } else {
+    //   document.getElementsByClassName('emailheader')[0].style.display = 'none';
+    //   document.getElementsByClassName('emailinput')[0].style.display = 'none';
+    // }
+    let pArr = ['uidheader', 'uidinput', 'nevermind'];
+    let nArr = ['emailheader', 'emailinput'];
+    patric.showHideElements(appName, pArr, nArr);
   }
 
   loginUser(appName) {
