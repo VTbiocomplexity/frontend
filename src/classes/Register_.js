@@ -63,29 +63,33 @@ class Register_ {
     this.appName = appName;
     this.createRegistrationForm(this.appName);
     let firstNameInput = document.getElementsByClassName('firstname')[0];
-    firstNameInput.addEventListener('change', this.validateReg);
-    firstNameInput.addEventListener('focus', this.validateReg);
-    firstNameInput.addEventListener('keydown', this.validateReg);
-    firstNameInput.addEventListener('keyup', this.validateReg);
-    firstNameInput.displayError = this.displayRegError;
+    this.setEvents(firstNameInput);
+    // firstNameInput.addEventListener('change', this.validateReg);
+    // firstNameInput.addEventListener('focus', this.validateReg);
+    // firstNameInput.addEventListener('keydown', this.validateReg);
+    // firstNameInput.addEventListener('keyup', this.validateReg);
+    // firstNameInput.displayError = this.displayRegError;
     let lastNameInput = document.getElementsByClassName('lastname')[0];
-    lastNameInput.addEventListener('change', this.validateReg);
-    lastNameInput.addEventListener('focus', this.validateReg);
-    lastNameInput.addEventListener('keydown', this.validateReg);
-    lastNameInput.addEventListener('keyup', this.validateReg);
-    lastNameInput.displayError = this.displayRegError;
+    this.setEvents(lastNameInput);
+    // lastNameInput.addEventListener('change', this.validateReg);
+    // lastNameInput.addEventListener('focus', this.validateReg);
+    // lastNameInput.addEventListener('keydown', this.validateReg);
+    // lastNameInput.addEventListener('keyup', this.validateReg);
+    // lastNameInput.displayError = this.displayRegError;
     let emailInput = document.getElementsByClassName('email')[0];
-    emailInput.addEventListener('change', this.validateReg);
-    emailInput.addEventListener('focus', this.validateReg);
-    emailInput.addEventListener('keydown', this.validateReg);
-    emailInput.addEventListener('keyup', this.validateReg);
-    emailInput.displayError = this.displayRegError;
+    this.setEvents(emailInput);
+    // emailInput.addEventListener('change', this.validateReg);
+    // emailInput.addEventListener('focus', this.validateReg);
+    // emailInput.addEventListener('keydown', this.validateReg);
+    // emailInput.addEventListener('keyup', this.validateReg);
+    // emailInput.displayError = this.displayRegError;
     let passInput = document.getElementsByClassName('password')[0];
-    passInput.addEventListener('change', this.validateReg);
-    passInput.addEventListener('focus', this.validateReg);
-    passInput.addEventListener('keydown', this.validateReg);
-    passInput.addEventListener('keyup', this.validateReg);
-    passInput.displayError = this.displayRegError;
+    this.setEvents(passInput);
+    // passInput.addEventListener('change', this.validateReg);
+    // passInput.addEventListener('focus', this.validateReg);
+    // passInput.addEventListener('keydown', this.validateReg);
+    // passInput.addEventListener('keyup', this.validateReg);
+    // passInput.displayError = this.displayRegError;
     let registerEventButton = document.getElementsByClassName('registerbutton')[0];
     registerEventButton.fetchClient = this.fetch;
     registerEventButton.addEventListener('click', this.createUser);
@@ -93,15 +97,22 @@ class Register_ {
     cancelButton.addEventListener('click', function(){
       document.getElementsByClassName('RegistrationForm')[0].style.display = 'none';
     });
-    if (this.appName !== 'PATRIC'){
-      let pas2 = document.getElementsByClassName('pas')[0];
-      pas2.addEventListener('change', this.updateRegForm);
-      pas2.addEventListener('change', this.validateReg);
-    }
+    let pas2 = document.getElementsByClassName('pas')[0];
+    pas2.addEventListener('change', this.updateRegForm);
+    pas2.addEventListener('change', this.validateReg);
     /* istanbul ignore if */
     if (process.env.NODE_ENV !== 'test'){
       document.getElementsByClassName('RegistrationForm')[0].scrollIntoView();
     }
+  }
+
+  setEvents(element){
+    element.addEventListener('change', this.validateLogin);
+    element.addEventListener('focus', this.validateLogin);
+    element.addEventListener('keydown', this.validateLogin);
+    element.addEventListener('keyup', this.validateLogin);
+    element.displayError = this.displayRegError;
+    //element.buttonsErrors = this.buttonsErrors;
   }
 
   updateRegForm(){
