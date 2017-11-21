@@ -73,7 +73,7 @@ test('hides the submit button when registration form is not valid email', () => 
   document.getElementsByClassName('email')[0].value = 'google.@gmail.com';
   document.getElementsByClassName('email')[0].checkValidity = function(){return false;};
   document.getElementsByClassName('password')[0].checkValidity = function(){return true;};
-  let evt = {target: {displayError: reg.displayRegError}};
+  let evt = {target: {displayError: reg.displayRegError, validateGoogle: reg.validateGoogle}};
   reg.validateReg(evt);
   let registbutton = document.getElementsByClassName('registerbutton')[0];
   expect(registbutton.style.display).toBe('none');
@@ -87,7 +87,7 @@ test('hides the submit button when registration form is not valid name', () => {
   document.getElementsByClassName('password')[0].checkValidity = function(){return true;};
   document.getElementsByClassName('email')[0].checkValidity = function(){return true;};
   document.getElementsByClassName('firstname')[0].value = '';
-  let evt = {target: {displayError: reg.displayRegError}};
+  let evt = {target: {displayError: reg.displayRegError, validateGoogle: reg.validateGoogle}};
   reg.validateReg(evt);
   let registbutton = document.getElementsByClassName('registerbutton')[0];
   expect(registbutton.style.display).toBe('none');
@@ -102,7 +102,7 @@ test('hides the submit button when registration form is not valid password', () 
   document.getElementsByClassName('lastname')[0].value = 'Smith';
   document.getElementsByClassName('email')[0].checkValidity = function() {return true;};
   document.getElementsByClassName('password')[0].checkValidity = function() {return false;};
-  let evt = {target: {displayError: reg.displayRegError}};
+  let evt = {target: {displayError: reg.displayRegError, validateGoogle: reg.validateGoogle}};
   reg.validateReg(evt);
   let registbutton = document.getElementsByClassName('registerbutton')[0];
   expect(registbutton.style.display).toBe('none');
@@ -122,7 +122,7 @@ test('shows the submit button when registration form is valid', () => {
   };
   document.getElementsByClassName('password')[0].checkValidity = mockvalidity;
   document.getElementsByClassName('email')[0].checkValidity = mockvalidity;
-  let evt = {target: {displayError: reg.displayRegError}};
+  let evt = {target: {displayError: reg.displayRegError, validateGoogle: reg.validateGoogle}};
   reg.validateReg(evt);
   let registbutton = document.getElementsByClassName('registerbutton')[0];
   expect(registbutton.style.display).toBe('block');
@@ -142,7 +142,7 @@ test('shows the submit button when registration form uses a Google email with PA
   };
   document.getElementsByClassName('password')[0].checkValidity = mockvalidity;
   document.getElementsByClassName('email')[0].checkValidity = mockvalidity;
-  let evt = {target: {displayError: reg.displayRegError}};
+  let evt = {target: {displayError: reg.displayRegError, validateGoogle: reg.validateGoogle}};
   reg.validateReg(evt);
   let registbutton = document.getElementsByClassName('registerbutton')[0];
   expect(registbutton.style.display).toBe('block');
@@ -161,7 +161,7 @@ test('hides register button when email format is not valid', () => {
   };
   document.getElementsByClassName('password')[0].checkValidity = function() {return true;};
   document.getElementsByClassName('email')[0].checkValidity = mockvalidity;
-  let evt = {target: {displayError: reg.displayRegError}};
+  let evt = {target: {displayError: reg.displayRegError, validateGoogle: reg.validateGoogle}};
   reg.validateReg(evt);
   let registbutton = document.getElementsByClassName('registerbutton')[0];
   expect(registbutton.style.display).toBe('none');

@@ -92,10 +92,10 @@ class User_ {
   }
 
   setEvents(element){
-    element.addEventListener('change', this.validateLogin);
-    element.addEventListener('focus', this.validateLogin);
-    element.addEventListener('keydown', this.validateLogin);
-    element.addEventListener('keyup', this.validateLogin);
+    element.addEventListener('change', this.validateForm);
+    element.addEventListener('focus', this.validateForm);
+    element.addEventListener('keydown', this.validateForm);
+    element.addEventListener('keyup', this.validateForm);
     element.formType = this.formType;
     //element.buttonsErrors = this.buttonsErrors;
   }
