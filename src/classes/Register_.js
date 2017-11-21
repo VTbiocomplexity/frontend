@@ -5,12 +5,11 @@ class Register_ {
     this.fetch = Fetch;
     this.frontendUrl = 'http://localhost:3000';
     this.appName = '';
-    //window.onload(this.checkIfLoggedIn());
   }
+
   checkIfLoggedIn() {
     console.log('checking if I am already logged in');
     if (localStorage.getItem('token') !== null) {
-      //let hideWithAuth = [];
       let hideWithAuth = document.getElementsByClassName('HideWAuth');
       console.log('this is local storage :' + localStorage.getItem('token'));
       if (hideWithAuth.length > 0){
@@ -24,17 +23,11 @@ class Register_ {
     }
   }
   createRegistrationForm(appName){
-    //console.log('show me a registration form here!');
     this.nevermind('LoginForm');
     this.nevermind('RegistrationForm');
     this.appName = appName;
-    // let useridrow = '';
-    // let primaryAppSelector = '';
-    // if (this.appName === 'PATRIC') {
     let useridrow = '<th colspan="2">Userid (optional)</th></tr><tr><td colspan="2"><div style="width:100%"><input class="userid" type="text" name="userid" value=""></div></td>';
-    // } else {
     let primaryAppSelector = '<tr class="primApSel"><td><label style="display:inline">Primary App </label><select class="pas"><option value=""> </option><option value="PATRIC">PATRIC</option></select></td></tr>';
-    // }
     const regform = document.createElement('div');
     regform.className = 'RegistrationForm';
     regform.innerHTML = '<h2 style="margin:0px;padding:4px;font-size:1.2em;text-align:center;background:#eee;">User Registration</h2>' +
@@ -44,7 +37,6 @@ class Register_ {
     '</td><td><input class="lastname" type="text" name="last_name" style="width:150px;" required>' +
     '</td></tr><tr><th colspan="1">Email Address <span style="color:red">*</span></th><th colspan="1">Password <span style="color:red">*</span></th></tr><tr><td colspan="1">' +
     '<input class="email" type="email" name="email" style="width:100%;" required></td>' + '<td><input class="password" pattern=".{8,}" title="8 characters minimum" type="password" name="password" style="width:100%;" required>' +
-    // '</td></tr><tr></tr><tr><td colspan="1">' +
     '</td></tr><tr class="userIdRow">' + useridrow + '</tr>' +
     '<tr><th colspan="2">Organization</th></tr><tr><td colspan="2"><div style="width:100%"><input class="organization" type="text" name="affiliation" value=""></div></td></tr>' +
     '<tr><th colspan="2">Organisms</th></tr><tr><td colspan="2"><div><input style="width:97%;" class="organisms" type="text" name="organisms" value=""></div></td></tr>' +
@@ -66,6 +58,7 @@ class Register_ {
       document.getElementsByClassName('nevermind')[0].style.display = 'none';
     }
   }
+
   register(appName) {
     this.appName = appName;
     this.createRegistrationForm(this.appName);
@@ -143,9 +136,6 @@ class Register_ {
     } else {
       primaryApp = 'PATRIC';
     }
-    // if (document.getElementsByClassName('pas').length === 0){
-    //   primaryApp = 'PATRIC';
-    // }
     let googleAccount = false;
     if (email.split('@gmail').length > 1 || email.split('@vt.edu').length > 1 || email.split('@bi.vt.edu').length > 1){
       if (primaryApp !== 'PATRIC'){
@@ -191,9 +181,7 @@ class Register_ {
     let fetchClient = evt.target.fetchClient;
     let firstname = document.getElementsByClassName('firstname')[0].value;
     let primaryAppValue = '';
-    // if (document.getElementsByClassName('pas').length > 0){
     primaryAppValue = document.getElementsByClassName('pas')[0].value;
-    // }
     let lastname = document.getElementsByClassName('lastname')[0].value;
     let orgString = '';
     orgString += document.getElementsByClassName('organization')[0].value;
@@ -202,9 +190,7 @@ class Register_ {
     let userdetString = '';
     userdetString += document.getElementsByClassName('interests')[0].value;
     let useridValue = '';
-    // if (document.getElementsByClassName('userid').length > 0){
     useridValue = document.getElementsByClassName('userid')[0].value;
-    // }
     let messagediv = document.getElementsByClassName('registererror')[0];
     let bodyData = {'name': firstname + ' ' + lastname, 'email': document.getElementsByClassName('email')[0].value, 'password': document.getElementsByClassName('password')[0].value,
       'first_name': firstname, 'last_name': lastname, 'affiliation': orgString, 'organisms': organismString, 'interests': userdetString, 'id': useridValue, 'primaryApp': primaryAppValue};
