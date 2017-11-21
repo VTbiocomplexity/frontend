@@ -49,30 +49,33 @@ class User_ {
   verifyEmail() {
     let formTitle = this.createVerifyCodeForm();
     let pWInput = document.getElementsByClassName('loginpass')[0];
-    pWInput.addEventListener('change', this.validateForm);
-    pWInput.addEventListener('focus', this.validateForm);
-    pWInput.addEventListener('keydown', this.validateForm);
-    pWInput.addEventListener('keyup', this.validateForm);
-    pWInput.addEventListener('paste', this.validateForm);
-    pWInput.formType = this.formType;
+    this.setEvents(pWInput);
+    // pWInput.addEventListener('change', this.validateForm);
+    // pWInput.addEventListener('focus', this.validateForm);
+    // pWInput.addEventListener('keydown', this.validateForm);
+    // pWInput.addEventListener('keyup', this.validateForm);
+    // pWInput.addEventListener('paste', this.validateForm);
+    // pWInput.formType = this.formType;
     let emailInput = document.getElementsByClassName('email')[0];
-    emailInput.addEventListener('change', this.validateForm);
-    emailInput.addEventListener('focus', this.validateForm);
-    emailInput.addEventListener('keydown', this.validateForm);
-    emailInput.addEventListener('keyup', this.validateForm);
-    emailInput.addEventListener('paste', this.validateForm);
-    emailInput.formType = this.formType;
+    this.setEvents(emailInput);
+    // emailInput.addEventListener('change', this.validateForm);
+    // emailInput.addEventListener('focus', this.validateForm);
+    // emailInput.addEventListener('keydown', this.validateForm);
+    // emailInput.addEventListener('keyup', this.validateForm);
+    // emailInput.addEventListener('paste', this.validateForm);
+    // emailInput.formType = this.formType;
     let verifyCode = document.getElementsByClassName('code')[0];
+    this.setEvents(verifyCode);
     verifyCode.formType = this.formType;
-    verifyCode.addEventListener('change', this.validateForm);
-    verifyCode.addEventListener('focus', this.validateForm);
-    verifyCode.addEventListener('keydown', this.validateForm);
-    verifyCode.addEventListener('keyup', this.validateForm);
-    verifyCode.addEventListener('paste', this.validateForm);
+    // verifyCode.addEventListener('change', this.validateForm);
+    // verifyCode.addEventListener('focus', this.validateForm);
+    // verifyCode.addEventListener('keydown', this.validateForm);
+    // verifyCode.addEventListener('keyup', this.validateForm);
+    // verifyCode.addEventListener('paste', this.validateForm);
     let submitButton = document.getElementsByClassName('regbutton')[0];
     submitButton.fetchClient = this.fetch;
     submitButton.runFetch = this.runFetch;
-    console.log(formTitle);
+    //console.log(formTitle);
     if (formTitle === 'Verify Your Email Address'){
       submitButton.addEventListener('click', this.updateUser);
     }
@@ -86,6 +89,15 @@ class User_ {
       document.getElementsByClassName('pwheader')[0].style.display = 'none';
       document.getElementsByClassName('pwinput')[0].style.display = 'none';
     }
+  }
+
+  setEvents(element){
+    element.addEventListener('change', this.validateLogin);
+    element.addEventListener('focus', this.validateLogin);
+    element.addEventListener('keydown', this.validateLogin);
+    element.addEventListener('keyup', this.validateLogin);
+    element.formType = this.formType;
+    //element.buttonsErrors = this.buttonsErrors;
   }
 
   validateForm(evt) {
