@@ -38,12 +38,21 @@ class User_ {
     '<div class="loginerror" style="color:red"></div>';
     let home = document.getElementsByClassName('home');
     home[0].insertBefore(emailVarifyForm, home[0].childNodes[0]);
-    if (this.userEmail !== '' && this.userEmail !== null && this.userEmail !== undefined) {
-      document.getElementsByClassName('email')[0].value = this.userEmail;
-    } else if (this.changeEmail !== '' && this.changeEmail !== null && this.changeEmail !== undefined) {
-      document.getElementsByClassName('email')[0].value = this.changeEmail;
-    }
+    this.fillInEmail(this.userEmail, this.changeEmail);
+    // if (this.userEmail !== '' && this.userEmail !== null && this.userEmail !== undefined) {
+    //   document.getElementsByClassName('email')[0].value = this.userEmail;
+    // } else if (this.changeEmail !== '' && this.changeEmail !== null && this.changeEmail !== undefined) {
+    //   document.getElementsByClassName('email')[0].value = this.changeEmail;
+    // }
     return formTitle;
+  }
+
+  fillInEmail(userEmail, changeEmail){
+    if (userEmail !== '' && userEmail !== null && userEmail !== undefined) {
+      document.getElementsByClassName('email')[0].value = userEmail;
+    } else if (changeEmail !== '' && changeEmail !== null && changeEmail !== undefined) {
+      document.getElementsByClassName('email')[0].value = changeEmail;
+    }
   }
 
   verifyEmail() {
