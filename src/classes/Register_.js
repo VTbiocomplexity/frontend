@@ -1,4 +1,5 @@
 const Fetch = require('isomorphic-fetch');
+const patric = require('../commons/patric.js');
 class Register_ {
   constructor() {
     this.backendUrl = 'http://localhost:7000';
@@ -47,23 +48,26 @@ class Register_ {
     '<button class="nevermind" type="button">Cancel</button></div></div></form>';
     const home = document.getElementsByClassName('home');
     home[0].insertBefore(regform, home[0].childNodes[0]);
-    this.showHideFields(this.appName);
+    //this.showHideFields(this.appName);
+    let pArr = ['userIdRow', 'nevermind'];
+    let nArr = ['primApSel'];
+    patric.showHideElements(this.appName, pArr, nArr);
   }
 
-  showHideFields(appName){
-    if (appName === 'PATRIC') {
-      document.getElementsByClassName('userIdRow')[0].style.display = 'block';
-      document.getElementsByClassName('primApSel')[0].style.display = 'none';
-      document.getElementsByClassName('nevermind')[0].style.display = 'block';
-    } else {
-      document.getElementsByClassName('userIdRow')[0].style.display = 'none';
-      document.getElementsByClassName('primApSel')[0].style.display = 'block';
-      document.getElementsByClassName('nevermind')[0].style.display = 'none';
-    }
-    // if (this.appName !== 'PATRIC'){
-    //   document.getElementsByClassName('nevermind')[0].style.display = 'none';
-    // }
-  }
+  // showHideFields(appName){
+  //   if (appName === 'PATRIC') {
+  //     document.getElementsByClassName('userIdRow')[0].style.display = 'block';
+  //     document.getElementsByClassName('primApSel')[0].style.display = 'none';
+  //     document.getElementsByClassName('nevermind')[0].style.display = 'block';
+  //   } else {
+  //     document.getElementsByClassName('userIdRow')[0].style.display = 'none';
+  //     document.getElementsByClassName('primApSel')[0].style.display = 'block';
+  //     document.getElementsByClassName('nevermind')[0].style.display = 'none';
+  //   }
+  //   // if (this.appName !== 'PATRIC'){
+  //   //   document.getElementsByClassName('nevermind')[0].style.display = 'none';
+  //   // }
+  // }
 
   register(appName) {
     this.appName = appName;
