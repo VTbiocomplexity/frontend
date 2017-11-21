@@ -2,13 +2,13 @@ const Fetch = require('isomorphic-fetch');
 class User_ {
   constructor() {
     this.fetch = Fetch;
-    this.searchParams = new URLSearchParams(window.location.search);
+    // this.searchParams = new URLSearchParams(window.location.search);
     this.uid = '';
-    this.userEmail = this.searchParams.get('email');
-    this.changeEmail = this.searchParams.get('changeemail');
-    this.formType = '';
-    this.formType += this.searchParams.get('form');
-    this.userToken = localStorage.getItem('token');
+    // this.userEmail = this.searchParams.get('email');
+    // this.changeEmail = this.searchParams.get('changeemail');
+    // this.formType = '';
+    // this.formType += this.searchParams.get('form');
+    // this.userToken = localStorage.getItem('token');
     this.populateForm();
   }
 
@@ -82,21 +82,27 @@ class User_ {
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
-      this.nevermind('UserProfileForm');
+      document.getElementsByClassName('UserProfileForm')[0].style.display = 'none';
+      let feurl = 'http://localhost:7000';
+        /* istanbul ignore if */
+      if (process.env.FrontendUrl !== undefined){
+        feurl = process.env.FrontendUrl;
+      }
+      window.location.href = feurl + '/';
     });
   }
 
-  nevermind(className) {
-    let regform1 = [];
-    regform1 = document.getElementsByClassName(className);
-    regform1[0].style.display = 'none';
-    let feurl = 'http://localhost:7000';
-      /* istanbul ignore if */
-    if (process.env.FrontendUrl !== undefined){
-      feurl = process.env.FrontendUrl;
-    }
-    window.location.href = feurl + '/';
-  }
+  // nevermind(className) {
+  //   let regform1 = [];
+  //   regform1 = document.getElementsByClassName(className);
+  //   regform1[0].style.display = 'none';
+  //   let feurl = 'http://localhost:7000';
+  //     /* istanbul ignore if */
+  //   if (process.env.FrontendUrl !== undefined){
+  //     feurl = process.env.FrontendUrl;
+  //   }
+  //   window.location.href = feurl + '/';
+  // }
 
 // this is only the initial request to change the email address from the User Prefs page
   changeUserEmail() {

@@ -3,7 +3,7 @@ class User_ {
   constructor() {
     this.fetch = Fetch;
     this.searchParams = new URLSearchParams(window.location.search);
-    this.uid = '';
+    // this.uid = '';
     this.userEmail = this.searchParams.get('email');
     this.changeEmail = this.searchParams.get('changeemail');
     this.formType = '';
