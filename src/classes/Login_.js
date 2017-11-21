@@ -2,18 +2,10 @@ const Fetch = require('isomorphic-fetch');
 const patric = require('../commons/patric.js');
 class Login_ {
   constructor() {
-    this.backendUrl = 'http://localhost:7000';
     this.fetch = Fetch;
-    this.frontendUrl = 'http://localhost:3000';
     this.appName = '';
   }
-  // nevermind(className) {
-  //   let regform1 = [];
-  //   regform1 = document.getElementsByClassName(className);
-  //   if (regform1.length > 0) {
-  //     regform1[0].style.display = 'none';
-  //   }
-  // }
+
   createLoginForm(appName){
     patric.nevermind('LoginForm');
     patric.nevermind('RegistrationForm');
@@ -35,14 +27,6 @@ class Login_ {
     '<button class="nevermind" style="margin-left:12px;margin-top:20px" type="button">Cancel</button></div></div></form>';
     let home = document.getElementsByClassName('home');
     home[0].insertBefore(loginform, home[0].childNodes[0]);
-    // if (appName !== 'PATRIC'){
-    //   document.getElementsByClassName('uidheader')[0].style.display = 'none';
-    //   document.getElementsByClassName('uidinput')[0].style.display = 'none';
-    //   document.getElementsByClassName('nevermind')[0].style.display = 'none';
-    // } else {
-    //   document.getElementsByClassName('emailheader')[0].style.display = 'none';
-    //   document.getElementsByClassName('emailinput')[0].style.display = 'none';
-    // }
     let pArr = ['uidheader', 'uidinput', 'nevermind'];
     let nArr = ['emailheader', 'emailinput'];
     patric.showHideElements(appName, pArr, nArr);
@@ -147,23 +131,7 @@ class Login_ {
         'Content-Type': 'application/json'
       }
     };
-    return runFetch(fetchClient, 'http://localhost:7000', '/auth/resetpass', fetchData);
-    // return fetchClient('http://localhost:7000' + '/auth/resetpass', fetchData)
-    // .then((response) => response.json())
-    // .then((data) => {
-    //   console.log(data);
-    //   if (data.message) {
-    //     messageDiv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';
-    //   } else {
-    //     let regform1 = [];
-    //     regform1 = document.getElementsByClassName('LoginForm');
-    //     regform1[0].style.display = 'none';
-    //     window.location.href = 'http://localhost:9000' + '/userutil/?email=' + loginEmail + '&form=reset';
-    //   }
-    // })
-    // .catch((error) => {
-    //   console.log(error);
-    // });
+    return runFetch(fetchClient, process.env.BackendUrl, '/auth/resetpass', fetchData);
   }
 
   logMeIn(evt) {
@@ -189,12 +157,17 @@ class Login_ {
         'Content-Type': 'application/json'
       }
     };
-    return runFetch(fetchClient, 'http://localhost:7000', '/auth/login', fetchData, checkIfLoggedIn, generateSession, appName);
+    return runFetch(fetchClient, process.env.BackendUrl, '/auth/login', fetchData, checkIfLoggedIn, generateSession, appName);
   }
 
   runFetch(fetchClient, url, route, fetchData, checkIfLoggedIn, generateSession, appName){
     let loginform1 = document.getElementsByClassName('LoginForm');
     let messagediv = document.getElementsByClassName('loginerror')[0];
+    let feurl = 'http://localhost:7000';
+    /* istanbul ignore if */
+    if (process.env.FrontendUrl !== undefined){
+      feurl = process.env.FrontendUrl;
+    }
     return fetchClient(url + route, fetchData)
     .then((response) => response.json())
     .then((data) => {
@@ -205,20 +178,15 @@ class Login_ {
           checkIfLoggedIn();
           generateSession(data.email);
         }
-        //let regform1 = [];
-        //regform1 = document.getElementsByClassName('LoginForm');
         loginform1[0].style.display = 'none';
-        window.location.href = 'http://localhost:9000' + '/';
+        window.location.href = feurl + '/';
       }
       if (data.message) {
-        //let messagediv = document.getElementsByClassName('loginerror')[0];
         messagediv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';
       }
       if (!data.message && !data.token) {
-        //let regform1 = [];
-        //regform1 = document.getElementsByClassName('LoginForm');
         loginform1[0].style.display = 'none';
-        window.location.href = 'http://localhost:9000' + '/userutil/?email=' + loginEmail + '&form=reset';
+        window.location.href = feurl + '/userutil/?email=' + loginEmail + '&form=reset';
       }
     })
     .catch((error) => {
@@ -238,7 +206,7 @@ class Login_ {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
       }
     };
-    return this.fetch('this.backendUrl' + '/user/', fetchData)
+    return this.fetch(process.env.BackendUrl + '/user/', fetchData)
     .then((response) => response.json())
     .then((data) => {
       console.log(data);

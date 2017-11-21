@@ -1,8 +1,6 @@
 const Fetch = require('isomorphic-fetch');
 class User_ {
   constructor() {
-    this.backendUrl = 'http://localhost:7000';
-    this.frontendUrl = 'http://localhost:3000';
     this.fetch = Fetch;
     this.searchParams = new URLSearchParams(window.location.search);
     this.uid = '';
@@ -27,7 +25,7 @@ class User_ {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
       }
     };
-    return this.fetch(this.backendUrl + '/user/', fetchData)
+    return this.fetch(process.env.backendUrl + '/user/', fetchData)
     .then((response) => response.json())
     .then((data) => {
       //console.log(data);
@@ -80,7 +78,7 @@ class User_ {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
       }
     };
-    return this.fetch(this.backendUrl + '/user/' + this.uid, fetchData)
+    return this.fetch(process.env.backendUrl + '/user/' + this.uid, fetchData)
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
@@ -92,7 +90,12 @@ class User_ {
     let regform1 = [];
     regform1 = document.getElementsByClassName(className);
     regform1[0].style.display = 'none';
-    window.location.href = this.frontendUrl + '/';
+    let feurl = 'http://localhost:7000';
+      /* istanbul ignore if */
+    if (process.env.FrontendUrl !== undefined){
+      feurl = process.env.FrontendUrl;
+    }
+    window.location.href = feurl + '/';
   }
 
 // this is only the initial request to change the email address from the User Prefs page
@@ -107,7 +110,7 @@ class User_ {
       }
     };
 
-    return this.fetch(this.backendUrl + '/auth/changeemail', fetchData)
+    return this.fetch(process.env.backendUrl + '/auth/changeemail', fetchData)
   .then((response) => response.json())
   .then((data) => {
     if (data.message) {
@@ -115,43 +118,18 @@ class User_ {
       let messagediv = document.getElementsByClassName('loginerror')[0];
       messagediv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';
     } else {
-      window.location.href = this.frontendUrl + '/userutil/?changeemail=' + document.getElementsByClassName('uprofEmail')[0].value;
+      let feurl = 'http://localhost:7000';
+        /* istanbul ignore if */
+      if (process.env.FrontendUrl !== undefined){
+        feurl = process.env.FrontendUrl;
+      }
+      window.location.href = feurl + '/userutil/?changeemail=' + document.getElementsByClassName('uprofEmail')[0].value;
     }
   })
   .catch((error) => {
     console.log(error);
   });
   }
-
-  // verifyChangeEmail() {
-  //   console.log('using your pin to validate your new email address now ...');
-  //   let bodyData = {'changeemail': document.getElementsByClassName('email')[0].value, 'resetCode': document.getElementsByClassName('code')[0].value,
-  //     'email': localStorage.getItem('useremail') };
-  //   let fetchData = {
-  //     method: 'PUT',
-  //     body: JSON.stringify(bodyData),
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json'
-  //     }
-  //   };
-  //
-  //   return this.fetch(this.backendUrl + '/auth/updateemail', fetchData)
-  // .then((response) => response.json())
-  // .then((data) => {
-  //   if (data.message) {
-  //     let messagediv = document.getElementsByClassName('loginerror')[0];
-  //     messagediv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';
-  //   } else {
-  //     localStorage.setItem('useremail', document.getElementsByClassName('email')[0].value);
-  //     this.nevermind('RegistrationForm');
-  //   }
-  // })
-  // .catch((error) => {
-  //   console.log(error);
-  // });
-  // }
-
 }
 
 module.exports = User_;

@@ -1,7 +1,6 @@
 const Fetch = require('isomorphic-fetch');
 class User_ {
   constructor() {
-    this.backendUrl = 'http://localhost:7000';
     this.fetch = Fetch;
     this.searchParams = new URLSearchParams(window.location.search);
     this.uid = '';
@@ -149,7 +148,7 @@ class User_ {
         'Content-Type': 'application/json'
       }
     };
-    return runFetch(fetchClient, 'http://localhost:7000', '/auth/validemail', fetchData);
+    return runFetch(fetchClient, process.env.BackendUrl, '/auth/validemail', fetchData);
   }
 
   resetPasswd(evt) {
@@ -157,7 +156,7 @@ class User_ {
     let runFetch = evt.target.runFetch;
     let bodyData = {'email': document.getElementsByClassName('email')[0].value, 'resetCode': document.getElementsByClassName('code')[0].value, 'password': document.getElementsByClassName('loginpass')[0].value };
     let fetchData = { method: 'PUT', body: JSON.stringify(bodyData), headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}};
-    return runFetch(fetchClient, 'http://localhost:7000', '/auth/passwdreset', fetchData);
+    return runFetch(fetchClient, process.env.BackendUrl, '/auth/passwdreset', fetchData);
   }
 
   runFetch(fetchClient, url, route, fetchData){
@@ -170,7 +169,12 @@ class User_ {
       } else {
         let regform1 = document.getElementsByClassName('RegistrationForm');
         regform1[0].style.display = 'none';
-        window.location.href = 'http://localhost:9000' + '/';
+        let feurl = 'http://localhost:7000';
+          /* istanbul ignore if */
+        if (process.env.FrontendUrl !== undefined){
+          feurl = process.env.FrontendUrl;
+        }
+        window.location.href = feurl + '/';
       }
     })
     .catch((error) => {
@@ -182,7 +186,12 @@ class User_ {
     let regform1 = [];
     regform1 = document.getElementsByClassName(className);
     regform1[0].style.display = 'none';
-    window.location.href = 'http://localhost:9000' + '/';
+    let feurl = 'http://localhost:7000';
+      /* istanbul ignore if */
+    if (process.env.FrontendUrl !== undefined){
+      feurl = process.env.FrontendUrl;
+    }
+    window.location.href = feurl + '/';
   }
 
   verifyChangeEmail() {
@@ -197,7 +206,7 @@ class User_ {
       }
     };
 
-    return this.fetch(this.backendUrl + '/auth/updateemail', fetchData)
+    return this.fetch(process.env.BackendUrl + '/auth/updateemail', fetchData)
     .then((response) => response.json())
     .then((data) => {
       if (data.message) {

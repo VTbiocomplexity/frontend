@@ -2,9 +2,7 @@ const Fetch = require('isomorphic-fetch');
 const patric = require('../commons/patric.js');
 class Register_ {
   constructor() {
-    this.backendUrl = 'http://localhost:7000';
     this.fetch = Fetch;
-    this.frontendUrl = 'http://localhost:3000';
     this.appName = '';
     this.patric = patric;
   }
@@ -195,21 +193,7 @@ class Register_ {
         'Content-Type': 'application/json'
       }
     };
-    return runFetch(fetchClient, 'http://localhost:7000' + '/auth/signup', fetchData);
-    // .then((response) => response.json())
-    // .then((data) => {
-    //   if (data.message) {
-    //     messagediv.innerHTML = '<p style="text-align:left;padding-left:12px">' + data.message + '</p>';
-    //   } else {
-    //     document.getElementsByClassName('RegistrationForm')[0].style.display = 'none';
-    //     if (data.email) {
-    //       window.location.href = 'http://localhost:9000' + '/userutil/?email=' + data.email;
-    //     }
-    //   }
-    // })
-    // .catch((error) => {
-    //   console.log(error);
-    // });
+    return runFetch(fetchClient, process.env.BackendUrl + '/auth/signup', fetchData);
   }
 
   runFetch(fetchClient, url, route, fetchData){
@@ -222,7 +206,7 @@ class Register_ {
       } else {
         document.getElementsByClassName('RegistrationForm')[0].style.display = 'none';
         if (data.email) {
-          window.location.href = 'http://localhost:9000' + '/userutil/?email=' + data.email;
+          window.location.href = process.env.FrontendUrl + '/userutil/?email=' + data.email;
         }
       }
     })
@@ -234,15 +218,25 @@ class Register_ {
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('useremail');
+    let feurl = 'http://localhost:7000';
+      /* istanbul ignore if */
+    if (process.env.FrontendUrl !== undefined){
+      feurl = process.env.FrontendUrl;
+    }
     let hideWithAuth = document.getElementsByClassName('HideWAuth')[0];
     hideWithAuth.style.display = 'block';
     let showWithAuth = document.getElementsByClassName('ShowWAuth')[0];
     showWithAuth.style.display = 'none';
-    window.location.href = this.frontendUrl + '/';
+    window.location.href = feurl + '/';
   }
 
   userAccount() {
-    window.location.href = this.frontendUrl + '/userutil/?form=prefs';
+    let feurl = 'http://localhost:7000';
+      /* istanbul ignore if */
+    if (process.env.FrontendUrl !== undefined){
+      feurl = process.env.FrontendUrl;
+    }
+    window.location.href = feurl + '/userutil/?form=prefs';
   }
 
 }
