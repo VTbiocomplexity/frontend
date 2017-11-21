@@ -48,7 +48,7 @@ test('updates the registration form after selection of primary app is not PATRIC
   document.getElementsByClassName('pas')[0].value = '';
   reg.updateRegForm();
   let uidRowStuff = document.getElementsByClassName('userIdRow')[0];
-  expect(uidRowStuff.innerHTML).toBe('');
+  expect(uidRowStuff.style.display).toBe('none');
   //document.body.innerHTML = '';
   //expect(sum(1, 2)).toBe(3);
 });
