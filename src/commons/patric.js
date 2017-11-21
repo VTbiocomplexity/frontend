@@ -22,7 +22,7 @@ exports.nevermind = function(className){
   // nevermind(className) {
     //let regform1 = [];
   let regform1 = document.getElementsByClassName(className);
-  if (regform1.length > 0) {
+  if (regform1[0] !== undefined) {
     regform1[0].style.display = 'none';
   }
 };

@@ -6,6 +6,7 @@ class Register_ {
     this.fetch = Fetch;
     this.frontendUrl = 'http://localhost:3000';
     this.appName = '';
+    this.patric = patric;
   }
 
   checkIfLoggedIn() {
@@ -24,11 +25,9 @@ class Register_ {
     }
   }
   createRegistrationForm(appName){
-    patric.nevermind('LoginForm');
-    patric.nevermind('RegistrationForm');
+    this.patric.nevermind('LoginForm');
+    this.patric.nevermind('RegistrationForm');
     this.appName = appName;
-    //let useridrow = ;
-    // let primaryAppSelector =
     const regform = document.createElement('div');
     regform.className = 'RegistrationForm';
     regform.innerHTML = '<h2 style="margin:0px;padding:4px;font-size:1.2em;text-align:center;background:#eee;">User Registration</h2>' + '<form class=""><div style="padding:2px; margin:10px;"><table><tbody>' +
