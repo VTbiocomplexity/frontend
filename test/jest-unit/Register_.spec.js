@@ -339,9 +339,9 @@ test('it navigates to the user preferences page', () => {
   reg.userAccount();
 });
 
-test('it hides the registration form', () => {
-  document.body.innerHTML = '<div><div class="home"></div></div>';
-  reg.register('otherapp');
-  reg.nevermind('RegistrationForm');
-  expect(document.getElementsByClassName('RegistrationForm')[0].style.display).toBe('none');
-});
+// test('it hides the registration form', () => {
+//   document.body.innerHTML = '<div><div class="home"></div></div>';
+//   reg.register('otherapp');
+//   reg.nevermind('RegistrationForm');
+//   expect(document.getElementsByClassName('RegistrationForm')[0].style.display).toBe('none');
+// });

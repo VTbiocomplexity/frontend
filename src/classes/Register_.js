@@ -24,8 +24,8 @@ class Register_ {
     }
   }
   createRegistrationForm(appName){
-    this.nevermind('LoginForm');
-    this.nevermind('RegistrationForm');
+    patric.nevermind('LoginForm');
+    patric.nevermind('RegistrationForm');
     this.appName = appName;
     //let useridrow = ;
     // let primaryAppSelector =
@@ -53,21 +53,6 @@ class Register_ {
     let nArr = ['primApSel'];
     patric.showHideElements(this.appName, pArr, nArr);
   }
-
-  // showHideFields(appName){
-  //   if (appName === 'PATRIC') {
-  //     document.getElementsByClassName('userIdRow')[0].style.display = 'block';
-  //     document.getElementsByClassName('primApSel')[0].style.display = 'none';
-  //     document.getElementsByClassName('nevermind')[0].style.display = 'block';
-  //   } else {
-  //     document.getElementsByClassName('userIdRow')[0].style.display = 'none';
-  //     document.getElementsByClassName('primApSel')[0].style.display = 'block';
-  //     document.getElementsByClassName('nevermind')[0].style.display = 'none';
-  //   }
-  //   // if (this.appName !== 'PATRIC'){
-  //   //   document.getElementsByClassName('nevermind')[0].style.display = 'none';
-  //   // }
-  // }
 
   register(appName) {
     this.appName = appName;
@@ -245,14 +230,6 @@ class Register_ {
     .catch((error) => {
       console.log(error);
     });
-  }
-
-  nevermind(className) {
-    let regform1 = [];
-    regform1 = document.getElementsByClassName(className);
-    if (regform1.length > 0) {
-      regform1[0].style.display = 'none';
-    }
   }
 
   logout() {

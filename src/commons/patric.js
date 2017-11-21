@@ -15,16 +15,15 @@ exports.showHideElements = function(appName, pArr, nArr){
     } else {
       element.style.display = 'block';
     }
-    //document.getElementsByClassName(nArr[j])[0].style.display = 'none';
   }
-// }
-// else {
-//   for (let k = 0; k < pArr.length; k++){
-//     document.getElementsByClassName(pArr[k])[0].style.display = 'none';
-//   }
-//   //loop though nArr and set all to display:none
-//   for (let l = 0; l < nArr.length; l++){
-//     document.getElementsByClassName(nArr[l])[0].style.display = 'block';
-//   }
-// }
 };
+
+exports.nevermind = function(className){
+  // nevermind(className) {
+    //let regform1 = [];
+  let regform1 = document.getElementsByClassName(className);
+  if (regform1.length > 0) {
+    regform1[0].style.display = 'none';
+  }
+};
+// }
