@@ -7,16 +7,16 @@ class Login_ {
     this.frontendUrl = 'http://localhost:3000';
     this.appName = '';
   }
-  nevermind(className) {
-    let regform1 = [];
-    regform1 = document.getElementsByClassName(className);
-    if (regform1.length > 0) {
-      regform1[0].style.display = 'none';
-    }
-  }
+  // nevermind(className) {
+  //   let regform1 = [];
+  //   regform1 = document.getElementsByClassName(className);
+  //   if (regform1.length > 0) {
+  //     regform1[0].style.display = 'none';
+  //   }
+  // }
   createLoginForm(appName){
-    this.nevermind('LoginForm');
-    this.nevermind('RegistrationForm');
+    patric.nevermind('LoginForm');
+    patric.nevermind('RegistrationForm');
     let useremailinput = '<tr class="emailheader"><th style="border:none">Email</th></tr><tr class="emailinput"><td>' +
     '<input class="loginemail" type="email" name="email" style="width:300px;" value="" required></td></tr>';
     let useridrow = '<tr class="uidheader"><th style="border:none">Email or Userid</th></tr><tr class="uidinput"><td>' +

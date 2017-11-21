@@ -18,12 +18,12 @@ test('hides a login form with click Cancel button', () => {
   expect(regform[0].style.display).toBe('none');
 });
 
-test('hide a registration form if it exists', () => {
-  document.body.innerHTML = '<div class="RegistrationForm"></div>';
-  //reg.loginUser();
-  reg.nevermind('RegistrationForm');
-  expect(document.getElementsByClassName('RegistrationForm')[0].style.display).toBe('none');
-});
+// test('hide a registration form if it exists', () => {
+//   document.body.innerHTML = '<div class="RegistrationForm"></div>';
+//   //reg.loginUser();
+//   reg.nevermind('RegistrationForm');
+//   expect(document.getElementsByClassName('RegistrationForm')[0].style.display).toBe('none');
+// });
 
 test('generates a login form without userid', () => {
   document.body.innerHTML = '<div class="home"></div>';
