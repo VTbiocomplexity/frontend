@@ -63,7 +63,7 @@ class Login_ {
     let resetPB = document.getElementsByClassName('resetpass')[0];
     resetPB.fetchClient = this.fetch;
     resetPB.appName = appName;
-    resetPB.messageDiv = document.getElementsByClassName('loginerror')[0];
+    resetPB.runFetch = this.runFetch;
     resetPB.addEventListener('click', this.resetpass);
     let cancelButton = document.getElementsByClassName('nevermind')[0];
     cancelButton.addEventListener('click', function(){
@@ -128,7 +128,7 @@ class Login_ {
   resetpass(evt) {
     let appName = evt.target.appName;
     let fetchClient = evt.target.fetchClient;
-    let messageDiv = evt.target.messageDiv;
+    let runFetch = evt.target.runFetch;
     let loginEmail = '';
     if (appName !== 'PATRIC') {
       loginEmail = document.getElementsByClassName('loginemail')[0].value;
@@ -144,22 +144,23 @@ class Login_ {
         'Content-Type': 'application/json'
       }
     };
-    return fetchClient('http://localhost:7000' + '/auth/resetpass', fetchData)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      if (data.message) {
-        messageDiv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';
-      } else {
-        let regform1 = [];
-        regform1 = document.getElementsByClassName('LoginForm');
-        regform1[0].style.display = 'none';
-        window.location.href = 'http://localhost:9000' + '/userutil/?email=' + loginEmail + '&form=reset';
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+    return runFetch(fetchClient, 'http://localhost:7000', '/auth/resetpass', fetchData);
+    // return fetchClient('http://localhost:7000' + '/auth/resetpass', fetchData)
+    // .then((response) => response.json())
+    // .then((data) => {
+    //   console.log(data);
+    //   if (data.message) {
+    //     messageDiv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';
+    //   } else {
+    //     let regform1 = [];
+    //     regform1 = document.getElementsByClassName('LoginForm');
+    //     regform1[0].style.display = 'none';
+    //     window.location.href = 'http://localhost:9000' + '/userutil/?email=' + loginEmail + '&form=reset';
+    //   }
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    // });
   }
 
   logMeIn(evt) {
@@ -189,6 +190,8 @@ class Login_ {
   }
 
   runFetch(fetchClient, url, route, fetchData, checkIfLoggedIn, generateSession, appName){
+    let loginform1 = document.getElementsByClassName('LoginForm');
+    let messagediv = document.getElementsByClassName('loginerror')[0];
     return fetchClient(url + route, fetchData)
     .then((response) => response.json())
     .then((data) => {
@@ -199,14 +202,20 @@ class Login_ {
           checkIfLoggedIn();
           generateSession(data.email);
         }
-        let regform1 = [];
-        regform1 = document.getElementsByClassName('LoginForm');
-        regform1[0].style.display = 'none';
+        //let regform1 = [];
+        //regform1 = document.getElementsByClassName('LoginForm');
+        loginform1[0].style.display = 'none';
         window.location.href = 'http://localhost:9000' + '/';
       }
       if (data.message) {
-        let messagediv = document.getElementsByClassName('loginerror')[0];
+        //let messagediv = document.getElementsByClassName('loginerror')[0];
         messagediv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';
+      }
+      if (!data.message && !data.token) {
+        //let regform1 = [];
+        //regform1 = document.getElementsByClassName('LoginForm');
+        loginform1[0].style.display = 'none';
+        window.location.href = 'http://localhost:9000' + '/userutil/?email=' + loginEmail + '&form=reset';
       }
     })
     .catch((error) => {

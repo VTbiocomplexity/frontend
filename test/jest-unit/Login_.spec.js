@@ -45,7 +45,7 @@ test('initiates a reset password request', () => {
       json: () => Promise.resolve({})
     });
   };
-  let evt = {target: {fetchClient: mockfetch, appName: 'PATRIC', messageDiv: '<div></div>'}};
+  let evt = {target: {fetchClient: mockfetch, appName: 'PATRIC', runFetch: reg.runFetch}};
   reg.resetpass(evt).then((data) => {
     expect(data.message).toBe(null);
   });
@@ -64,7 +64,7 @@ test('initiates a reset password request for other app', () => {
       json: () => Promise.resolve({})
     });
   };
-  let evt = {target: {fetchClient: mockfetch, appName: 'otherapp', messageDiv: '<div></div>'}};
+  let evt = {target: {fetchClient: mockfetch, appName: 'otherapp', runFetch: reg.runFetch}};
   reg.resetpass(evt).then((data) => {
     expect(data.message).toBe(null);
   });
@@ -83,7 +83,7 @@ test('Does not initiates a reset password request with invalid email', () => {
       json: () => Promise.resolve({ message: 'incorrect email address' })
     });
   };
-  let evt = {target: {fetchClient: mockfetch, appName: 'PATRIC', messageDiv: '<div></div>'}};
+  let evt = {target: {fetchClient: mockfetch, appName: 'PATRIC', runFetch: reg.runFetch}};
   reg.resetpass(evt).then((data) => {
     expect(data.message).toBe('incorrect email address');
   });
@@ -102,7 +102,7 @@ test('it catches error on reset password', () => {
       json: () => Promise.reject({error: 'rejected' })
     });
   };
-  let evt = {target: {fetchClient: mockfetch, appName: 'PATRIC', messageDiv: '<div></div>'}};
+  let evt = {target: {fetchClient: mockfetch, appName: 'PATRIC', runFetch: reg.runFetch}};
   return reg.resetpass(evt)
   .catch((e) => expect(e).toBeTruthy());
 });
