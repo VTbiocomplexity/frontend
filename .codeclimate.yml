@@ -9,7 +9,7 @@ checks:
       threshold: 30
   method-complexity:
     config:
-      threshold: 8
+      threshold: 7
 engines:
   duplication:
     enabled: true

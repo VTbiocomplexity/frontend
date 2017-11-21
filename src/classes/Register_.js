@@ -123,18 +123,6 @@ class Register_ {
     let password = document.getElementsByClassName('password')[0].value;
     let pspace = password.split(' ');
     let googleAccount = validateGoogle(email);
-    // let primaryApp = '';
-    // if (document.getElementsByClassName('pas')[0].style.display === 'block'){
-    //   primaryApp = document.getElementsByClassName('pas')[0].value;
-    // } else {
-    //   primaryApp = 'PATRIC';
-    // }
-    // let googleAccount = false;
-    // if (email.split('@gmail').length > 1 || email.split('@vt.edu').length > 1 || email.split('@bi.vt.edu').length > 1){
-    //   if (primaryApp !== 'PATRIC'){
-    //     googleAccount = true;
-    //   }
-    // }
     let validpass = document.getElementsByClassName('password')[0];
     let nameError = false;
     let pwError = false;
