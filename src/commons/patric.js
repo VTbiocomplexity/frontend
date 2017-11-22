@@ -26,10 +26,11 @@ exports.showHideElements2 = function(appName, objofElements){
     // if ((appName === 'PATRIC' && objKeys[i] === 'PATRIC') || (appName !== 'PATRIC' && objKeys[i] !== 'PATRIC')){
     for (j = 0; j < objofElements[objKeys[i]].length; j++){
       element = objofElements[objKeys[i]][j];
+      document.getElementsByClassName(element)[0].style.display = 'none';
       if ((appName === 'PATRIC' && objKeys[i] === 'PATRIC') || (appName !== 'PATRIC' && objKeys[i] !== 'PATRIC')){
         document.getElementsByClassName(element)[0].style.display = 'block';
-      } else {
-        document.getElementsByClassName(element)[0].style.display = 'none';
+      // } else {
+      //   document.getElementsByClassName(element)[0].style.display = 'none';
       }
     }
     // if ((appName === 'PATRIC' && objKeys[i] !== 'PATRIC') || (appName !== 'PATRIC' && objKeys[i] === 'PATRIC') ){

@@ -17,6 +17,10 @@ engines:
     checks:
       Similar Code:
         enabled: true
+    config:
+      languages:
+        javascript:
+          mass_threshold: 50
   eslint:
     enabled: true
   stylelint:
