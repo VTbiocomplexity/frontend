@@ -27,11 +27,8 @@ exports.showHideElements2 = function(appName, objofElements){
     for (j = 0; j < objofElements[objKeys[i]].length; j++){
       element = objofElements[objKeys[i]][j];
       document.getElementsByClassName(element)[0].style.display = 'none';
-      if ((appName === 'PATRIC' && objKeys[i] === 'PATRIC') || (appName !== 'PATRIC' && objKeys[i] !== 'PATRIC')){
-        document.getElementsByClassName(element)[0].style.display = 'block';
-      // } else {
-      //   document.getElementsByClassName(element)[0].style.display = 'none';
-      }
+      if (appName === objKeys[i]){document.getElementsByClassName(element)[0].style.display = 'block';}
+      if (objKeys[i] !== 'PATRIC' && appName !== 'PATRIC'){document.getElementsByClassName(element)[0].style.display = 'block';}
     }
     // if ((appName === 'PATRIC' && objKeys[i] !== 'PATRIC') || (appName !== 'PATRIC' && objKeys[i] === 'PATRIC') ){
     //   for (k = 0; k < objofElements[objKeys[i]].length; k++){
