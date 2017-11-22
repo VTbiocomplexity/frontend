@@ -137,7 +137,7 @@ class Login_ {
         'Content-Type': 'application/json'
       }
     };
-    return runFetch(fetchClient, process.env.BackendUrl, '/auth/resetpass', fetchData);
+    return runFetch(fetchClient, process.env.BackendUrl, '/auth/resetpass', fetchData, null, null, loginEmail);
   }
 
   logMeIn(evt) {
@@ -163,10 +163,10 @@ class Login_ {
         'Content-Type': 'application/json'
       }
     };
-    return runFetch(fetchClient, process.env.BackendUrl, '/auth/login', fetchData, generateSession, appName);
+    return runFetch(fetchClient, process.env.BackendUrl, '/auth/login', fetchData, generateSession, appName, null);
   }
 
-  runFetch(fetchClient, url, route, fetchData, generateSession, appName){
+  runFetch(fetchClient, url, route, fetchData, generateSession, appName, loginEmail){
     let loginform1 = document.getElementsByClassName('LoginForm');
     let messagediv = document.getElementsByClassName('loginerror')[0];
     let feurl = 'http://localhost:7000';
