@@ -7,21 +7,22 @@ class Register_ {
     this.patric = patric;
   }
 
-  checkIfLoggedIn() {
-    console.log('checking if I am already logged in');
-    if (localStorage.getItem('token') !== null) {
-      let hideWithAuth = document.getElementsByClassName('HideWAuth');
-      console.log('this is local storage :' + localStorage.getItem('token'));
-      if (hideWithAuth.length > 0){
-        hideWithAuth[0].style.display = 'none';
-      }
-      console.log('this is the hide with auth element' + hideWithAuth);
-      let showWithAuth = document.getElementsByClassName('ShowWAuth');
-      if (showWithAuth.length > 0){
-        showWithAuth[0].style.display = 'block';
-      }
-    }
-  }
+  // checkIfLoggedIn() {
+  //   console.log('checking if I am already logged in');
+  //   if (localStorage.getItem('token') !== null) {
+  //     let hideWithAuth = document.getElementsByClassName('HideWAuth');
+  //     console.log('this is local storage :' + localStorage.getItem('token'));
+  //     if (hideWithAuth.length > 0){
+  //       hideWithAuth[0].style.display = 'none';
+  //     }
+  //     console.log('this is the hide with auth element' + hideWithAuth);
+  //     let showWithAuth = document.getElementsByClassName('ShowWAuth');
+  //     if (showWithAuth.length > 0){
+  //       showWithAuth[0].style.display = 'block';
+  //     }
+  //   }
+  // }
+
   createRegistrationForm(appName){
     this.patric.nevermind('LoginForm');
     this.patric.nevermind('RegistrationForm');
@@ -57,13 +58,13 @@ class Register_ {
     this.appName = appName;
     this.createRegistrationForm(this.appName);
     let firstNameInput = document.getElementsByClassName('firstname')[0];
-    this.setEvents(firstNameInput);
+    this.setEvents(firstNameInput, appName);
     let lastNameInput = document.getElementsByClassName('lastname')[0];
-    this.setEvents(lastNameInput);
+    this.setEvents(lastNameInput, appName);
     let emailInput = document.getElementsByClassName('email')[0];
-    this.setEvents(emailInput);
+    this.setEvents(emailInput, appName);
     let passInput = document.getElementsByClassName('password')[0];
-    this.setEvents(passInput);
+    this.setEvents(passInput, appName);
     let registerEventButton = document.getElementsByClassName('registerbutton')[0];
     registerEventButton.fetchClient = this.fetch;
     registerEventButton.runFetch = this.runFetch;
@@ -77,19 +78,21 @@ class Register_ {
     pas2.addEventListener('change', this.validateReg);
     pas2.displayError = this.displayRegError;
     pas2.validateGoogle = this.validateGoogle;
+    pas2.appName = appName;
     /* istanbul ignore if */
     if (process.env.NODE_ENV !== 'test'){
       document.getElementsByClassName('RegistrationForm')[0].scrollIntoView();
     }
   }
 
-  setEvents(element){
+  setEvents(element, appName){
     element.addEventListener('change', this.validateReg);
     element.addEventListener('focus', this.validateReg);
     element.addEventListener('keydown', this.validateReg);
     element.addEventListener('keyup', this.validateReg);
     element.displayError = this.displayRegError;
     element.validateGoogle = this.validateGoogle;
+    element.appName = appName;
   }
 
   updateRegForm(){
@@ -115,6 +118,7 @@ class Register_ {
   validateReg(evt) {
     let displayError = evt.target.displayError;
     let validateGoogle = evt.target.validateGoogle;
+    let appName = evt.target.appName;
     let fname = document.getElementsByClassName('firstname')[0].value;
     let fspace = fname.split(' ');
     let lname = document.getElementsByClassName('lastname')[0].value;
@@ -124,7 +128,7 @@ class Register_ {
     let validemail = document.getElementsByClassName('email')[0];
     let password = document.getElementsByClassName('password')[0].value;
     let pspace = password.split(' ');
-    let googleAccount = validateGoogle(email);
+    let googleAccount = validateGoogle(email, appName);
     let validpass = document.getElementsByClassName('password')[0];
     let nameError = false;
     let pwError = false;
@@ -141,18 +145,18 @@ class Register_ {
     displayError(nameError, emError, pwError, googleAccount);
   }
 
-  validateGoogle(email){
-    console.log(email);
-    let primaryApp = '';
-    if (document.getElementsByClassName('pas')[0].style.display !== 'none'){
-      primaryApp = document.getElementsByClassName('pas')[0].value;
-    } else {
-      primaryApp = 'PATRIC';
-    }
-    console.log(primaryApp);
+  validateGoogle(email, appName){
+    // console.log(email);
+    // let primaryApp = '';
+    // if (document.getElementsByClassName('pas')[0].style.display !== 'none'){
+    //   primaryApp = document.getElementsByClassName('pas')[0].value;
+    // } else {
+    //   primaryApp = 'PATRIC';
+    // }
+    //console.log(primaryApp);
     let googleAccount = false;
     if (email.split('@gmail').length > 1 || email.split('@vt.edu').length > 1 || email.split('@bi.vt.edu').length > 1){
-      if (primaryApp !== 'PATRIC'){
+      if (appName !== 'PATRIC'){
         googleAccount = true;
       }
     }
