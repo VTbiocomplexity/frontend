@@ -1,5 +1,4 @@
 const Register_ = require('../../src/classes/Register_.js');
-//import 'isomorphic-fetch';
 
 let reg = new Register_();
 
@@ -8,8 +7,7 @@ test('generates a registration form for PATRIC', () => {
   reg.register('PATRIC');
   let regform = document.getElementsByClassName('RegistrationForm');
   expect(regform[0]).toBeDefined();
-  //document.body.innerHTML = '';
-  //expect(sum(1, 2)).toBe(3);
+  expect(document.getElementsByClassName('userIdRow')[0].style.display).toBe('block');
 });
 
 test('generates a registration form for another app', () => {
@@ -17,8 +15,7 @@ test('generates a registration form for another app', () => {
   reg.register();
   let regform = document.getElementsByClassName('RegistrationForm');
   expect(regform[0]).toBeDefined();
-  //document.body.innerHTML = '';
-  //expect(sum(1, 2)).toBe(3);
+  expect(document.getElementsByClassName('userIdRow')[0].style.display).toBe('none');
 });
 
 test('hides a registration form with click Cancel button', () => {
@@ -27,8 +24,6 @@ test('hides a registration form with click Cancel button', () => {
   document.getElementsByClassName('nevermind')[0].click();
   let regform = document.getElementsByClassName('RegistrationForm');
   expect(regform[0].style.display).toBe('none');
-  //document.body.innerHTML = '';
-  //expect(sum(1, 2)).toBe(3);
 });
 
 test('updates the registration form after selection of primary app is PATRIC', () => {
@@ -37,9 +32,7 @@ test('updates the registration form after selection of primary app is PATRIC', (
   document.getElementsByClassName('pas')[0].value = 'PATRIC';
   reg.updateRegForm();
   let uidRowStuff = document.getElementsByClassName('userIdRow')[0];
-  expect(uidRowStuff.innerHTML).not.toBe('');
-  //document.body.innerHTML = '';
-  //expect(sum(1, 2)).toBe(3);
+  expect(uidRowStuff.style.display).toBe('block');
 });
 
 test('updates the registration form after selection of primary app is not PATRIC', () => {
@@ -49,20 +42,13 @@ test('updates the registration form after selection of primary app is not PATRIC
   reg.updateRegForm();
   let uidRowStuff = document.getElementsByClassName('userIdRow')[0];
   expect(uidRowStuff.style.display).toBe('none');
-  //document.body.innerHTML = '';
-  //expect(sum(1, 2)).toBe(3);
 });
 
 test('generates a registration form without userid', () => {
   document.body.innerHTML = '<div class="home"></div>';
   reg.register('DifferentApp');
-  //let useridInput = [];
-  //console.log(document.getElementsByClassName('userid')[0]);
   let userIdRow = document.getElementsByClassName('userIdRow')[0];
-  //useridInput.push(document.getElementsByClassName('userid')[0]);
   expect(userIdRow.style.display).toBe('none');
-  //document.body.innerHTML = '';
-  //expect(sum(1, 2)).toBe(3);
 });
 
 test('hides the submit button when registration form is not valid email', () => {
@@ -77,8 +63,6 @@ test('hides the submit button when registration form is not valid email', () => 
   reg.validateReg(evt);
   let registbutton = document.getElementsByClassName('registerbutton')[0];
   expect(registbutton.style.display).toBe('none');
-  document.body.innerHTML = '';
-  //expect(sum(1, 2)).toBe(3);
 });
 
 test('hides the submit button when registration form is not valid name', () => {
@@ -91,7 +75,6 @@ test('hides the submit button when registration form is not valid name', () => {
   reg.validateReg(evt);
   let registbutton = document.getElementsByClassName('registerbutton')[0];
   expect(registbutton.style.display).toBe('none');
-  document.body.innerHTML = '';
 });
 
 test('hides the submit button when registration form is not valid password', () => {
@@ -106,8 +89,6 @@ test('hides the submit button when registration form is not valid password', () 
   reg.validateReg(evt);
   let registbutton = document.getElementsByClassName('registerbutton')[0];
   expect(registbutton.style.display).toBe('none');
-  document.body.innerHTML = '';
-  //expect(sum(1, 2)).toBe(3);
 });
 
 test('shows the submit button when registration form is valid', () => {
@@ -136,13 +117,13 @@ test('shows the submit button when registration form uses a Google email with PA
   document.getElementsByClassName('lastname')[0].value = 'Smith';
   document.getElementsByClassName('email')[0].value = 'joe@gmail.com';
   document.getElementsByClassName('password')[0].value = '123456789';
-  //document.getElementsByClassName('pas')[0].value = 'PATRIC';
   const mockvalidity = function() {
     return true;
   };
   document.getElementsByClassName('password')[0].checkValidity = mockvalidity;
   document.getElementsByClassName('email')[0].checkValidity = mockvalidity;
   let evt = {target: {displayError: reg.displayRegError, validateGoogle: reg.validateGoogle}};
+  document.getElementsByClassName('pas')[0].style.display = 'none';
   reg.validateReg(evt);
   let registbutton = document.getElementsByClassName('registerbutton')[0];
   expect(registbutton.style.display).toBe('block');
