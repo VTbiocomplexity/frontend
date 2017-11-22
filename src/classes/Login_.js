@@ -15,7 +15,7 @@ class Login_ {
     '<input class="userid" name="userid" style="width:300px;" value="" required></tr></td>';
     let loginform = document.createElement('div');
     loginform.className = 'LoginForm';
-    loginform.innerHTML = '<h2 style="margin:0px;padding:4px;font-size:1.2em;text-align:center;background:#eee;">User Login</h2>' +
+    loginform.innerHTML = '<h2 style="margin:0px;padding:4px;font-size:1.2em;text-align:center;background:#eee;"><span class="patric">PATRIC</span>User Login</h2>' +
     '<form><div style="padding:2px; margin:10px;"><table><tbody>' + useridrow +
     '<tr><td>&nbsp;</td></tr>' + useremailinput +
     '<tr><td>&nbsp;</td></tr><tr><th style="border:none">Password</th></tr><tr><td>' +
@@ -27,9 +27,11 @@ class Login_ {
     '<button class="nevermind" style="margin-left:12px;margin-top:20px" type="button">Cancel</button></div></div></form>';
     let home = document.getElementsByClassName('home');
     home[0].insertBefore(loginform, home[0].childNodes[0]);
-    let pArr = ['uidheader', 'uidinput', 'nevermind'];
-    let nArr = ['emailheader', 'emailinput'];
-    patric.showHideElements(appName, pArr, nArr);
+    // let pArr = ['uidheader', 'uidinput', 'nevermind'];
+    // let nArr = ['emailheader', 'emailinput'];
+    // patric.showHideElements(appName, pArr, nArr);
+    let elementsObj = {'PATRIC': ['patric', 'uidheader', 'uidinput'], 'nArr': ['emailheader', 'emailinput']};
+    patric.showHideElements2(appName, elementsObj);
   }
 
   loginUser(appName) {
@@ -56,6 +58,10 @@ class Login_ {
     cancelButton.addEventListener('click', function(){
       document.getElementsByClassName('LoginForm')[0].style.display = 'none';
     });
+    /* istanbul ignore if */
+    if (process.env.NODE_ENV !== 'test'){
+      document.getElementsByClassName('LoginForm')[0].scrollIntoView();
+    }
   }
 
   setEvents(element, appName){
