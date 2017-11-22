@@ -46,9 +46,11 @@ class Register_ {
     const home = document.getElementsByClassName('home');
     home[0].insertBefore(regform, home[0].childNodes[0]);
     document.getElementsByClassName('appName')[0].innerHTML = appName + ' ';
-    let pArr = ['userIdRow', 'useridinput'];
-    let nArr = ['primApSel'];
-    patric.showHideElements(this.appName, pArr, nArr);
+    // let pArr = ['userIdRow', 'useridinput'];
+    // let nArr = ['primApSel'];
+    // patric.showHideElements(this.appName, pArr, nArr);
+    let elementsObj = {'PATRIC': ['userIdRow', 'useridinput'], 'nArr': ['primApSel']};
+    patric.showHideElements2(this.appName, elementsObj);
   }
 
   register(appName) {
