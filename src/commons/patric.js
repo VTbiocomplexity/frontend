@@ -23,18 +23,21 @@ exports.showHideElements2 = function(appName, objofElements){
   let element;
   for (let i = 0; i < objKeys.length; i++){
     //element = document.getElementsByClassName(pArr[i])[0];
-    if ((appName === 'PATRIC' && objKeys[i] === 'PATRIC') || (appName !== 'PATRIC' && objKeys[i] !== 'PATRIC')){
-      for (j = 0; j < objofElements[objKeys[i]].length; j++){
-        element = objofElements[objKeys[i]][j];
+    // if ((appName === 'PATRIC' && objKeys[i] === 'PATRIC') || (appName !== 'PATRIC' && objKeys[i] !== 'PATRIC')){
+    for (j = 0; j < objofElements[objKeys[i]].length; j++){
+      element = objofElements[objKeys[i]][j];
+      if ((appName === 'PATRIC' && objKeys[i] === 'PATRIC') || (appName !== 'PATRIC' && objKeys[i] !== 'PATRIC')){
         document.getElementsByClassName(element)[0].style.display = 'block';
-      }
-    }
-    if ((appName === 'PATRIC' && objKeys[i] !== 'PATRIC') || (appName !== 'PATRIC' && objKeys[i] === 'PATRIC') ){
-      for (k = 0; k < objofElements[objKeys[i]].length; k++){
-        element = objofElements[objKeys[i]][k];
+      } else {
         document.getElementsByClassName(element)[0].style.display = 'none';
       }
     }
+    // if ((appName === 'PATRIC' && objKeys[i] !== 'PATRIC') || (appName !== 'PATRIC' && objKeys[i] === 'PATRIC') ){
+    //   for (k = 0; k < objofElements[objKeys[i]].length; k++){
+    //     element = objofElements[objKeys[i]][k];
+    //     document.getElementsByClassName(element)[0].style.display = 'none';
+    //   }
+    // }
   }
     // if (appName !== 'PATRIC' && objKeys[i] !== 'PATRIC'){
     //   for (l = 0; l < objofElements[objKeys[i]].length; l++){
