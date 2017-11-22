@@ -46,7 +46,7 @@ class Login_ {
     loginButton.appName = appName;
     loginButton.fetchClient = this.fetch;
     loginButton.runFetch = this.runFetch;
-    loginButton.checkIfLoggedIn = this.checkIfLoggedIn;
+    //loginButton.checkIfLoggedIn = this.checkIfLoggedIn;
     loginButton.generateSession = this.generateSession;
     loginButton.addEventListener('click', this.logMeIn);
     let resetPB = document.getElementsByClassName('resetpass')[0];
@@ -145,7 +145,7 @@ class Login_ {
     let fetchClient = evt.target.fetchClient;
     let runFetch = evt.target.runFetch;
     let appName = evt.target.appName;
-    let checkIfLoggedIn = evt.target.checkIfLoggedIn;
+    //let checkIfLoggedIn = evt.target.checkIfLoggedIn;
     let generateSession = evt.target.generateSession;
     let useridValue = '';
     let emailValue = '';
@@ -163,10 +163,10 @@ class Login_ {
         'Content-Type': 'application/json'
       }
     };
-    return runFetch(fetchClient, process.env.BackendUrl, '/auth/login', fetchData, checkIfLoggedIn, generateSession, appName);
+    return runFetch(fetchClient, process.env.BackendUrl, '/auth/login', fetchData, generateSession, appName);
   }
 
-  runFetch(fetchClient, url, route, fetchData, checkIfLoggedIn, generateSession, appName){
+  runFetch(fetchClient, url, route, fetchData, generateSession, appName){
     let loginform1 = document.getElementsByClassName('LoginForm');
     let messagediv = document.getElementsByClassName('loginerror')[0];
     let feurl = 'http://localhost:7000';
@@ -181,7 +181,7 @@ class Login_ {
         localStorage.setItem('token', data.token);
         localStorage.setItem('useremail', data.email);
         if (appName === 'PATRIC') {
-          checkIfLoggedIn();
+          //checkIfLoggedIn();
           generateSession(data.email);
         }
         loginform1[0].style.display = 'none';
