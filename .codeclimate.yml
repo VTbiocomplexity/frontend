@@ -10,7 +10,7 @@ checks:
       threshold: 30
   method-complexity:
     config:
-      threshold: 7
+      threshold: 8
 engines:
   duplication:
     enabled: true
@@ -20,7 +20,7 @@ engines:
     config:
       languages:
         javascript:
-          mass_threshold: 50
+          mass_threshold: 60
   eslint:
     enabled: true
   stylelint:
