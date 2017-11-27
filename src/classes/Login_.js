@@ -1,9 +1,13 @@
+//import {inject} from 'aurelia-framework';
 const Fetch = require('isomorphic-fetch');
 const patric = require('../commons/patric.js');
+//import {App} from '../app';
+//@inject(App)
 class Login_ {
   constructor() {
     this.fetch = Fetch;
     this.appName = '';
+    //this.app = App;
   }
 
   createLoginForm(appName){
@@ -180,12 +184,13 @@ class Login_ {
       if (data.token !== undefined) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('useremail', data.email);
+        //Login.app.auth.setToken(data.token);
         if (appName === 'PATRIC') {
           //checkIfLoggedIn();
           generateSession(data.email);
         }
         loginform1[0].style.display = 'none';
-        window.location.href = feurl + '/';
+        window.location.href = feurl + '/login/?token=true';
       }
       if (data.message) {
         messagediv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';

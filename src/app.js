@@ -85,6 +85,8 @@ export class App {
     //if (this.role !== 'Charity' && this.role !== 'Volunteer'){
     this.auth.logout('/')
     .then(() => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('useremail');
       console.log('Promise fulfilled, logged out');
     });
     // } else {

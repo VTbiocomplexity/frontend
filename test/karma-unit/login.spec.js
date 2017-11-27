@@ -63,4 +63,13 @@ describe('the Login module', () => {
     expect(login.title).toBe('Howdy is cool');
     done();
   });
+
+  it('should set the token and send the user to the dashboard if logged in', (done) => {
+    spyOn(window.localStorage, 'getItem').and.callFake(function (key, value) {
+      return '1234';
+    });
+    login.checkIfLoggedIn();
+    expect(login.app.auth.isAuthenticated()).toBe(true);
+    done();
+  });
 });

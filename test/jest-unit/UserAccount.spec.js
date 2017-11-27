@@ -54,29 +54,29 @@ test('it updates user with the user prefs form', () => {
   });
 });
 
-test('it validates the user prefs form', () => {
-  document.body.innerHTML = '<div><div class="home"></div></div><div class="UserProfileForm" style="display:block">' +
-  '<input class="uprofFirstName" value="Bob"><input class="uprofLastName" value="Smith"><input class="uprofAff" value="self"><input class="uprofOrganisms" value="dog">' +
-  '<input class="uprofInterests" value="walking"><button class="updateprofbutton"><input class="uprofEmail" value="bob@smith.com"><button class="updateemailbutton"></div>';
-  document.getElementsByClassName('uprofEmail')[0].checkValidity = function() {return true;};
-  ua.validateUserPrefs();
-  let emailbutton = document.getElementsByClassName('updateemailbutton')[0];
-  let userprofbutton = document.getElementsByClassName('updateprofbutton')[0];
-  expect(emailbutton.style.display).toBe('block');
-  expect(userprofbutton.style.display).toBe('block');
-});
-
-test('it validates the user prefs form and email when fields are invalid', () => {
-  document.body.innerHTML = '<div><div class="home"></div></div><div class="UserProfileForm" style="display:block">' +
-  '<input class="uprofFirstName" value="Bob b"><input class="uprofLastName" value="Smith"><input class="uprofAff" value="self"><input class="uprofOrganisms" value="dog">' +
-  '<input class="uprofInterests" value="walking"><button class="updateprofbutton"><input class="uprofEmail" value="bob@smith.com"><button class="updateemailbutton"></div>';
-  document.getElementsByClassName('uprofEmail')[0].checkValidity = function() {return false;};
-  ua.validateUserPrefs();
-  let emailbutton = document.getElementsByClassName('updateemailbutton')[0];
-  let userprofbutton = document.getElementsByClassName('updateprofbutton')[0];
-  expect(emailbutton.style.display).toBe('none');
-  expect(userprofbutton.style.display).toBe('none');
-});
+// test('it validates the user prefs form', () => {
+//   document.body.innerHTML = '<div><div class="home"></div></div><div class="UserProfileForm" style="display:block">' +
+//   '<input class="uprofFirstName" value="Bob"><input class="uprofLastName" value="Smith"><input class="uprofAff" value="self"><input class="uprofOrganisms" value="dog">' +
+//   '<input class="uprofInterests" value="walking"><button class="updateprofbutton"><input class="uprofEmail" value="bob@smith.com"><button class="updateemailbutton"></div>';
+//   document.getElementsByClassName('uprofEmail')[0].checkValidity = function() {return true;};
+//   ua.validateUserPrefs();
+//   let emailbutton = document.getElementsByClassName('updateemailbutton')[0];
+//   let userprofbutton = document.getElementsByClassName('updateprofbutton')[0];
+//   expect(emailbutton.style.display).toBe('block');
+//   expect(userprofbutton.style.display).toBe('block');
+// });
+//
+// test('it validates the user prefs form and email when fields are invalid', () => {
+//   document.body.innerHTML = '<div><div class="home"></div></div><div class="UserProfileForm" style="display:block">' +
+//   '<input class="uprofFirstName" value="Bob b"><input class="uprofLastName" value="Smith"><input class="uprofAff" value="self"><input class="uprofOrganisms" value="dog">' +
+//   '<input class="uprofInterests" value="walking"><button class="updateprofbutton"><input class="uprofEmail" value="bob@smith.com"><button class="updateemailbutton"></div>';
+//   document.getElementsByClassName('uprofEmail')[0].checkValidity = function() {return false;};
+//   ua.validateUserPrefs();
+//   let emailbutton = document.getElementsByClassName('updateemailbutton')[0];
+//   let userprofbutton = document.getElementsByClassName('updateprofbutton')[0];
+//   expect(emailbutton.style.display).toBe('none');
+//   expect(userprofbutton.style.display).toBe('none');
+// });
 
 // test('it displays a email varification form for a change email request', () => {
 //   document.body.innerHTML = '<div><div class="home"></div></div><div class="UserProfileForm"></div>';
@@ -103,6 +103,7 @@ test('it sends PUT request to change user email', () => {
     messagediv.innerHTML = '';
   });
 });
+
 test('it sends PUT request to change user email and displays error message', () => {
   mockfetch = function(url, data) {
     this.headers = {};
@@ -114,11 +115,11 @@ test('it sends PUT request to change user email and displays error message', () 
     });
   };
   ua.fetch = mockfetch;
-  document.body.innerHTML = '<input class="uprofEmail" value="new@email.com"><div class="loginerror"></div>';
+  document.body.innerHTML = '<input class="uprofEmail" value="new@email.com"><div class="formerrors"></div>';
   //document.getElementsByClassName('uprofEmail')[0].value = 'new@email.com';
 
   return ua.changeUserEmail().then(() => {
-    let messagediv = document.getElementsByClassName('loginerror')[0];
+    let messagediv = document.getElementsByClassName('formerrors')[0];
     expect(messagediv.innerHTML).toBe('<p style="text-align:left; padding-left:12px">email is incorrect</p>');
     messagediv.innerHTML = '';
   });
