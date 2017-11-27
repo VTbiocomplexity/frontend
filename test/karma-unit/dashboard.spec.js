@@ -28,15 +28,16 @@ describe('the Dashboard module', () => {
     expect(dashboard.user.name).toBe('Iddris Elba');
   }));
 
-  it('should update the user', testAsync(async function() {
-    let thisuser = {
-      _id: '3333333', userType: 'Developer'
-    };
-    await dashboard.activate();
-    await dashboard.updateUser(thisuser);
-    expect(dashboard.user.userType).toBe('Developer');
-  }));
-  it('it should not route the user away from the dashboard if userType has not been defined yet', testAsync(async function() {
+  // it('should update the user', testAsync(async function() {
+  //   let thisuser = {
+  //     _id: '3333333', userType: 'Developer'
+  //   };
+  //   await dashboard.activate();
+  //   await dashboard.updateUser(thisuser);
+  //   expect(dashboard.user.userType).toBe('Developer');
+  // }));
+
+  it('it should route the user to user-accounts page if userType has not been defined yet', testAsync(async function() {
     await dashboard.activate();
     dashboard.user.userType = '';
     dashboard.childRoute();

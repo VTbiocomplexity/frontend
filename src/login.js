@@ -15,6 +15,7 @@ export class Login {
 
   attached() {
     this.title = this.app.router.currentInstruction.config.title;
+    this.checkIfLoggedIn();
     //console.log('in the login module true means ohaf login ' + this.app.appState.isOhafLogin);
   }
 
@@ -24,6 +25,16 @@ export class Login {
 
   showLogin(app){
     this.login_Class.loginUser(app);
+  }
+
+  checkIfLoggedIn(){
+    let token = localStorage.getItem('token');
+    console.log(token);
+    if (token){
+      this.app.auth.setToken(token);
+      this.app.authenticated = true;
+      this.app.router.navigate('dashboard');
+    }
   }
 
   // validateLogin(){
