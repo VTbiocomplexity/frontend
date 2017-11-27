@@ -35,7 +35,7 @@ test('initiates a reset password request', () => {
     this.headers.method = data.method;
     return Promise.resolve({
       Headers: this.headers,
-      json: () => Promise.resolve({})
+      json: () => Promise.resolve({email: 'joe@smith.com'})
     });
   };
   let evt = {target: {fetchClient: mockfetch, appName: 'PATRIC', runFetch: reg.runFetch}};
