@@ -31,7 +31,7 @@ export class App {
   configHttpClient() {
     this.backend = '';
     /* istanbul ignore else */
-    if (process.env.NODE_ENV !== 'production'){
+    if (process.env.NODE_ENV !== 'production') {
       this.backend = process.env.BackendUrl;
     }
     this.httpClient.configure((httpConfig) => {
@@ -67,7 +67,7 @@ export class App {
   }
 
 
-  async checkUser(){
+  async checkUser() {
     if (this.auth.isAuthenticated()) {
       this.authenticated = true; //Logout element is reliant upon a local var;
       let uid = this.auth.getTokenPayload().sub;

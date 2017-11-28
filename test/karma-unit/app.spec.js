@@ -49,7 +49,7 @@ describe('the App module', () => {
   });
 
   it('configures the router', (done) => {
-    let configStub = {options: {pushState: true}, addPipelineStep(){}, map(){}, fallbackRoute(){}};
+    let configStub = {options: {pushState: true}, addPipelineStep() {}, map() {}, fallbackRoute() {}};
     app1.configureRouter(configStub, RouterStub);
     expect(app1.router).toBeDefined;
     done();

@@ -12,7 +12,7 @@ class User_ {
     this.verifyEmail();
   }
 
-  createVerifyCodeForm(){
+  createVerifyCodeForm() {
     let formTitle = '';
     let passInput = '<tr class="pwheader"><th style="border:none; text-align:left">Password</th></tr>' +
     '<tr class="pwinput"><td><input class="loginpass" pattern=".{8,}" title="8 characters minimum" type="password" name="password" style="width:300px;" value="" required></td></tr>';
@@ -41,7 +41,7 @@ class User_ {
     return formTitle;
   }
 
-  fillInEmail(userEmail, changeEmail){
+  fillInEmail(userEmail, changeEmail) {
     if (userEmail !== '' && userEmail !== null && userEmail !== undefined) {
       document.getElementsByClassName('email')[0].value = userEmail;
     } else if (changeEmail !== '' && changeEmail !== null && changeEmail !== undefined) {
@@ -61,13 +61,13 @@ class User_ {
     let submitButton = document.getElementsByClassName('regbutton')[0];
     submitButton.fetchClient = this.fetch;
     submitButton.runFetch = this.runFetch;
-    if (formTitle === 'Verify Your Email Address'){
+    if (formTitle === 'Verify Your Email Address') {
       submitButton.addEventListener('click', this.updateUser);
     }
-    if (formTitle === 'Reset Your Password'){
+    if (formTitle === 'Reset Your Password') {
       submitButton.addEventListener('click', this.resetPasswd);
     }
-    if (formTitle === 'Verify Your New Email Address'){
+    if (formTitle === 'Verify Your New Email Address') {
       submitButton.addEventListener('click', this.verifyChangeEmail);
     }
     if (this.formType !== 'reset') {
@@ -76,7 +76,7 @@ class User_ {
     }
   }
 
-  setEvents(element){
+  setEvents(element) {
     element.addEventListener('change', this.validateForm);
     element.addEventListener('focus', this.validateForm);
     element.addEventListener('keydown', this.validateForm);
@@ -136,7 +136,7 @@ class User_ {
     return runFetch(fetchClient, process.env.BackendUrl, '/auth/passwdreset', fetchData);
   }
 
-  runFetch(fetchClient, url, route, fetchData){
+  runFetch(fetchClient, url, route, fetchData) {
     return fetchClient(url + route, fetchData)
     .then((response) => response.json())
     .then((data) => {
@@ -149,7 +149,7 @@ class User_ {
         regform1[0].style.display = 'none';
         let feurl = 'http://localhost:7000';
           /* istanbul ignore if */
-        if (process.env.FrontendUrl !== undefined){
+        if (process.env.FrontendUrl !== undefined) {
           feurl = process.env.FrontendUrl;
         }
         window.location.href = feurl + '/';
@@ -166,7 +166,7 @@ class User_ {
     regform1[0].style.display = 'none';
     let feurl = 'http://localhost:7000';
       /* istanbul ignore if */
-    if (process.env.FrontendUrl !== undefined){
+    if (process.env.FrontendUrl !== undefined) {
       feurl = process.env.FrontendUrl;
     }
     window.location.href = feurl + '/';

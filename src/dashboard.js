@@ -3,7 +3,7 @@ import {App} from './app';
 //import {json} from 'aurelia-fetch-client';
 @inject(App)
 export class Dashboard {
-  constructor(app){
+  constructor(app) {
     this.app = app;
   }
   async activate() {
@@ -12,20 +12,20 @@ export class Dashboard {
     this.user = await this.app.appState.getUser(this.uid);
     this.newUser = false;
     /* istanbul ignore else */
-    if (this.user.userType === 'Developer'){
+    if (this.user.userType === 'Developer') {
       this.userTypes.push('Developer');
     }
     this.childRoute();
     console.log(this.user);
   }
 
-  childRoute(){
-    if (this.user.userType === undefined || this.user.userType === '' || this.user.userType === null){
+  childRoute() {
+    if (this.user.userType === undefined || this.user.userType === '' || this.user.userType === null) {
       this.newUser = true;
       console.log('new user');
       this.app.router.navigate('dashboard/user-account');
     }
-    if (this.user.userType === 'Developer'){
+    if (this.user.userType === 'Developer') {
       this.app.router.navigate('dashboard/developer');
     }
     //else {

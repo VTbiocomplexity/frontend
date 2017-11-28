@@ -53,7 +53,7 @@ class UserAct {
       document.getElementsByClassName('UserProfileForm')[0].style.display = 'none';
       let feurl = 'http://localhost:7000';
         /* istanbul ignore if */
-      if (process.env.FrontendUrl !== undefined){
+      if (process.env.FrontendUrl !== undefined) {
         feurl = process.env.FrontendUrl;
       }
       window.location.href = feurl + '/';
@@ -81,7 +81,7 @@ class UserAct {
     } else {
       let feurl = 'http://localhost:7000';
         /* istanbul ignore if */
-      if (process.env.FrontendUrl !== undefined){
+      if (process.env.FrontendUrl !== undefined) {
         feurl = process.env.FrontendUrl;
       }
       window.location.href = feurl + '/userutil/?changeemail=' + document.getElementsByClassName('uprofEmail')[0].value;

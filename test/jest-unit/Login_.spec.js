@@ -264,7 +264,7 @@ test('login the PATRIC user', () => {
       json: () => Promise.resolve({ token: 'lsdfldjflsdjlfdjfsjdlf', email: 'joe@smith.com' })
     });
   };
-  let evt = {target: {fetchClient: mockfetch, appName: 'PATRIC', runFetch: reg.runFetch, checkIfLoggedIn: function(){}, generateSession: function(email){}}};
+  let evt = {target: {fetchClient: mockfetch, appName: 'PATRIC', runFetch: reg.runFetch, checkIfLoggedIn: function() {}, generateSession: function(email) {}}};
   const mockStorage = {setItem: function(item, value) {
     //do nothing
   }, getItem: function(item, value) {

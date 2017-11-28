@@ -57,8 +57,8 @@ test('hides the submit button when registration form is not valid email', () => 
   document.getElementsByClassName('pas')[0].value = 'other';
   document.getElementsByClassName('pas')[0].style.display = 'block';
   document.getElementsByClassName('email')[0].value = 'google.@gmail.com';
-  document.getElementsByClassName('email')[0].checkValidity = function(){return false;};
-  document.getElementsByClassName('password')[0].checkValidity = function(){return true;};
+  document.getElementsByClassName('email')[0].checkValidity = function() {return false;};
+  document.getElementsByClassName('password')[0].checkValidity = function() {return true;};
   let evt = {target: {displayError: reg.displayRegError, validateGoogle: reg.validateGoogle}};
   reg.validateReg(evt);
   let registbutton = document.getElementsByClassName('registerbutton')[0];
@@ -68,8 +68,8 @@ test('hides the submit button when registration form is not valid email', () => 
 test('hides the submit button when registration form is not valid name', () => {
   document.body.innerHTML = '<div class="home"></div>';
   reg.register('PATRIC');
-  document.getElementsByClassName('password')[0].checkValidity = function(){return true;};
-  document.getElementsByClassName('email')[0].checkValidity = function(){return true;};
+  document.getElementsByClassName('password')[0].checkValidity = function() {return true;};
+  document.getElementsByClassName('email')[0].checkValidity = function() {return true;};
   document.getElementsByClassName('firstname')[0].value = '';
   let evt = {target: {displayError: reg.displayRegError, validateGoogle: reg.validateGoogle}};
   reg.validateReg(evt);
