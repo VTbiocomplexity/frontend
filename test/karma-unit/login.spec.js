@@ -12,7 +12,7 @@ class AuthStub1 extends AuthStub {
   }
 }
 
-class AppStub extends App{
+class AppStub extends App {
   authenticated = false;
 }
 

@@ -10,7 +10,7 @@ class Login_ {
     //this.app = App;
   }
 
-  createLoginForm(appName){
+  createLoginForm(appName) {
     patric.nevermind('LoginForm');
     patric.nevermind('RegistrationForm');
     let useremailinput = '<tr class="emailheader"><th style="border:none">Email</th></tr><tr class="emailinput"><td>' +
@@ -59,16 +59,16 @@ class Login_ {
     resetPB.runFetch = this.runFetch;
     resetPB.addEventListener('click', this.resetpass);
     let cancelButton = document.getElementsByClassName('nevermind')[0];
-    cancelButton.addEventListener('click', function(){
+    cancelButton.addEventListener('click', function() {
       document.getElementsByClassName('LoginForm')[0].style.display = 'none';
     });
     /* istanbul ignore if */
-    if (process.env.NODE_ENV !== 'test'){
+    if (process.env.NODE_ENV !== 'test') {
       document.getElementsByClassName('LoginForm')[0].scrollIntoView();
     }
   }
 
-  setEvents(element, appName){
+  setEvents(element, appName) {
     element.addEventListener('change', this.validateLogin);
     element.addEventListener('focus', this.validateLogin);
     element.addEventListener('keydown', this.validateLogin);
@@ -86,18 +86,18 @@ class Login_ {
     let validemail = document.getElementsByClassName('loginemail')[0].checkValidity();
     let edot = emailValue.split('.');
     let message = '';
-    if (edot.length === 1 || !validemail || emailValue === ''){
+    if (edot.length === 1 || !validemail || emailValue === '') {
       validemail = false;
       message = '<p>Invalid email format</p>';
     }
-    if (emailValue.split('@gmail').length > 1 || emailValue.split('@vt.edu').length > 1 || emailValue.split('@bi.vt.edu').length > 1){
+    if (emailValue.split('@gmail').length > 1 || emailValue.split('@vt.edu').length > 1 || emailValue.split('@bi.vt.edu').length > 1) {
       validemail = false;
       message = '<p>Please click the Login with Google button</p>';
     }
     buttonsErrors(appName, message, validemail, validpass, useridValue);
   }
 
-  buttonsErrors(appName, message, validemail, validpass, useridValue){
+  buttonsErrors(appName, message, validemail, validpass, useridValue) {
     let resetpassButton = document.getElementsByClassName('resetpass')[0];
     let logbutton = document.getElementsByClassName('loginbutton')[0];
     logbutton.style.display = 'none';
@@ -111,7 +111,7 @@ class Login_ {
       logbutton.style.display = 'block';
       loginErrorMessage.innerHTML = '';
     }
-    if (!validpass){
+    if (!validpass) {
       logbutton.style.display = 'none';
       loginErrorMessage.innerHTML = '<p>Invalid password</p>';
     }
@@ -170,12 +170,12 @@ class Login_ {
     return runFetch(fetchClient, process.env.BackendUrl, '/auth/login', fetchData, generateSession, appName, null);
   }
 
-  runFetch(fetchClient, url, route, fetchData, generateSession, appName, loginEmail){
+  runFetch(fetchClient, url, route, fetchData, generateSession, appName, loginEmail) {
     let loginform1 = document.getElementsByClassName('LoginForm');
     let messagediv = document.getElementsByClassName('loginerror')[0];
     let feurl = 'http://localhost:7000';
     /* istanbul ignore if */
-    if (process.env.FrontendUrl !== undefined){
+    if (process.env.FrontendUrl !== undefined) {
       feurl = process.env.FrontendUrl;
     }
     return fetchClient(url + route, fetchData)

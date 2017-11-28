@@ -5,7 +5,7 @@ const Register_ = require('./classes/Register_.js');
 const Login_ = require('./classes/Login_.js');
 @inject(App)
 export class Login {
-  constructor(app){
+  constructor(app) {
     this.app = app;
     this.registerClass = new Register_();
     this.login_Class = new Login_();
@@ -19,18 +19,18 @@ export class Login {
     //console.log('in the login module true means ohaf login ' + this.app.appState.isOhafLogin);
   }
 
-  showRegister(app){
+  showRegister(app) {
     this.registerClass.register(app);
   }
 
-  showLogin(app){
+  showLogin(app) {
     this.login_Class.loginUser(app);
   }
 
-  checkIfLoggedIn(){
+  checkIfLoggedIn() {
     let token = localStorage.getItem('token');
     console.log(token);
-    if (token){
+    if (token) {
       this.app.auth.setToken(token);
       this.app.authenticated = true;
       this.app.router.navigate('dashboard');
@@ -45,7 +45,7 @@ export class Login {
   //   this.registerClass.nevermind(form);
   // }
 
-  authenticate(name){
+  authenticate(name) {
     //delete all login database objects
     //create a new login database object, set isOhafLogin attribute
     //console.log('in auth');

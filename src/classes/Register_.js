@@ -23,7 +23,7 @@ class Register_ {
   //   }
   // }
 
-  createRegistrationForm(appName){
+  createRegistrationForm(appName) {
     this.patric.nevermind('LoginForm');
     this.patric.nevermind('RegistrationForm');
     this.appName = appName;
@@ -70,7 +70,7 @@ class Register_ {
     registerEventButton.runFetch = this.runFetch;
     registerEventButton.addEventListener('click', this.createUser);
     let cancelButton = document.getElementsByClassName('nevermind')[0];
-    cancelButton.addEventListener('click', function(){
+    cancelButton.addEventListener('click', function() {
       document.getElementsByClassName('RegistrationForm')[0].style.display = 'none';
     });
     let pas2 = document.getElementsByClassName('pas')[0];
@@ -80,12 +80,12 @@ class Register_ {
     pas2.validateGoogle = this.validateGoogle;
     pas2.appName = appName;
     /* istanbul ignore if */
-    if (process.env.NODE_ENV !== 'test'){
+    if (process.env.NODE_ENV !== 'test') {
       document.getElementsByClassName('RegistrationForm')[0].scrollIntoView();
     }
   }
 
-  setEvents(element, appName){
+  setEvents(element, appName) {
     element.addEventListener('change', this.validateReg);
     element.addEventListener('focus', this.validateReg);
     element.addEventListener('keydown', this.validateReg);
@@ -95,12 +95,12 @@ class Register_ {
     element.appName = appName;
   }
 
-  updateRegForm(){
+  updateRegForm() {
     console.log('inside this function');
     let primApp = document.getElementsByClassName('pas')[0].value;
     let uidRow = document.getElementsByClassName('userIdRow')[0];
     let useridinput = document.getElementsByClassName('useridinput')[0];
-    if (primApp === 'PATRIC'){
+    if (primApp === 'PATRIC') {
       uidRow.style.display = 'block';
       useridinput.style.display = 'block';
       document.getElementsByClassName('registererror')[0].innerHTML = '';
@@ -133,19 +133,19 @@ class Register_ {
     let nameError = false;
     let pwError = false;
     let emError = false;
-    if (fname === '' || lname === '' || fspace.length > 1 || lspace.length > 1){
+    if (fname === '' || lname === '' || fspace.length > 1 || lspace.length > 1) {
       nameError = true;
     }
-    if (pspace.length > 1 || !validpass.checkValidity() || password === ''){
+    if (pspace.length > 1 || !validpass.checkValidity() || password === '') {
       pwError = true;
     }
-    if (!validemail.checkValidity() || edot.length === 1 || email === ''){
+    if (!validemail.checkValidity() || edot.length === 1 || email === '') {
       emError = true;
     }
     displayError(nameError, emError, pwError, googleAccount);
   }
 
-  validateGoogle(email, appName){
+  validateGoogle(email, appName) {
     // console.log(email);
     // let primaryApp = '';
     // if (document.getElementsByClassName('pas')[0].style.display !== 'none'){
@@ -155,8 +155,8 @@ class Register_ {
     // }
     //console.log(primaryApp);
     let googleAccount = false;
-    if (email.split('@gmail').length > 1 || email.split('@vt.edu').length > 1 || email.split('@bi.vt.edu').length > 1){
-      if (appName !== 'PATRIC'){
+    if (email.split('@gmail').length > 1 || email.split('@vt.edu').length > 1 || email.split('@bi.vt.edu').length > 1) {
+      if (appName !== 'PATRIC') {
         googleAccount = true;
       }
     }
@@ -164,7 +164,7 @@ class Register_ {
   }
 
 
-  displayRegError(nameError, emError, pwError, googleAccount){
+  displayRegError(nameError, emError, pwError, googleAccount) {
     let registbutton = document.getElementsByClassName('registerbutton')[0];
     let regError = document.getElementsByClassName('registererror')[0];
     if (!nameError && !emError && !pwError && !googleAccount) {
@@ -172,13 +172,13 @@ class Register_ {
     } else {
       registbutton.style.display = 'none';
     }
-    if (googleAccount){
+    if (googleAccount) {
       regError.innerHTML = '<p>Please scroll up and click the Login with Google button</p>';
-    } else if (nameError){
+    } else if (nameError) {
       regError.innerHTML = '<p>Name format is not valid</p>';
-    } else if (emError){
+    } else if (emError) {
       regError.innerHTML = '<p>Email format is not valid</p>';
-    } else if (pwError){
+    } else if (pwError) {
       regError.innerHTML = '<p>Password format is not valid</p>';
     } else {regError.innerHTML = '';}
   }
@@ -211,7 +211,7 @@ class Register_ {
     return runFetch(fetchClient, process.env.BackendUrl + '/auth/signup', fetchData);
   }
 
-  runFetch(fetchClient, url, route, fetchData){
+  runFetch(fetchClient, url, route, fetchData) {
     let messagediv = document.getElementsByClassName('registererror')[0];
     return fetchClient(url, route, fetchData)
     .then((response) => response.json())
@@ -235,7 +235,7 @@ class Register_ {
     localStorage.removeItem('useremail');
     let feurl = 'http://localhost:7000';
       /* istanbul ignore if */
-    if (process.env.FrontendUrl !== undefined){
+    if (process.env.FrontendUrl !== undefined) {
       feurl = process.env.FrontendUrl;
     }
     let hideWithAuth = document.getElementsByClassName('HideWAuth')[0];
@@ -248,7 +248,7 @@ class Register_ {
   userAccount() {
     let feurl = 'http://localhost:7000';
       /* istanbul ignore if */
-    if (process.env.FrontendUrl !== undefined){
+    if (process.env.FrontendUrl !== undefined) {
       feurl = process.env.FrontendUrl;
     }
     window.location.href = feurl + '/userutil/?form=prefs';

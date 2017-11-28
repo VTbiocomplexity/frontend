@@ -2,7 +2,7 @@ import {inject} from 'aurelia-framework';
 import {App} from '../app';
 @inject(App)
 export class Developer {
-  constructor(app){
+  constructor(app) {
     this.app = app;
   //   this.auth = auth;
   //

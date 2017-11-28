@@ -1,7 +1,7 @@
 const User_ = require('./classes/User_.js');
 export class UserUtil {
 //  this.app = app;
-  constructor(){
+  constructor() {
     this.userClass = {};
   //console.log(this.registerClass.register);
   //this.nevermind = this.registerClass.nevermind;
@@ -9,7 +9,7 @@ export class UserUtil {
   // activate(){
   //   this.userClass.verifyEmail();
   // }
-  attached(){
+  attached() {
     this.userClass = new User_();
   }
 }
