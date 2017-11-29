@@ -13,6 +13,10 @@ ignore:
     - pushstate-server > serve-static > send > mime:
         reason: None given
         expires: '2017-12-20T13:15:07.287Z'
+  'npm:moment:20170905':
+    - wait-on > joi > moment:
+        reason: None given
+        expires: '2017-12-29T17:01:23.074Z'
 # patches apply the minimum changes required to fix a vulnerability
 patch:
   'npm:debug:20170905':
