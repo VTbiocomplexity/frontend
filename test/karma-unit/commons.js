@@ -43,6 +43,7 @@ class AuthStub {
   }
   logout(data) {
     const response = 'user logged out';
+    this.authenticated = false;
     return new Promise((resolve) => {
       resolve({json: () => response});
     });
@@ -58,7 +59,6 @@ class AuthStub {
     return response;
   }
   isAuthenticated() {
-    this.authenticated = true;
     return this.authenticated;
   }
   }
@@ -70,7 +70,7 @@ class AppStateStub {
     this.roles = [];
   }
   getUser(uid) {
-    if (uid === '1'){
+    if (uid === '1') {
       this.user = {name: 'Iddris Elba', userType: 'Charity', _id: '3333333', volTalents: ['childcare', 'other'], volCauses: ['Environmental', 'other'], volWorkPrefs: ['counseling', 'other'], volCauseOther: '', volTalentOther: '', volWorkOther: ''};
     } else if (uid === '2') {
       this.user = {name: 'Iddris Elba', userType: 'Volunteer', _id: '3333333', volTalents: ['childcare', 'other'], volCauses: ['Environmental', 'other'], volWorkPrefs: ['counseling', 'other'], volCauseOther: '', volTalentOther: '', volWorkOther: ''};

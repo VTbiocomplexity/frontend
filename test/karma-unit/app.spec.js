@@ -1,20 +1,21 @@
 import {App} from '../../src/app';
-import {AuthStub, HttpMock, RouterStub} from './commons';
+import {AuthStub, HttpMock, RouterStub, AppStateStub} from './commons';
 const Counter = require('assertions-counter');
 
-// function testAsync(runAsync) {
-//   return (done) => {
-//     runAsync().then(done, (e) => { fail(e); done(); });
-//   };
-// }
+function testAsync(runAsync) {
+  return (done) => {
+    runAsync().then(done, (e) => { fail(e); done(); });
+  };
+}
 
 describe('the App module', () => {
   let app1;
   //let app2;
   beforeEach(() => {
     app1 = new App(new AuthStub(), new HttpMock());
-    app1.auth.setToken('No token');
-    //app1.activate();
+    app1.auth.setToken({sub: 'token'});
+    app1.activate();
+    app1.appState = new AppStateStub();
     //app1.appState = new AppStateStub();
     //app2 = new App(new AuthStub2(), new HttpMock());
     //app2.activate();
@@ -48,9 +49,18 @@ describe('the App module', () => {
   });
 
   it('configures the router', (done) => {
-    let configStub = {options: {pushState: true}, addPipelineStep(){}, map(){}, fallbackRoute(){}};
+    let configStub = {options: {pushState: true}, addPipelineStep() {}, map() {}, fallbackRoute() {}};
     app1.configureRouter(configStub, RouterStub);
     expect(app1.router).toBeDefined;
     done();
   });
+
+  it('should logout and then display the login button', testAsync(async function() {
+    await app1.logout();
+    await app1.checkUser();
+    //login.app.checkUser();
+    expect(app1.auth.authenticated).toBe(false);
+    expect(app1.authenticated).toBe(false);
+    //done();
+  }));
 });

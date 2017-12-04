@@ -10,21 +10,23 @@
   "author": "Biocomplexity",
   "license": "MIT",
   "engines": {
-    "node": "8.7.0",
-    "npm": "5.4.2",
-    "yarn": "1.2.1"
+    "node": "8.9.1",
+    "npm": "5.5.1",
+    "yarn": "1.3.2"
   },
   "scripts": {
     "start": "nps",
     "snyk-protect": "snyk protect",
-    "test": "npm run test:karma && nps e2e",
+    "test": "rm -rf coverage && npm run test:jest && npm run test:karma && nps e2e && npm run combine-coverage",
+    "combine-coverage": "istanbul-combine -d coverage -p none -r lcov -r html coverage/jest/coverage-final.json coverage/karma/coverage-final.json",
     "test:karma": "cross-env NODE_ENV=test nps test.lint && nps test.karma",
     "test:debug": "cross-env NODE_ENV=test nps test.karma.debug",
+    "test:jest": "cross-env NODE_ENV=test jest --config jest.config.json --notify",
     "eslint-fix": "./node_modules/eslint/bin/eslint.js --fix .",
     "fix:aurelia-val": "rm -rf ./node_modules/aurelia-validation/node_modules",
-    "postinstall": "npm run fix:aurelia-val",
-    "preinstall": "npm install -g npm && npm install -g yarn",
-    "cleaninstall": "rm -rf bower_components && rm -rf yarn.lock && rm -rf node_modules && yarn cache clean && yarn install",
+    "postinstall": "npm run fix:aurelia-val && npm start -- build",
+    "installglobals": "npm install -g yarn@latest",
+    "cleaninstall": "rm -rf bower_components && rm -rf yarn.lock && rm -rf node_modules && yarn cache clean && npm run installglobals && yarn install",
     "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
@@ -82,11 +84,11 @@
     "polymer-bundler": "^2.0.1",
     "postcss-loader": "^2.0.6",
     "pushstate-server": "^3.0.0",
-    "snyk": "^1.42.7",
+    "snyk": "^1.52.0",
     "style-loader": "^0.18.2",
     "url-loader": "^0.6.2",
     "wait-on": "^2.0.2",
-    "webpack": "^3.7.1",
+    "webpack": "^3.8.1",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
@@ -99,8 +101,12 @@
     "eslint": "^3.19.0",
     "html-hint": "^0.2.4",
     "istanbul": "^0.4.5",
+    "istanbul-combine": "^0.3.0",
     "istanbul-instrumenter-loader": "2.0.0",
     "jasmine-core": "^2.6.4",
+    "jest": "^21.2.1",
+    "jest-cli": "^21.2.1",
+    "jest-environment-jsdom-11.0.0": "^20.0.9",
     "karma": "^1.7.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage": "^1.1.1",

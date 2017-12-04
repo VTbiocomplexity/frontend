@@ -13,7 +13,7 @@ const when = (condition, config, negativeConfig) =>
 condition ? ensureArray(config) : ensureArray(negativeConfig);
 
 // primary config:
-const title = 'Montage';
+const title = 'NDSSL';
 const outDir = path.resolve(__dirname, 'dist');
 const srcDir = path.resolve(__dirname, 'src');
 const nodeModulesDir = path.resolve(__dirname, 'node_modules');
@@ -35,7 +35,7 @@ module.exports = ({production, server, extractCss, coverage} = {}) => ({
   devtool: production ? 'source-map' : 'cheap-module-eval-source-map',
   entry: {
     app: ['aurelia-bootstrapper'],
-    vendor: ['bluebird', 'jquery', 'bootstrap', 'whatwg-fetch', 'isomorphic-fetch']
+    vendor: ['bluebird', 'jquery', 'bootstrap', 'whatwg-fetch', 'isomorphic-fetch', 'babel-polyfill']
   },
   output: {
     path: outDir,
@@ -131,10 +131,10 @@ module.exports = ({production, server, extractCss, coverage} = {}) => ({
     }),
     new CopyWebpackPlugin(
       [{ from: 'static/favicon.ico', to: 'favicon.ico' },
-    // { from: 'static/includes.html', to: 'includes.html' },
+    // { from: 'src/classes/register_.js', to: 'register_.js' },
     { from: 'static/imgs', to: 'static/imgs' }]
   ),
-    new webpack.EnvironmentPlugin(['NODE_ENV', 'AuthProductionBaseURL', 'PORT', 'BackendUrl', 'GoogleClientId', 'userRoles']),
+    new webpack.EnvironmentPlugin(['NODE_ENV', 'AuthProductionBaseURL', 'PORT', 'BackendUrl', 'GoogleClientId', 'userRoles', 'role', 'FrontendUrl']),
     new webpack.DefinePlugin({'process.env': Object.keys(process.env).reduce((o, k) => {
       o[k] = JSON.stringify(process.env[k]);
       return o;
