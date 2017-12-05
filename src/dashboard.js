@@ -19,7 +19,9 @@ export class Dashboard {
     if (localStorage.getItem('token') === null) {
       let newToken = sessionStorage.getItem('aurelia_id_token');
       if (newToken === null) {
-        newToken = sessionStorage.getItem('aurelia_id_token');
+        newToken = localStorage.getItem('aurelia_id_token');
+        console.log('this is the newToken');
+        console.log(newToken);
       }
       localStorage.setItem('token', newToken);
     }
