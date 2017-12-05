@@ -35,6 +35,12 @@ button:hover {
   background-color: #80dfff;
 }
 
+label.alignleft {
+  text-align: left;
+  margin-top: 10px;
+  margin-left: -120px;
+}
+
 section {
   margin: 0 20px;
 }
