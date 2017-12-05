@@ -33,6 +33,27 @@ test('it populates the user pref form with the current user attributes', () => {
   });
 });
 
+test('it populates the user pref form correctly after new Google user created', () => {
+  mockfetch = function(url, data) {
+    this.headers = {};
+    this.headers.url = url;
+    this.headers.method = data.method;
+    return Promise.resolve({
+      Headers: this.headers,
+      json: () => Promise.resolve([{'_id': '12345', 'email': 'bob@smith.com', name: 'Bob Smith'}])
+    });
+  };
+  ua.fetch = mockfetch;
+  document.body.innerHTML = '<div><div class="home"></div></div><div class="UserProfileForm" style="display:block">' +
+  '<input class="uprofFirstName"><input class="uprofLastName"><input class="uprofAff"><input class="uprofOrganisms">' +
+  '<input class="uprofInterests"><input class="uprofEmail"></div>';
+  ua.populateForm().then((data) => {
+    expect(document.getElementsByClassName('uprofEmail')[0].value).toBe('bob@smith.com');
+    expect(document.getElementsByClassName('uprofFirstName')[0].value).toBe('Bob');
+    expect(ua.uid).toBe('12345');
+  });
+});
+
 test('it updates user with the user prefs form', () => {
   mockfetch = function(url, data) {
     this.headers = {};
