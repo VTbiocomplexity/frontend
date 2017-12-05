@@ -1,11 +1,11 @@
 <template>
 <div class="UserProfileForm" style="display:none; text-align:center; max-width:5in;margin:auto">
-  <h2>Your User Profile</h2>
+  <h3>Your User Profile</h3>
   <div class="elevation3" style="max-width:3.25in; margin:auto">
     <form>
       <table>
         <tbody>
-          <tr><th>First Name <span style="color:red">*</span></th><th>Last Name <span style="color:red">*</span></th></tr>
+          <tr><th><span style="color:red">*</span> First Name</th><th><span style="color:red">*</span> Last Name</th></tr>
           <tr><td><input class="uprofFirstName" style="width:100%" name="first_name" value="" required></td>
             <td><input class="uprofLastName" style="width:100%" name="last_name" value="" required></td></tr>
             <tr><th colspan="2">Organization</th></tr>
@@ -16,9 +16,16 @@
             <tr><td colspan="2"><textarea class="uprofInterests" rows="10" name="interests" style="height:85px;width:100%" value=""></textarea></td></tr>
           </tbody>
         </table>
+        <!-- <label class="alignleft">Primary User Type (required)<span if.bind="!canChangeUserType">:<i style="font-weight:normal;"> ${user.userType}</i><br><br></span></label> -->
+       <div style="margin-top:10px; margin-bottom:10px"><span style="color:red; text-align:left; margin-left:-140px">*</span>
+       <select if.bind="canChangeUserType" id="type" class="form-control" value.bind="user.userType" style="width: 1.5in; margin-bottom:10px; display:inline; padding:0; font-size:10pt">
+         <option id="optrequired" value="">Primary User Type</option>
+         <option repeat.for="type of userTypes" model.bind="type">${type}</option>
+       </select>
+     </div>
         <div>
-          <span style="color:red; font-style: italic; text-align:left; margin-left:-120px">* Indicates a required field</span>
-          <button class="updateprofbutton" type="button" style="margin-left:240px" click.delegate="updateUserPrefs()">Update Profile</button>
+          <span style="color:red; font-style: italic;">* Indicates a required field</span>
+          <button class="updateprofbutton" type="button" style="margin-left:230px; padding:0" click.delegate="updateUserPrefs()">Update Profile</button>
         </div>
       </form>
     </div>

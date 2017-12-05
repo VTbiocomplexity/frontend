@@ -54,10 +54,10 @@ class UserAct {
     });
   }
 
-  updateUserPrefs() {
+  updateUserPrefs(thisUserType) {
     let fname = document.getElementsByClassName('uprofFirstName')[0].value;
     let lname = document.getElementsByClassName('uprofLastName')[0].value;
-    let bodyData = {'first_name': fname, 'last_name': lname, 'name': fname + ' ' + lname,
+    let bodyData = {'first_name': fname, 'last_name': lname, 'name': fname + ' ' + lname, userType: thisUserType,
       'affiliation': document.getElementsByClassName('uprofAff')[0].value, 'organisms': document.getElementsByClassName('uprofOrganisms')[0].value, 'interests': document.getElementsByClassName('uprofInterests')[0].value};
     let fetchData = {
       method: 'PUT',
