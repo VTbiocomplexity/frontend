@@ -72,4 +72,13 @@ describe('the Login module', () => {
     expect(login.app.auth.isAuthenticated()).toBe(true);
     done();
   });
+  it('should not set the token and not send the user to the dashboard if not logged in', (done) => {
+    login.app.authenticated = false;
+    spyOn(window.localStorage, 'getItem').and.callFake(function (key, value) {
+      return null;
+    });
+    login.checkIfLoggedIn();
+    expect(login.app.authenticated).toBe(false);
+    done();
+  });
 });

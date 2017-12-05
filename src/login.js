@@ -30,7 +30,7 @@ export class Login {
   checkIfLoggedIn() {
     let token = localStorage.getItem('token');
     console.log(token);
-    if (token) {
+    if (token !== null) {
       this.app.auth.setToken(token);
       this.app.authenticated = true;
       this.app.router.navigate('dashboard');

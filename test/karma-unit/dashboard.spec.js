@@ -28,6 +28,18 @@ describe('the Dashboard module', () => {
     expect(dashboard.user.name).toBe('Iddris Elba');
   }));
 
+  it('sets the local storage token to the session stored aurelia token id', testAsync(async function() {
+    spyOn(window.localStorage, 'getItem').and.callFake(function (key) {
+      return null;
+    });
+    spyOn(window.sessionStorage, 'getItem').and.callFake(function (key) {
+      return '123';
+    });
+    //window.localStorage = mockLocStore;
+    await dashboard.activate();
+    //expect(window.localStorage.getItem('token')).toBe('123');
+  }));
+
   // it('should update the user', testAsync(async function() {
   //   let thisuser = {
   //     _id: '3333333', userType: 'Developer'
