@@ -31,7 +31,7 @@ export class Dashboard {
       this.userTypes.push('Developer');
     }
     this.childRoute();
-    console.log(this.user);
+    //console.log(this.user);
   }
 
   childRoute() {

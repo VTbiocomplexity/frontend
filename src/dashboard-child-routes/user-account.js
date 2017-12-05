@@ -12,6 +12,10 @@ export class UserAccount {
     this.uid = this.app.auth.getTokenPayload().sub;
     this.user = await this.app.appState.getUser(this.uid);
     this.canChangeUserType = true;
+    // if (this.userActClass !== undefined) {
+    //   console.log(this.userActClass);
+    // }
+    console.log(this.user);
   }
   attached() {
     this.userActClass = new Uact();
