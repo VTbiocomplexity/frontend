@@ -6,7 +6,7 @@ class UserAct {
     this.populateForm();
   }
 
-//This populates the UserProfileForm, found in the userutil.html (or userutil/index.html)
+  //This populates the UserProfileForm, found in the userutil.html (or userutil/index.html)
   populateForm() {
     document.getElementsByClassName('UserProfileForm')[0].style.display = 'block';
     let bodyData = {'email': localStorage.getItem('useremail') };
@@ -26,7 +26,7 @@ class UserAct {
       let lname = '';
       if (data[0].first_name !== undefined && data[0].last_name !== undefined) {
         fname = data[0].first_name;
-        lname = data[0].first_name;
+        lname = data[0].last_name;
       } else {
         let nameArr = data[0].name.split(' ');
         fname = nameArr[0];
@@ -72,17 +72,21 @@ class UserAct {
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
-      document.getElementsByClassName('UserProfileForm')[0].style.display = 'none';
-      let feurl = 'http://localhost:7000';
-        /* istanbul ignore if */
-      if (process.env.FrontendUrl !== undefined) {
-        feurl = process.env.FrontendUrl;
+      if (data.message) {
+        document.getElementsByClassName('formerrors')[0].innerHTML = '<p>' + data.message + '</p>';
+      } else {
+        document.getElementsByClassName('UserProfileForm')[0].style.display = 'none';
+        //let feurl = 'http://localhost:7000';
+        //   /* istanbul ignore if */
+        // if (process.env.FrontendUrl !== undefined) {
+        //   feurl = process.env.FrontendUrl;
+        // }
+        window.location.href = process.env.FrontendUrl + '/';
       }
-      window.location.href = feurl + '/';
     });
   }
 
-// this is only the initial request to change the email address from the User Prefs page
+  // this is only the initial request to change the email address from the User Prefs page
   changeUserEmail() {
     let bodyData = {'changeemail': document.getElementsByClassName('uprofEmail')[0].value, 'email': localStorage.getItem('useremail') };
     let fetchData = {
@@ -94,24 +98,24 @@ class UserAct {
       }
     };
     return this.fetch(process.env.BackendUrl + '/auth/changeemail', fetchData)
-  .then((response) => response.json())
-  .then((data) => {
-    if (data.message) {
-      //console.log(data.message);
-      let messagediv = document.getElementsByClassName('formerrors')[0];
-      messagediv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';
-    } else {
-      let feurl = 'http://localhost:7000';
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.message) {
+        //console.log(data.message);
+        let messagediv = document.getElementsByClassName('formerrors')[0];
+        messagediv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';
+      } else {
+        let feurl = 'http://localhost:7000';
         /* istanbul ignore if */
-      if (process.env.FrontendUrl !== undefined) {
-        feurl = process.env.FrontendUrl;
+        if (process.env.FrontendUrl !== undefined) {
+          feurl = process.env.FrontendUrl;
+        }
+        window.location.href = feurl + '/userutil/?changeemail=' + document.getElementsByClassName('uprofEmail')[0].value;
       }
-      window.location.href = feurl + '/userutil/?changeemail=' + document.getElementsByClassName('uprofEmail')[0].value;
-    }
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 }
 

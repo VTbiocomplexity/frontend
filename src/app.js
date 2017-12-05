@@ -2,8 +2,8 @@ System.import('isomorphic-fetch');
 System.import('whatwg-fetch');
 import {PLATFORM} from 'aurelia-pal';
 import {inject} from 'aurelia-framework';
-import {AuthorizeStep} from 'aurelia-auth';
-import {AuthService} from 'aurelia-auth';
+import {AuthorizeStep, AuthService} from 'aurelia-auth';
+import {UserAccess} from './classes/UserAccess.js';
 import {HttpClient} from 'aurelia-fetch-client';
 import {AppState} from './classes/AppState.js';
 @inject(AuthService, HttpClient)
@@ -24,7 +24,7 @@ export class App {
   async activate() {
     this.configHttpClient();
     this.appState = new AppState(this.httpClient);
-    //this.userAccess = new UserAccess(this.appState);
+    this.userAccess = new UserAccess(this.appState);
     await this.checkUser();
   }
 
@@ -54,12 +54,12 @@ export class App {
     config.options.pushState = true;
     config.options.root = '/';
     config.addPipelineStep('authorize', AuthorizeStep);//Is the actually Authorization to get into the /dashboard
+    config.addPipelineStep('authorize', this.userAccess);// provides access controls to prevent users from certain /dashboard child routes when not their userType (role)
     config.map([
       { route: 'dashboard', name: 'dashboard-router', moduleId: PLATFORM.moduleName('./dashboard-router'), nav: false, title: '', auth: true, settings: 'fa fa-tachometer'},
       { route: 'login', name: 'login', moduleId: PLATFORM.moduleName('./login'), nav: false, title: 'Login', settings: 'fa fa-sign-in'},
       { route: ['', 'home'], name: 'home', moduleId: PLATFORM.moduleName('./home'), nav: false, title: '', settings: 'fa fa-home' },
       { route: 'userutil', name: 'userutil', moduleId: PLATFORM.moduleName('./userutil'), nav: false, title: '' },
-      //{ route: 'child-router',  name: 'child-router', moduleId: PLATFORM.moduleName('./child-router'), nav: true, title: 'Child Router' },
       { route: ['welcome', 'welcome'], name: 'welcome',      moduleId: PLATFORM.moduleName('./welcome'),      nav: true, title: 'Welcome' }
     ]);
     config.fallbackRoute('/');
