@@ -134,7 +134,7 @@ module.exports = ({production, server, extractCss, coverage} = {}) => ({
     // { from: 'src/classes/register_.js', to: 'register_.js' },
     { from: 'static/imgs', to: 'static/imgs' }]
   ),
-    new webpack.EnvironmentPlugin(['NODE_ENV', 'AuthProductionBaseURL', 'PORT', 'BackendUrl', 'GoogleClientId', 'userRoles', 'role', 'FrontendUrl']),
+    new webpack.EnvironmentPlugin(['NODE_ENV', 'AuthProductionBaseURL', 'PORT', 'BackendUrl', 'GoogleClientId', 'userRoles', 'FrontendUrl']),
     new webpack.DefinePlugin({'process.env': Object.keys(process.env).reduce((o, k) => {
       o[k] = JSON.stringify(process.env[k]);
       return o;
