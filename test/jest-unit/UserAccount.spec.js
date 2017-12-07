@@ -61,20 +61,36 @@ test('it updates user with the user prefs form', () => {
     this.headers.method = data.method;
     return Promise.resolve({
       Headers: this.headers,
-      json: () => Promise.resolve({message: 'success'})
+      json: () => Promise.resolve({})
     });
   };
   ua.fetch = mockfetch;
-  //user.userToken = null;
   document.body.innerHTML = '<div><div class="home"></div></div><div class="UserProfileForm" style="display:block">' +
   '<input class="uprofFirstName" value="Bob"><input class="uprofLastName" value="Smith"><input class="uprofAff" value="self"><input class="uprofOrganisms" value="dog">' +
   '<input class="uprofInterests" value="walking"><input class="uprofEmail" value="bob@smith.com"></div>';
   ua.updateUserPrefs().then((data) => {
-    //expect(document.getElementsByClassName('uprofEmail')[0].value).toBe('bob@smith.com');
-    expect(data.message).toBe('success');
+    expect(data.message).toBe(undefined);
   });
 });
 
+test('it tries to updates user with the user prefs form, but displays an error', () => {
+  mockfetch = function(url, data) {
+    this.headers = {};
+    this.headers.url = url;
+    this.headers.method = data.method;
+    return Promise.resolve({
+      Headers: this.headers,
+      json: () => Promise.resolve({message: 'some error'})
+    });
+  };
+  ua.fetch = mockfetch;
+  document.body.innerHTML = '<div><div class="home"></div></div><div class="UserProfileForm" style="display:block">' +
+  '<input class="uprofFirstName" value="Bob"><input class="uprofLastName" value="Smith"><input class="uprofAff" value="self"><input class="uprofOrganisms" value="dog">' +
+  '<input class="uprofInterests" value="walking"><input class="uprofEmail" value="bob@smith.com"></div>';
+  ua.updateUserPrefs().then((data) => {
+    expect(data.message).toBe('some error');
+  });
+});
 // test('it validates the user prefs form', () => {
 //   document.body.innerHTML = '<div><div class="home"></div></div><div class="UserProfileForm" style="display:block">' +
 //   '<input class="uprofFirstName" value="Bob"><input class="uprofLastName" value="Smith"><input class="uprofAff" value="self"><input class="uprofOrganisms" value="dog">' +
