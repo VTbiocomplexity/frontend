@@ -27,9 +27,10 @@ describe('The AppState module unit tests', () => {
 
   it('should set a developer user', testAsync(async function() {
     await appState.setUser(userDeveloper);
-    //await appState.checkUserRole();
-    //let devroles = await appState.getRoles();
+    await appState.checkUserRole();
+    let devroles = await appState.getRoles();
     expect(appState.user._id).toBe('foo');
+    expect(devroles.includes('developer')).toBe(true);
     //done();
   }));
   it('should fetch the user when the user is not defined', testAsync(async function() {

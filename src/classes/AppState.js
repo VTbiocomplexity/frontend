@@ -39,8 +39,13 @@ export class AppState {
       let thisuserrole = this.user.userType;
       this.setRoles([thisuserrole.toLowerCase()]);
     } else {
-      this.setRoles(['area1-student', 'area1-prof', 'area2-student', 'area2-prof', 'developer']); //developer access to all user roles
-      //this.app.router.navigate('dashboard/developer');
+      let validRoles = JSON.parse(process.env.userRoles).roles;
+      let validRolesLowerCase = [];
+      for (let i = 0; i < validRoles.length; i++) {
+        validRolesLowerCase.push(validRoles[i].toLowerCase());
+      }
+      this.setRoles(validRolesLowerCase); //developer access to all user roles
+      //console.log(validRoles.toLowerCase());
     }
   }
 
@@ -54,13 +59,13 @@ export class AppState {
   //   this.newUser = input;
   // }
 
-  getAuth() {
-    return (this.is_auth);
-  }
-
-  setAuth(input) {
-    this.is_auth = input;
-  }
+  // getAuth() {
+  //   return (this.is_auth);
+  // }
+  //
+  // setAuth(input) {
+  //   this.is_auth = input;
+  // }
 
   getRoles() {
     return new Promise((resolve) => {
