@@ -1,5 +1,6 @@
 System.import('isomorphic-fetch');
 System.import('whatwg-fetch');
+//System.import('popper.js');
 import {PLATFORM} from 'aurelia-pal';
 import {inject} from 'aurelia-framework';
 import {AuthorizeStep, AuthService} from 'aurelia-auth';
