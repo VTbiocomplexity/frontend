@@ -91,7 +91,7 @@ module.exports = ({production, server, extractCss, coverage} = {}) => ({
     new AureliaPlugin(),
     new ModuleDependenciesPlugin({
       'aurelia-auth': ['./auth-filter'],
-      // 'aurelia-polymer': ['./au-select-custom-attribute'],
+      'aurelia-polymer': ['./au-select-custom-attribute'],
       'aurelia-config': ['./aurelia-config'],
       'au-table': ['./au-table', './au-table-select', './au-table-sort', './au-table-pagination'],
       'aurelia-validation': [
@@ -131,6 +131,7 @@ module.exports = ({production, server, extractCss, coverage} = {}) => ({
     }),
     new CopyWebpackPlugin(
       [{ from: 'static/favicon.ico', to: 'favicon.ico' },
+      { from: 'static/includes.html', to: 'includes.html' },
     // { from: 'src/classes/register_.js', to: 'register_.js' },
     { from: 'static/imgs', to: 'static/imgs' }]
   ),
@@ -140,9 +141,9 @@ module.exports = ({production, server, extractCss, coverage} = {}) => ({
       return o;
     }, {})}
 ),
-  //   new CopyWebpackPlugin([
-  // { from: 'bower_components/webcomponentsjs/webcomponents.min.js', to: 'webcomponents.min.js' }
-  //   ]),
+    new CopyWebpackPlugin([
+  { from: 'bower_components/webcomponentsjs/webcomponents.min.js', to: 'webcomponents.min.js' }
+    ]),
     ...when(extractCss, new ExtractTextPlugin({
       filename: production ? '[contenthash].css' : '[id].css',
       allChunks: true
