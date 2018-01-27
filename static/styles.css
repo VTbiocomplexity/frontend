@@ -56,11 +56,11 @@ th {
   max-width: 2in;
 }
 
-.page-host {
+div.page-host {
   position: absolute;
   left: 0;
   right: 0;
-  top: 50px;
+  top: 0;
   bottom: 0;
   overflow-x: hidden;
   overflow-y: auto;
@@ -159,4 +159,109 @@ th {
 .Toolbar i.disabled {
   cursor: default;
   color: #ddd;
+}
+
+.home-sidebar {
+  background-color: #c0c0c0;
+}
+
+.home-header {
+  background-color: #2a222a;
+  margin: 0;
+  height: 70px;
+}
+
+.home-header-image {
+  width: 64px;
+}
+
+.home-menu-toggle {
+  color: #333;
+}
+
+.material-header {
+  /*height: 88px;*/
+  margin-left: auto;
+  min-height: 70px;
+  background-color: #2a222a;
+  margin-bottom: auto;
+}
+
+.menu-item:hover {
+  background-color: white;
+}
+
+.menu-item {
+  padding-left: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-family: 'Roboto', 'Noto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  position: relative;
+  min-height: 48px;
+  padding-top: 0;
+  padding-right: 16px;
+  box-sizing: border-box;
+}
+
+.nav-item {
+  color: #23527c;
+  text-decoration: underline;
+  padding-right: 0;
+  margin-right: 0;
+}
+
+a:hover {
+  color: #0056b3;
+}
+
+.nav-link {
+  padding-left: 0;
+  display: block !important;
+  color: #23527c;
+  outline: none !important;
+}
+
+.mobile-menu-toggle {
+  position: fixed;
+  top: 32px;
+  right: 16px;
+  background-color: #2a222a;
+  color: white;
+  padding: 6px;
+  z-index: 90000;
+}
+
+.header-text {
+  color: white;
+  font-size: 24px;
+}
+
+.header-text-card {
+  left: 15px;
+  text-align: center;
+  max-height: 64px;
+}
+
+.headercontent {
+  top: 2px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  border-radius: 2px;
+}
+
+a:not([href]):not([tabindex]) {
+  text-decoration: underline;
+  color: #007bff;
+}
+
+a:not([href]):not([tabindex]):hover {
+  text-decoration: underline;
+  color: #0056b3;
 }
