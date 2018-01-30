@@ -7,6 +7,8 @@
 
 ## Installation
 
+* Install Node.js, version listed in package.json
+* Install Yarn (not required, but recommended), see Yarn's installation instructions for your OS.
+* Create a .env file at the project root, then request the contents from an app owner.
 * First time or as a recovery, `npm run cleaninstall`
-* For minor updates, `yarn install`
-*  
+* For minor updates, `yarn install`  
