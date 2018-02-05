@@ -1,5 +1,5 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.8.0
+version: v1.10.1
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
   'npm:fresh:20170908':
@@ -17,6 +17,13 @@ ignore:
     - wait-on > joi > moment:
         reason: None given
         expires: '2017-12-29T17:01:23.074Z'
+  'npm:content-type-parser:20170905':
+    - jsdom > content-type-parser:
+        reason: None given
+        expires: '2018-02-26T16:38:24.007Z'
+    - aurelia-pal-nodejs > jsdom > content-type-parser:
+        reason: None given
+        expires: '2018-02-26T16:38:24.007Z'
 # patches apply the minimum changes required to fix a vulnerability
 patch:
   'npm:debug:20170905':

@@ -10,13 +10,28 @@ export class Dashboard {
     this.userTypes = JSON.parse(process.env.userRoles).roles;
     this.uid = this.app.auth.getTokenPayload().sub;
     this.user = await this.app.appState.getUser(this.uid);
+    console.log(localStorage.getItem('useremail'));
+    console.log(this.user);
+    console.log(this.app.auth.tokenInterceptor);
+    if (localStorage.getItem('useremail') === null) {
+      localStorage.setItem('useremail', this.user.email);
+    }
+    if (localStorage.getItem('token') === null) {
+      let newToken = sessionStorage.getItem('aurelia_id_token');
+      if (newToken === null) {
+        newToken = localStorage.getItem('aurelia_id_token');
+        console.log('this is the newToken');
+        console.log(newToken);
+      }
+      localStorage.setItem('token', newToken);
+    }
     this.newUser = false;
     /* istanbul ignore else */
     if (this.user.userType === 'Developer') {
       this.userTypes.push('Developer');
     }
     this.childRoute();
-    console.log(this.user);
+    //console.log(this.user);
   }
 
   childRoute() {

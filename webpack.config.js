@@ -91,7 +91,7 @@ module.exports = ({production, server, extractCss, coverage} = {}) => ({
     new AureliaPlugin(),
     new ModuleDependenciesPlugin({
       'aurelia-auth': ['./auth-filter'],
-      // 'aurelia-polymer': ['./au-select-custom-attribute'],
+      'aurelia-polymer': ['./au-select-custom-attribute'],
       'aurelia-config': ['./aurelia-config'],
       'au-table': ['./au-table', './au-table-select', './au-table-sort', './au-table-pagination'],
       'aurelia-validation': [
@@ -131,18 +131,19 @@ module.exports = ({production, server, extractCss, coverage} = {}) => ({
     }),
     new CopyWebpackPlugin(
       [{ from: 'static/favicon.ico', to: 'favicon.ico' },
+      { from: 'static/includes.html', to: 'includes.html' },
     // { from: 'src/classes/register_.js', to: 'register_.js' },
     { from: 'static/imgs', to: 'static/imgs' }]
   ),
-    new webpack.EnvironmentPlugin(['NODE_ENV', 'AuthProductionBaseURL', 'PORT', 'BackendUrl', 'GoogleClientId', 'userRoles', 'role', 'FrontendUrl']),
+    new webpack.EnvironmentPlugin(['NODE_ENV', 'AuthProductionBaseURL', 'PORT', 'BackendUrl', 'GoogleClientId', 'userRoles', 'FrontendUrl']),
     new webpack.DefinePlugin({'process.env': Object.keys(process.env).reduce((o, k) => {
       o[k] = JSON.stringify(process.env[k]);
       return o;
     }, {})}
 ),
-  //   new CopyWebpackPlugin([
-  // { from: 'bower_components/webcomponentsjs/webcomponents.min.js', to: 'webcomponents.min.js' }
-  //   ]),
+    new CopyWebpackPlugin([
+  { from: 'bower_components/webcomponentsjs/webcomponents.min.js', to: 'webcomponents.min.js' }
+    ]),
     ...when(extractCss, new ExtractTextPlugin({
       filename: production ? '[contenthash].css' : '[id].css',
       allChunks: true

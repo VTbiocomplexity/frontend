@@ -4,7 +4,7 @@ export class AppState {
     this.user = {};
     this.is_auth = false;
     this.roles = [];
-    this.isOhafLogin = false;
+    //this.isOhafLogin = false;
     //this.newUser = false;
   }
 
@@ -28,21 +28,26 @@ export class AppState {
       this.setUser(user);
       //check only if this is not a new user
       /* istanbul ignore else */
-      // if (this.user.userType){
-      //   this.checkUserRole();
-      // }
+      if (this.user.userType) {
+        this.checkUserRole();
+      }
     });
   }
 
-  // checkUserRole(){
-  //   if (this.user.userType !== 'Developer'){
-  //     let thisuserrole = this.user.userType;
-  //     this.setRoles([thisuserrole.toLowerCase()]);
-  //   } else {
-  //     this.setRoles(['area1-student', 'area1-prof', 'area2-student', 'area2-prof', 'developer']); //developer access to all user roles
-  //     //this.app.router.navigate('dashboard/developer');
-  //   }
-  // }
+  checkUserRole() {
+    if (this.user.userType !== 'Developer') {
+      let thisuserrole = this.user.userType;
+      this.setRoles([thisuserrole.toLowerCase()]);
+    } else {
+      let validRoles = JSON.parse(process.env.userRoles).roles;
+      let validRolesLowerCase = [];
+      for (let i = 0; i < validRoles.length; i++) {
+        validRolesLowerCase.push(validRoles[i].toLowerCase());
+      }
+      this.setRoles(validRolesLowerCase); //developer access to all user roles
+      //console.log(validRoles.toLowerCase());
+    }
+  }
 
   setUser(input) {
     //console.log('appState setUser');
@@ -57,19 +62,19 @@ export class AppState {
   // getAuth() {
   //   return (this.is_auth);
   // }
-
+  //
   // setAuth(input) {
   //   this.is_auth = input;
   // }
 
-  // getRoles() {
-  //   return new Promise((resolve) => {
-  //     resolve(this.roles);
-  //   });
-  // }
-  //
-  // setRoles(input){
-  //   this.roles = input;
-  //   //console.log('user roles are ' + this.roles);
-  // }
+  getRoles() {
+    return new Promise((resolve) => {
+      resolve(this.roles);
+    });
+  }
+
+  setRoles(input) {
+    this.roles = input;
+    //console.log('user roles are ' + this.roles);
+  }
 }

@@ -1,9 +1,26 @@
 import {UserAccount} from '../../src/dashboard-child-routes/user-account';
-
-let ua = new UserAccount();
+import {RouterStub, AuthStub, HttpMock, AppStateStub} from './commons';
+import {App} from '../../src/app';
 
 describe('the User Account Module', () => {
-  it('Does not updates User Details with an invalid form', (done) => {
+  let app1;
+  let auth;
+  let ua;
+  beforeEach(() => {
+    auth = new AuthStub();
+    auth.setToken({sub: 'aowifjawifhiawofjo'});
+    app1 = new App(auth, new HttpMock());
+    app1.router = new RouterStub();
+    app1.activate();
+    ua = new UserAccount(app1);
+    ua.activate();
+    ua.app.authenticated = true;
+    ua.app.appState = new AppStateStub();
+    //sut.app.appState = new AppStateStub();
+    //sut.app.authenticated = false;
+  });
+
+  it('Does not update User Details with an invalid form', (done) => {
     document.body.innerHTML = '<div class="elevation3" style="max-width:3.25in; margin:auto"><form><table><tbody>' +
 '<tr><th>First Name <span style="color:red">*</span></th><th>Last Name <span style="color:red">*</span></th></tr>' +
 '<tr><td><input class="uprofFirstName" style="width:100%" name="first_name" value="" required></td><td><input class="uprofLastName" style="width:100%" name="last_name" value="" required></td></tr>' +
@@ -41,8 +58,12 @@ describe('the User Account Module', () => {
     ua.attached();
     document.getElementsByClassName('uprofFirstName')[0].value = 'Joe';
     document.getElementsByClassName('uprofLastName')[0].value = 'Smith';
+    ua.user = {userType: 'PATRIC'};
     ua.updateUserPrefs();
     expect(document.getElementsByClassName('formerrors')[0].innerHTML).toBe('');
+    ua.user.userType = '';
+    ua.updateUserPrefs();
+    expect(document.getElementsByClassName('formerrors')[0].innerHTML).toBe('<p>Select a primary user type.</p>');
     done();
   });
 

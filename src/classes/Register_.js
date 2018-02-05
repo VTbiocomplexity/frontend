@@ -7,22 +7,6 @@ class Register_ {
     this.patric = patric;
   }
 
-  // checkIfLoggedIn() {
-  //   console.log('checking if I am already logged in');
-  //   if (localStorage.getItem('token') !== null) {
-  //     let hideWithAuth = document.getElementsByClassName('HideWAuth');
-  //     console.log('this is local storage :' + localStorage.getItem('token'));
-  //     if (hideWithAuth.length > 0){
-  //       hideWithAuth[0].style.display = 'none';
-  //     }
-  //     console.log('this is the hide with auth element' + hideWithAuth);
-  //     let showWithAuth = document.getElementsByClassName('ShowWAuth');
-  //     if (showWithAuth.length > 0){
-  //       showWithAuth[0].style.display = 'block';
-  //     }
-  //   }
-  // }
-
   createRegistrationForm(appName) {
     this.patric.nevermind('LoginForm');
     this.patric.nevermind('RegistrationForm');
@@ -47,9 +31,6 @@ class Register_ {
     const home = document.getElementsByClassName('home');
     home[0].insertBefore(regform, home[0].childNodes[0]);
     document.getElementsByClassName('appName')[0].innerHTML = appName + ' ';
-    // let pArr = ['userIdRow', 'useridinput'];
-    // let nArr = ['primApSel'];
-    // patric.showHideElements(this.appName, pArr, nArr);
     let elementsObj = {'PATRIC': ['userIdRow', 'useridinput'], 'nArr': ['primApSel']};
     patric.showHideElements2(this.appName, elementsObj);
   }
@@ -105,13 +86,10 @@ class Register_ {
       useridinput.style.display = 'block';
       document.getElementsByClassName('registererror')[0].innerHTML = '';
       this.appName = 'PATRIC';
-      //document.getElementsByClassName('nevermind')[0].style.display = 'block';
-      //document.getElementsByClassName('registerbutton')[0].style.display = 'none';
     } else {
       uidRow.style.display = 'none';
       useridinput.style.display = 'none';
       this.appName = primApp;
-      //document.getElementsByClassName('nevermind')[0].style.display = 'none';
     }
   }
 

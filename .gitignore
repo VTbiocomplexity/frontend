@@ -15,3 +15,4 @@ django_montage/local_settings.py
 # Ignore Key Pairs
 private.pem
 public.pem
+bower_components
