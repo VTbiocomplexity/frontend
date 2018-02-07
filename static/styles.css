@@ -35,6 +35,16 @@ button:hover {
   background-color: #80dfff;
 }
 
+label {
+  /* font-size: 11pt; */
+  padding-top: 20px;
+  margin-bottom: 0;
+  padding-bottom: 1px;
+  display: block;
+  width: 100%;
+  font-weight: bold;
+}
+
 label.alignleft {
   text-align: left;
   margin-top: 10px;

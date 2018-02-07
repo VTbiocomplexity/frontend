@@ -2,7 +2,21 @@
   <div class="page-content">
     <div class="material-content">
     <h4 style="margin:auto; padding-top:10px; padding-bottom:20px;text-align:center"><strong>Rafter Dashboard</strong></h4>
-    <p style="text-align:center">We are going to try out some Rafter APIs here</p>
+    <p style="text-align:center">We are going to try out some Rafter APIs here!</p>
+    <div class="rafterLogin elevation3" style="max-width:3in; margin:auto">
+      <form style="margin-left:20px">
+        <label>Rafter User Id</label>
+        <input type="text" value.bind="rafter.id" change.delegate="validate()">
+
+        <label>Rafter Password</label>
+        <input type="password" value.bind="rafter.password" change.delegate="validate()">
+        <div>
+          <p>&nbsp;</p>
+          <p class="userServiceError" style="color:red">&nbsp;</p>
+        <button disabled class="rafterLoginButton" click.delegate="postUSV()">Login To Rafter</button>
+      </div>
+      </form>
+    </div>
     <!-- <p>This news (or blog) will appear on the News page and will also be published to Facebook, Twitter, Instagram, and Google</p> -->
   </div>
   <!-- <div id="wjfooter" class="footer" style="padding:8px; background-color: #2a222a"></div> -->
