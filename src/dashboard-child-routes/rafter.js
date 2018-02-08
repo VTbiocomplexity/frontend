@@ -49,13 +49,21 @@ export class Rafter {
     })
     .then((response) => response.json())
     .then((data) => {
-      data = data.replace(/&#34;/g, '');
-      let token = data.split('authorization_token:')[1];
+      let data1 = data.replace(/&#34;/g, '');
+      let token = data1.split('authorization_token:')[1];
       token = token.split('}')[0];
-      console.log(token);
+      //console.log(token);
       window.localStorage.setItem('rafterToken', token);
+      console.log(data);
+      let rafterUser = data.split('&#34;user&#34;:')[1];
 
-
+      rafterUser = rafterUser.split('}')[0];
+      rafterUser = rafterUser + '}';
+      rafterUser = rafterUser.replace(/&#34;/g, '"');
+      // //JSON.parse(rafterUser);
+      console.log(rafterUser);
+      console.log(JSON.parse(rafterUser));
+      window.localStorage.setItem('rafterUser', rafterUser);
     // document.getElementById('charityDash').scrollIntoView();
     // this.activate();
     // this.createNewCharity();

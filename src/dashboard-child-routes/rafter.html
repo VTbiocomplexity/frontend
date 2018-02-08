@@ -6,10 +6,10 @@
     <div class="rafterLogin elevation3" style="max-width:3in; margin:auto">
       <form style="margin-left:20px">
         <label>Rafter User Id</label>
-        <input type="text" value.bind="rafter.id" change.delegate="validate()">
+        <input type="text" value.bind="rafter.id" change.delegate="validate()" keyup.delegate="validate()">
 
         <label>Rafter Password</label>
-        <input type="password" value.bind="rafter.password" change.delegate="validate()">
+        <input type="password" value.bind="rafter.password" change.delegate="validate()" keyup.delegate="validate()">
         <div>
           <p>&nbsp;</p>
           <p class="userServiceError" style="color:red">&nbsp;</p>
