@@ -57,6 +57,7 @@ export class App {
 
   get widescreen() {
     let isWidescreen = document.documentElement.clientWidth > 766;
+    /* istanbul ignore else */
     if (isWidescreen) {
       this.hideToggle();
     }
@@ -76,6 +77,7 @@ export class App {
       menuToggleClass: 'home-menu-toggle'
     };
     result.sidebarImagePath = '../static/imgs/BI_logo2.jpg';
+      /* istanbul ignore else */
     if (mobilemenutoggle !== null) {
       mobilemenutoggle.style.backgroundColor = '#2a222a';
     }
@@ -87,12 +89,13 @@ export class App {
   setFooter(style) {
     let footer = document.getElementById('wjfooter');
     let color = '';
+      /* istanbul ignore else */
     if (footer !== null) {
       footer.style.backgroundColor = '#2a222a';
-      if (style === 'ohaf') {
-        footer.style.backgroundColor = '#565656';
-        color = '#c09580';
-      }
+      // if (style === 'ohaf') {
+      //   footer.style.backgroundColor = '#565656';
+      //   color = '#c09580';
+      // }
       footer.innerHTML = '<div style="text-align: center">' +
       // '<a target="_blank" style="color:' + color + '" href="https://github.com/WebJamApps"><i class="fa fa-github fa-2x" aria-hidden="true"></i></a>' +
       // '<span>&nbsp;&nbsp;</span><a target="_blank" style="color:' + color + '"  href="https://www.linkedin.com/company-beta/16257103"><i class="fa fa-linkedin fa-2x" aria-hidden="true"></i></a>' +
@@ -124,6 +127,7 @@ export class App {
     }
     if (!this.widescreen) {
       let mobilemenutoggle = document.getElementById('mobilemenutoggle');
+          /* istanbul ignore else */
       if (mobilemenutoggle !== null) {
         mobilemenutoggle.style.display = 'block';
       }
@@ -133,6 +137,7 @@ export class App {
   hideToggle() {
     //console.log('going to hide you hamburger!');
     let mobilemenutoggle = document.getElementById('mobilemenutoggle');
+        /* istanbul ignore else */
     if (mobilemenutoggle !== null) {
       mobilemenutoggle.style.display = 'none';
     }

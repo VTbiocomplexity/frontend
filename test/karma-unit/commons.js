@@ -103,7 +103,11 @@ class HttpMock {
     // this one catches the ajax and then resolves a custom json data.
     // real api calls will have more methods.
   constructor(data) {
+    this.error = false;
     this.user = data || {name: 'Iddris Elba', userType: 'Volunteer', _id: '3333333', volTalents: [], volCauses: [], volWorkPrefs: [], volCauseOther: '', volTalentOther: '', volWorkOther: ''};
+    if (data === 'rafterError') {
+      this.error = true;
+    }
   }
   status = 500;
   headers = {accept: 'application/json', method: '', url: ''}
@@ -118,6 +122,20 @@ class HttpMock {
       this.user = obj.body;
     }
     this.status = 200;
+    if (url === '/rafter/rlogin') {
+      console.log('login rafter test');
+      if (!this.error) {
+        let data = '{authorization_token: 123}, {&#34;user&#34;: {&#34;name&#34;: &#34;tester&#34;}';
+        return Promise.resolve({
+          Headers: this.headers,
+          json: () => Promise.resolve(data)
+        });
+      }
+      return Promise.reject({
+        Headers: this.headers,
+        json: () => Promise.reject({message: 'error'})
+      });
+    }
     return Promise.resolve({
       Headers: this.headers,
       json: () => Promise.resolve(this.user)
