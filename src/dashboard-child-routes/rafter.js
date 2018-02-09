@@ -1,10 +1,12 @@
 import {inject} from 'aurelia-framework';
 import {App} from '../app';
+const jwtDecode = require('jwt-decode');
 //import {json} from 'aurelia-fetch-client';
 //import {VolumeService} from 'rafter';
 @inject(App)
 export class Rafter {
   constructor(app) {
+    this.showLogin = true;
     this.app = app;
     this.rafter = {
       id: '',
@@ -20,11 +22,51 @@ export class Rafter {
   async activate() {
     this.uid = this.app.auth.getTokenPayload().sub;
     this.user = await this.app.appState.getUser(this.uid);
+    this.checkIfLoggedIn();
     //this.postUSV();
     //console.log(this.vs);
     //this.app.dashboardTitle = this.user.userType;
     //this.app.role = this.user.userType;
   }
+
+  rafterLogout() {
+    console.log('going to log you out');
+  }
+
+  checkIfLoggedIn() {
+    if (window.localStorage.getItem('rafterToken') !== null && window.localStorage.getItem('rafterToken') !== undefined) {
+      console.log('howdy rafter user');
+      let rtok = window.localStorage.getItem('rafterToken');
+      console.log(rtok);
+      try {
+        let decoded = jwtDecode(rtok);
+        console.log(decoded);
+        let validToken = this.checkExpired(decoded);
+        if (!validToken) {
+          console.log('your token is bad, logging you out!');
+          this.showLogin = true;
+        } else {
+          this.showLogin = false;
+        }
+      } catch (err) {
+        // The token is invalid
+        console.log(err);
+      }
+      //document.getElementsByClassName('rafterLogin')[0].style.display = none;
+    }
+  }
+
+  checkExpired(decoded) {
+    // checkExpToken: function(date) {
+    let d = new Date();
+    let checkd = d.valueOf() / 1000;
+    console.log(checkd);
+    if (checkd > decoded.exp) {
+      console.log('expired');
+      return false;
+    } return true;
+  }
+  // }
 
   validate() {
     let submitButton = document.getElementsByClassName('rafterLoginButton')[0];
@@ -64,6 +106,7 @@ export class Rafter {
       console.log(rafterUser);
       console.log(JSON.parse(rafterUser));
       window.localStorage.setItem('rafterUser', rafterUser);
+      this.activate();
     // document.getElementById('charityDash').scrollIntoView();
     // this.activate();
     // this.createNewCharity();

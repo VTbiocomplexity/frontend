@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "jsdom": "11.5.1",
+    "aurelia-history": "^1.1.0",
     "au-table": "^0.1.12",
     "aurelia-api": "^3.1.1",
     "aurelia-auth": "^3.0.5",
@@ -79,8 +80,10 @@
     "html-webpack-plugin": "^2.29.0",
     "inputmask": "^3.3.7",
     "isomorphic-fetch": "^2.2.1",
+    "jwt-decode": "^2.2.0",
     "jquery": "^3.2.1",
     "json-loader": "^0.5.4",
+    "minimatch": "^3.0.2",
     "nps": "^5.6.0",
     "nps-utils": "^1.2.0",
     "popper.js": "^1.12.9",
