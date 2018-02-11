@@ -11,7 +11,7 @@ export class UserAccess {
         console.log('These are my roles: ' + userRoles);
         console.log('The main route is: ' + routingContext.fragment);
 
-        if (routingContext.fragment === '/dashboard' || routingContext.params.childRoute === 'user-account') {
+        if (routingContext.fragment === '/dashboard' || routingContext.params.childRoute === 'user-account' || routingContext.params.childRoute === 'rafter') {
           //console.log('I am only trying to go to the main dashboard or user account');
           return next();
         }
