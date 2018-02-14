@@ -33,7 +33,10 @@ export class Rafter {
     console.log('going to log you out');
     localStorage.removeItem('rafterToken');
     localStorage.removeItem('rafterUser');
-    window.location.reload();
+    if (process.env.NODE_ENV !== 'test') {
+      //console.log('is this a test?');
+      window.location.reload();
+    }
   }
 
   checkIfLoggedIn(cep, rlo, sli) {
