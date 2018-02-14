@@ -29,6 +29,14 @@ export class Rafter {
     //this.app.role = this.user.userType;
   }
 
+  rafterMakeFile() {
+    console.log('make a new file');
+  }
+
+  rafterCheckHome() {
+    console.log('do I have a home directory?');
+  }
+
   rafterLogout() {
     console.log('going to log you out');
     localStorage.removeItem('rafterToken');
