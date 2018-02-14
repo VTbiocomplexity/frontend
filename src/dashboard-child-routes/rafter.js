@@ -68,6 +68,12 @@ export class Rafter {
       } catch (err) {
         // The token is invalid
         console.log(err);
+        console.log('your token is bad, logging you out!');
+        if (rlo !== null && rlo !== undefined) {
+          rlo();
+        } else {
+          this.rafterLogout();
+        }
       }
     } else {
       console.log('you our not logged in');
