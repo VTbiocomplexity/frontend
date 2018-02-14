@@ -51,7 +51,7 @@ class Login_ {
     loginButton.fetchClient = this.fetch;
     loginButton.runFetch = this.runFetch;
     //loginButton.checkIfLoggedIn = this.checkIfLoggedIn;
-    loginButton.generateSession = this.generateSession;
+    //loginButton.generateSession = this.generateSession;
     loginButton.addEventListener('click', this.logMeIn);
     let resetPB = document.getElementsByClassName('resetpass')[0];
     resetPB.fetchClient = this.fetch;
@@ -150,7 +150,7 @@ class Login_ {
     let runFetch = evt.target.runFetch;
     let appName = evt.target.appName;
     //let checkIfLoggedIn = evt.target.checkIfLoggedIn;
-    let generateSession = evt.target.generateSession;
+    //let generateSession = evt.target.generateSession;
     let useridValue = '';
     let emailValue = '';
     const passwordValue = document.getElementsByClassName('loginpass')[0].value;
@@ -167,10 +167,10 @@ class Login_ {
         'Content-Type': 'application/json'
       }
     };
-    return runFetch(fetchClient, process.env.BackendUrl, '/auth/login', fetchData, generateSession, appName, null);
+    return runFetch(fetchClient, process.env.BackendUrl, '/auth/login', fetchData, appName, null);
   }
 
-  runFetch(fetchClient, url, route, fetchData, generateSession, appName, loginEmail) {
+  runFetch(fetchClient, url, route, fetchData, appName, loginEmail) {
     let loginform1 = document.getElementsByClassName('LoginForm');
     let messagediv = document.getElementsByClassName('loginerror')[0];
     let feurl = 'http://localhost:7000';
@@ -183,12 +183,12 @@ class Login_ {
     .then((data) => {
       if (data.token !== undefined) {
         localStorage.setItem('token', data.token);
-        localStorage.setItem('useremail', data.email);
+        localStorage.setItem('userEmail', data.email);
         //Login.app.auth.setToken(data.token);
-        if (appName === 'PATRIC') {
-          //checkIfLoggedIn();
-          generateSession(data.email);
-        }
+        // if (appName === 'PATRIC') {
+        //   //checkIfLoggedIn();
+        //   generateSession(data.email);
+        // }
         loginform1[0].style.display = 'none';
         window.location.href = feurl + '/login/?token=true';
       }
@@ -205,23 +205,23 @@ class Login_ {
     });
   }
 
-  generateSession(useremail) {
-    console.log('put some cool code here for session and cookie and storage or something for this user: ' + useremail);
-    let bodyData = {'email': useremail };
-    let fetchData = {
-      method: 'POST',
-      body: JSON.stringify(bodyData),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
-      }
-    };
-    return this.fetch(process.env.BackendUrl + '/user/', fetchData)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-    });
-  }
+  // generateSession(useremail) {
+
+  //   let bodyData = {'email': useremail };
+  //   let fetchData = {
+  //     method: 'POST',
+  //     body: JSON.stringify(bodyData),
+  //     headers: {
+  //       'Accept': 'application/json',
+  //       'Content-Type': 'application/json',
+  //       'Authorization': 'Bearer ' + localStorage.getItem('token')
+  //     }
+  //   };
+  //   return this.fetch(process.env.BackendUrl + '/user/', fetchData)
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     console.log(data);
+  //   });
+  // }
 }
 module.exports = Login_;

@@ -203,7 +203,7 @@ export class App {
     this.auth.logout('/')
     .then(() => {
       localStorage.removeItem('token');
-      localStorage.removeItem('useremail');
+      localStorage.removeItem('userEmail');
       console.log('Promise fulfilled, logged out');
     });
     // } else {
