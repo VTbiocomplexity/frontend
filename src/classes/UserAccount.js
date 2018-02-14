@@ -9,7 +9,7 @@ class UserAct {
   //This populates the UserProfileForm, found in the userutil.html (or userutil/index.html)
   populateForm() {
     document.getElementsByClassName('UserProfileForm')[0].style.display = 'block';
-    let bodyData = {'email': localStorage.getItem('useremail') };
+    let bodyData = {'email': localStorage.getItem('userEmail') };
     let fetchData = {
       method: 'POST',
       body: JSON.stringify(bodyData),
@@ -88,7 +88,7 @@ class UserAct {
 
   // this is only the initial request to change the email address from the User Prefs page
   changeUserEmail() {
-    let bodyData = {'changeemail': document.getElementsByClassName('uprofEmail')[0].value, 'email': localStorage.getItem('useremail') };
+    let bodyData = {'changeemail': document.getElementsByClassName('uprofEmail')[0].value, 'email': localStorage.getItem('userEmail') };
     let fetchData = {
       method: 'PUT',
       body: JSON.stringify(bodyData),

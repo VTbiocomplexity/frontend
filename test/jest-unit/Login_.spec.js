@@ -264,7 +264,7 @@ test('login the PATRIC user', () => {
       json: () => Promise.resolve({ token: 'lsdfldjflsdjlfdjfsjdlf', email: 'joe@smith.com' })
     });
   };
-  let evt = {target: {fetchClient: mockfetch, appName: 'PATRIC', runFetch: reg.runFetch, checkIfLoggedIn: function() {}, generateSession: function(email) {}}};
+  let evt = {target: {fetchClient: mockfetch, appName: 'PATRIC', runFetch: reg.runFetch, checkIfLoggedIn: function() {}}};
   const mockStorage = {setItem: function(item, value) {
     //do nothing
   }, getItem: function(item, value) {
@@ -355,22 +355,22 @@ test('catches any login errors', () => {
   .catch((e) => expect(e).toBeTruthy());
 });
 
-test('Generates a session for PATRIC', () => {
-  const mockfetch = function(url, data) {
-    this.headers = {};
-    this.headers.url = url;
-    this.headers.method = data.method;
-    return Promise.resolve({
-      Headers: this.headers,
-      json: () => Promise.resolve({ message: 'success' })
-    });
-  };
-  reg.fetch = mockfetch;
-  const mockStorage = {getItem: function(item, value) {
-    //do nothing
-  }};
-  window.localStorage = mockStorage;
-  reg.generateSession('joe@smith.com').then((data) => {
-    expect(data.message).toBe('success');
-  });
-});
+// test('Generates a session for PATRIC', () => {
+//   const mockfetch = function(url, data) {
+//     this.headers = {};
+//     this.headers.url = url;
+//     this.headers.method = data.method;
+//     return Promise.resolve({
+//       Headers: this.headers,
+//       json: () => Promise.resolve({ message: 'success' })
+//     });
+//   };
+//   reg.fetch = mockfetch;
+//   const mockStorage = {getItem: function(item, value) {
+//     //do nothing
+//   }};
+//   window.localStorage = mockStorage;
+//   reg.generateSession('joe@smith.com').then((data) => {
+//     expect(data.message).toBe('success');
+//   });
+// });
