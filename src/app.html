@@ -24,6 +24,12 @@
             </a>
           </div>
           <div class="menu-item" if.bind="authenticated">
+            <a paper-drawer-toggle href="/dashboard/rafter" class="nav-link" click.delegate="close()">
+              <span class="fa fa-ship"></span>
+              <span if.bind="fullmenu" class="nav-item">Rafter</span>
+            </a>
+          </div>
+          <div class="menu-item" if.bind="authenticated">
             <a paper-drawer-toggle href="/dashboard/user-account" class="nav-link" click.delegate="close()">
               <span class="fa fa-user"></span>
               <span if.bind="fullmenu" class="nav-item">User Account</span>
