@@ -19,7 +19,9 @@
     </div>
     <div show.bind="!showLogin">
       <div class="rafterFile" style="text-align:center; margin-auto">
-      <button style="text-align:center" class="rafterCheckHome" click.delegate="rafterCheckHome()">Check Home</button>
+      <button style="text-align:center" class="rafterCheckHome" click.delegate="rafterVolumeService('ls')">Display home/${rafterUserID}</button>
+    <p>&nbsp;</p>
+    <p class="homeDirContent" style="margin:10px;text-align:left">&nbsp;</p>
     </div>
     <p>&nbsp;</p>
       <div class="elevation3" style="min-width:4in">
@@ -29,7 +31,7 @@
           <input type="text" value.bind="rafterFile.name">
           <p>&nbsp;</p>
           <div class="rafterFile" style="max-width:2in;text-align:left">
-          <button style="text-align:center" class="rafterMakeFileButton" click.delegate="rafterMakeFile()">Make a File</button>
+          <button style="text-align:center" class="rafterMakeFileButton" click.delegate="rafterVolumeService('create')">Make a File</button>
         </div>
         </form>
       </div>

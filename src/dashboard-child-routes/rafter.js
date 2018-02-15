@@ -8,10 +8,12 @@ export class Rafter {
   constructor(app) {
     this.showLogin = true;
     this.app = app;
+    this.rafterUserID = '';
     this.rafter = {
       id: '',
       password: ''
     };
+    this.rafterFile = {name: ''};
     //   this.vs = new VolumeService('http://rafter.bi.vt.edu/volumesvc/', 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6W10sImZpcnN0X25hbWUiOiJuZHNzbCIsImxhc3RfbmFtZSI6ImFwcCIsInJvbGVzIjpbXSwidGVhbXMiOlsiQHVzZXJzIl0sImlhdCI6MTUxNzk0Nzk2MSwibmJmIjoxNTE3OTQ3OTYxLCJleHAiOjE1MTgwMzQzNjEsImF1ZCI6WyJAY29yZSIsIiNwdWJsaWMiXSwiaXNzIjoiaHR0cHM6Ly9yYWZ0ZXIuYmkudnQuZWR1L3VzZXJzdmMvcHVibGljX2tleSIsInN1YiI6Im5kc3NsQXBwIn0.a_q5Hq2MKWizi1KFbq8RMKAeQQbpsPweexIRCQwQ2a65J5Ojukf9vv' +
     //   '-i9vRVuzPJEWxPHhXZTSzLXiwPlLB5P9VOlzgDPhmVuPwx2n0q-T9hbV6vGt1E0EL-oKex1dpVE10iM0BWujXvQRC8gPJXhIBNR6zUDXX5ziO_8Y48CNWvKBDKhTjcrGEuj7CEMSt9kZBlgt-E_DnkibnFfHl763k_vPWqJ4okWkhELXtpCj7ObKrjNGRjYzKrMRyjJkIHLOc6ZEsTKkWt4ATzOXN_jVYFqN5tzRpMqiqC-G0oS-aSOiML6HZpqiEu26oLoQ4a6RDAXPp6Me9SXwkhw7K-JNDvW68LRyXIMnz7HisLWhc6-1XykgQ6MLcu4uvsOBD11VQpVmO-5Dkdf2vAlr7jbQ8tvKZaJi4W2PEiVIfR6lNhGPLyU4Zx4bg084tzi6n3jSipKcavfPY' +
     //   '-iNAbZOYDXlB8GKdDIEFpRQmO11Yyr1_B9OjRYFWrf1scdlLhdXcRQT33FHQo_sakhZMI36s50ksj6B4ghrEHhdvgE1TFBgMg6uyRiNiZiRVgd08kMok_JmlJrjGkqoUIgvZeC9NkjGU8YcV5bF5ZTeJpTlJ7l28W8fY_lkjOs4LBsxoJDdnrdGR-FsfFMQJajL4LEuwXGlpBHjfiLpqflRYhf8poDRU');
@@ -29,18 +31,40 @@ export class Rafter {
     //this.app.role = this.user.userType;
   }
 
-  rafterMakeFile() {
-    console.log('make a new file');
-  }
+  // rafterMakeFile() {
+  //   console.log('make a new file');
+  // }
 
-  rafterCheckHome() {
-    console.log('do I have a home directory?');
+  rafterVolumeService(cmd) {
+    //console.log('do I have a home directory?');
+    this.app.httpClient.fetch('/rafter/vs', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({token: localStorage.getItem('rafterToken'), userName: this.rafterUserID, command: cmd, rafterFile: this.rafterFile})
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (cmd === 'ls') {
+          document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(data);
+        }
+        if (data.message) {
+          let errorMessage = JSON.parse(data.message);
+          console.log(errorMessage);
+        }
+      }).catch((err) => {
+        console.log(err);
+        //document.getElementsByClassName('userServiceError')[0].innerHTML = 'Wrong userid or password';
+      });
   }
 
   rafterLogout() {
     console.log('going to log you out');
     localStorage.removeItem('rafterToken');
     localStorage.removeItem('rafterUser');
+    /* istanbul ignore if */
     if (process.env.NODE_ENV !== 'test') {
       //console.log('is this a test?');
       window.location.reload();
@@ -51,7 +75,9 @@ export class Rafter {
     if (window.localStorage.getItem('rafterToken') !== null && window.localStorage.getItem('rafterToken') !== undefined) {
       console.log('howdy rafter user');
       let rtok = window.localStorage.getItem('rafterToken');
-      console.log(rtok);
+      //this.rafterUserID = JSON.parse(localStorage.getItem('rafterUser')).id;
+      //this.rafterUserID = localStorage.getItem('rafterUser')
+      //console.log(rtok);
       try {
         let decoded = jwtDecode(rtok);
         console.log(decoded);
@@ -128,8 +154,9 @@ export class Rafter {
     .then((response) => response.json())
     .then((data) => {
       let data1 = data.replace(/&#34;/g, '');
-      let token = data1.split('authorization_token:')[1];
+      let token = data1.split('authorization_token: ')[1];
       token = token.split('}')[0];
+      token = token.replace(/\r?\n|\r/g, '');
       //console.log(token);
       window.localStorage.setItem('rafterToken', token);
       console.log(data);
@@ -140,6 +167,7 @@ export class Rafter {
       console.log(rafterUser);
       console.log(JSON.parse(rafterUser));
       window.localStorage.setItem('rafterUser', rafterUser);
+      this.rafterUserID = JSON.parse(rafterUser).id;
       this.activate();
     }).catch((err) => {
       console.log(err);
@@ -156,6 +184,12 @@ export class Rafter {
       cili(cep, rlo, sli);
     }
     , 5400);
+
+    let ruser = JSON.parse(localStorage.getItem('rafterUser'));
+    //console.log(ruser.id);
+    if (ruser !== null && ruser !== undefined) {
+      this.rafterUserID = ruser.id;
+    }
   }
 
 }
