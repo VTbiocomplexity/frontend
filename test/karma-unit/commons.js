@@ -161,6 +161,20 @@ class HttpMock {
         json: () => Promise.reject({message: 'error'})
       });
     }
+    if (url === '/rafter/vsinit') {
+      console.log('rafter volume init test');
+      if (!this.error && ! this.message) {
+        let data = {home: true};
+        return Promise.resolve({
+          Headers: this.headers,
+          json: () => Promise.resolve(data)
+        });
+      }
+      return Promise.reject({
+        Headers: this.headers,
+        json: () => Promise.reject({message: 'error'})
+      });
+    }
     return Promise.resolve({
       Headers: this.headers,
       json: () => Promise.resolve(this.user)
