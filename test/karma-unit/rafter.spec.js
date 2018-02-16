@@ -74,6 +74,11 @@ describe('The Rafter Dashboard', () => {
     rd.app.httpClient = new HttpMock('rafterMessage');
     await rd.rafterVolumeService('create');
   }));
+  it('tries to init volume service but catches an error', testAsync(async function() {
+    //document.body.innerHTML = '<div class="homeDirContent"></div>';
+    rd.app.httpClient = new HttpMock('rafterError');
+    await rd.initVol('yoyo');
+  }));
   it('detects an expired token', (done) => {
     let tkn = {exp: 123};
     let isValid = rd.checkExpired(tkn);

@@ -168,10 +168,27 @@ export class Rafter {
       console.log(JSON.parse(rafterUser));
       window.localStorage.setItem('rafterUser', rafterUser);
       this.rafterUserID = JSON.parse(rafterUser).id;
+      this.initVol(token);
       this.activate();
     }).catch((err) => {
       console.log(err);
       document.getElementsByClassName('userServiceError')[0].innerHTML = 'Wrong userid or password';
+    });
+  }
+
+  initVol(mToken) {
+    this.app.httpClient.fetch('/rafter/vsinit', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({token: mToken})
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+    }).catch((err) => {
+      console.log(err);
     });
   }
 
