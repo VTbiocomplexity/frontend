@@ -104,9 +104,13 @@ class HttpMock {
     // real api calls will have more methods.
   constructor(data) {
     this.error = false;
+    this.message = false;
     this.user = data || {name: 'Iddris Elba', userType: 'Volunteer', _id: '3333333', volTalents: [], volCauses: [], volWorkPrefs: [], volCauseOther: '', volTalentOther: '', volWorkOther: ''};
     if (data === 'rafterError') {
       this.error = true;
+    }
+    if (data === 'rafterMessage') {
+      this.message = true;
     }
   }
   status = 500;
@@ -126,6 +130,27 @@ class HttpMock {
       console.log('login rafter test');
       if (!this.error) {
         let data = '{authorization_token: 123}, {&#34;user&#34;: {&#34;name&#34;: &#34;tester&#34;}';
+        return Promise.resolve({
+          Headers: this.headers,
+          json: () => Promise.resolve(data)
+        });
+      }
+      return Promise.reject({
+        Headers: this.headers,
+        json: () => Promise.reject({message: 'error'})
+      });
+    }
+    if (url === '/rafter/vs') {
+      console.log('rafter volume service test');
+      if (!this.error && ! this.message) {
+        let data = {name: 'filename'};
+        return Promise.resolve({
+          Headers: this.headers,
+          json: () => Promise.resolve(data)
+        });
+      } else if (this.message) {
+        let em = JSON.stringify({error: 'you did something wrong'});
+        let data = {message: em};
         return Promise.resolve({
           Headers: this.headers,
           json: () => Promise.resolve(data)
