@@ -61,4 +61,12 @@ describe('The Rafter Dashboard', () => {
     //expect(window.localStorage.getItem('rafterToken')).toBe(null);
     //expect(window.localStorage.getItem('rafterUser')).toBe(null);
   }));
+  it('continues to check for expired token', (done) => {
+    //let timerCallback = jasmine.createSpy('timerCallback');
+    //jasmine.clock().install();
+    rd.attached();
+    setTimeout(() => {
+      done();
+    }, 5500);
+  }, 5550);
 });
