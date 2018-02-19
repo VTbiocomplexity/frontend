@@ -1,47 +1,50 @@
 <template>
   <div class="page-content">
     <div class="material-content">
-    <h4 style="margin:auto; padding-top:10px; padding-bottom:20px;text-align:center"><strong>Rafter Dashboard</strong></h4>
-    <p style="text-align:center">We are going to try out some Rafter APIs here!</p>
-    <div class="rafterLogin elevation3" style="max-width:3in; margin:auto" show.bind="showLogin">
-      <form style="margin-left:20px">
-        <label>Rafter User Id</label>
-        <input type="text" value.bind="rafter.id" change.delegate="validate()" keyup.delegate="validate()">
+      <h3 style="margin:auto; padding-top:10px; padding-bottom:20px;text-align:center"><strong>Rafter Dashboard</strong></h3>
+      <p style="text-align:center">We are going to try out some Rafter APIs here!</p>
+      <div class="rafterLogin elevation3" style="max-width:3in; margin:auto" show.bind="showLogin">
+        <form style="margin-left:20px">
+          <label>Rafter User Id</label>
+          <input type="text" value.bind="rafter.id" change.delegate="validate()" keyup.delegate="validate()">
 
-        <label>Rafter Password</label>
-        <input type="password" value.bind="rafter.password" change.delegate="validate()" keyup.delegate="validate()">
-        <div>
-          <p>&nbsp;</p>
-          <p class="userServiceError" style="color:red">&nbsp;</p>
-        <button disabled class="rafterLoginButton" click.delegate="postUSV()">Login To Rafter</button>
-      </div>
-      </form>
-    </div>
-    <div show.bind="!showLogin">
-      <div class="rafterFile" style="text-align:center; margin-auto">
-      <button style="text-align:center" class="rafterCheckHome" click.delegate="rafterVolumeService('ls')">Display home/${rafterUserID}</button>
-    <p>&nbsp;</p>
-    <p class="homeDirContent" style="margin:10px;text-align:left">&nbsp;</p>
-    </div>
-    <p>&nbsp;</p>
-      <div class="elevation3" style="min-width:4in">
-        <h4 style="text-align:center">Create an empty file in your home directory</h4>
-        <form style="margin-left:0.5in">
-          <label>File Name</label>
-          <input type="text" value.bind="rafterFile.name">
-          <p>&nbsp;</p>
-          <div class="rafterFile" style="max-width:2in;text-align:left">
-          <button style="text-align:center" class="rafterMakeFileButton" click.delegate="rafterVolumeService('create')">Make a File</button>
-        </div>
+          <label>Rafter Password</label>
+          <input type="password" value.bind="rafter.password" change.delegate="validate()" keyup.delegate="validate()">
+          <div>
+            <p>&nbsp;</p>
+            <p class="userServiceError" style="color:red">&nbsp;</p>
+            <button disabled class="rafterLoginButton" click.delegate="postUSV()">Login To Rafter</button>
+          </div>
         </form>
       </div>
-      <p>&nbsp;</p>
-      <div class="rafterLogout" style="margin:auto; max-width:2in;text-align:center">
-      <button style="text-align:center" class="rafterLogoutButton" click.delegate="rafterLogout()">Logout of Rafter</button>
+      <div show.bind="!showLogin">
+        <div class="rafterFile" style="text-align:center; margin-auto">
+          <button style="text-align:center" class="rafterCheckHome" click.delegate="rafterVolumeService('ls')">Display home/${rafterUserID}</button>
+          <p>&nbsp;</p>
+          <div id="treeView"></div>
+          <div class="fileDetails">
+            <p class="homeDirContent" style="margin:10px;text-align:left"></p>
+          </div>
+        </div>
+        <p>&nbsp;</p>
+        <div class="elevation3" style="min-width:4in">
+          <h4 style="text-align:center"><i><strong>Create Empty File in Home Directory</strong></i></h4>
+          <form style="margin-left:0.75in">
+            <label style="margin-top:0;padding-top:0">File Name</label>
+            <input type="text" value.bind="rafterFile.name">
+            <p>&nbsp;</p>
+            <div class="rafterFile" style="max-width:2in;text-align:left">
+              <button style="text-align:center" class="rafterMakeFileButton" click.delegate="rafterVolumeService('create')">Make a File</button>
+            </div>
+          </form>
+        </div>
+        <p>&nbsp;</p>
+        <div class="rafterLogout" style="margin:auto; max-width:2in;text-align:center">
+          <button style="text-align:center" class="rafterLogoutButton" click.delegate="rafterLogout()">Logout of Rafter</button>
+        </div>
+      </div>
+      <!-- <p>This news (or blog) will appear on the News page and will also be published to Facebook, Twitter, Instagram, and Google</p> -->
     </div>
-    </div>
-    <!-- <p>This news (or blog) will appear on the News page and will also be published to Facebook, Twitter, Instagram, and Google</p> -->
-  </div>
-  <!-- <div id="wjfooter" class="footer" style="padding:8px; background-color: #2a222a"></div> -->
+    <!-- <div id="wjfooter" class="footer" style="padding:8px; background-color: #2a222a"></div> -->
   </div>
 </template>

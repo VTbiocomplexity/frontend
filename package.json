@@ -91,6 +91,7 @@
     "postcss-loader": "^2.0.6",
     "snyk": "^1.69.7",
     "style-loader": "^0.18.2",
+    "js-treeview": "^1.1.5",
     "url-loader": "^0.6.2",
     "wait-on": "^2.0.2",
     "webpack": "^3.8.1",
