@@ -91,6 +91,10 @@ ignore:
     - webpack > watchpack > chokidar > fsevents > node-pre-gyp > request > hawk > hoek:
         reason: None given
         expires: '2018-03-16T18:50:26.488Z'
+  'npm:braces:20180219':
+    - webpack > watchpack > chokidar > anymatch > micromatch > braces:
+        reason: None given
+        expires: '2018-03-22T13:17:30.085Z'
 # patches apply the minimum changes required to fix a vulnerability
 patch:
   'npm:debug:20170905':
