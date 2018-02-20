@@ -74,10 +74,22 @@ describe('The Rafter Dashboard', () => {
     rd.app.httpClient = new HttpMock('rafterMessage');
     await rd.rafterVolumeService('create');
   }));
+  it('creates a new file', testAsync(async function() {
+    document.body.innerHTML = '<div class="homeDirContent"></div>';
+    rd.app.httpClient = new HttpMock();
+    await rd.rafterVolumeService('create');
+  }));
   it('tries to init volume service but catches an error', testAsync(async function() {
     //document.body.innerHTML = '<div class="homeDirContent"></div>';
     rd.app.httpClient = new HttpMock('rafterError');
     await rd.initVol('yoyo');
+  }));
+  fit('displays a tree menu', testAsync(async function() {
+    document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div>';
+    //const myFunc = function() {};
+    await rd.displayTree([{name: 'yoyo', id: '123', children: []}], 'divId', rd.showFileDetails, [{name: 'yoyo', id: '123'}]);
+    document.getElementsByClassName('tree-leaf-text')[0].click();
+    ///console.log(document.getElementById('divId'));
   }));
   it('detects an expired token', (done) => {
     let tkn = {exp: 123};

@@ -2,21 +2,21 @@ const Register_ = require('../../src/classes/Register_.js');
 
 let reg = new Register_();
 
-test('generates a registration form for PATRIC', () => {
-  document.body.innerHTML = '<div class="home"></div>';
-  reg.register('PATRIC');
-  let regform = document.getElementsByClassName('RegistrationForm');
-  expect(regform[0]).toBeDefined();
-  expect(document.getElementsByClassName('userIdRow')[0].style.display).toBe('block');
-});
+// test('generates a registration form for PATRIC', () => {
+//   document.body.innerHTML = '<div class="home"></div>';
+//   reg.register('PATRIC');
+//   let regform = document.getElementsByClassName('RegistrationForm');
+//   expect(regform[0]).toBeDefined();
+//   expect(document.getElementsByClassName('userIdRow')[0].style.display).toBe('block');
+// });
 
-test('generates a registration form for another app', () => {
-  document.body.innerHTML = '<div class="home"></div>';
-  reg.register();
-  let regform = document.getElementsByClassName('RegistrationForm');
-  expect(regform[0]).toBeDefined();
-  expect(document.getElementsByClassName('userIdRow')[0].style.display).toBe('none');
-});
+// test('generates a registration form for another app', () => {
+//   document.body.innerHTML = '<div class="home"></div>';
+//   reg.register();
+//   let regform = document.getElementsByClassName('RegistrationForm');
+//   expect(regform[0]).toBeDefined();
+//   expect(document.getElementsByClassName('userIdRow')[0].style.display).toBe('none');
+// });
 
 test('hides a registration form with click Cancel button', () => {
   document.body.innerHTML = '<div class="home"></div>';
@@ -26,36 +26,36 @@ test('hides a registration form with click Cancel button', () => {
   expect(regform[0].style.display).toBe('none');
 });
 
-test('updates the registration form after selection of primary app is PATRIC', () => {
-  document.body.innerHTML = '<div class="home"></div>';
-  reg.register('');
-  document.getElementsByClassName('pas')[0].value = 'PATRIC';
-  reg.updateRegForm();
-  let uidRowStuff = document.getElementsByClassName('userIdRow')[0];
-  expect(uidRowStuff.style.display).toBe('block');
-});
+// test('updates the registration form after selection of primary app is PATRIC', () => {
+//   document.body.innerHTML = '<div class="home"></div>';
+//   reg.register('');
+//   document.getElementsByClassName('pas')[0].value = 'PATRIC';
+//   reg.updateRegForm();
+//   let uidRowStuff = document.getElementsByClassName('userIdRow')[0];
+//   expect(uidRowStuff.style.display).toBe('block');
+// });
 
-test('updates the registration form after selection of primary app is not PATRIC', () => {
-  document.body.innerHTML = '<div class="home"></div>';
-  reg.register('');
-  document.getElementsByClassName('pas')[0].value = '';
-  reg.updateRegForm();
-  let uidRowStuff = document.getElementsByClassName('userIdRow')[0];
-  expect(uidRowStuff.style.display).toBe('none');
-});
+// test('updates the registration form after selection of primary app is not PATRIC', () => {
+//   document.body.innerHTML = '<div class="home"></div>';
+//   reg.register('');
+//   document.getElementsByClassName('pas')[0].value = '';
+//   reg.updateRegForm();
+//   let uidRowStuff = document.getElementsByClassName('userIdRow')[0];
+//   expect(uidRowStuff.style.display).toBe('none');
+// });
 
-test('generates a registration form without userid', () => {
-  document.body.innerHTML = '<div class="home"></div>';
-  reg.register('DifferentApp');
-  let userIdRow = document.getElementsByClassName('userIdRow')[0];
-  expect(userIdRow.style.display).toBe('none');
-});
+// test('generates a registration form without userid', () => {
+//   document.body.innerHTML = '<div class="home"></div>';
+//   reg.register('DifferentApp');
+//   let userIdRow = document.getElementsByClassName('userIdRow')[0];
+//   expect(userIdRow.style.display).toBe('none');
+// });
 
 test('hides the submit button when registration form is not valid email', () => {
   document.body.innerHTML = '<div class="home"></div>';
   reg.register('');
-  document.getElementsByClassName('pas')[0].value = 'other';
-  document.getElementsByClassName('pas')[0].style.display = 'block';
+  // document.getElementsByClassName('pas')[0].value = 'other';
+  // document.getElementsByClassName('pas')[0].style.display = 'block';
   document.getElementsByClassName('email')[0].value = 'google.@gmail.com';
   document.getElementsByClassName('email')[0].checkValidity = function() {return false;};
   document.getElementsByClassName('password')[0].checkValidity = function() {return true;};
@@ -110,25 +110,25 @@ test('shows the submit button when registration form is valid', () => {
   document.body.innerHTML = '';
 });
 
-test('shows the submit button when registration form uses a Google email with PATRIC', () => {
-  document.body.innerHTML = '<div class="home"></div>';
-  reg.register('PATRIC');
-  document.getElementsByClassName('firstname')[0].value = 'Joe';
-  document.getElementsByClassName('lastname')[0].value = 'Smith';
-  document.getElementsByClassName('email')[0].value = 'joe@gmail.com';
-  document.getElementsByClassName('password')[0].value = '123456789';
-  const mockvalidity = function() {
-    return true;
-  };
-  document.getElementsByClassName('password')[0].checkValidity = mockvalidity;
-  document.getElementsByClassName('email')[0].checkValidity = mockvalidity;
-  let evt = {target: {displayError: reg.displayRegError, validateGoogle: reg.validateGoogle, appName: 'PATRIC'}};
-  document.getElementsByClassName('pas')[0].style.display = 'none';
-  reg.validateReg(evt);
-  let registbutton = document.getElementsByClassName('registerbutton')[0];
-  expect(registbutton.style.display).toBe('block');
-  document.body.innerHTML = '';
-});
+// test('shows the submit button when registration form uses a Google email with PATRIC', () => {
+//   document.body.innerHTML = '<div class="home"></div>';
+//   reg.register('PATRIC');
+//   document.getElementsByClassName('firstname')[0].value = 'Joe';
+//   document.getElementsByClassName('lastname')[0].value = 'Smith';
+//   document.getElementsByClassName('email')[0].value = 'joe@gmail.com';
+//   document.getElementsByClassName('password')[0].value = '123456789';
+//   const mockvalidity = function() {
+//     return true;
+//   };
+//   document.getElementsByClassName('password')[0].checkValidity = mockvalidity;
+//   document.getElementsByClassName('email')[0].checkValidity = mockvalidity;
+//   let evt = {target: {displayError: reg.displayRegError, validateGoogle: reg.validateGoogle, appName: 'PATRIC'}};
+//   document.getElementsByClassName('pas')[0].style.display = 'none';
+//   reg.validateReg(evt);
+//   let registbutton = document.getElementsByClassName('registerbutton')[0];
+//   expect(registbutton.style.display).toBe('block');
+//   document.body.innerHTML = '';
+// });
 
 test('hides register button when email format is not valid', () => {
   document.body.innerHTML = '<div class="home"></div>';
@@ -149,7 +149,7 @@ test('hides register button when email format is not valid', () => {
   document.body.innerHTML = '';
 });
 
-test('create a new user for another app', () => {
+test('create a new user for this app', () => {
   document.body.innerHTML = '<div class="home"></div>';
   reg.appName = '';
   reg.register();
@@ -157,7 +157,7 @@ test('create a new user for another app', () => {
   document.getElementsByClassName('lastname')[0].value = 'Smith';
   document.getElementsByClassName('email')[0].value = 'joe@smith.com';
   document.getElementsByClassName('password')[0].value = '123456789';
-  document.getElementsByClassName('pas')[0].value = 'CoolApp';
+  // document.getElementsByClassName('pas')[0].value = 'CoolApp';
   const mockfetch = function(url, data) {
     this.headers = {};
     this.headers.url = url;
@@ -201,7 +201,7 @@ test('it does not create a new user when there is an response error message from
 
 test('it catches error on create a new user', () => {
   document.body.innerHTML = '<div class="home"></div>';
-  reg.register('PATRIC');
+  reg.register('');
   document.getElementsByClassName('firstname')[0].value = 'Joe';
   document.getElementsByClassName('lastname')[0].value = 'Smith';
   document.getElementsByClassName('email')[0].value = 'joe@smith.com';
@@ -222,7 +222,7 @@ test('it catches error on create a new user', () => {
 
 test('it initiates an email varification', () => {
   document.body.innerHTML = '<div class="home"></div>';
-  reg.register('PATRIC');
+  reg.register('');
   document.getElementsByClassName('firstname')[0].value = 'Joe';
   document.getElementsByClassName('lastname')[0].value = 'Smith';
   document.getElementsByClassName('email')[0].value = 'joe@smith.com';
@@ -242,27 +242,27 @@ test('it initiates an email varification', () => {
   });
 });
 
-test('it does not initiates an email varification', () => {
-  document.body.innerHTML = '<div class="home"></div>';
-  reg.register('PATRIC');
-  document.getElementsByClassName('firstname')[0].value = 'Joe';
-  document.getElementsByClassName('lastname')[0].value = 'Smith';
-  document.getElementsByClassName('email')[0].value = 'joe@smith.com';
-  document.getElementsByClassName('password')[0].value = '123456789';
-  const mockfetch = function(url, data) {
-    this.headers = {};
-    this.headers.url = url;
-    this.headers.method = data.method;
-    return Promise.resolve({
-      Headers: this.headers,
-      json: () => Promise.resolve({})
-    });
-  };
-  let evt = {target: {fetchClient: mockfetch, runFetch: reg.runFetch}};
-  reg.createUser(evt).then((data) => {
-    expect(data.email).toBe(null);
-  });
-});
+// test('it does not initiates an email varification', () => {
+//   document.body.innerHTML = '<div class="home"></div>';
+//   reg.register('PATRIC');
+//   document.getElementsByClassName('firstname')[0].value = 'Joe';
+//   document.getElementsByClassName('lastname')[0].value = 'Smith';
+//   document.getElementsByClassName('email')[0].value = 'joe@smith.com';
+//   document.getElementsByClassName('password')[0].value = '123456789';
+//   const mockfetch = function(url, data) {
+//     this.headers = {};
+//     this.headers.url = url;
+//     this.headers.method = data.method;
+//     return Promise.resolve({
+//       Headers: this.headers,
+//       json: () => Promise.resolve({})
+//     });
+//   };
+//   let evt = {target: {fetchClient: mockfetch, runFetch: reg.runFetch}};
+//   reg.createUser(evt).then((data) => {
+//     expect(data.email).toBe(null);
+//   });
+// });
 
 test('logs out the user', () => {
   const mockStorage = {setItem: function(item, value) {
