@@ -320,12 +320,6 @@ button {
 
 .tree-leaf .tree-leaf-text:hover { color: #00f; }
 
-.tree-leaf .tree-leaf-content: after,
-.tree-leaf .tree-leaf-content: before {
-  content: " ";
-  display: table;
-}
-
 .tree-leaf .tree-leaf-content: after { clear: both; }
 
 .fileDetails {
