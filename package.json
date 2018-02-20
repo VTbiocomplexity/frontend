@@ -16,9 +16,9 @@
   "scripts": {
     "start": "nps",
     "snyk-protect": "snyk protect",
-    "test": "rm -rf coverage && npm run test:jest && npm run test:karma && nps e2e && npm run combine-coverage",
+    "test": "rm -rf coverage && nps test.lint && npm run test:jest && npm run test:karma && nps e2e && npm run combine-coverage",
     "combine-coverage": "istanbul-combine -d coverage -p none -r lcov -r html coverage/jest/coverage-final.json coverage/karma/coverage-final.json",
-    "test:karma": "nps test.lint && cross-env NODE_ENV=test karma start test/karma.conf.js",
+    "test:karma": "cross-env NODE_ENV=test karma start test/karma.conf.js",
     "test:debug": "cross-env NODE_ENV=test nps test.karma.debug",
     "test:jest": "cross-env NODE_ENV=test jest --config jest.config.json --notify",
     "eslint-fix": "./node_modules/eslint/bin/eslint.js --fix .",
