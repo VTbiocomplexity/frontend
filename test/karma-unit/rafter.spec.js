@@ -61,23 +61,43 @@ describe('The Rafter Dashboard', () => {
     //expect(window.localStorage.getItem('rafterUser')).toBe(null);
   }));
   it('retrieves the home directory', testAsync(async function() {
-    document.body.innerHTML = '<div class="homeDirContent"></div>';
+    document.body.innerHTML = '<div class="homeDirContent"></div><div class="userServiceError"></div>';
     await rd.rafterVolumeService('ls');
   }));
   it('tries to retrieves the home directory, but gets an error', testAsync(async function() {
-    document.body.innerHTML = '<div class="homeDirContent"></div>';
+    document.body.innerHTML = '<div class="homeDirContent"></div><div class="userServiceError"></div>';
     rd.app.httpClient = new HttpMock('rafterError');
     await rd.rafterVolumeService('ls');
   }));
   it('tries to retrieves the home directory, but receives a message of error', testAsync(async function() {
-    document.body.innerHTML = '<div class="homeDirContent"></div>';
+    document.body.innerHTML = '<div class="homeDirContent"></div><div class="userServiceError"></div>';
     rd.app.httpClient = new HttpMock('rafterMessage');
     await rd.rafterVolumeService('create');
   }));
   it('creates a new file', testAsync(async function() {
-    document.body.innerHTML = '<div class="homeDirContent"></div>';
+    document.body.innerHTML = '<div class="homeDirContent"></div><div class="userServiceError"></div>';
     rd.app.httpClient = new HttpMock();
     await rd.rafterVolumeService('create');
+  }));
+  it('catches error on create a new file', testAsync(async function() {
+    document.body.innerHTML = '<div class="homeDirContent"></div><div class="userServiceError"></div>';
+    rd.app.httpClient = new HttpMock('rafterCreateError');
+    await rd.rafterVolumeService('create');
+    //expect(document.getElementsByClassName('userServiceError')[0].innerHTML).not.toBe('&nbsp;');
+  }));
+  it('sets the create to be a new folder', testAsync(async function() {
+    rd.rafterFile = {};
+    document.body.innerHTML = '<div class="homeDirContent"></div><div class="userServiceError"></div><input id="fileType1" type="radio"><input id="fileType2" type="radio" checked>';
+    rd.rafterFile.createType = '';
+    await rd.radioClicked();
+    expect(rd.rafterFile.createType).toBe('folder');
+  }));
+  it('sets the create to be a new file', testAsync(async function() {
+    rd.rafterFile = {};
+    document.body.innerHTML = '<div class="homeDirContent"></div><div class="userServiceError"></div><input id="fileType1" type="radio" checked><input id="fileType2" type="radio">';
+    rd.rafterFile.createType = '';
+    await rd.radioClicked();
+    expect(rd.rafterFile.createType).toBe('file');
   }));
   it('tries to init volume service but catches an error', testAsync(async function() {
     //document.body.innerHTML = '<div class="homeDirContent"></div>';
@@ -96,6 +116,13 @@ describe('The Rafter Dashboard', () => {
     //const myFunc = function() {};
     await rd.makeTree([{name: 'unknown', id: '8675309'}, {name: 'yoyo', id: '123'}]);
     //document.getElementsByClassName('tree-leaf-text')[0].click();
+    ///console.log(document.getElementById('divId'));
+  }));
+  it('displays a tree menu with a folder', testAsync(async function() {
+    document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div id="treeView"></div>';
+    //const myFunc = function() {};
+    await rd.displayTree([{name: 'yoyo', id: '123', type: 'folder', children: []}], 'divId', rd.showFileDetails, [{name: 'unknown', id: '8675309'}, {name: 'yoyo', id: '123', type: 'folder'}]);
+    document.getElementsByClassName('tree-leaf-text')[0].click();
     ///console.log(document.getElementById('divId'));
   }));
   it('detects an expired token', (done) => {

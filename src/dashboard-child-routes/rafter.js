@@ -49,10 +49,26 @@ export class Rafter {
 
   displayTree(nameArr, divId, showFile, hdj) {
     this.tv = new TreeView(nameArr, divId);
+    console.log('this is the tree view object');
+    console.log(this.tv);
     this.tv.on('select', function(evt) {
       console.log(evt.data);
       showFile(evt.data.id, hdj);
     });
+    let getTreeLeaves = document.getElementsByClassName('tree-leaf-content');
+    console.log(getTreeLeaves);
+    console.log(getTreeLeaves.length);
+    let treeNodeObj;
+    for (let i = 0; i < getTreeLeaves.length; i++) {
+      console.log('am I iterating?');
+      console.log(getTreeLeaves[i].getAttribute('data-item'));
+      treeNodeObj = JSON.parse(getTreeLeaves[i].getAttribute('data-item'));
+      console.log(treeNodeObj.type);
+      if (treeNodeObj.type === 'folder') {
+        getTreeLeaves[i].innerHTML = '<div class="tlfolder fa fa-folder"></div>' + getTreeLeaves[i].innerHTML;
+        console.log(getTreeLeaves[i]);
+      }
+    }
   }
 
   showFileDetails(id, hdj) {
@@ -71,7 +87,7 @@ export class Rafter {
     let nameArr = [];
     let nameObj = {};
     for (let i = 0; i < data.length; i++) {
-      nameObj = {name: data[i].name, id: data[i].id, children: []};
+      nameObj = {name: data[i].name, id: data[i].id, type: data[i].type, children: []};
       nameArr.push(nameObj);
     }
     console.log(nameArr);
@@ -79,6 +95,7 @@ export class Rafter {
   }
 
   rafterVolumeService(cmd) {
+    document.getElementsByClassName('userServiceError')[0].innerHTML = '&nbsp;';
     this.app.httpClient.fetch('/rafter/vs', {
       method: 'post',
       headers: {
@@ -93,16 +110,26 @@ export class Rafter {
           //document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(data);
           this.homeDirJson = data;
           //console.log(this.homeDirJson);
-          this.makeTree(data);
+          return this.makeTree(data);
         }
         if (data.message) {
           let errorMessage = JSON.parse(data.message);
           console.log(errorMessage);
         }
-      }).catch((err) => {
-        console.log(err);
-        //document.getElementsByClassName('userServiceError')[0].innerHTML = 'Wrong userid or password';
+      }).catch(function (err) {
+        if (cmd !== 'ls') {
+          return err.json();
+        }
+      }).then((message) => {
+        console.log(message);
+        /* istanbul ignore if */
+        if (message !== null && message !== undefined) {
+          document.getElementsByClassName('userServiceError')[0].innerHTML = message.error;
+        }
       });
+    //console.log(err);
+        //document.getElementsByClassName('userServiceError')[0].innerHTML = 'Wrong userid or password';
+      // });
   }
 
   rafterLogout() {

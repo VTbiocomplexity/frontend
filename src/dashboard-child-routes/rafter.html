@@ -12,11 +12,11 @@
           <input type="password" value.bind="rafter.password" change.delegate="validate()" keyup.delegate="validate()">
           <div>
             <p>&nbsp;</p>
-            <p class="userServiceError" style="color:red">&nbsp;</p>
             <button disabled class="rafterLoginButton" click.delegate="postUSV()">Login To Rafter</button>
           </div>
         </form>
       </div>
+      <div style="margin:auto; text-align:center"><p class="userServiceError" style="color:red">&nbsp;</p></div>
       <div show.bind="!showLogin">
         <div class="rafterFile" style="text-align:center; margin-auto">
           <button style="text-align:center" class="rafterCheckHome" click.delegate="rafterVolumeService('ls')">Display home/${rafterUserID}</button>
