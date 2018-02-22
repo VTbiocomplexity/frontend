@@ -14,9 +14,10 @@ export class Rafter {
       id: '',
       password: ''
     };
-    this.rafterFile = {name: ''};
+    this.rafterFile = {name: '', createType: 'file'};
     this.tv = null;
     this.homeDirJson = null;
+    //this.createType = 'file';
     //   this.vs = new VolumeService('http://rafter.bi.vt.edu/volumesvc/', 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6W10sImZpcnN0X25hbWUiOiJuZHNzbCIsImxhc3RfbmFtZSI6ImFwcCIsInJvbGVzIjpbXSwidGVhbXMiOlsiQHVzZXJzIl0sImlhdCI6MTUxNzk0Nzk2MSwibmJmIjoxNTE3OTQ3OTYxLCJleHAiOjE1MTgwMzQzNjEsImF1ZCI6WyJAY29yZSIsIiNwdWJsaWMiXSwiaXNzIjoiaHR0cHM6Ly9yYWZ0ZXIuYmkudnQuZWR1L3VzZXJzdmMvcHVibGljX2tleSIsInN1YiI6Im5kc3NsQXBwIn0.a_q5Hq2MKWizi1KFbq8RMKAeQQbpsPweexIRCQwQ2a65J5Ojukf9vv' +
     //   '-i9vRVuzPJEWxPHhXZTSzLXiwPlLB5P9VOlzgDPhmVuPwx2n0q-T9hbV6vGt1E0EL-oKex1dpVE10iM0BWujXvQRC8gPJXhIBNR6zUDXX5ziO_8Y48CNWvKBDKhTjcrGEuj7CEMSt9kZBlgt-E_DnkibnFfHl763k_vPWqJ4okWkhELXtpCj7ObKrjNGRjYzKrMRyjJkIHLOc6ZEsTKkWt4ATzOXN_jVYFqN5tzRpMqiqC-G0oS-aSOiML6HZpqiEu26oLoQ4a6RDAXPp6Me9SXwkhw7K-JNDvW68LRyXIMnz7HisLWhc6-1XykgQ6MLcu4uvsOBD11VQpVmO-5Dkdf2vAlr7jbQ8tvKZaJi4W2PEiVIfR6lNhGPLyU4Zx4bg084tzi6n3jSipKcavfPY' +
     //   '-iNAbZOYDXlB8GKdDIEFpRQmO11Yyr1_B9OjRYFWrf1scdlLhdXcRQT33FHQo_sakhZMI36s50ksj6B4ghrEHhdvgE1TFBgMg6uyRiNiZiRVgd08kMok_JmlJrjGkqoUIgvZeC9NkjGU8YcV5bF5ZTeJpTlJ7l28W8fY_lkjOs4LBsxoJDdnrdGR-FsfFMQJajL4LEuwXGlpBHjfiLpqflRYhf8poDRU');
@@ -34,23 +35,28 @@ export class Rafter {
     //this.app.role = this.user.userType;
   }
 
+  radioClicked() {
+    //console.log('I clicked a radio');
+    //console.log(document.getElementById('fileType1').checked);
+    //console.log(document.getElementById('fileType2').checked);
+    if (document.getElementById('fileType2').checked) {
+      this.rafterFile.createType = 'folder';
+    } else {
+      this.rafterFile.createType = 'file';
+    }
+    console.log(this.rafterFile.createType);
+  }
+
   displayTree(nameArr, divId, showFile, hdj) {
     this.tv = new TreeView(nameArr, divId);
-    //this.tv.showFile = this.showFileDetails();
-    //this.tv.on('select', this.showFileDetails);
     this.tv.on('select', function(evt) {
       console.log(evt.data);
       showFile(evt.data.id, hdj);
     });
-    //console.log(this.tv);
-    // {
-    //   this.target.showFile();
-    // });
   }
 
   showFileDetails(id, hdj) {
     console.log('going to display the file details now');
-    //e.stopPropagation();
     console.log(id);
     for (let i = 0; i < hdj.length; i++) {
       if (id === hdj[i].id) {
@@ -62,10 +68,8 @@ export class Rafter {
   makeTree(data) {
     console.log('this is the data for tree');
     console.log(data);
-    //this.homeDirJson = data;
     let nameArr = [];
     let nameObj = {};
-    //let treeView = document.getElement
     for (let i = 0; i < data.length; i++) {
       nameObj = {name: data[i].name, id: data[i].id, children: []};
       nameArr.push(nameObj);
@@ -75,7 +79,6 @@ export class Rafter {
   }
 
   rafterVolumeService(cmd) {
-    //console.log('do I have a home directory?');
     this.app.httpClient.fetch('/rafter/vs', {
       method: 'post',
       headers: {

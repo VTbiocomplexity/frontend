@@ -28,13 +28,23 @@
         </div>
         <p>&nbsp;</p>
         <div class="elevation3" style="min-width:4in">
-          <h4 style="text-align:center"><i><strong>Create Empty File in Home Directory</strong></i></h4>
+          <h4 style="text-align:center"><strong>Home Directory</strong></h4>
+          <p style="text-align:center"><i><strong>Create Empty File or Folder</strong></i></p>
           <form style="margin-left:0.75in">
-            <label style="margin-top:0;padding-top:0">File Name</label>
+            <label style="margin-top:0;padding-top:0">Name</label>
             <input type="text" value.bind="rafterFile.name">
+              <p style="margin:0">&nbsp;</p>
+            <div>
+              <!-- <input type="radio" id="fileType1" name="ftype" value="file" checked> -->
+                <input type="radio" id="fileType1" name="ftype" value="file" checked change.delegate="radioClicked()">
+              <label for="fileType1" style="display:inline; margin-right:30px">File</label>
+              <!-- <input type="radio" id="fileType2"name="ftype" value="folder"> -->
+              <input type="radio" id="fileType2" name="ftype" value="folder" change.delegate="radioClicked()">
+              <label for="fileType2" style="display:inline">Folder</label>
+            </div>
             <p>&nbsp;</p>
             <div class="rafterFile" style="max-width:2in;text-align:left">
-              <button style="text-align:center" class="rafterMakeFileButton" click.delegate="rafterVolumeService('create')">Make a File</button>
+              <button style="text-align:center" class="rafterMakeFileButton" click.delegate="rafterVolumeService('create')">Create</button>
             </div>
           </form>
         </div>
