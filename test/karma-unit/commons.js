@@ -105,13 +105,15 @@ class HttpMock {
   constructor(data) {
     this.error = false;
     this.message = false;
+    this.errorType = data;
     this.user = data || {name: 'Iddris Elba', userType: 'Volunteer', _id: '3333333', volTalents: [], volCauses: [], volWorkPrefs: [], volCauseOther: '', volTalentOther: '', volWorkOther: ''};
-    if (data === 'rafterError') {
+    if (data === 'rafterError' || data === 'rafterCreateError') {
       this.error = true;
     }
     if (data === 'rafterMessage') {
       this.message = true;
     }
+    //if (data === '')
   }
   status = 500;
   headers = {accept: 'application/json', method: '', url: ''}
@@ -156,9 +158,13 @@ class HttpMock {
           json: () => Promise.resolve(data)
         });
       }
-      return Promise.reject({
+      //let errormsg = {message: 'error'};
+      //if (this.errorType === 'rafterCreateError') {
+        //errormsg = {error: 'incorrect stuff'};
+      //}
+      return Promise.resolve({
         Headers: this.headers,
-        json: () => Promise.reject({message: 'error'})
+        json: () => Promise.reject(new Error({error: 'fail'}))
       });
     }
     if (url === '/rafter/vsinit') {

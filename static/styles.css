@@ -316,3 +316,8 @@ button {
 .fileDetails {
   overflow-x: scroll;
 }
+
+.tlfolder {
+  float: left;
+  padding-left: 10px;
+}
