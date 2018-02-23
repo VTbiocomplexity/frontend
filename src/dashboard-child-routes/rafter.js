@@ -64,7 +64,7 @@ export class Rafter {
       console.log(getTreeLeaves[i].getAttribute('data-item'));
       treeNodeObj = JSON.parse(getTreeLeaves[i].getAttribute('data-item'));
       console.log(treeNodeObj.type);
-      if (treeNodeObj.type === 'folder') {
+      if (treeNodeObj.isContainer) {
         getTreeLeaves[i].innerHTML = '<div class="tlfolder fa fa-folder"></div>' + getTreeLeaves[i].innerHTML;
         console.log(getTreeLeaves[i]);
       }
@@ -87,7 +87,7 @@ export class Rafter {
     let nameArr = [];
     let nameObj = {};
     for (let i = 0; i < data.length; i++) {
-      nameObj = {name: data[i].name, id: data[i].id, type: data[i].type, children: []};
+      nameObj = {name: data[i].name, id: data[i].id, type: data[i].type, isContainer: data[i].isContainer, children: []};
       nameArr.push(nameObj);
     }
     console.log(nameArr);
