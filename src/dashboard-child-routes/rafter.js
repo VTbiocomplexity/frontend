@@ -14,7 +14,7 @@ export class Rafter {
       id: '',
       password: ''
     };
-    this.rafterFile = {name: '', createType: 'file'};
+    this.rafterFile = {name: '', createType: 'file', path: ''};
     this.tv = null;
     this.homeDirJson = null;
     //this.createType = 'file';
@@ -29,16 +29,9 @@ export class Rafter {
     this.uid = this.app.auth.getTokenPayload().sub;
     this.user = await this.app.appState.getUser(this.uid);
     this.checkIfLoggedIn();
-    //this.postUSV();
-    //console.log(this.vs);
-    //this.app.dashboardTitle = this.user.userType;
-    //this.app.role = this.user.userType;
   }
 
   radioClicked() {
-    //console.log('I clicked a radio');
-    //console.log(document.getElementById('fileType1').checked);
-    //console.log(document.getElementById('fileType2').checked);
     if (document.getElementById('fileType2').checked) {
       this.rafterFile.createType = 'folder';
     } else {
@@ -47,35 +40,52 @@ export class Rafter {
     console.log(this.rafterFile.createType);
   }
 
-  displayTree(nameArr, divId, showFile, hdj) {
+  displayTree(nameArr, divId, showFile, hdj, raf, rvs, myApp, rui) {
     this.tv = new TreeView(nameArr, divId);
     console.log('this is the tree view object');
     console.log(this.tv);
-    this.tv.on('select', function(evt) {
-      console.log(evt.data);
-      showFile(evt.data.id, hdj);
-    });
     let getTreeLeaves = document.getElementsByClassName('tree-leaf-content');
     console.log(getTreeLeaves);
     console.log(getTreeLeaves.length);
     let treeNodeObj;
+    let foldersArr = [];
     for (let i = 0; i < getTreeLeaves.length; i++) {
-      console.log('am I iterating?');
+      //console.log('am I iterating?');
       console.log(getTreeLeaves[i].getAttribute('data-item'));
       treeNodeObj = JSON.parse(getTreeLeaves[i].getAttribute('data-item'));
       console.log(treeNodeObj.type);
       if (treeNodeObj.isContainer) {
         getTreeLeaves[i].innerHTML = '<div class="tlfolder fa fa-folder"></div>' + getTreeLeaves[i].innerHTML;
-        console.log(getTreeLeaves[i]);
+        foldersArr.push({id: treeNodeObj.id, domDiv: getTreeLeaves[i]});
       }
     }
+    console.log(foldersArr);
+      // make folders clickable
+    for (let j = 0; j < foldersArr.length; j++) {
+      foldersArr[j].domDiv.addEventListener('click', function(evt) {
+        console.log(evt);
+        showFile(foldersArr[j].id, hdj, raf, rvs, myApp, rui);
+      });
+    }
+    this.tv.on('select', function(evt) {
+      console.log(evt.data);
+      showFile(evt.data.id, hdj, raf, rvs, myApp, rui);
+    });
   }
 
-  showFileDetails(id, hdj) {
+  showFileDetails(id, hdj, raf, rvs, myApp, rui) {
     console.log('going to display the file details now');
     console.log(id);
     for (let i = 0; i < hdj.length; i++) {
       if (id === hdj[i].id) {
+        console.log(hdj[i].isContainer);
+        if (hdj[i].isContainer) {
+          console.log('I found a folder');
+          document.getElementsByClassName('folderName')[0].innerHTML = hdj[i].name;
+          raf.path = '/' + hdj[i].name;
+          console.log('line 86?');
+          rvs('ls', myApp, rui, raf);
+        }
         return document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(hdj[i]);
       }
     }
@@ -91,34 +101,50 @@ export class Rafter {
       nameArr.push(nameObj);
     }
     console.log(nameArr);
-    this.displayTree(nameArr, 'treeView', this.showFileDetails, this.homeDirJson);
+    this.displayTree(nameArr, 'treeView', this.showFileDetails, this.homeDirJson, this.rafterFile, this.rafterVolumeService, this.app, this.rafterUserID);
   }
 
-  rafterVolumeService(cmd) {
+  rafterVolumeService(cmd, myApp = null, rui = null, raf = null) {
     document.getElementsByClassName('userServiceError')[0].innerHTML = '&nbsp;';
-    this.app.httpClient.fetch('/rafter/vs', {
+    console.log('i am in rafterVolumeService function');
+    if (myApp === null) {
+      myApp = this.app;
+    }
+    if (rui === null) {
+      rui = this.rafterUserID;
+    }
+    if (raf === null) {
+      raf = this.rafterFile;
+    }
+    myApp.httpClient.fetch('/rafter/vs', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({token: localStorage.getItem('rafterToken'), userName: this.rafterUserID, command: cmd, rafterFile: this.rafterFile})
+      body: JSON.stringify({token: localStorage.getItem('rafterToken'), userName: rui, command: cmd, rafterFile: raf})
     })
       .then((response) => response.json())
       .then((data) => {
         //console.log(data);
         if (cmd === 'ls') {
+          if (raf.path === '') {
           //document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(data);
-          this.homeDirJson = data;
+            this.homeDirJson = data;
           //console.log(this.homeDirJson);
-          return this.makeTree(data);
+            return this.makeTree(data);
+          }
+          console.log('I want to display the contents of a subdirectory now');
+          console.log(data);
+          document.getElementsByClassName('subDirContent')[0].innerHTML = JSON.stringify(data);
         }
         if (data.message) {
-          let errorMessage = JSON.parse(data.message);
-          console.log(errorMessage);
+          //let errorMessage = JSON.parse(data.message);
+          console.log(data.message);
+          document.getElementsByClassName('userServiceError')[0].innerHTML = data.message;
         }
       }).catch(function (err) {
         if (cmd !== 'ls') {
-          return err.json();
+          return console.log(err);
         }
       }).then((message) => {
         console.log(message);

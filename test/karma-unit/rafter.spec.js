@@ -105,11 +105,20 @@ describe('The Rafter Dashboard', () => {
     await rd.initVol('yoyo');
   }));
   it('displays a tree menu without a folder', testAsync(async function() {
+    rd.app.httpClient = new HttpMock();
     document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div>';
     //const myFunc = function() {};
-    await rd.displayTree([{name: 'yoyo', id: '123', isContainer: false, children: []}, {name: 'unknown', id: '8675309',  isContainer: false, children: []}], 'divId', rd.showFileDetails, [{name: 'unknown', id: '8675309', isContainer: false}, {name: 'yoyo', id: '123', isContainer: false}]);
+    await rd.displayTree([{name: 'yoyo', id: '123', isContainer: false, children: []}, {name: 'unknown', id: '8675309',  isContainer: false, children: []}], 'divId', rd.showFileDetails, [{name: 'unknown', id: '8675309', isContainer: false}, {name: 'yoyo', id: '123', isContainer: false}], rd.rafterFile, rd.rafterVolumeService, rd.app, rd.rafterUserID);
     document.getElementsByClassName('tree-leaf-text')[0].click();
     expect(document.getElementsByClassName('tlfolder')[0]).toBe(undefined);
+  }));
+  it('displays a tree menu with a folder', testAsync(async function() {
+    rd.app.httpClient = new HttpMock();
+    document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div class="folderName"></div><div class="userServiceError"></div>';
+    //const myFunc = function() {};
+    await rd.displayTree([{name: 'yoyo', id: '123', isContainer: true, children: []}, {name: 'unknown', id: '8675309',  isContainer: false, children: []}], 'divId', rd.showFileDetails, [{name: 'unknown', id: '8675309', isContainer: false}, {name: 'yoyo', id: '123', isContainer: true}], rd.rafterFile, rd.rafterVolumeService, rd.app, rd.rafterUserID);
+    document.getElementsByClassName('tree-leaf-text')[0].click();
+    expect(document.getElementsByClassName('tlfolder')[0]).not.toBe(undefined);
   }));
   it('makes a tree menu without a folder', testAsync(async function() {
     document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div id="treeView"></div>';
@@ -118,13 +127,13 @@ describe('The Rafter Dashboard', () => {
     //document.getElementsByClassName('tree-leaf-text')[0].click();
     ///console.log(document.getElementById('divId'));
   }));
-  it('displays a tree menu with a folder', testAsync(async function() {
-    document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div id="treeView"></div>';
-    //const myFunc = function() {};
-    await rd.displayTree([{name: 'yoyo', id: '123', type: 'folder', isContainer: true, children: []}], 'divId', rd.showFileDetails, [{name: 'unknown', id: '8675309'}, {name: 'yoyo', id: '123', type: 'folder', isContainer: true}]);
-    document.getElementsByClassName('tree-leaf-text')[0].click();
-    expect(document.getElementsByClassName('tlfolder')[0]).not.toBe(undefined);
-  }));
+  // it('displays a tree menu with a folder', testAsync(async function() {
+  //   document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div id="treeView"></div>';
+  //   //const myFunc = function() {};
+  //   await rd.displayTree([{name: 'yoyo', id: '123', type: 'folder', isContainer: true, children: []}], 'treeView', rd.showFileDetails, [{name: 'unknown', id: '8675309'}, {name: 'yoyo', id: '123', type: 'folder', isContainer: true}], rd.rafterFile, rd.rafterVolumeService, rd.app, rd.rafterUserID);
+  //   document.getElementsByClassName('tree-leaf-text')[0].click();
+  //   expect(document.getElementsByClassName('tlfolder')[0]).not.toBe(undefined);
+  // }));
   it('detects an expired token', (done) => {
     let tkn = {exp: 123};
     let isValid = rd.checkExpired(tkn);
