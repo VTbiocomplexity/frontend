@@ -104,14 +104,14 @@ describe('The Rafter Dashboard', () => {
     rd.app.httpClient = new HttpMock('rafterError');
     await rd.initVol('yoyo');
   }));
-  it('displays a tree menu', testAsync(async function() {
+  it('displays a tree menu without a folder', testAsync(async function() {
     document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div>';
     //const myFunc = function() {};
-    await rd.displayTree([{name: 'yoyo', id: '123', children: []}], 'divId', rd.showFileDetails, [{name: 'unknown', id: '8675309'}, {name: 'yoyo', id: '123'}]);
+    await rd.displayTree([{name: 'yoyo', id: '123', isContainer: false, children: []}, {name: 'unknown', id: '8675309',  isContainer: false, children: []}], 'divId', rd.showFileDetails, [{name: 'unknown', id: '8675309', isContainer: false}, {name: 'yoyo', id: '123', isContainer: false}]);
     document.getElementsByClassName('tree-leaf-text')[0].click();
-    ///console.log(document.getElementById('divId'));
+    expect(document.getElementsByClassName('tlfolder')[0]).toBe(undefined);
   }));
-  it('makes a tree menu', testAsync(async function() {
+  it('makes a tree menu without a folder', testAsync(async function() {
     document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div id="treeView"></div>';
     //const myFunc = function() {};
     await rd.makeTree([{name: 'unknown', id: '8675309'}, {name: 'yoyo', id: '123'}]);
@@ -121,9 +121,9 @@ describe('The Rafter Dashboard', () => {
   it('displays a tree menu with a folder', testAsync(async function() {
     document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div id="treeView"></div>';
     //const myFunc = function() {};
-    await rd.displayTree([{name: 'yoyo', id: '123', type: 'folder', children: []}], 'divId', rd.showFileDetails, [{name: 'unknown', id: '8675309'}, {name: 'yoyo', id: '123', type: 'folder'}]);
+    await rd.displayTree([{name: 'yoyo', id: '123', type: 'folder', isContainer: true, children: []}], 'divId', rd.showFileDetails, [{name: 'unknown', id: '8675309'}, {name: 'yoyo', id: '123', type: 'folder', isContainer: true}]);
     document.getElementsByClassName('tree-leaf-text')[0].click();
-    ///console.log(document.getElementById('divId'));
+    expect(document.getElementsByClassName('tlfolder')[0]).not.toBe(undefined);
   }));
   it('detects an expired token', (done) => {
     let tkn = {exp: 123};
