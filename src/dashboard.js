@@ -24,6 +24,13 @@ export class Dashboard {
       }
       localStorage.setItem('token', newToken);
     }
+    if (localStorage.getItem('aurelia_id_token') === null) {
+      let newAToken = sessionStorage.getItem('aurelia_id_token');
+      if (newAToken !== null) {
+        localStorage.setItem('aurelia_id_token', newAToken);
+        sessionStorage.removeItem('aurelia_id_token');
+      }
+    }
     this.newUser = false;
     /* istanbul ignore else */
     if (this.user.userType === 'Developer') {
