@@ -1,5 +1,5 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.10.1
+version: v1.10.2
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
   'npm:fresh:20170908':
@@ -24,6 +24,12 @@ ignore:
     - aurelia-pal-nodejs > jsdom > content-type-parser:
         reason: None given
         expires: '2018-02-26T16:38:24.007Z'
+    - jsdom > content-type-parser:
+        reason: None given
+        expires: '2018-03-28T21:16:38.309Z'
+    - aurelia-pal-nodejs > jsdom > content-type-parser:
+        reason: None given
+        expires: '2018-03-28T21:16:38.309Z'
   'npm:hoek:20180212':
     - wait-on > joi > hoek:
         reason: None given
