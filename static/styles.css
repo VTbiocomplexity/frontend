@@ -313,6 +313,10 @@ button {
 
 .tree-leaf .tree-leaf-content::after { clear: both; }
 
+.tree-expando {
+  display: none;
+}
+
 .fileDetails {
   overflow-x: scroll;
 }
