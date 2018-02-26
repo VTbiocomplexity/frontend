@@ -40,10 +40,10 @@ export class Rafter {
     console.log(this.rafterFile.createType);
   }
 
-  displayTree(nameArr, divId, showFile, hdj, raf, rvs, myApp, rui) {
-    this.tv = new TreeView(nameArr, divId);
+  displayTree(tv, nameArr, divId, showFile, hdj, raf, rvs, myApp, rui, mtws, displayTree) {
+    tv = new TreeView(nameArr, divId);
     console.log('this is the tree view object');
-    console.log(this.tv);
+    console.log(tv);
     let getTreeLeaves = document.getElementsByClassName('tree-leaf-content');
     console.log(getTreeLeaves);
     console.log(getTreeLeaves.length);
@@ -64,16 +64,18 @@ export class Rafter {
     for (let j = 0; j < foldersArr.length; j++) {
       foldersArr[j].domDiv.addEventListener('click', function(evt) {
         console.log(evt);
-        showFile(foldersArr[j].id, hdj, raf, rvs, myApp, rui);
+        showFile(foldersArr[j].id, hdj, raf, rvs, myApp, rui, mtws, tv, showFile, displayTree);
+        //mtws();
       });
     }
-    this.tv.on('select', function(evt) {
+    tv.on('select', function(evt) {
       console.log(evt.data);
-      showFile(evt.data.id, hdj, raf, rvs, myApp, rui);
+      showFile(evt.data.id, hdj, raf, rvs, myApp, rui, null, null, null, null);
     });
+    //tv.expandAll();
   }
 
-  showFileDetails(id, hdj, raf, rvs, myApp, rui) {
+  showFileDetails(id, hdj, raf, rvs, myApp, rui, mtws, tv, showFile, displayTree) {
     console.log('going to display the file details now');
     console.log(id);
     for (let i = 0; i < hdj.length; i++) {
@@ -84,7 +86,7 @@ export class Rafter {
           document.getElementsByClassName('folderName')[0].innerHTML = hdj[i].name;
           raf.path = '/' + hdj[i].name;
           console.log('line 86?');
-          rvs('ls', myApp, rui, raf);
+          rvs('ls', myApp, rui, raf, mtws, hdj[i].id, hdj, tv, showFile, rvs, displayTree);
         }
         return document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(hdj[i]);
       }
@@ -101,10 +103,40 @@ export class Rafter {
       nameArr.push(nameObj);
     }
     console.log(nameArr);
-    this.displayTree(nameArr, 'treeView', this.showFileDetails, this.homeDirJson, this.rafterFile, this.rafterVolumeService, this.app, this.rafterUserID);
+    this.displayTree(this.tv, nameArr, 'treeView', this.showFileDetails, this.homeDirJson, this.rafterFile, this.rafterVolumeService, this.app, this.rafterUserID, this.makeTreeWithSub, this.displayTree);
   }
 
-  rafterVolumeService(cmd, myApp = null, rui = null, raf = null) {
+  async makeTreeWithSub(data, hdjId, hdj, tv, showFile, raf, rvs, myApp, rui, mtws, displayTree) {
+    console.log('do I have the global tree view object?');
+    console.log(tv);
+    console.log('sub dir');
+    console.log(data);
+    console.log('home dir');
+    console.log(hdj);
+    console.log('parent dir id');
+    console.log(hdjId);
+    console.log(tv.data);
+    //make child Directory
+    let childObj = {};
+    let childArr = [];
+    for (let c = 0; c < data.length; c++) {
+      childObj = {name: data[c].name, id: data[c].id, type: data[c].type, isContainer: data[c].isContainer, children: []};
+      childArr.push(childObj);
+    }
+    for (let i = 0; i < tv.data.length; i++) {
+      if (hdjId === tv.data[i].id) {
+        console.log(tv.data[i]);
+        tv.data[i].children = childArr;
+      }
+    }
+    //tv.data[2].children = [{name: 'yoo', id: '243', type: 'unspecified', isContainer: false, children: []}];
+    let newData = tv.data;
+    await displayTree(tv, newData, 'treeView', showFile, hdj, raf, rvs, myApp, rui, mtws);
+    tv.expandAll();
+    //tv = new TreeView(newData, 'treeView');
+  }
+
+  rafterVolumeService(cmd, myApp = null, rui = null, raf = null, mtws = null, hdjId = null, hdj = null, tv = null, showFile = null, rvs = null, displayTree = null) {
     document.getElementsByClassName('userServiceError')[0].innerHTML = '&nbsp;';
     console.log('i am in rafterVolumeService function');
     if (myApp === null) {
@@ -136,6 +168,9 @@ export class Rafter {
           console.log('I want to display the contents of a subdirectory now');
           console.log(data);
           document.getElementsByClassName('subDirContent')[0].innerHTML = JSON.stringify(data);
+          console.log(mtws);
+          return mtws(data, hdjId, hdj, tv, showFile, raf, rvs, myApp, rui, mtws, displayTree);
+          //return mtws(data, hdjId, hdj, tv);
         }
         if (data.message) {
           //let errorMessage = JSON.parse(data.message);
