@@ -274,7 +274,10 @@ button {
   cursor: hand;
 }
 
-.tree-leaf { position: relative; }
+.tree-leaf {
+  position: relative;
+  padding: 6px;
+}
 
 .tree-leaf .tree-child-leaves {
   display: block;
@@ -324,4 +327,8 @@ button {
 .tlfolder {
   float: left;
   padding-left: 10px;
+}
+
+#treeView {
+  margin-left: 30px;
 }

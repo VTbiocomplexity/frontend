@@ -107,7 +107,7 @@ export class Rafter {
         const fileIDsJson = fileID.getAttribute('data-item');
         const fileIDJson = JSON.parse(fileIDsJson);
         //console.log(fileIDJson);
-        showFile(fileIDJson.id, allData, raf, rvs, myApp, rui, mtws, tv, showFile, displayTree);
+        showFile(fileIDJson.id, allData, raf, rvs, myApp, rui, null, null, null, null);
         //mtws();
       });
     }
@@ -117,9 +117,13 @@ export class Rafter {
     });
   }
 
-  showFileDetails(id, hdj, raf, rvs, myApp, rui, mtws, tv, showFile, displayTree) {
+  showFileDetails(id, hdj, raf, rvs, myApp, rui, mtws = null, tv, showFile, displayTree) {
     //console.log('going to display the file details now');
     //console.log(id);
+    let ifd = document.getElementsByClassName('insideFolderDetails')[0];
+    if (mtws === null) {
+      ifd.style.display = 'none';
+    } else {ifd.style.display = 'block';}
     for (let i = 0; i < hdj.length; i++) {
       if (id === hdj[i].id) {
         //console.log(hdj[i].isContainer);
