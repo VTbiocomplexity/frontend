@@ -41,6 +41,9 @@ export class Rafter {
   }
 
   displayTree(tv, nameArr, divId, showFile, hdj, raf, rvs, myApp, rui, mtws, displayTree) {
+    let filesInFolder;
+    let insideFolderDetails;
+    let allData = [];
     tv = new TreeView(nameArr, divId);
     console.log('this is the tree view object');
     console.log(tv);
@@ -51,20 +54,58 @@ export class Rafter {
     let foldersArr = [];
     for (let i = 0; i < getTreeLeaves.length; i++) {
       //console.log('am I iterating?');
-      console.log(getTreeLeaves[i].getAttribute('data-item'));
+      //console.log(getTreeLeaves[i].getAttribute('data-item'));
       treeNodeObj = JSON.parse(getTreeLeaves[i].getAttribute('data-item'));
-      console.log(treeNodeObj.type);
+      //console.log(treeNodeObj.type);
       if (treeNodeObj.isContainer) {
         getTreeLeaves[i].innerHTML = '<div class="tlfolder fa fa-folder"></div>' + getTreeLeaves[i].innerHTML;
         foldersArr.push({id: treeNodeObj.id, domDiv: getTreeLeaves[i]});
       }
     }
-    console.log(foldersArr);
+    //console.log(foldersArr);
       // make folders clickable
     for (let j = 0; j < foldersArr.length; j++) {
+      console.log(foldersArr[j]);
+      filesInFolder = foldersArr[j].domDiv.nextElementSibling;
+      console.log(filesInFolder);
+      //console.log(filesInFolder.getElementByClassName('tree-leaf'));
       foldersArr[j].domDiv.addEventListener('click', function(evt) {
         console.log(evt);
         showFile(foldersArr[j].id, hdj, raf, rvs, myApp, rui, mtws, tv, showFile, displayTree);
+        //mtws();
+      });
+    }
+    // tv.on('select', function(evt) {
+    //   console.log(evt.data);
+    //   showFile(evt.data.id, allData, raf, rvs, myApp, rui, null, null, null, null);
+    // });
+    //tv.expandAll();
+    console.log(filesInFolder.innerHTML);
+    let fif = [];
+    fif = filesInFolder.getElementsByClassName('tree-leaf');
+    console.log(fif);
+    insideFolderDetails = document.getElementsByClassName('subDirContent')[0].innerHTML;
+    console.log(insideFolderDetails);
+    if (insideFolderDetails !== '' && fif.length !== 0) {
+      let ifd = JSON.parse(insideFolderDetails);
+      //console.log(ifd);
+      allData = ifd;
+    } else {
+      console.log('else line 94');
+      allData = hdj;
+    }
+    console.log(allData);
+    //hdj = idf;
+    for (let k = 0; k < fif.length; k++) {
+      //console.log(fif[k].innerHTML);
+      fif[k].addEventListener('click', function(evt) {
+        console.log('I clicked the file inside sub folder');
+        console.log(fif[k].innerHTML);
+        const fileID = fif[k].getElementsByClassName('tree-leaf-content')[0];
+        const fileIDsJson = fileID.getAttribute('data-item');
+        const fileIDJson = JSON.parse(fileIDsJson);
+        console.log(fileIDJson);
+        showFile(fileIDJson.id, allData, raf, rvs, myApp, rui, mtws, tv, showFile, displayTree);
         //mtws();
       });
     }
@@ -72,7 +113,6 @@ export class Rafter {
       console.log(evt.data);
       showFile(evt.data.id, hdj, raf, rvs, myApp, rui, null, null, null, null);
     });
-    //tv.expandAll();
   }
 
   showFileDetails(id, hdj, raf, rvs, myApp, rui, mtws, tv, showFile, displayTree) {
@@ -107,15 +147,15 @@ export class Rafter {
   }
 
   async makeTreeWithSub(data, hdjId, hdj, tv, showFile, raf, rvs, myApp, rui, mtws, displayTree) {
-    console.log('do I have the global tree view object?');
-    console.log(tv);
-    console.log('sub dir');
-    console.log(data);
-    console.log('home dir');
-    console.log(hdj);
-    console.log('parent dir id');
-    console.log(hdjId);
-    console.log(tv.data);
+    // console.log('do I have the global tree view object?');
+    // console.log(tv);
+    // console.log('sub dir');
+    // console.log(data);
+    // console.log('home dir');
+    // console.log(hdj);
+    // console.log('parent dir id');
+    // console.log(hdjId);
+    // console.log(tv.data);
     //make child Directory
     let childObj = {};
     let childArr = [];
