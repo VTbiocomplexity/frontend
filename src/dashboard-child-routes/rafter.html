@@ -25,10 +25,12 @@
           <div class="fileDetails">
             <p><strong>File/Folder Details</strong></p>
             <p class="homeDirContent" style="margin:10px;text-align:left"></p>
-              <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <div class="insideFolderDetails">
               <p><strong>Inside of Folder Details</strong></p>
               <p class="subDirContent" style="margin:10px;text-align:left"></p>
-                <p>&nbsp;</p>
+              <p>&nbsp;</p>
+            </div>
           </div>
         </div>
         <p>&nbsp;</p>
@@ -38,10 +40,10 @@
           <form style="margin-left:0.75in">
             <label style="margin-top:0;padding-top:0">Name</label>
             <input type="text" value.bind="rafterFile.name">
-              <p style="margin:0">&nbsp;</p>
+            <p style="margin:0">&nbsp;</p>
             <div>
               <!-- <input type="radio" id="fileType1" name="ftype" value="file" checked> -->
-                <input type="radio" id="fileType1" name="ftype" value="file" checked change.delegate="radioClicked()">
+              <input type="radio" id="fileType1" name="ftype" value="file" checked change.delegate="radioClicked()">
               <label for="fileType1" style="display:inline; margin-right:30px">File</label>
               <!-- <input type="radio" id="fileType2"name="ftype" value="folder"> -->
               <input type="radio" id="fileType2" name="ftype" value="folder" change.delegate="radioClicked()">
