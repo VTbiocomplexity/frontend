@@ -276,7 +276,8 @@ button {
 
 .tree-leaf {
   position: relative;
-  padding: 6px;
+  padding-top: 8px;
+  padding-bottom: 0;
 }
 
 .tree-leaf .tree-child-leaves {
@@ -314,6 +315,11 @@ button {
 
 .tree-leaf .tree-leaf-text:hover { color: #00f; }
 
+/* .tree-leaf .tree-leaf-text:focus {
+  color: #007bff;
+  text-decoration: underline;
+} */
+
 .tree-leaf .tree-leaf-content::after { clear: both; }
 
 .tree-expando {
@@ -331,4 +337,9 @@ button {
 
 #treeView {
   margin-left: 30px;
+}
+
+.homeDirLink {
+  text-align: left;
+  margin: auto;
 }
