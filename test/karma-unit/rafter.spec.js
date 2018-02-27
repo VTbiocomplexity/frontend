@@ -74,6 +74,13 @@ describe('The Rafter Dashboard', () => {
     rd.app.httpClient = new HttpMock('rafterMessage');
     await rd.rafterVolumeService('create');
   }));
+  it('retrieves the sub directory', testAsync(async function() {
+    document.body.innerHTML = '<div class="homeDirContent"></div><div class="userServiceError"></div><div class="subDirContent"></div>';
+    rd.makeTreeWithSub = function() {};
+    rd.rafterFile = {path: '/myFolder'};
+    //rd.rafterUserID = 'tester';
+    await rd.rafterVolumeService('ls', rd.app, 'tester', rd.rafterFile, rd.makeTreeWithSub);
+  }));
   it('creates a new file', testAsync(async function() {
     document.body.innerHTML = '<div class="homeDirContent"></div><div class="userServiceError"></div>';
     rd.app.httpClient = new HttpMock();
@@ -104,36 +111,68 @@ describe('The Rafter Dashboard', () => {
     rd.app.httpClient = new HttpMock('rafterError');
     await rd.initVol('yoyo');
   }));
-  // it('displays a tree menu without a folder', testAsync(async function() {
-  //   rd.app.httpClient = new HttpMock();
-  //   document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div id="treeView"></div>';
-  //   //const myFunc = function() {};
-  //   await rd.displayTree([{name: 'yoyo', id: '123', isContainer: false, children: []}, {name: 'unknown', id: '8675309',  isContainer: false, children: []}], 'divId', rd.showFileDetails, [{name: 'unknown', id: '8675309', isContainer: false}, {name: 'yoyo', id: '123', isContainer: false}], rd.rafterFile, rd.rafterVolumeService, rd.app, rd.rafterUserID);
-  //   document.getElementsByClassName('tree-leaf-text')[0].click();
-  //   expect(document.getElementsByClassName('tlfolder')[0]).toBe(undefined);
-  // }));
-  // it('displays a tree menu with a folder', testAsync(async function() {
-  //   rd.app.httpClient = new HttpMock();
-  //   document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div class="folderName"></div><div class="userServiceError"></div><div id="treeView"></div>';
-  //   //const myFunc = function() {};
-  //   await rd.displayTree([{name: 'yoyo', id: '123', isContainer: true, children: []}, {name: 'unknown', id: '8675309',  isContainer: false, children: []}], 'divId', rd.showFileDetails, [{name: 'unknown', id: '8675309', isContainer: false}, {name: 'yoyo', id: '123', isContainer: true}], rd.rafterFile, rd.rafterVolumeService, rd.app, rd.rafterUserID);
-  //   document.getElementsByClassName('tree-leaf-text')[0].click();
-  //   expect(document.getElementsByClassName('tlfolder')[0]).not.toBe(undefined);
-  // }));
+  it('displays a tree menu without a folder', (done) => {
+    rd.app.httpClient = new HttpMock();
+    rd.showFileDetails = function() {};
+    document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div id="treeView"></div>';
+    const nameArr = [{name: 'filename', id: '123', type: 'unspecified', isContainer: false, children: []}];
+    rd.displayTree(rd.tv, nameArr, 'treeView', rd.showFileDetails, rd.homeDirJson, rd.rafterFile, rd.rafterVolumeService, rd.app, rd.rafterUserID, rd.makeTreeWithSub, rd.displayTree);
+    document.getElementsByClassName('tree-leaf-text')[0].click();
+    expect(document.getElementsByClassName('tlfolder')[0]).toBe(undefined);
+    done();
+  });
+  it('displays a tree menu with a folder', (done) => {
+    rd.app.httpClient = new HttpMock();
+    rd.showFileDetails = function() {};
+    document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div id="treeView"></div>';
+    const nameArr = [{name: 'filename', id: '123', type: 'folder', isContainer: true, children: []}];
+    rd.displayTree(rd.tv, nameArr, 'treeView', rd.showFileDetails, rd.homeDirJson, rd.rafterFile, rd.rafterVolumeService, rd.app, rd.rafterUserID, rd.makeTreeWithSub, rd.displayTree);
+    document.getElementsByClassName('tree-leaf-text')[0].click();
+    expect(document.getElementsByClassName('tlfolder')[0]).not.toBe(undefined);
+    done();
+  });
+  it('shows the file details from a tree menu click', (done) => {
+    rd.app.httpClient = new HttpMock();
+    //rd.showFileDetails = function() {};
+    document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div id="treeView"></div>';
+    const nameArr = [{name: 'filename', id: '123', type: 'unspecified', isContainer: false, children: []}];
+    rd.showFileDetails('123', nameArr, null, null, null, null, null, null, null, null);
+    //document.getElementsByClassName('tree-leaf-text')[0].click();
+    expect(document.getElementsByClassName('homeDirContent')[0].innerHTML).not.toBe('');
+    done();
+  });
+  it('shows the folder name from a tree menu click', (done) => {
+    rd.app.httpClient = new HttpMock();
+    rd.rafterVolumeService = function() {};
+    document.body.innerHTML = '<div id="divId"><p class="folderName"></p></div><div class="homeDirContent"></div><div id="treeView"></div>';
+    const nameArr = [{name: 'myFolder', id: '123', type: 'folder', isContainer: true, children: []}];
+    rd.showFileDetails('123', nameArr, rd.rafterFile, rd.rafterVolumeService, null, null, null, null, null, null);
+    //document.getElementsByClassName('tree-leaf-text')[0].click();
+    expect(document.getElementsByClassName('folderName')[0].innerHTML).toBe('myFolder');
+    done();
+  });
+  it('does not show the file details when the id is missing', (done) => {
+    rd.app.httpClient = new HttpMock();
+    rd.rafterVolumeService = function() {};
+    document.body.innerHTML = '<div id="divId"><p class="folderName"></p></div><div class="homeDirContent"></div><div id="treeView"></div>';
+    const nameArr = [{name: 'myFolder', id: '123', type: 'file', isContainer: false, children: []}];
+    rd.showFileDetails('1234', nameArr, rd.rafterFile, rd.rafterVolumeService, null, null, null, null, null, null);
+    //document.getElementsByClassName('tree-leaf-text')[0].click();
+    expect(document.getElementsByClassName('homeDirContent')[0].innerHTML).toBe('');
+    done();
+  });
   it('makes a tree menu without a folder', testAsync(async function() {
     document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div id="treeView"></div>';
-    //const myFunc = function() {};
     await rd.makeTree([{name: 'unknown', id: '8675309', isContainer: false, children: []}, {name: 'yoyo', id: '123'}]);
-    //document.getElementsByClassName('tree-leaf-text')[0].click();
-    ///console.log(document.getElementById('divId'));
   }));
-  // it('displays a tree menu with a folder', testAsync(async function() {
-  //   document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div id="treeView"></div>';
-  //   //const myFunc = function() {};
-  //   await rd.displayTree([{name: 'yoyo', id: '123', type: 'folder', isContainer: true, children: []}], 'treeView', rd.showFileDetails, [{name: 'unknown', id: '8675309'}, {name: 'yoyo', id: '123', type: 'folder', isContainer: true}], rd.rafterFile, rd.rafterVolumeService, rd.app, rd.rafterUserID);
-  //   document.getElementsByClassName('tree-leaf-text')[0].click();
-  //   expect(document.getElementsByClassName('tlfolder')[0]).not.toBe(undefined);
-  // }));
+  it('makes a tree menu with a folder open', testAsync(async function() {
+    rd.displayTree = function() {};
+    rd.tv = {expandAll: function() {}, data: [{name: 'myFolder', id: '456', type: 'folder', isContainer: false, children: []}, {name: 'myFolder2', id: '4562', type: 'folder', isContainer: false, children: []}]};
+    document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div id="treeView"></div>';
+    const data = [{name: 'myFile', id: '123', type: 'file', isContainer: false, children: []}];
+    const hdj = [{name: 'myFolder', id: '456', type: 'folder', isContainer: true, children: []}];
+    await rd.makeTreeWithSub(data, '456', hdj, rd.tv, rd.showFileDetails, rd.rafterFile, null, null, null, rd.makeTreeWithSub, rd.displayTree);
+  }));
   it('detects an expired token', (done) => {
     let tkn = {exp: 123};
     let isValid = rd.checkExpired(tkn);
