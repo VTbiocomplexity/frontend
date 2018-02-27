@@ -37,7 +37,7 @@ export class Rafter {
     } else {
       this.rafterFile.createType = 'file';
     }
-    console.log(this.rafterFile.createType);
+    //console.log(this.rafterFile.createType);
   }
 
   displayTree(tv, nameArr, divId, showFile, hdj, raf, rvs, myApp, rui, mtws, displayTree) {
@@ -45,11 +45,11 @@ export class Rafter {
     let insideFolderDetails;
     let allData = [];
     tv = new TreeView(nameArr, divId);
-    console.log('this is the tree view object');
-    console.log(tv);
+    //console.log('this is the tree view object');
+    //console.log(tv);
     let getTreeLeaves = document.getElementsByClassName('tree-leaf-content');
-    console.log(getTreeLeaves);
-    console.log(getTreeLeaves.length);
+    //console.log(getTreeLeaves);
+    //console.log(getTreeLeaves.length);
     let treeNodeObj;
     let foldersArr = [];
     for (let i = 0; i < getTreeLeaves.length; i++) {
@@ -65,12 +65,12 @@ export class Rafter {
     //console.log(foldersArr);
       // make folders clickable
     for (let j = 0; j < foldersArr.length; j++) {
-      console.log(foldersArr[j]);
+      //console.log(foldersArr[j]);
       filesInFolder = foldersArr[j].domDiv.nextElementSibling;
-      console.log(filesInFolder);
+      //console.log(filesInFolder);
       //console.log(filesInFolder.getElementByClassName('tree-leaf'));
       foldersArr[j].domDiv.addEventListener('click', function(evt) {
-        console.log(evt);
+        //console.log(evt);
         showFile(foldersArr[j].id, hdj, raf, rvs, myApp, rui, mtws, tv, showFile, displayTree);
         //mtws();
       });
@@ -80,52 +80,54 @@ export class Rafter {
     //   showFile(evt.data.id, allData, raf, rvs, myApp, rui, null, null, null, null);
     // });
     //tv.expandAll();
-    console.log(filesInFolder.innerHTML);
+    //console.log(filesInFolder.innerHTML);
     let fif = [];
-    fif = filesInFolder.getElementsByClassName('tree-leaf');
-    console.log(fif);
+    if (filesInFolder !== null && filesInFolder !== undefined) {
+      fif = filesInFolder.getElementsByClassName('tree-leaf');
+      //console.log(fif);
+    }
     insideFolderDetails = document.getElementsByClassName('subDirContent')[0].innerHTML;
-    console.log(insideFolderDetails);
+    //console.log(insideFolderDetails);
     if (insideFolderDetails !== '' && fif.length !== 0) {
       let ifd = JSON.parse(insideFolderDetails);
       //console.log(ifd);
       allData = ifd;
     } else {
-      console.log('else line 94');
+      //console.log('else line 94');
       allData = hdj;
     }
-    console.log(allData);
+    //console.log(allData);
     //hdj = idf;
     for (let k = 0; k < fif.length; k++) {
       //console.log(fif[k].innerHTML);
       fif[k].addEventListener('click', function(evt) {
-        console.log('I clicked the file inside sub folder');
-        console.log(fif[k].innerHTML);
+        //console.log('I clicked the file inside sub folder');
+        //console.log(fif[k].innerHTML);
         const fileID = fif[k].getElementsByClassName('tree-leaf-content')[0];
         const fileIDsJson = fileID.getAttribute('data-item');
         const fileIDJson = JSON.parse(fileIDsJson);
-        console.log(fileIDJson);
+        //console.log(fileIDJson);
         showFile(fileIDJson.id, allData, raf, rvs, myApp, rui, mtws, tv, showFile, displayTree);
         //mtws();
       });
     }
     tv.on('select', function(evt) {
-      console.log(evt.data);
+      //console.log(evt.data);
       showFile(evt.data.id, hdj, raf, rvs, myApp, rui, null, null, null, null);
     });
   }
 
   showFileDetails(id, hdj, raf, rvs, myApp, rui, mtws, tv, showFile, displayTree) {
-    console.log('going to display the file details now');
-    console.log(id);
+    //console.log('going to display the file details now');
+    //console.log(id);
     for (let i = 0; i < hdj.length; i++) {
       if (id === hdj[i].id) {
-        console.log(hdj[i].isContainer);
+        //console.log(hdj[i].isContainer);
         if (hdj[i].isContainer) {
-          console.log('I found a folder');
+          //console.log('I found a folder');
           document.getElementsByClassName('folderName')[0].innerHTML = hdj[i].name;
           raf.path = '/' + hdj[i].name;
-          console.log('line 86?');
+          //console.log('line 86?');
           rvs('ls', myApp, rui, raf, mtws, hdj[i].id, hdj, tv, showFile, rvs, displayTree);
         }
         return document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(hdj[i]);
@@ -134,15 +136,15 @@ export class Rafter {
   }
 
   makeTree(data) {
-    console.log('this is the data for tree');
-    console.log(data);
+    //console.log('this is the data for tree');
+    //console.log(data);
     let nameArr = [];
     let nameObj = {};
     for (let i = 0; i < data.length; i++) {
       nameObj = {name: data[i].name, id: data[i].id, type: data[i].type, isContainer: data[i].isContainer, children: []};
       nameArr.push(nameObj);
     }
-    console.log(nameArr);
+    //console.log(nameArr);
     this.displayTree(this.tv, nameArr, 'treeView', this.showFileDetails, this.homeDirJson, this.rafterFile, this.rafterVolumeService, this.app, this.rafterUserID, this.makeTreeWithSub, this.displayTree);
   }
 
@@ -165,7 +167,7 @@ export class Rafter {
     }
     for (let i = 0; i < tv.data.length; i++) {
       if (hdjId === tv.data[i].id) {
-        console.log(tv.data[i]);
+        //console.log(tv.data[i]);
         tv.data[i].children = childArr;
       }
     }
@@ -178,7 +180,7 @@ export class Rafter {
 
   rafterVolumeService(cmd, myApp = null, rui = null, raf = null, mtws = null, hdjId = null, hdj = null, tv = null, showFile = null, rvs = null, displayTree = null) {
     document.getElementsByClassName('userServiceError')[0].innerHTML = '&nbsp;';
-    console.log('i am in rafterVolumeService function');
+    //console.log('i am in rafterVolumeService function');
     if (myApp === null) {
       myApp = this.app;
     }
@@ -205,16 +207,16 @@ export class Rafter {
           //console.log(this.homeDirJson);
             return this.makeTree(data);
           }
-          console.log('I want to display the contents of a subdirectory now');
-          console.log(data);
+          //console.log('I want to display the contents of a subdirectory now');
+          //console.log(data);
           document.getElementsByClassName('subDirContent')[0].innerHTML = JSON.stringify(data);
-          console.log(mtws);
+          //console.log(mtws);
           return mtws(data, hdjId, hdj, tv, showFile, raf, rvs, myApp, rui, mtws, displayTree);
           //return mtws(data, hdjId, hdj, tv);
         }
         if (data.message) {
           //let errorMessage = JSON.parse(data.message);
-          console.log(data.message);
+          //console.log(data.message);
           document.getElementsByClassName('userServiceError')[0].innerHTML = data.message;
         }
       }).catch(function (err) {
@@ -222,7 +224,7 @@ export class Rafter {
           return console.log(err);
         }
       }).then((message) => {
-        console.log(message);
+        //console.log(message);
         /* istanbul ignore if */
         if (message !== null && message !== undefined) {
           document.getElementsByClassName('userServiceError')[0].innerHTML = message.error;
@@ -234,7 +236,7 @@ export class Rafter {
   }
 
   rafterLogout() {
-    console.log('going to log you out');
+    //console.log('going to log you out');
     localStorage.removeItem('rafterToken');
     localStorage.removeItem('rafterUser');
     /* istanbul ignore if */
@@ -277,8 +279,8 @@ export class Rafter {
         }
       } catch (err) {
         // The token is invalid
-        console.log(err);
-        console.log('your token is bad, logging you out!');
+        //console.log(err);
+        //console.log('your token is bad, logging you out!');
         if (rlo !== null && rlo !== undefined) {
           rlo();
         } else {
@@ -286,7 +288,7 @@ export class Rafter {
         }
       }
     } else {
-      console.log('you our not logged in');
+      //console.log('you our not logged in');
       if (sli !== null && sli !== undefined) {
         sli = true;
       } else {
@@ -300,7 +302,7 @@ export class Rafter {
     let checkd = d.valueOf() / 1000;
     //console.log(checkd);
     if (checkd > decoded.exp) {
-      console.log('expired');
+      //console.log('expired');
       return false;
     } return true;
   }
@@ -308,8 +310,8 @@ export class Rafter {
   validate() {
     let submitButton = document.getElementsByClassName('rafterLoginButton')[0];
     if (this.rafter.id !== '' && this.rafter.password !== '') {
-      console.log('enable the button!');
-      console.log(submitButton);
+      //console.log('enable the button!');
+      //console.log(submitButton);
       submitButton.removeAttribute('disabled');
     } else {
       submitButton.setAttribute('disabled', '');
@@ -332,19 +334,19 @@ export class Rafter {
       token = token.replace(/\r?\n|\r/g, '');
       //console.log(token);
       window.localStorage.setItem('rafterToken', token);
-      console.log(data);
+      //console.log(data);
       let rafterUser = data.split('&#34;user&#34;:')[1];
       rafterUser = rafterUser.split('}')[0];
       rafterUser = rafterUser + '}';
       rafterUser = rafterUser.replace(/&#34;/g, '"');
-      console.log(rafterUser);
-      console.log(JSON.parse(rafterUser));
+      //console.log(rafterUser);
+      //console.log(JSON.parse(rafterUser));
       window.localStorage.setItem('rafterUser', rafterUser);
       this.rafterUserID = JSON.parse(rafterUser).id;
       this.initVol(token);
       this.activate();
     }).catch((err) => {
-      console.log(err);
+      //console.log(err);
       document.getElementsByClassName('userServiceError')[0].innerHTML = 'Wrong userid or password';
     });
   }
@@ -359,9 +361,9 @@ export class Rafter {
     })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      //console.log(data);
     }).catch((err) => {
-      console.log(err);
+      //console.log(err);
     });
   }
 
