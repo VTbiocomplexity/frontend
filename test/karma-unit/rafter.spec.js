@@ -111,26 +111,38 @@ describe('The Rafter Dashboard', () => {
     rd.app.httpClient = new HttpMock('rafterError');
     await rd.initVol('yoyo');
   }));
-  // it('displays a tree menu without a folder', (done) => {
-  //   rd.app.httpClient = new HttpMock();
-  //   rd.showFileDetails = function() {};
-  //   document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div id="treeView"></div><div class="subDirContent"></div>';
-  //   const nameArr = [{name: 'filename', id: '123', type: 'unspecified', isContainer: false, children: []}];
-  //   rd.displayTree(rd.tv, nameArr, 'treeView', rd.showFileDetails, rd.homeDirJson, rd.rafterFile, rd.rafterVolumeService, rd.app, rd.rafterUserID, rd.makeTreeWithSub, rd.displayTree);
-  //   document.getElementsByClassName('tree-leaf-text')[0].click();
-  //   expect(document.getElementsByClassName('tlfolder')[0]).toBe(undefined);
-  //   done();
-  // });
-  // it('displays a tree menu with a folder', (done) => {
-  //   rd.app.httpClient = new HttpMock();
-  //   rd.showFileDetails = function() {};
-  //   document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div id="treeView"></div><div class="subDirContent"></div>';
-  //   const nameArr = [{name: 'filename', id: '123', type: 'folder', isContainer: true, children: []}];
-  //   rd.displayTree(rd.tv, nameArr, 'treeView', rd.showFileDetails, rd.homeDirJson, rd.rafterFile, rd.rafterVolumeService, rd.app, rd.rafterUserID, rd.makeTreeWithSub, rd.displayTree);
-  //   document.getElementsByClassName('tree-leaf-text')[0].click();
-  //   expect(document.getElementsByClassName('tlfolder')[0]).not.toBe(undefined);
-  //   done();
-  // });
+  it('displays a tree menu without a folder', (done) => {
+    rd.app.httpClient = new HttpMock();
+    rd.showFileDetails = function() {};
+    document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div id="treeView"></div><div class="subDirContent"></div>';
+    const nameArr = [{name: 'filename', id: '123', type: 'unspecified', isContainer: false, children: []}];
+    rd.displayTree(rd.tv, nameArr, 'treeView', rd.showFileDetails, rd.homeDirJson, rd.rafterFile, rd.rafterVolumeService, rd.app, rd.rafterUserID, rd.makeTreeWithSub, rd.displayTree);
+    document.getElementsByClassName('tree-leaf-text')[0].click();
+    expect(document.getElementsByClassName('tlfolder')[0]).toBe(undefined);
+    done();
+  });
+  it('displays a tree menu with a folder', (done) => {
+    rd.app.httpClient = new HttpMock();
+    rd.showFileDetails = function() {};
+    document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div id="treeView"></div><div class="subDirContent"></div>';
+    const nameArr = [{name: 'filename', id: '123', type: 'folder', isContainer: true, children: []}];
+    rd.displayTree(rd.tv, nameArr, 'treeView', rd.showFileDetails, rd.homeDirJson, rd.rafterFile, rd.rafterVolumeService, rd.app, rd.rafterUserID, rd.makeTreeWithSub, rd.displayTree);
+    document.getElementsByClassName('tree-leaf-text')[0].click();
+    expect(document.getElementsByClassName('tlfolder')[0]).not.toBe(undefined);
+    done();
+  });
+  it('displays a tree menu with a folder and files inside of folder', (done) => {
+    rd.app.httpClient = new HttpMock();
+    rd.showFileDetails = function() {};
+    document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div id="treeView"></div><div class="subDirContent"></div>';
+    const nameArr = [{name: 'folderName', id: '123', type: 'folder', isContainer: true, children: [{name: 'fileInside', id: '1234', type: 'file', isContainer: false, children: []}]}];
+    document.getElementsByClassName('subDirContent')[0].innerHTML = '[{"state":"empty","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"6f1ff340-18cc-11e8-95c2-717499928918","creation_date":"2018-02-23T19:04:55.156Z","name":"file2","owner_id":"JoshuaVSherman","container_id":"a320cc40-17e7-11e8-95c2-717499928918","update_date":"2018-02-23T19:04:55.156Z"},{"state":"empty","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"fb05c9b0-18c3-11e8-95c2-717499928918","creation_date":"2018-02-23T18:04:24.396Z","name":"insideSubFolder1.txt","owner_id":"JoshuaVSherman","container_id":"a320cc40-17e7-11e8-95c2-717499928918","update_date":"2018-02-23T18:04:24.396Z"}]';
+    rd.displayTree(rd.tv, nameArr, 'treeView', rd.showFileDetails, rd.homeDirJson, rd.rafterFile, rd.rafterVolumeService, rd.app, rd.rafterUserID, rd.makeTreeWithSub, rd.displayTree);
+    console.log(document.getElementsByClassName('tree-leaf-text'));
+    document.getElementsByClassName('tree-leaf-text')[1].click();
+    //expect(document.getElementsByClassName('tlfolder')[0]).not.toBe(undefined);
+    done();
+  });
   it('shows the file details from a tree menu click', (done) => {
     rd.app.httpClient = new HttpMock();
     //rd.showFileDetails = function() {};
