@@ -259,15 +259,15 @@ a:hover {
   border-radius: 2px;
 }
 
-a:not([href]):not([tabindex]) {
+/* a:not([href]):not([tabindex]) {
   text-decoration: underline;
   color: #007bff;
-}
+} */
 
-a:not([href]):not([tabindex]):hover {
+/* a:not([href]):not([tabindex]):hover {
   text-decoration: underline;
   color: #0056b3;
-}
+} */
 
 button {
   cursor: pointer;
@@ -313,7 +313,7 @@ button {
   margin-left: 25px;
 }
 
-.tree-leaf .tree-leaf-text:hover { color: #00f; }
+.tree-leaf .tree-leaf-text:hover { color: #23527c; }
 
 /* .tree-leaf .tree-leaf-text:focus {
   color: #007bff;
@@ -343,3 +343,23 @@ button {
   text-align: left;
   margin: auto;
 }
+
+.rafterHomeLink {
+  text-decoration: none;
+}
+
+.rafterHomeLink:hover { color: #23527c; }
+
+a:not([href]):not([tabindex]):hover {
+  color: #23527c;
+}
+
+/* a:not([href]):not([tabindex]) {
+  text-decoration: inherit;
+  color: inherit;
+}
+
+a:not([href]):not([tabindex]):hover {
+  text-decoration: inherit;
+  color: inherit;
+} */
