@@ -21,7 +21,12 @@
         <div class="rafterFile" style="text-align:center; margin-auto">
           <button style="text-align:center" class="rafterCheckHome" click.delegate="rafterVolumeService('ls')">Display home/${rafterUserID}</button>
           <p>&nbsp;</p>
-          <div id="treeView"></div>
+          <div class="homeDirLink">
+            <div class="showHideHD" style="display:none">
+              <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><i class="fa fa-folder"></i> <a click.delegate ="navHomeDir()">home/${rafterUserID}</a>
+            </div>
+            <div id="treeView"></div>
+          </div>
           <div class="fileDetails">
             <p><strong>File/Folder Details</strong></p>
             <p class="homeDirContent" style="margin:10px;text-align:left"></p>

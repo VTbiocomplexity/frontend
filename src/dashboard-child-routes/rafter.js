@@ -115,6 +115,12 @@ export class Rafter {
       //console.log(evt.data);
       showFile(evt.data.id, hdj, raf, rvs, myApp, rui, null, null, null, null);
     });
+    // let treeViewDiv = document.getElementById('treeView');
+    // treeViewDiv.innerHTML = '<div class="homeDirLink"><a id="homeDirClicker">home/JoshuaVSherman</a></div>' + treeViewDiv.innerHTML;
+  }
+
+  navHomeDir() {
+    console.log('you clicked me');
   }
 
   showFileDetails(id, hdj, raf, rvs, myApp, rui, mtws = null, tv, showFile, displayTree) {
@@ -184,6 +190,7 @@ export class Rafter {
 
   rafterVolumeService(cmd, myApp = null, rui = null, raf = null, mtws = null, hdjId = null, hdj = null, tv = null, showFile = null, rvs = null, displayTree = null) {
     document.getElementsByClassName('userServiceError')[0].innerHTML = '&nbsp;';
+    document.getElementsByClassName('showHideHD')[0].style.display = 'block';
     //console.log('i am in rafterVolumeService function');
     if (myApp === null) {
       myApp = this.app;
