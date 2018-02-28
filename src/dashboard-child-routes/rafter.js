@@ -131,6 +131,7 @@ export class Rafter {
     document.getElementsByClassName('createNew')[0].style.display = 'block';
     document.getElementsByClassName('isHomeDir')[0].style.display = 'block';
     document.getElementsByClassName('isHomeDir')[1].style.display = 'block';
+    this.rafterVolumeService('ls');
     //display the file details for the home/JoshuaVSherman folder
   }
 
@@ -197,8 +198,9 @@ export class Rafter {
   }
 
   rafterVolumeService(cmd, myApp = null, rui = null, raf = null, mtws = null, hdjId = null, hdj = null, tv = null, showFile = null, rvs = null, displayTree = null) {
-    document.getElementsByClassName('userServiceError')[0].innerHTML = '&nbsp;';
+    document.getElementsByClassName('userServiceError')[0].innerHTML = '';
     document.getElementsByClassName('showHideHD')[0].style.display = 'block';
+    document.getElementsByClassName('rafterCheckHome')[0].style.display = 'none';
     //console.log('i am in rafterVolumeService function');
     if (myApp === null) {
       myApp = this.app;
@@ -232,11 +234,15 @@ export class Rafter {
           //console.log(mtws);
           return mtws(data, hdjId, hdj, tv, showFile, raf, rvs, myApp, rui, mtws, displayTree);
           //return mtws(data, hdjId, hdj, tv);
-        }
-        if (data.message) {
+        } else if (data.message !== null && data.message !== '' && data.message !== undefined) {
           //let errorMessage = JSON.parse(data.message);
           //console.log(data.message);
-          document.getElementsByClassName('userServiceError')[0].innerHTML = data.message;
+          return document.getElementsByClassName('userServiceError')[0].innerHTML = data.message;
+        } else if (cmd === 'create') {
+          console.log('did I create a new file?');
+          this.rafterFile = {name: '', createType: '', path: ''};
+          this.rafterVolumeService('ls');
+          this.navHomeDir();
         }
       }).catch(function (err) {
         if (cmd !== 'ls') {
