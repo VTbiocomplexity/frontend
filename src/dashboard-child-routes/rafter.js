@@ -121,11 +121,20 @@ export class Rafter {
 
   navHomeDir() {
     console.log('you clicked me');
+    let hdc = JSON.stringify(this.homeDirJson);
+    this.rafterFile.path = '';
+    document.getElementsByClassName('folderName')[0].innerHTML = 'home/' + this.rafterUserID;
+    document.getElementsByClassName('insideFolderDetails')[0].style.display = 'block';
+    document.getElementsByClassName('subDirContent')[0].innerHTML = hdc;
+    document.getElementsByClassName('fileDetailsTitle')[0].style.display = 'none';
+    document.getElementsByClassName('homeDirContent')[0].innerHTML = '';
+    //display the file details for the home/JoshuaVSherman folder
   }
 
   showFileDetails(id, hdj, raf, rvs, myApp, rui, mtws = null, tv, showFile, displayTree) {
     //console.log('going to display the file details now');
     //console.log(id);
+    document.getElementsByClassName('fileDetailsTitle')[0].style.display = 'block';
     let ifd = document.getElementsByClassName('insideFolderDetails')[0];
     if (mtws === null) {
       ifd.style.display = 'none';
@@ -159,16 +168,6 @@ export class Rafter {
   }
 
   async makeTreeWithSub(data, hdjId, hdj, tv, showFile, raf, rvs, myApp, rui, mtws, displayTree) {
-    // console.log('do I have the global tree view object?');
-    // console.log(tv);
-    // console.log('sub dir');
-    // console.log(data);
-    // console.log('home dir');
-    // console.log(hdj);
-    // console.log('parent dir id');
-    // console.log(hdjId);
-    // console.log(tv.data);
-    //make child Directory
     let childObj = {};
     let childArr = [];
     for (let c = 0; c < data.length; c++) {
