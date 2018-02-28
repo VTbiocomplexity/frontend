@@ -327,7 +327,7 @@ button {
 }
 
 .fileDetails {
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 
 .tlfolder {

@@ -128,6 +128,9 @@ export class Rafter {
     document.getElementsByClassName('subDirContent')[0].innerHTML = hdc;
     document.getElementsByClassName('fileDetailsTitle')[0].style.display = 'none';
     document.getElementsByClassName('homeDirContent')[0].innerHTML = '';
+    document.getElementsByClassName('createNew')[0].style.display = 'block';
+    document.getElementsByClassName('isHomeDir')[0].style.display = 'block';
+    document.getElementsByClassName('isHomeDir')[1].style.display = 'block';
     //display the file details for the home/JoshuaVSherman folder
   }
 
@@ -138,7 +141,13 @@ export class Rafter {
     let ifd = document.getElementsByClassName('insideFolderDetails')[0];
     if (mtws === null) {
       ifd.style.display = 'none';
-    } else {ifd.style.display = 'block';}
+      document.getElementsByClassName('createNew')[0].style.display = 'none';
+    } else {
+      ifd.style.display = 'block';
+      document.getElementsByClassName('isHomeDir')[0].style.display = 'none';
+      document.getElementsByClassName('isHomeDir')[1].style.display = 'none';
+      document.getElementsByClassName('createNew')[0].style.display = 'block';
+    }
     for (let i = 0; i < hdj.length; i++) {
       if (id === hdj[i].id) {
         //console.log(hdj[i].isContainer);
