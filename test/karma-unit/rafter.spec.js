@@ -77,7 +77,7 @@ describe('The Rafter Dashboard', () => {
   it('retrieves the sub directory', testAsync(async function() {
     document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div><div class="subDirContent"></div>';
     rd.makeTreeWithSub = function() {};
-    rd.rafterFile = {path: '/myFolder'};
+    rd.rafterFile = {path: '/myFolder', name: ' spacey S'};
     //rd.rafterUserID = 'tester';
     await rd.rafterVolumeService('ls', rd.app, 'tester', rd.rafterFile, rd.makeTreeWithSub);
   }));
