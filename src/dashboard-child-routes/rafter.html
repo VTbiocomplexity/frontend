@@ -7,7 +7,6 @@
         <form style="margin-left:20px">
           <label>Rafter User Id</label>
           <input type="text" value.bind="rafter.id" change.delegate="validate()" keyup.delegate="validate()">
-
           <label>Rafter Password</label>
           <input type="password" value.bind="rafter.password" change.delegate="validate()" keyup.delegate="validate()">
           <div>
@@ -16,24 +15,30 @@
           </div>
         </form>
       </div>
+      <div class="rafterLogout" style="margin:auto; max-width:2in;text-align:center">
+        <button style="text-align:center" class="rafterLogoutButton" click.delegate="rafterLogout()">Logout of Rafter</button>
+      </div>
+      <p>&nbsp;</p>
       <div class="homeDirLink">
         <div class="showHideHD" style="display:none">
           <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><i class="fa fa-folder"></i> <a class="rafterHomeLink" click.delegate="navHomeDir()">home/${rafterUserID}</a>
         </div>
-          <div id="treeView"></div>
+        <div id="treeView"></div>
       </div>
       <div style="margin:auto; text-align:center"><p class="userServiceError" style="color:red"></p></div>
       <div show.bind="!showLogin">
         <div class="rafterFile" style="text-align:center; margin-auto">
           <button style="text-align:center" class="rafterCheckHome" click.delegate="rafterVolumeService('ls')">Display home/${rafterUserID}</button>
           <div class="fileDetails">
-            <p class="fileDetailsTitle" style="display:none"><strong>File/Folder Details</strong></p>
-            <p class="homeDirContent" style="margin:10px;text-align:left"></p>
-            <p>&nbsp;</p>
+            <div class="fileMeta">
+              <hr>
+              <p class="fileDetailsTitle" style="display:none"><strong>File/Folder Details</strong></p>
+              <p class="homeDirContent" style="margin:10px;text-align:left;overflow-x:auto"></p>
+            </div>
             <div class="insideFolderDetails" style="display:none">
+              <hr>
               <p><strong>Inside of Folder Details</strong></p>
-              <p class="subDirContent" style="margin:10px;text-align:left"></p>
-              <p>&nbsp;</p>
+              <p class="subDirContent" style="margin:10px;text-align:left;;overflow-x:auto"></p>
             </div>
           </div>
         </div>
@@ -59,9 +64,6 @@
           </form>
         </div>
         <p>&nbsp;</p>
-        <div class="rafterLogout" style="margin:auto; max-width:2in;text-align:center">
-          <button style="text-align:center" class="rafterLogoutButton" click.delegate="rafterLogout()">Logout of Rafter</button>
-        </div>
       </div>
       <!-- <p>This news (or blog) will appear on the News page and will also be published to Facebook, Twitter, Instagram, and Google</p> -->
     </div>
