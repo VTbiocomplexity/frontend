@@ -61,33 +61,38 @@ describe('The Rafter Dashboard', () => {
     //expect(window.localStorage.getItem('rafterUser')).toBe(null);
   }));
   it('retrieves the home directory', testAsync(async function() {
-    document.body.innerHTML = '<div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
+    document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
     await rd.rafterVolumeService('ls');
   }));
   it('tries to retrieves the home directory, but gets an error', testAsync(async function() {
-    document.body.innerHTML = '<div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
+    document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
     rd.app.httpClient = new HttpMock('rafterError');
     await rd.rafterVolumeService('ls');
   }));
   it('tries to retrieves the home directory, but receives a message of error', testAsync(async function() {
-    document.body.innerHTML = '<div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
+    document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
     rd.app.httpClient = new HttpMock('rafterMessage');
     await rd.rafterVolumeService('create');
   }));
   it('retrieves the sub directory', testAsync(async function() {
-    document.body.innerHTML = '<div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div><div class="subDirContent"></div>';
+    document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div><div class="subDirContent"></div>';
     rd.makeTreeWithSub = function() {};
     rd.rafterFile = {path: '/myFolder'};
     //rd.rafterUserID = 'tester';
     await rd.rafterVolumeService('ls', rd.app, 'tester', rd.rafterFile, rd.makeTreeWithSub);
   }));
   it('creates a new file', testAsync(async function() {
-    document.body.innerHTML = '<div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
+    document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
     rd.app.httpClient = new HttpMock();
     await rd.rafterVolumeService('create');
   }));
+  it('does not accept a bogus command', testAsync(async function() {
+    document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
+    rd.app.httpClient = new HttpMock();
+    await rd.rafterVolumeService('bogas');
+  }));
   it('catches error on create a new file', testAsync(async function() {
-    document.body.innerHTML = '<div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
+    document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
     rd.app.httpClient = new HttpMock('rafterCreateError');
     await rd.rafterVolumeService('create');
     //expect(document.getElementsByClassName('userServiceError')[0].innerHTML).not.toBe('&nbsp;');
@@ -146,7 +151,7 @@ describe('The Rafter Dashboard', () => {
   it('shows the file details from a tree menu click', (done) => {
     rd.app.httpClient = new HttpMock();
     //rd.showFileDetails = function() {};
-    document.body.innerHTML = '<div class="createNew"></div><div id="divId"></div><p class="fileDetailsTitle"></p><div class="isHomeDir"></div><div class="isHomeDir"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div>';
+    document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="createNew"></div><div id="divId"></div><p class="fileDetailsTitle"></p><div class="isHomeDir"></div><div class="isHomeDir"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div>';
     const nameArr = [{name: 'filename', id: '123', type: 'unspecified', isContainer: false, children: []}];
     rd.showFileDetails('123', nameArr, null, null, null, null, null, null, null, null);
     //document.getElementsByClassName('tree-leaf-text')[0].click();
@@ -156,7 +161,7 @@ describe('The Rafter Dashboard', () => {
   it('shows the inside of folder details from a tree menu click', (done) => {
     rd.app.httpClient = new HttpMock();
     //rd.showFileDetails = function() {};
-    document.body.innerHTML = '<div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"></div><p class="fileDetailsTitle"></p><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div>';
+    document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"></div><p class="fileDetailsTitle"></p><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div>';
     const nameArr = [{name: 'filename', id: '123', type: 'unspecified', isContainer: false, children: []}];
     rd.showFileDetails('123', nameArr, null, null, null, null, function() {}, null, null, null);
     //document.getElementsByClassName('tree-leaf-text')[0].click();
@@ -173,11 +178,11 @@ describe('The Rafter Dashboard', () => {
     expect(document.getElementsByClassName('folderName')[0].innerHTML).toBe('myFolder');
     done();
   });
-  it('dislays the file details that are inside of the home directory', (done) => {
+  it('displays the file details that are inside of the home directory', (done) => {
     //rd.app.httpClient = new HttpMock();
     //rd.rafterVolumeService = function() {};
     rd.homeDirJson = {name: 'howdy'};
-    document.body.innerHTML = '<div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"><p class="folderName"></p></div><p class="fileDetailsTitle"></p><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div><div class="subDirContent"></div>';
+    document.body.innerHTML = '<div class="userServiceError"></div><button class="rafterCheckHome"></button><div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"><p class="folderName"></p></div><p class="fileDetailsTitle"></p><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div><div class="subDirContent"></div>';
     //const nameArr = [{name: 'myFolder', id: '123', type: 'folder', isContainer: true, children: []}];
     rd.navHomeDir();
     //document.getElementsByClassName('tree-leaf-text')[0].click();
