@@ -326,9 +326,15 @@ button {
   display: none;
 }
 
-.fileDetails {
+/* .fileMeta {
   overflow-x: auto;
+  max-width: 98%;
 }
+
+.insideFolderDetails {
+  overflow-x: auto;
+  max-width: 98%;
+} */
 
 .tlfolder {
   float: left;
@@ -344,22 +350,55 @@ button {
   margin: auto;
 }
 
-.rafterHomeLink {
-  text-decoration: none;
-}
-
-.rafterHomeLink:hover { color: #23527c; }
-
 a:not([href]):not([tabindex]):hover {
   color: #23527c;
 }
 
-/* a:not([href]):not([tabindex]) {
-  text-decoration: inherit;
-  color: inherit;
+a {
+  color: #3277b3 !important;
+  text-decoration: underline !important;
 }
 
-a:not([href]):not([tabindex]):hover {
-  text-decoration: inherit;
-  color: inherit;
-} */
+a:hover {
+  color: #23527c !important;
+}
+
+button:disabled,
+button[disabled] {
+  cursor: default;
+}
+
+button:disabled:hover,
+button[disabled]:hover {
+  background-color: inherit;
+}
+
+.rafterHomeLink {
+  text-decoration: none !important;
+  color: #212529 !important;
+}
+
+.rafterHomeLink:hover { color: #23527c !important; }
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+::-webkit-scrollbar:vertical {
+  width: 12px;
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  border: 2px solid #ffffff;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: #ffffff;
+}
