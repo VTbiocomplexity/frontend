@@ -67,7 +67,7 @@ export class Rafter {
       }
     }
     //console.log(foldersArr);
-      // make folders clickable
+    // make folders clickable
     for (let j = 0; j < foldersArr.length; j++) {
       //console.log(foldersArr[j]);
       filesInFolder = foldersArr[j].domDiv.nextElementSibling;
@@ -248,49 +248,51 @@ export class Rafter {
       },
       body: JSON.stringify({token: localStorage.getItem('rafterToken'), userName: rui, command: cmd, rafterFile: raf})
     })
-      .then((response) => response.json())
-      .then((data) => {
-        //console.log(data);
-        if (cmd === 'ls') {
-          if (raf.path === '') {
+    .then((response) => response.json())
+    .then((data) => {
+      //console.log(data);
+      if (cmd === 'ls') {
+        if (raf.path === '') {
           //document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(data);
-            this.homeDirJson = data;
+          this.homeDirJson = data;
           //console.log(this.homeDirJson);
-            return this.makeTree(data);
-          }
-          //console.log('I want to display the contents of a subdirectory now');
-          //console.log(data);
-          document.getElementsByClassName('subDirContent')[0].innerHTML = JSON.stringify(data);
-          if (subDirFiles.indexOf(data) === -1) {
-            subDirFiles.push.apply(subDirFiles, data);
-          }
-          //console.log(mtws);
-          return mtws(data, hdjId, hdj, tv, showFile, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles);
-          //return mtws(data, hdjId, hdj, tv);
-        } else if (data.message !== null && data.message !== '' && data.message !== undefined) {
-          //let errorMessage = JSON.parse(data.message);
-          //console.log(data.message);
-          return document.getElementsByClassName('userServiceError')[0].innerHTML = data.message;
-        } else if (cmd === 'create') {
-          console.log('did I create a new file?');
-          this.rafterFile = {name: '', createType: '', path: ''};
-          this.rafterVolumeService('ls');
-          this.navHomeDir();
+          return this.makeTree(data);
         }
-      }).catch(function (err) {
-        if (cmd !== 'ls') {
-          return console.log(err);
+        //console.log('I want to display the contents of a subdirectory now');
+        //console.log(data);
+        document.getElementsByClassName('subDirContent')[0].innerHTML = JSON.stringify(data);
+        /* istanbul ignore else */
+        if (subDirFiles.indexOf(data) === -1) {
+          subDirFiles.push.apply(subDirFiles, data);
+          console.log(subDirFiles);
         }
-      }).then((message) => {
-        //console.log(message);
-        /* istanbul ignore if */
-        if (message !== null && message !== undefined) {
-          document.getElementsByClassName('userServiceError')[0].innerHTML = message.error;
-        }
-      });
+        //console.log(mtws);
+        return mtws(data, hdjId, hdj, tv, showFile, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles);
+        //return mtws(data, hdjId, hdj, tv);
+      } else if (data.message !== null && data.message !== '' && data.message !== undefined) {
+        //let errorMessage = JSON.parse(data.message);
+        //console.log(data.message);
+        return document.getElementsByClassName('userServiceError')[0].innerHTML = data.message;
+      } else if (cmd === 'create') {
+        console.log('did I create a new file?');
+        this.rafterFile = {name: '', createType: '', path: ''};
+        this.rafterVolumeService('ls');
+        this.navHomeDir();
+      }
+    }).catch(function (err) {
+      if (cmd !== 'ls') {
+        return console.log(err);
+      }
+    }).then((message) => {
+      //console.log(message);
+      /* istanbul ignore if */
+      if (message !== null && message !== undefined) {
+        document.getElementsByClassName('userServiceError')[0].innerHTML = message.error;
+      }
+    });
     //console.log(err);
-        //document.getElementsByClassName('userServiceError')[0].innerHTML = 'Wrong userid or password';
-      // });
+    //document.getElementsByClassName('userServiceError')[0].innerHTML = 'Wrong userid or password';
+    // });
   }
 
   rafterLogout() {

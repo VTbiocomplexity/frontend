@@ -75,15 +75,19 @@ describe('The Rafter Dashboard', () => {
     await rd.rafterVolumeService('create');
   }));
   it('retrieves the sub directory', testAsync(async function() {
+    rd.app.httpClient = new HttpMock();
     document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div><div class="subDirContent"></div>';
     rd.makeTreeWithSub = function() {};
     rd.rafterFile = {path: '/myFolder', name: ' spacey S'};
-    //rd.rafterUserID = 'tester';
-    await rd.rafterVolumeService('ls', rd.app, 'tester', rd.rafterFile, rd.makeTreeWithSub);
+    rd.subDirJson = [];
+    await rd.rafterVolumeService('ls', rd.app, 'tester', rd.rafterFile, rd.makeTreeWithSub, null, null, null, null, null, null, rd.subDirJson);
+    //expect(rd.subDirJson).toBe({name: 'filename'});
   }));
   it('creates a new file', testAsync(async function() {
     document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
     rd.app.httpClient = new HttpMock();
+    await rd.rafterVolumeService('create');
+    rd.rafterFile = {name: 'yo', createType: 'folder', path: ''};
     await rd.rafterVolumeService('create');
   }));
   it('does not accept a bogus command', testAsync(async function() {
@@ -187,6 +191,17 @@ describe('The Rafter Dashboard', () => {
     rd.navHomeDir();
     //document.getElementsByClassName('tree-leaf-text')[0].click();
     expect(document.getElementsByClassName('subDirContent')[0].innerHTML).toBe(JSON.stringify(rd.homeDirJson));
+    done();
+  });
+  it('displays the file details of a file that is inside a sub folder', (done) => {
+    rd.homeDirJson = {name: 'howdy'};
+    rd.subDirJson = [{name: 'howdy', id: '123'}];
+    document.body.innerHTML = '<div class="userServiceError"></div><button class="rafterCheckHome"></button><div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"><p class="folderName"></p></div><p class="fileDetailsTitle"></p><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div><div class="subDirContent"></div>';
+    rd.showFileDetails('123', [], null, null, null, null, null, null, null, null, rd.subDirJson );
+    expect(document.getElementsByClassName('homeDirContent')[0].innerHTML).toBe(JSON.stringify(rd.subDirJson[0]));
+    document.getElementsByClassName('homeDirContent')[0].innerHTML = '';
+    rd.showFileDetails('1234', [], null, null, null, null, null, null, null, null, rd.subDirJson );
+    expect(document.getElementsByClassName('homeDirContent')[0].innerHTML).toBe('');
     done();
   });
   it('does not show the file details when the id is missing', (done) => {
