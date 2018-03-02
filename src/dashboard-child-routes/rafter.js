@@ -279,6 +279,11 @@ export class Rafter {
         this.rafterFile = {name: '', createType: '', path: ''};
         this.rafterVolumeService('ls');
         this.navHomeDir();
+      }  else if (cmd === 'get') {
+        console.log('did I get a new file?');
+        //this.rafterFile = {name: '', createType: '', path: ''};
+        //this.rafterVolumeService('ls');
+            //this.navHomeDir();
       }
     }).catch(function (err) {
       if (cmd !== 'ls') {
