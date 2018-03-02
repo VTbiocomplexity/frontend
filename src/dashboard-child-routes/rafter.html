@@ -1,8 +1,13 @@
 <template>
   <div class="page-content">
     <div class="material-content">
-      <h3 style="margin:auto; padding-top:10px; padding-bottom:20px;text-align:center"><strong>Rafter Dashboard</strong></h3>
-      <p style="text-align:center">We are going to try out some Rafter APIs here!</p>
+      <div class="rafterLogout" style="margin-left:10px; margin-top:10px; max-width:1.75in;text-align:center; display:none; position:relative; float:left">
+        <button style="text-align:center" class="rafterLogoutButton" click.delegate="rafterLogout()">Rafter<br>Logout</button>
+      </div>
+      <h3 style="margin:auto; padding-top:10px; padding-bottom:5px;text-align:center"><strong>Rafter Dashboard</strong></h3>
+
+      <p style="text-align:center; margin-left:50px"><i>We are going to try out some Rafter APIs here!</i></p>
+
       <div class="rafterLogin elevation3" style="max-width:3in; margin:auto" show.bind="showLogin">
         <form style="margin-left:20px">
           <label>Rafter User Id</label>
@@ -15,16 +20,12 @@
           </div>
         </form>
       </div>
-      <div class="rafterLogout" style="margin:auto; max-width:2in;text-align:center; display:none">
-        <button style="text-align:center" class="rafterLogoutButton" click.delegate="rafterLogout()">Logout of Rafter</button>
-      </div>
-      <p>&nbsp;</p>
-      <div class="homeDirLink">
+      <div class="homeDirLink" style="">
         <div class="showHideHD" style="display:none">
           <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><i class="fa fa-folder"></i> <a class="rafterHomeLink" click.delegate="navHomeDir()">home/${rafterUserID}</a>
         </div>
         <div class="fileDetailsTitle fileDld" style="display:none; position:relative; float:right; margin-right:30px"><button class="dnldButton" type="button" click.delegate="fileDownload()">Download</button></div>
-        <div id="treeView"></div>
+        <div id="treeView" style="max-width:2in"></div>
       </div>
       <div style="margin:auto; text-align:center"><p class="userServiceError" style="color:red"></p></div>
       <div show.bind="!showLogin">
