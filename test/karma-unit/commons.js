@@ -144,7 +144,8 @@ class HttpMock {
     }
     if (url === '/rafter/vs') {
       console.log('rafter volume service test');
-      if (!this.error && ! this.message) {
+      if (!this.error && !this.message) {
+        console.log('no error and no message');
         let data = {name: 'filename'};
         return Promise.resolve({
           Headers: this.headers,
