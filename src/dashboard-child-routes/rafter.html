@@ -23,6 +23,7 @@
         <div class="showHideHD" style="display:none">
           <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><i class="fa fa-folder"></i> <a class="rafterHomeLink" click.delegate="navHomeDir()">home/${rafterUserID}</a>
         </div>
+        <div class="fileDetailsTitle fileDld" style="display:none; position:relative; float:right; margin-right:30px"><button class="dnldButton" type="button" click.delegate="fileDownload()">Download</button></div>
         <div id="treeView"></div>
       </div>
       <div style="margin:auto; text-align:center"><p class="userServiceError" style="color:red"></p></div>
@@ -31,8 +32,10 @@
           <button style="text-align:center" class="rafterCheckHome" click.delegate="rafterVolumeService('ls')">Display home/${rafterUserID}</button>
           <div class="fileDetails">
             <div class="fileMeta">
-              <hr>
-              <p class="fileDetailsTitle" style="display:none"><strong>File/Folder Details</strong></p>
+              <div class="fileDetailsTitle" style="display:none">
+                <hr>
+                <p><strong>File/Folder Details</strong></p>
+              </div>
               <p class="homeDirContent" style="margin:10px;text-align:left;overflow-x:auto"></p>
             </div>
             <div class="insideFolderDetails" style="display:none">
