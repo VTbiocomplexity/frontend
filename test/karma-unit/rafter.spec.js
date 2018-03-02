@@ -225,7 +225,7 @@ describe('The Rafter Dashboard', () => {
     document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="subDirContent"></div>';
     const data = [{name: 'myFile', id: '123', type: 'file', isContainer: false, children: []}];
     const hdj = [{name: 'myFolder', id: '456', type: 'folder', isContainer: true, children: []}];
-    await rd.makeTreeWithSub(data, '456', hdj, rd.tv, rd.showFileDetails, rd.rafterFile, null, null, null, rd.makeTreeWithSub, rd.displayTree);
+    await rd.makeTreeWithSub(data, '456', hdj, rd.tv, rd.showFileDetails, rd.rafterFile, null, null, null, rd.makeTreeWithSub, rd.displayTree, rd.subDirJson, rd.makeNewJson);
   }));
   it('detects an expired token', (done) => {
     let tkn = {exp: 123};

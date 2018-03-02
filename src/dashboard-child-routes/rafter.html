@@ -15,7 +15,7 @@
           </div>
         </form>
       </div>
-      <div class="rafterLogout" style="margin:auto; max-width:2in;text-align:center">
+      <div class="rafterLogout" style="margin:auto; max-width:2in;text-align:center; display:none">
         <button style="text-align:center" class="rafterLogoutButton" click.delegate="rafterLogout()">Logout of Rafter</button>
       </div>
       <p>&nbsp;</p>
@@ -57,7 +57,7 @@
               <input type="radio" id="fileType2" name="ftype" value="folder" change.delegate="radioClicked()">
               <label for="fileType2" style="display:inline">Folder</label>
             </div>
-            <p><strong>Path:</strong> ${rafterFile.path}</p>
+            <!-- <p><strong>Path:</strong> ${rafterFile.path}</p> -->
             <div class="rafterFile" style="max-width:2in;text-align:left">
               <button style="text-align:center" class="rafterMakeFileButton" click.delegate="rafterVolumeService('create')">Create</button>
             </div>
