@@ -40,6 +40,7 @@ export class Rafter {
     document.getElementsByClassName('insideFolderDetails')[0].style.display = 'block';
     document.getElementsByClassName('subDirContent')[0].innerHTML = hdc;
     document.getElementsByClassName('fileDetailsTitle')[0].style.display = 'none';
+    document.getElementsByClassName('fileDetailsTitle')[1].style.display = 'none';
     document.getElementsByClassName('homeDirContent')[0].innerHTML = '';
     document.getElementsByClassName('createNew')[0].style.display = 'block';
     document.getElementsByClassName('isHomeDir')[0].style.display = 'block';
@@ -56,7 +57,6 @@ export class Rafter {
   }
 
   displayTree(tv, nameArr, divId, showFile, hdj, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj) {
-    //console.log('display tree');
     let filesInFolder;
     let insideFolderDetails;
     let allData = [];
@@ -144,6 +144,7 @@ export class Rafter {
     console.log('is this a sub directory?');
     //console.log(subDirFiles);
     document.getElementsByClassName('fileDetailsTitle')[0].style.display = 'block';
+    document.getElementsByClassName('fileDetailsTitle')[1].style.display = 'block';
     let ifd = document.getElementsByClassName('insideFolderDetails')[0];
     if (mtws === null) {
       ifd.style.display = 'none';
@@ -161,11 +162,15 @@ export class Rafter {
         //console.log(hdj[i].isContainer);
         if (hdj[i].isContainer) {
           //console.log('I found a folder');
+          document.getElementsByClassName('fileDld')[0].style.display = 'none';
           document.getElementsByClassName('folderName')[0].innerHTML = hdj[i].name;
           raf.path = '/' + hdj[i].name;
           //console.log('line 86?');
-          rvs('ls', myApp, rui, raf, mtws, hdj[i].id, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj);
+          return rvs('ls', myApp, rui, raf, mtws, hdj[i].id, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj);
         }
+        //set Filename
+        //console.log(hdj[i].name);
+        document.getElementsByClassName('dnldButton')[0].innerHTML = ('Download<br>' + hdj[i].name);
         return document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(hdj[i]);
       }
     }
@@ -177,6 +182,7 @@ export class Rafter {
         //console.log(subDirFiles[0]);
         if (id === subDirFiles[j].id) {
           console.log('i found a match!');
+          document.getElementsByClassName('dnldButton')[0].innerHTML = ('Download<br>' + subDirFiles[j].name);
           return document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[j]);
         }
       }
@@ -223,6 +229,7 @@ export class Rafter {
   rafterVolumeService(cmd, myApp = null, rui = null, raf = null, mtws = null, hdjId = null, hdj = null, tv = null, showFile = null, rvs = null, displayTree = null, subDirFiles = null, mnj) {
     document.getElementsByClassName('userServiceError')[0].innerHTML = '';
     document.getElementsByClassName('showHideHD')[0].style.display = 'block';
+    // document.getElementsByClassName('showHideHD')[1].style.display = 'block';
     document.getElementsByClassName('rafterCheckHome')[0].style.display = 'none';
     //console.log('i am in rafterVolumeService function');
     // if (subDirFiles === null) {
@@ -253,7 +260,6 @@ export class Rafter {
       //console.log(data);
       if (cmd === 'ls') {
         if (raf.path === '') {
-          //document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(data);
           this.homeDirJson = data;
           //console.log(this.homeDirJson);
           return this.makeTree(data);
@@ -442,6 +448,7 @@ export class Rafter {
     //console.log(ruser.id);
     if (ruser !== null && ruser !== undefined) {
       this.rafterUserID = ruser.id;
+      document.getElementsByClassName('rafterLogout')[0].style.display = 'block';
     }
   }
 

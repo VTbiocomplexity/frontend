@@ -155,9 +155,9 @@ describe('The Rafter Dashboard', () => {
   it('shows the file details from a tree menu click', (done) => {
     rd.app.httpClient = new HttpMock();
     //rd.showFileDetails = function() {};
-    document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="createNew"></div><div id="divId"></div><p class="fileDetailsTitle"></p><div class="isHomeDir"></div><div class="isHomeDir"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div>';
+    document.body.innerHTML = '<button class="dnldButton"></button><div class="fileDetailsTitle"></div><div class="rafterLogout"></div><div class="fileDld"></div><button class="rafterCheckHome"></button><div class="createNew"></div><div id="divId"></div><p class="fileDetailsTitle"></p><div class="isHomeDir"></div><div class="isHomeDir"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div>';
     const nameArr = [{name: 'filename', id: '123', type: 'unspecified', isContainer: false, children: []}];
-    rd.showFileDetails('123', nameArr, null, null, null, null, null, null, null, null);
+    rd.showFileDetails('123', nameArr, null, null, null, null, null, null, null, nameArr, null);
     //document.getElementsByClassName('tree-leaf-text')[0].click();
     expect(document.getElementsByClassName('homeDirContent')[0].innerHTML).not.toBe('');
     done();
@@ -165,7 +165,7 @@ describe('The Rafter Dashboard', () => {
   it('shows the inside of folder details from a tree menu click', (done) => {
     rd.app.httpClient = new HttpMock();
     //rd.showFileDetails = function() {};
-    document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"></div><p class="fileDetailsTitle"></p><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div>';
+    document.body.innerHTML = '<button class="dnldButton"></button><div class="fileDetailsTitle"></div><div class="rafterLogout"></div><div class="fileDld"></div><button class="rafterCheckHome"></button><div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"></div><p class="fileDetailsTitle"></p><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div>';
     const nameArr = [{name: 'filename', id: '123', type: 'unspecified', isContainer: false, children: []}];
     rd.showFileDetails('123', nameArr, null, null, null, null, function() {}, null, null, null);
     //document.getElementsByClassName('tree-leaf-text')[0].click();
@@ -175,7 +175,7 @@ describe('The Rafter Dashboard', () => {
   it('shows the folder name from a tree menu click', (done) => {
     rd.app.httpClient = new HttpMock();
     rd.rafterVolumeService = function() {};
-    document.body.innerHTML = '<div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"><p class="folderName"></p></div><p class="fileDetailsTitle"></p><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div>';
+    document.body.innerHTML = '<div class="fileDetailsTitle"></div><div class="rafterLogout"></div><div class="fileDld"></div><div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"><p class="folderName"></p></div><p class="fileDetailsTitle"></p><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div>';
     const nameArr = [{name: 'myFolder', id: '123', type: 'folder', isContainer: true, children: []}];
     rd.showFileDetails('123', nameArr, rd.rafterFile, rd.rafterVolumeService, null, null, null, null, null, null);
     //document.getElementsByClassName('tree-leaf-text')[0].click();
@@ -183,20 +183,16 @@ describe('The Rafter Dashboard', () => {
     done();
   });
   it('displays the file details that are inside of the home directory', (done) => {
-    //rd.app.httpClient = new HttpMock();
-    //rd.rafterVolumeService = function() {};
     rd.homeDirJson = {name: 'howdy'};
-    document.body.innerHTML = '<div class="userServiceError"></div><button class="rafterCheckHome"></button><div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"><p class="folderName"></p></div><p class="fileDetailsTitle"></p><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div><div class="subDirContent"></div>';
-    //const nameArr = [{name: 'myFolder', id: '123', type: 'folder', isContainer: true, children: []}];
+    document.body.innerHTML = '<button class="dnldButton"></button><div class="fileDetailsTitle"></div><div class="rafterLogout"></div><div class="fileDld"></div><div class="userServiceError"></div><button class="rafterCheckHome"></button><div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"><p class="folderName"></p></div><p class="fileDetailsTitle"></p><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div><div class="subDirContent"></div>';
     rd.navHomeDir();
-    //document.getElementsByClassName('tree-leaf-text')[0].click();
     expect(document.getElementsByClassName('subDirContent')[0].innerHTML).toBe(JSON.stringify(rd.homeDirJson));
     done();
   });
   it('displays the file details of a file that is inside a sub folder', (done) => {
     rd.homeDirJson = {name: 'howdy'};
     rd.subDirJson = [{name: 'howdy', id: '123'}];
-    document.body.innerHTML = '<div class="userServiceError"></div><button class="rafterCheckHome"></button><div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"><p class="folderName"></p></div><p class="fileDetailsTitle"></p><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div><div class="subDirContent"></div>';
+    document.body.innerHTML = '<button class="dnldButton"></button><div class="fileDetailsTitle"></div><div class="rafterLogout"></div><div class="fileDld"></div><div class="userServiceError"></div><button class="rafterCheckHome"></button><div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"><p class="folderName"></p></div><p class="fileDetailsTitle"></p><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div><div class="subDirContent"></div>';
     rd.showFileDetails('123', [], null, null, null, null, null, null, null, null, rd.subDirJson );
     expect(document.getElementsByClassName('homeDirContent')[0].innerHTML).toBe(JSON.stringify(rd.subDirJson[0]));
     document.getElementsByClassName('homeDirContent')[0].innerHTML = '';
@@ -207,7 +203,7 @@ describe('The Rafter Dashboard', () => {
   it('does not show the file details when the id is missing', (done) => {
     rd.app.httpClient = new HttpMock();
     rd.rafterVolumeService = function() {};
-    document.body.innerHTML = '<div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"><p class="folderName"><p class="fileDetailsTitle"></p></p></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div>';
+    document.body.innerHTML = '<div class="fileDetailsTitle"></div><div class="rafterLogout"></div><div class="fileDld"></div><div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"><p class="folderName"><p class="fileDetailsTitle"></p></p></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div>';
     const nameArr = [{name: 'myFolder', id: '123', type: 'file', isContainer: false, children: []}];
     rd.showFileDetails('1234', nameArr, rd.rafterFile, rd.rafterVolumeService, null, null, null, null, null, null);
     //document.getElementsByClassName('tree-leaf-text')[0].click();
@@ -311,6 +307,7 @@ describe('The Rafter Dashboard', () => {
     jasmine.clock().install();
     let ruserObj = {name: 'howdy'};
     localStorage.setItem('rafterUser', JSON.stringify(ruserObj));
+    document.body.innerHTML = '<div class="rafterLogout"></div>';
     rd.attached();
     jasmine.clock().tick(5500);
     //setTimeout(() => {
