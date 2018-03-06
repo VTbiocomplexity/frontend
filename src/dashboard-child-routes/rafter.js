@@ -1,5 +1,6 @@
 import {inject} from 'aurelia-framework';
 import {App} from '../app';
+import { saveAs } from 'file-saver';
 const jwtDecode = require('jwt-decode');
 const TreeView = require('js-treeview');
 //import {json} from 'aurelia-fetch-client';
@@ -218,15 +219,10 @@ export class Rafter {
     tv.expandAll();
   }
 
-  rafterVolumeService(cmd, myApp = null, rui = null, raf = null, mtws = null, hdjId = null, hdj = null, tv = null, showFile = null, rvs = null, displayTree = null, subDirFiles = null, mnj, fid = null) {
+  rafterVolumeService(cmd, myApp = null, rui = null, raf = null, mtws = null, hdjId = null, hdj = null, tv = null, showFile = null, rvs = null, displayTree = null, subDirFiles = null, mnj) {
     document.getElementsByClassName('userServiceError')[0].innerHTML = '';
     document.getElementsByClassName('showHideHD')[0].style.display = 'block';
-    // document.getElementsByClassName('showHideHD')[1].style.display = 'block';
     document.getElementsByClassName('rafterCheckHome')[0].style.display = 'none';
-    //console.log('i am in rafterVolumeService function');
-    // if (subDirFiles === null) {
-    //   subDirFiles = this.subDirJson;
-    // }
     if (myApp === null) {
       myApp = this.app;
     }
@@ -235,9 +231,6 @@ export class Rafter {
     }
     if (raf === null) {
       raf = this.rafterFile;
-    }
-    if (fid === null) {
-      fid = this.rafterFileID;
     }
     if (raf.createType !== 'folder') {
       raf.createType = 'file';
@@ -248,7 +241,7 @@ export class Rafter {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({token: localStorage.getItem('rafterToken'), userName: rui, command: cmd, rafterFile: raf, fileID: fid})
+      body: JSON.stringify({token: localStorage.getItem('rafterToken'), userName: rui, command: cmd, rafterFile: raf})
     })
     .then((response) => response.json())
     .then((data) => {
@@ -279,11 +272,6 @@ export class Rafter {
         this.rafterFile = {name: '', createType: '', path: ''};
         this.rafterVolumeService('ls');
         this.navHomeDir();
-      }  else if (cmd === 'get') {
-        console.log('did I get a new file?');
-        //this.rafterFile = {name: '', createType: '', path: ''};
-        //this.rafterVolumeService('ls');
-            //this.navHomeDir();
       }
     }).catch(function (err) {
       if (cmd !== 'ls') {
@@ -296,9 +284,6 @@ export class Rafter {
         document.getElementsByClassName('userServiceError')[0].innerHTML = message.error;
       }
     });
-    //console.log(err);
-    //document.getElementsByClassName('userServiceError')[0].innerHTML = 'Wrong userid or password';
-    // });
   }
 
   fileDownload() {
@@ -306,7 +291,30 @@ export class Rafter {
     let fdJson = JSON.parse(fileDetails);
     console.log(fdJson);
     this.rafterFileID = fdJson.id;
-    this.rafterVolumeService('get');
+    console.log('going to download this file id: ' + this.rafterFileID);
+    this.app.httpClient.fetch('/rafter/vs', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({token: localStorage.getItem('rafterToken'), userName: this.rafterUserID, command: 'get', fileID: this.rafterFileID})
+    })
+    .then((response) => response.blob())
+    .then((blob) => {
+      console.log(blob);
+      saveAs(blob, fdJson.name);
+    }).catch(function (err) {
+      // if (cmd !== 'ls') {
+      console.log(err);
+
+      // }
+      // }).then((message) => {
+      //   //console.log(message);
+      //   /* istanbul ignore if */
+      //   if (message !== null && message !== undefined) {
+      //     document.getElementsByClassName('userServiceError')[0].innerHTML = message.error;
+      //   }
+    });
   }
 
   rafterLogout() {
