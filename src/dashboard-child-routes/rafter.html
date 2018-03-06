@@ -44,26 +44,39 @@
             </div>
           </div>
         </div>
-        <div class="elevation3 createNew" style="min-width:4in; display:none">
+        <div class="elevation3 createNew" style="min-width:4.5in; display:none">
           <h4 style="text-align:center"><strong>Inside of <span class="folderName">home/${rafterUserID}</span></strong></h4>
-          <p style="text-align:center"><i><strong>Create Empty File<span class="isHomeDir"> or Folder</span></strong></i></p>
-          <form style="margin-left:0.75in">
-            <label style="margin-top:0;padding-top:0">Name<span style="font-weight:normal;font-style:italic;font-size:9pt"> (no spaces)</span></label>
-            <input type="text" value.bind="rafterFile.name">
-            <p style="margin:0">&nbsp;</p>
-            <div class="isHomeDir">
-              <!-- <input type="radio" id="fileType1" name="ftype" value="file" checked> -->
-              <input type="radio" id="fileType1" name="ftype" value="file" checked change.delegate="radioClicked()">
-              <label for="fileType1" style="display:inline; margin-right:30px">File</label>
-              <!-- <input type="radio" id="fileType2"name="ftype" value="folder"> -->
-              <input type="radio" id="fileType2" name="ftype" value="folder" change.delegate="radioClicked()">
-              <label for="fileType2" style="display:inline">Folder</label>
-            </div>
-            <!-- <p><strong>Path:</strong> ${rafterFile.path}</p> -->
-            <div class="rafterFile" style="max-width:2in;text-align:left">
-              <button style="text-align:center" class="rafterMakeFileButton" click.delegate="rafterVolumeService('create')">Create</button>
-            </div>
-          </form>
+          <div class="elevation3 fileCreate" style="max-width:3in">
+            <p style="text-align:center"><i><strong>Create Empty File<span class="isHomeDir"> or Folder</span></strong></i></p>
+            <form style="margin-left:0.75in">
+              <label style="margin-top:0;padding-top:0">Name<span style="font-weight:normal;font-style:italic;font-size:9pt"> (no spaces)</span></label>
+              <input type="text" value.bind="rafterFile.name">
+              <p style="margin:0">&nbsp;</p>
+              <div class="isHomeDir">
+                <!-- <input type="radio" id="fileType1" name="ftype" value="file" checked> -->
+                <input type="radio" id="fileType1" name="ftype" value="file" checked change.delegate="radioClicked()">
+                <label for="fileType1" style="display:inline; margin-right:30px">File</label>
+                <!-- <input type="radio" id="fileType2"name="ftype" value="folder"> -->
+                <input type="radio" id="fileType2" name="ftype" value="folder" change.delegate="radioClicked()">
+                <label for="fileType2" style="display:inline">Folder</label>
+              </div>
+              <!-- <p><strong>Path:</strong> ${rafterFile.path}</p> -->
+              <div class="rafterFile" style="max-width:2in;text-align:left">
+                <button style="text-align:center" class="rafterMakeFileButton" click.delegate="rafterVolumeService('create')">Create</button>
+              </div>
+            </form>
+          </div>
+          <p>&nbsp;</p>
+          <div class="fileUpload elevation3" style="min-width:3in">
+            <p style="text-align:center"><i><strong>Upload a File</strong></i></p>
+            <form style="max-width:2.5in; margin-left:20px">
+              <input id="rafterFilePath" type="file" accept="" files.bind="selectedFiles" change.delegate="rafterFileValidate()"/>
+                  <p>&nbsp;</p>
+              <button id="uploadButton" class="button-lib" style="display:none" raised click.trigger="uploadRafterFile()">
+                Upload
+              </button>
+            </form>
+          </div>
         </div>
         <p>&nbsp;</p>
       </div>
