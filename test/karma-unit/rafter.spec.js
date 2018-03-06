@@ -37,6 +37,31 @@ describe('The Rafter Dashboard', () => {
     expect(rd.uid).toBe('3456');
   }));
 
+  it('downloads a file', testAsync(async function() {
+    let httpmock = {fetch: function() {
+      return Promise.resolve({
+        blob: function() {
+          return Promise.resolve({
+            blobby: 'blob'
+          });
+        }
+      });
+    }
+    };
+    let app3 = new App(auth, httpmock);
+    app3.router = new RouterStub();
+    app3.activate();
+    let rd3 = new Rafter(app3);
+    rd3.app.appState = new AppStateStub();
+    rd3.activate();
+    document.body.innerHTML = '<div class="homeDirContent">{"state":"analyzing","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"a185e810-af88-11e7-ab0c-717499928918","creation_date":"2017-10-12T20:05:01.841Z","name":"someName"}</div>';
+    rd3.rafterUserID = 'Tester';
+    localStorage.setItem('rafterToken', JSON.stringify({token: '123'}));
+    await rd3.fileDownload();
+    //expect(rd.uid).toBe('3456');
+  }));
+
+
   it('Validates the login form', testAsync(async function() {
     document.body.innerHTML = '<div><button disabled class="rafterLoginButton"></button></div>';
     rd.rafter = {id: 'yo', password: 'yo'};
