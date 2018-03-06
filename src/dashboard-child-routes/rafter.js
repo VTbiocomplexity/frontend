@@ -18,6 +18,7 @@ export class Rafter {
     this.tv = null;
     this.homeDirJson = null;
     this.subDirJson = [];
+    this.rafterFileID = '';
     //this.createType = 'file';
     //   this.vs = new VolumeService('http://rafter.bi.vt.edu/volumesvc/', 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6W10sImZpcnN0X25hbWUiOiJuZHNzbCIsImxhc3RfbmFtZSI6ImFwcCIsInJvbGVzIjpbXSwidGVhbXMiOlsiQHVzZXJzIl0sImlhdCI6MTUxNzk0Nzk2MSwibmJmIjoxNTE3OTQ3OTYxLCJleHAiOjE1MTgwMzQzNjEsImF1ZCI6WyJAY29yZSIsIiNwdWJsaWMiXSwiaXNzIjoiaHR0cHM6Ly9yYWZ0ZXIuYmkudnQuZWR1L3VzZXJzdmMvcHVibGljX2tleSIsInN1YiI6Im5kc3NsQXBwIn0.a_q5Hq2MKWizi1KFbq8RMKAeQQbpsPweexIRCQwQ2a65J5Ojukf9vv' +
     //   '-i9vRVuzPJEWxPHhXZTSzLXiwPlLB5P9VOlzgDPhmVuPwx2n0q-T9hbV6vGt1E0EL-oKex1dpVE10iM0BWujXvQRC8gPJXhIBNR6zUDXX5ziO_8Y48CNWvKBDKhTjcrGEuj7CEMSt9kZBlgt-E_DnkibnFfHl763k_vPWqJ4okWkhELXtpCj7ObKrjNGRjYzKrMRyjJkIHLOc6ZEsTKkWt4ATzOXN_jVYFqN5tzRpMqiqC-G0oS-aSOiML6HZpqiEu26oLoQ4a6RDAXPp6Me9SXwkhw7K-JNDvW68LRyXIMnz7HisLWhc6-1XykgQ6MLcu4uvsOBD11VQpVmO-5Dkdf2vAlr7jbQ8tvKZaJi4W2PEiVIfR6lNhGPLyU4Zx4bg084tzi6n3jSipKcavfPY' +
@@ -163,6 +164,7 @@ export class Rafter {
         if (hdj[i].isContainer) {
           //console.log('I found a folder');
           document.getElementsByClassName('fileDld')[0].style.display = 'none';
+          document.getElementsByClassName('fileDetailsTitle')[0].style.display = 'none';
           document.getElementsByClassName('folderName')[0].innerHTML = hdj[i].name;
           raf.path = '/' + hdj[i].name;
           //console.log('line 86?');
@@ -206,27 +208,17 @@ export class Rafter {
 
   async makeTreeWithSub(data, hdjId, hdj, tv, showFile, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj) {
     let childArr = mnj(data);
-    //console.log(subDirFiles);
-    // let childObj = {};
-    // let childArr = [];
-    // for (let c = 0; c < data.length; c++) {
-    //   childObj = {name: data[c].name, id: data[c].id, type: data[c].type, isContainer: data[c].isContainer, children: []};
-    //   childArr.push(childObj);
-    // }
     for (let i = 0; i < tv.data.length; i++) {
       if (hdjId === tv.data[i].id) {
-        //console.log(tv.data[i]);
         tv.data[i].children = childArr;
       }
     }
-    //tv.data[2].children = [{name: 'yoo', id: '243', type: 'unspecified', isContainer: false, children: []}];
     let newData = tv.data;
     await displayTree(tv, newData, 'treeView', showFile, hdj, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj);
     tv.expandAll();
-    //tv = new TreeView(newData, 'treeView');
   }
 
-  rafterVolumeService(cmd, myApp = null, rui = null, raf = null, mtws = null, hdjId = null, hdj = null, tv = null, showFile = null, rvs = null, displayTree = null, subDirFiles = null, mnj) {
+  rafterVolumeService(cmd, myApp = null, rui = null, raf = null, mtws = null, hdjId = null, hdj = null, tv = null, showFile = null, rvs = null, displayTree = null, subDirFiles = null, mnj, fid = null) {
     document.getElementsByClassName('userServiceError')[0].innerHTML = '';
     document.getElementsByClassName('showHideHD')[0].style.display = 'block';
     // document.getElementsByClassName('showHideHD')[1].style.display = 'block';
@@ -244,6 +236,9 @@ export class Rafter {
     if (raf === null) {
       raf = this.rafterFile;
     }
+    if (fid === null) {
+      fid = this.rafterFileID;
+    }
     if (raf.createType !== 'folder') {
       raf.createType = 'file';
     }
@@ -253,7 +248,7 @@ export class Rafter {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({token: localStorage.getItem('rafterToken'), userName: rui, command: cmd, rafterFile: raf})
+      body: JSON.stringify({token: localStorage.getItem('rafterToken'), userName: rui, command: cmd, rafterFile: raf, fileID: fid})
     })
     .then((response) => response.json())
     .then((data) => {
@@ -284,6 +279,11 @@ export class Rafter {
         this.rafterFile = {name: '', createType: '', path: ''};
         this.rafterVolumeService('ls');
         this.navHomeDir();
+      }  else if (cmd === 'get') {
+        console.log('did I get a new file?');
+        //this.rafterFile = {name: '', createType: '', path: ''};
+        //this.rafterVolumeService('ls');
+            //this.navHomeDir();
       }
     }).catch(function (err) {
       if (cmd !== 'ls') {
@@ -299,6 +299,14 @@ export class Rafter {
     //console.log(err);
     //document.getElementsByClassName('userServiceError')[0].innerHTML = 'Wrong userid or password';
     // });
+  }
+
+  fileDownload() {
+    let fileDetails = document.getElementsByClassName('homeDirContent')[0].innerHTML;
+    let fdJson = JSON.parse(fileDetails);
+    console.log(fdJson);
+    this.rafterFileID = fdJson.id;
+    this.rafterVolumeService('get');
   }
 
   rafterLogout() {
