@@ -236,6 +236,7 @@ export class Rafter {
       raf.createType = 'file';
     }
     raf.name = raf.name.replace(/\s/g, '');
+    raf.name = raf.name.replace(/!/g, '');
     myApp.httpClient.fetch('/rafter/vs', {
       method: 'post',
       headers: {
@@ -245,45 +246,35 @@ export class Rafter {
     })
     .then((response) => response.json())
     .then((data) => {
-      //console.log(data);
       if (cmd === 'ls') {
         if (raf.path === '') {
           this.homeDirJson = data;
-          //console.log(this.homeDirJson);
           return this.makeTree(data);
         }
-        //console.log('I want to display the contents of a subdirectory now');
-        //console.log(data);
         document.getElementsByClassName('subDirContent')[0].innerHTML = JSON.stringify(data);
-        /* istanbul ignore else */
         if (subDirFiles.indexOf(data) === -1) {
           subDirFiles.push.apply(subDirFiles, data);
-          console.log(subDirFiles);
         }
-        //console.log(mtws);
         return mtws(data, hdjId, hdj, tv, showFile, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj);
-        //return mtws(data, hdjId, hdj, tv);
       } else if (data.message !== null && data.message !== '' && data.message !== undefined) {
-        //let errorMessage = JSON.parse(data.message);
-        //console.log(data.message);
         return document.getElementsByClassName('userServiceError')[0].innerHTML = data.message;
       } else if (cmd === 'create') {
-        console.log('did I create a new file?');
         this.rafterFile = {name: '', createType: '', path: ''};
         this.rafterVolumeService('ls');
         this.navHomeDir();
       }
     }).catch(function (err) {
-      if (cmd !== 'ls') {
-        return console.log(err);
-      }
-    }).then((message) => {
-      //console.log(message);
-      /* istanbul ignore if */
-      if (message !== null && message !== undefined) {
-        document.getElementsByClassName('userServiceError')[0].innerHTML = message.error;
-      }
+      // if (cmd !== 'ls') {
+      console.log(err);
+      // }
     });
+    // .then((message) => {
+    //   //console.log(message);
+    //   /* istanbul ignore if */
+    //   if (message !== null && message !== undefined) {
+    //     document.getElementsByClassName('userServiceError')[0].innerHTML = message.error;
+    //   }
+    // });
   }
 
   fileDownload() {
