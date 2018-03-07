@@ -61,6 +61,44 @@ describe('The Rafter Dashboard', () => {
     //expect(rd.uid).toBe('3456');
   }));
 
+  it('Validates the file type to be uploaded', testAsync(async function() {
+    document.body.innerHTML = '<div><input id="rafterFilePath" type="file" accept=""/><button style="display:none" id="uploadButton"></button></div>';
+    window.rafterFilePath = {files: [new Blob()]};
+    expect(rd.rafterFileValidate()).toBe(false);
+    window.rafterFilePath = {files: []};
+    expect(rd.rafterFileValidate()).toBe(false);
+  }));
+
+  it('appears to uploads a rafter file', testAsync(async function() {
+    document.body.innerHTML = '<div><input id="rafterFilePath" type="file" accept=""/><button style="display:none" id="uploadButton"></button></div>';
+    window.rafterFilePath = {files: [new Blob()]};
+    window.rafterFilePath.files[0].name = 'howdy.txt';
+    console.log('do I have a file reader?');
+    rd.reader = FileReader;
+    console.log(rd.reader);
+    rd.reader.readAsText = function() {};
+    rd.reader.dispatchEvent = function() {};
+    rd.uploadRafterFile();
+    let evt = {target: {result: 'howdy'}};
+    rd.reader.onload(evt);
+    rd.reader.onerror();
+  }));
+
+  it('cathes error on vs upload a rafter file', testAsync(async function() {
+    document.body.innerHTML = '<div><input id="rafterFilePath" type="file" accept=""/><button style="display:none" id="uploadButton"></button></div>';
+    window.rafterFilePath = {files: [new Blob()]};
+    window.rafterFilePath.files[0].name = 'howdy.txt';
+    //console.log('do I have a file reader?');
+    rd2.reader = FileReader;
+    //console.log(rd.reader);
+    rd2.reader.readAsText = function() {};
+    rd2.reader.dispatchEvent = function() {};
+    rd2.uploadRafterFile();
+    let evt = {target: {result: 'howdy'}};
+    rd2.reader.onload(evt);
+    //rd.reader.onerror();
+  }));
+
 
   it('Validates the login form', testAsync(async function() {
     document.body.innerHTML = '<div><button disabled class="rafterLoginButton"></button></div>';
@@ -76,12 +114,16 @@ describe('The Rafter Dashboard', () => {
     expect(buttonDisabled).toBe('');
   }));
   it('Logs in a rafter user', testAsync(async function() {
+    document.body.innerHTML += '<div class="userServiceError">error</div>';
     await rd.postUSV();
+    expect(document.getElementsByClassName('userServiceError')).innerHTML = '';
     //expect(window.localStorage.getItem('rafterToken')).not.toBe(null);
     //expect(window.localStorage.getItem('rafterUser')).not.toBe(null);
+
     window.localStorage.removeItem('rafterToken');
     window.localStorage.removeItem('rafterUser');
     await rd2.postUSV();
+    expect(document.getElementsByClassName('userServiceError')).innerHTML = '<br>Wrong userid or password';
     //expect(window.localStorage.getItem('rafterToken')).toBe(null);
     //expect(window.localStorage.getItem('rafterUser')).toBe(null);
   }));

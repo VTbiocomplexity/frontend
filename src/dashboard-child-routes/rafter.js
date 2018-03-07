@@ -372,9 +372,12 @@ export class Rafter {
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
-          setTimeout(function () {
-          }, 2000);
-          window.location.reload();
+          // setTimeout(function () {
+          // }, 2000);
+          /* istanbul ignore if */
+          if (process.env.NODE_ENV !== 'test') {
+            window.location.reload();
+          }
         }).catch((err) => {
           console.log(err);
         });
