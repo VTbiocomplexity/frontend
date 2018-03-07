@@ -160,6 +160,7 @@ export class Rafter {
     console.log('line 160');
     for (let i = 0; i < hdj.length; i++) {
       if (id === hdj[i].id) {
+        document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(hdj[i]);
         //console.log(hdj[i].isContainer);
         if (hdj[i].isContainer) {
           console.log('I found a folder');
@@ -173,14 +174,13 @@ export class Rafter {
         }
         //set Filename
         //console.log(hdj[i].name);
-        document.getElementsByClassName('dnldButton')[0].innerHTML = ('Download<br>' + hdj[i].name);
-        return document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(hdj[i]);
+        //document.getElementsByClassName('dnldButton')[0].innerHTML = ('Download<br>' + hdj[i].name);
+        return;
       }
     }
-    // }
-    console.log('line 175');
+    //console.log('line 175');
     if (subDirFiles !== null && subDirFiles !== undefined) {
-      console.log('line 177');
+      //console.log('line 177');
       for (let j = 0; j < subDirFiles.length; j++) {
         //console.log(subDirFiles[0]);
         if (id === subDirFiles[j].id) {
