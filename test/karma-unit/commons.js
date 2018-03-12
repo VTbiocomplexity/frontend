@@ -113,6 +113,7 @@ class HttpMock {
     if (data === 'rafterMessage') {
       this.message = true;
     }
+    this.type = data;
     //if (data === '')
   }
   status = 500;
@@ -144,6 +145,12 @@ class HttpMock {
     }
     if (url === '/rafter/vs') {
       console.log('rafter volume service test');
+      if (this.type === 'failDelete') {
+        return Promise.resolve({
+          Headers: this.headers,
+          json: () => Promise.resolve(false)
+        });
+      }
       if (!this.error && !this.message) {
         console.log('no error and no message');
         let data = {name: 'filename'};
