@@ -22,7 +22,12 @@
         <div class="showHideHD" style="display:none">
           <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><i class="fa fa-folder"></i> <a class="rafterHomeLink" click.delegate="navHomeDir()">home/${rafterUserID}</a>
         </div>
-        <div class="fileDetailsTitle fileDld" style="display:none; position:relative; float:right; margin-right:30px"><button class="dnldButton" type="button" click.delegate="fileDownload()">Download</button></div>
+        <div class="fileDetailsTitle fileDld" style="display:none; position:relative; float:right; margin-right:30px">
+          <button class="dnldButton" type="button" click.delegate="fileDownload()">Download</button>
+          <p>&nbsp;</p>
+          <button class="deleteButton" type="button" click.delegate="fileDelete()">Delete</button>
+        </div>
+        <!-- <div class="fileDetailsTitle fileDld" style="display:none; margin-right:30px; margin-top:30px"></div> -->
         <div id="treeView" style="max-width:2in"></div>
       </div>
       <div style="margin:auto; text-align:center"><p class="userServiceError" style="color:red"></p></div>
