@@ -274,14 +274,10 @@ export class Rafter {
   fileDelete() {
     let fileDetails = document.getElementsByClassName('homeDirContent')[0].innerHTML;
     let fdJson = JSON.parse(fileDetails);
-    console.log(fdJson);
     this.rafterFileID = fdJson.id;
-    console.log('going to delete this file id: ' + this.rafterFileID);
     this.app.httpClient.fetch('/rafter/vs', { method: 'post', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({token: localStorage.getItem('rafterToken'), userName: this.rafterUserID, command: 'remove', fileID: this.rafterFileID})
-    })
-    .then((response) => response.json())
-    .then((data) => {
+    }).then((response) => response.json()).then((data) => {
       console.log(data);
       if (data) {
         /* istanbul ignore if */
@@ -298,14 +294,10 @@ export class Rafter {
   fileDownload() {
     let fileDetails = document.getElementsByClassName('homeDirContent')[0].innerHTML;
     let fdJson = JSON.parse(fileDetails);
-    console.log(fdJson);
     this.rafterFileID = fdJson.id;
-    console.log('going to download this file id: ' + this.rafterFileID);
     this.app.httpClient.fetch('/rafter/vs', { method: 'post', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({token: localStorage.getItem('rafterToken'), userName: this.rafterUserID, command: 'get', fileID: this.rafterFileID})
-    })
-    .then((response) => response.blob())
-    .then((blob) => {
+    }).then((response) => response.blob()).then((blob) => {
       console.log(blob);
       saveAs(blob, fdJson.name);
     }).catch(function (err) {
