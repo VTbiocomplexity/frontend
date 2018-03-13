@@ -364,17 +364,6 @@ export class Rafter {
     this.reader.readAsText(rafterFilePath.files[0]);
   }
 
-  // rafterLogout() {
-  //   //console.log('going to log you out');
-  //   localStorage.removeItem('rafterToken');
-  //   localStorage.removeItem('rafterUser');
-  //   /* istanbul ignore if */
-  //   if (process.env.NODE_ENV !== 'test') {
-  //     //console.log('is this a test?');
-  //     window.location.reload();
-  //   }
-  // }
-
   checkIfLoggedIn(cep, rlo, sli) {
     if (window.localStorage.getItem('rafterToken') !== null && window.localStorage.getItem('rafterToken') !== undefined) {
       //console.log('howdy rafter user');
@@ -390,7 +379,7 @@ export class Rafter {
           validToken = cep(decoded);
           //console.log(validToken);
         } else {
-          validToken = this.checkExpired(decoded);
+          validToken = this.rafterUser.checkExpired(decoded);
         }
         if (!validToken) {
           console.log('your token is bad, logging you out!');
@@ -419,7 +408,7 @@ export class Rafter {
     } else {
       let reloadPage = false;
       let logoutButton = document.getElementsByClassName('rafterLogout')[0];
-      if (logoutButton !== null && logoutButton  !== undefined) {
+      if (logoutButton !== null && logoutButton !== undefined) {
         if (logoutButton.style.display === 'block') {
           reloadPage = true;
         }
@@ -439,21 +428,11 @@ export class Rafter {
         // }
         this.showLogin = true;
       }
-      /* istanbul ignore if */
+      /* istanbul ignore next */
       if (process.env.NODE_ENV !== 'test' && reloadPage) {
         window.location.reload();
       }
     }
-  }
-
-  checkExpired(decoded) {
-    let d = new Date();
-    let checkd = d.valueOf() / 1000;
-    //console.log(checkd);
-    if (checkd > decoded.exp) {
-      //console.log('expired');
-      return false;
-    } return true;
   }
 
   validate() {
@@ -520,13 +499,13 @@ export class Rafter {
 
   attached() {
     const cili = this.checkIfLoggedIn;
-    const cep = this.checkExpired;
+    const cep = this.rafterUser.checkExpired;
     const sli = this.showLogin;
     const rlo = this.rafterUser.rafterLogout;
     setInterval(function() {
       cili(cep, rlo, sli);
     }
-    , 5400);
+    , 3400);
 
     let ruser = JSON.parse(localStorage.getItem('rafterUser'));
     //console.log(ruser.id);

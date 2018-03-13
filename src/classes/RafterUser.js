@@ -12,4 +12,14 @@ export class RafterUser {
       window.location.reload();
     }
   }
+  checkExpired(decoded) {
+    console.log('check expired');
+    let d = new Date();
+    let checkd = d.valueOf() / 1000;
+    //console.log(checkd);
+    if (checkd > decoded.exp) {
+      //console.log('expired');
+      return false;
+    } return true;
+  }
 }
