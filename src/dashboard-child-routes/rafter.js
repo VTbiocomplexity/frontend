@@ -1,6 +1,7 @@
 import {inject} from 'aurelia-framework';
 import {App} from '../app';
 import { saveAs } from 'file-saver';
+import { RafterUser } from '../classes/RafterUser';
 const jwtDecode = require('jwt-decode');
 const TreeView = require('js-treeview');
 @inject(App, FileReader)
@@ -30,6 +31,7 @@ export class Rafter {
   async activate() {
     this.uid = this.app.auth.getTokenPayload().sub;
     this.user = await this.app.appState.getUser(this.uid);
+    this.rafterUser = new RafterUser();
     this.checkIfLoggedIn();
   }
 
@@ -243,13 +245,7 @@ export class Rafter {
           return this.makeTree(data);
         }
         document.getElementsByClassName('subDirContent')[0].innerHTML = JSON.stringify(data);
-        // console.log('sub dir files');
-        // console.log(subDirFiles);
-        // console.log('data');
-        // console.log(data);
-        // if (subDirFiles.indexOf(data) === -1) {
         subDirFiles.push.apply(subDirFiles, data);
-        // }
         return mtws(data, hdjId, hdj, tv, showFile, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj);
       } else if (data.message !== null && data.message !== '' && data.message !== undefined) {
         return document.getElementsByClassName('userServiceError')[0].innerHTML = data.message;
@@ -263,14 +259,8 @@ export class Rafter {
       console.log(err);
       // }
     });
-    // .then((message) => {
-    //   //console.log(message);
-    //   /* istanbul ignore if */
-    //   if (message !== null && message !== undefined) {
-    //     document.getElementsByClassName('userServiceError')[0].innerHTML = message.error;
-    //   }
-    // });
   }
+
   fileDelete() {
     let fileDetails = document.getElementsByClassName('homeDirContent')[0].innerHTML;
     let fdJson = JSON.parse(fileDetails);
@@ -329,7 +319,6 @@ export class Rafter {
   }
 
   uploadRafterFile() {
-      // let jsonObj;
     const httpClient = this.app.httpClient;
     const rui = this.rafterUserID;
     const fileName = rafterFilePath.files[0].name;
@@ -337,16 +326,10 @@ export class Rafter {
     console.log(fileName);
     let cleanFileName = fileName.replace(/\s/g, '');
     cleanFileName = cleanFileName.replace(/!/g, '');
-    //const navHomeDir = this.navHomeDir;
-      // const router = this.app.router;
     async function loaded (evt) {
       console.log('in function loaded');
       console.log(evt.target);
       const fileString = evt.target.result;
-        // const options = {
-        //   delimiter: '\t'
-        // };
-        //jsonObj = csvjson.toObject(fileString, options);
       ulrf(fileString);
     }
 
@@ -367,8 +350,6 @@ export class Rafter {
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
-          // setTimeout(function () {
-          // }, 2000);
           /* istanbul ignore if */
           if (process.env.NODE_ENV !== 'test') {
             window.location.reload();
@@ -381,18 +362,6 @@ export class Rafter {
     this.reader.onload = loaded;
     this.reader.onerror = errorHandler;
     this.reader.readAsText(rafterFilePath.files[0]);
-  }
-
-
-  rafterLogout() {
-    //console.log('going to log you out');
-    localStorage.removeItem('rafterToken');
-    localStorage.removeItem('rafterUser');
-    /* istanbul ignore if */
-    if (process.env.NODE_ENV !== 'test') {
-      //console.log('is this a test?');
-      window.location.reload();
-    }
   }
 
   checkIfLoggedIn(cep, rlo, sli) {
@@ -410,14 +379,14 @@ export class Rafter {
           validToken = cep(decoded);
           //console.log(validToken);
         } else {
-          validToken = this.checkExpired(decoded);
+          validToken = this.rafterUser.checkExpired(decoded);
         }
         if (!validToken) {
           console.log('your token is bad, logging you out!');
           if (rlo !== null && rlo !== undefined) {
             rlo();
           } else {
-            this.rafterLogout();
+            this.rafterUser.rafterLogout();
           }
         } else {
           if (sli !== null && sli !== undefined) {
@@ -433,27 +402,37 @@ export class Rafter {
         if (rlo !== null && rlo !== undefined) {
           rlo();
         } else {
-          this.rafterLogout();
+          this.rafterUser.rafterLogout();
         }
       }
     } else {
-      //console.log('you our not logged in');
+      let reloadPage = false;
+      let logoutButton = document.getElementsByClassName('rafterLogout')[0];
+      if (logoutButton !== null && logoutButton !== undefined) {
+        if (logoutButton.style.display === 'block') {
+          reloadPage = true;
+        }
+      }
+      console.log('you our not logged in');
       if (sli !== null && sli !== undefined) {
+        console.log(sli);
+        // if (!sli) {
+        //reloadPage = true;
+        // }
         sli = true;
+        //window.location.reload();
       } else {
+        console.log(this.showLogin);
+        // if (!this.showLogin) {
+        //   reloadPage = true;
+        // }
         this.showLogin = true;
       }
+      /* istanbul ignore next */
+      if (process.env.NODE_ENV !== 'test' && reloadPage) {
+        window.location.reload();
+      }
     }
-  }
-
-  checkExpired(decoded) {
-    let d = new Date();
-    let checkd = d.valueOf() / 1000;
-    //console.log(checkd);
-    if (checkd > decoded.exp) {
-      //console.log('expired');
-      return false;
-    } return true;
   }
 
   validate() {
@@ -520,13 +499,13 @@ export class Rafter {
 
   attached() {
     const cili = this.checkIfLoggedIn;
-    const cep = this.checkExpired;
+    const cep = this.rafterUser.checkExpired;
     const sli = this.showLogin;
-    const rlo = this.rafterLogout;
+    const rlo = this.rafterUser.rafterLogout;
     setInterval(function() {
       cili(cep, rlo, sli);
     }
-    , 5400);
+    , 3400);
 
     let ruser = JSON.parse(localStorage.getItem('rafterUser'));
     //console.log(ruser.id);
