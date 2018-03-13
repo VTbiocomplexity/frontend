@@ -278,7 +278,6 @@ export class Rafter {
     this.app.httpClient.fetch('/rafter/vs', { method: 'post', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({token: localStorage.getItem('rafterToken'), userName: this.rafterUserID, command: 'remove', fileID: this.rafterFileID})
     }).then((response) => response.json()).then((data) => {
-      console.log(data);
       if (data) {
         /* istanbul ignore if */
         if (process.env.NODE_ENV !== 'test') {
@@ -298,7 +297,6 @@ export class Rafter {
     this.app.httpClient.fetch('/rafter/vs', { method: 'post', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({token: localStorage.getItem('rafterToken'), userName: this.rafterUserID, command: 'get', fileID: this.rafterFileID})
     }).then((response) => response.blob()).then((blob) => {
-      console.log(blob);
       saveAs(blob, fdJson.name);
     }).catch(function (err) {
       console.log(err);
