@@ -1,5 +1,6 @@
 export class RafterUser {
-  constructor() {
+  constructor(httpClient) {
+    this.httpClient = httpClient;
   }
 
   rafterLogout() {
@@ -38,5 +39,22 @@ export class RafterUser {
     if (process.env.NODE_ENV !== 'test' && reloadPage) {
       window.location.reload();
     }
+  }
+
+  initVol(mToken) {
+    this.httpClient.fetch('/rafter/vsinit', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({token: mToken})
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      document.getElementsByClassName('rafterLogout')[0].style.display = 'block';
+    }).catch((err) => {
+      console.log(err);
+    });
   }
 }
