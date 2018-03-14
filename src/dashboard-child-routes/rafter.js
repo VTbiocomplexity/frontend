@@ -35,29 +35,29 @@ export class Rafter {
     this.checkIfLoggedIn();
   }
 
-  hideThisFileDetail() {
-    document.getElementsByClassName('homeDirContent')[0].style.display = 'none';
-    document.getElementsByClassName('hfd')[0].style.display = 'none';
-    document.getElementsByClassName('sfd')[0].style.display = 'block';
+  hideDetail(ic1, ic2, content) {
+    document.getElementsByClassName(content)[0].style.display = 'none';
+    document.getElementsByClassName(ic1)[0].style.display = 'none';
+    document.getElementsByClassName(ic2)[0].style.display = 'block';
   }
 
-  showThisFileDetail() {
-    document.getElementsByClassName('homeDirContent')[0].style.display = 'block';
-    document.getElementsByClassName('hfd')[0].style.display = 'block';
-    document.getElementsByClassName('sfd')[0].style.display = 'none';
+  showDetail(ic1, ic2, content) {
+    document.getElementsByClassName(content)[0].style.display = 'block';
+    document.getElementsByClassName(ic1)[0].style.display = 'block';
+    document.getElementsByClassName(ic2)[0].style.display = 'none';
   }
 
-  hideInsideFolderDetail() {
-    document.getElementsByClassName('subDirContent')[0].style.display = 'none';
-    document.getElementsByClassName('hifd')[0].style.display = 'none';
-    document.getElementsByClassName('sifd')[0].style.display = 'block';
-  }
-
-  showInsideFolderDetail() {
-    document.getElementsByClassName('subDirContent')[0].style.display = 'block';
-    document.getElementsByClassName('hifd')[0].style.display = 'block';
-    document.getElementsByClassName('sifd')[0].style.display = 'none';
-  }
+  // hideInsideFolderDetail() {
+  //   document.getElementsByClassName('subDirContent')[0].style.display = 'none';
+  //   document.getElementsByClassName('hifd')[0].style.display = 'none';
+  //   document.getElementsByClassName('sifd')[0].style.display = 'block';
+  // }
+  //
+  // showInsideFolderDetail() {
+  //   document.getElementsByClassName('subDirContent')[0].style.display = 'block';
+  //   document.getElementsByClassName('hifd')[0].style.display = 'block';
+  //   document.getElementsByClassName('sifd')[0].style.display = 'none';
+  // }
 
   navHomeDir() {
     console.log('you clicked me');
