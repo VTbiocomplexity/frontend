@@ -196,7 +196,18 @@ describe('The Rafter Dashboard', () => {
   it('tries to init volume service but catches an error', testAsync(async function() {
     //document.body.innerHTML = '<div class="homeDirContent"></div>';
     rd.app.httpClient = new HttpMock('rafterError');
-    await rd.initVol('yoyo');
+    rd.rafterUser = new RafterUser(rd.app.httpClient);
+    await rd.rafterUser.initVol('yoyo');
+  }));
+  it('hides the details', testAsync(async function() {
+    document.body.innerHTML = '<div class="content"></div><div class="ic1"></div><div class="ic2"></div>';
+    await rd.hideDetail('ic1', 'ic2', 'content');
+    expect(document.getElementsByClassName('ic2')[0].style.display).toBe('block');
+  }));
+  it('shows the details', testAsync(async function() {
+    document.body.innerHTML = '<div class="content"></div><div class="ic1"></div><div class="ic2"></div>';
+    await rd.showDetail('ic1', 'ic2', 'content');
+    expect(document.getElementsByClassName('ic1')[0].style.display).toBe('block');
   }));
   it('displays a tree menu without a folder', (done) => {
     rd.app.httpClient = new HttpMock();
