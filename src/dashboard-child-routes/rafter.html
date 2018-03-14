@@ -40,8 +40,8 @@
                 <hr>
                 <div>
                   <div style="float:left; margin-left:33%; margin-right: -33%">
-                    <i class="fa fa-plus-square hoverHand sfd" style="display:none" click.delegate="showThisFileDetail()"></i>
-                    <i class="fa fa-minus-square hoverHand hfd" click.delegate="hideThisFileDetail()"></i>
+                    <i class="fa fa-plus-square hoverHand sfd" style="display:none" click.delegate="showDetail('hfd','sfd','homeDirContent')"></i>
+                    <i class="fa fa-minus-square hoverHand hfd" click.delegate="hideDetail('hfd','sfd','homeDirContent')"></i>
                   </div>
                   <div><p>&nbsp;&nbsp;&nbsp;<strong>File/Folder Details</strong></p></div>
                 </div>
@@ -53,8 +53,8 @@
               <hr>
               <div>
                 <div style="float:left; margin-left:32%; margin-right:-26%">
-                  <i class="fa fa-plus-square hoverHand sifd" style="display:none" click.delegate="showInsideFolderDetail()"></i>
-                  <i class="fa fa-minus-square hoverHand hifd" click.delegate="hideInsideFolderDetail()"></i>
+                  <i class="fa fa-plus-square hoverHand sifd" style="display:none" click.delegate="showDetail('hifd', 'sifd', 'subDirContent')"></i>
+                  <i class="fa fa-minus-square hoverHand hifd" click.delegate="hideDetail('hifd', 'sifd', 'subDirContent')"></i>
                 </div>
                 <div><p>&nbsp;&nbsp;&nbsp;<strong>Inside of Folder Details</strong></p></div>
               </div>
