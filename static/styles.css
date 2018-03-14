@@ -402,3 +402,8 @@ button[disabled]:hover {
   border-radius: 10px;
   background-color: #ffffff;
 }
+
+.hoverHand {
+  cursor: pointer;
+  cursor: hand;
+}
