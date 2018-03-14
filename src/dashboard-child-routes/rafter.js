@@ -32,7 +32,10 @@ export class Rafter {
     this.uid = this.app.auth.getTokenPayload().sub;
     this.user = await this.app.appState.getUser(this.uid);
     this.rafterUser = new RafterUser(this.app.httpClient);
-    this.checkIfLoggedIn();
+    const cep = this.rafterUser.checkExpired;
+    const rlo = this.rafterUser.rafterLogout;
+    const cipr = this.rafterUser.checkIfPageReload;
+    this.showLogin = this.checkIfLoggedIn(cep, rlo, this.showLogin, cipr);
   }
 
   hideDetail(ic1, ic2, content) {
@@ -46,18 +49,6 @@ export class Rafter {
     document.getElementsByClassName(ic1)[0].style.display = 'block';
     document.getElementsByClassName(ic2)[0].style.display = 'none';
   }
-
-  // hideInsideFolderDetail() {
-  //   document.getElementsByClassName('subDirContent')[0].style.display = 'none';
-  //   document.getElementsByClassName('hifd')[0].style.display = 'none';
-  //   document.getElementsByClassName('sifd')[0].style.display = 'block';
-  // }
-  //
-  // showInsideFolderDetail() {
-  //   document.getElementsByClassName('subDirContent')[0].style.display = 'block';
-  //   document.getElementsByClassName('hifd')[0].style.display = 'block';
-  //   document.getElementsByClassName('sifd')[0].style.display = 'none';
-  // }
 
   navHomeDir() {
     console.log('you clicked me');
@@ -389,43 +380,23 @@ export class Rafter {
   }
 
   checkIfLoggedIn(cep, rlo, sli, cipr) {
-    let rLogOut = false;
     if (window.localStorage.getItem('rafterToken') !== null && window.localStorage.getItem('rafterToken') !== undefined) {
       let rtok = window.localStorage.getItem('rafterToken');
       try {
         let decoded = jwtDecode(rtok);
         let validToken;
-        if (cep !== null && cep !== undefined) {
-          validToken = cep(decoded);
-        } else {
-          validToken = this.rafterUser.checkExpired(decoded);
-        }
+        validToken = cep(decoded);
         if (!validToken) {
-          rlogOut = true;
-        } else {
-          if (sli !== null && sli !== undefined) {
-            sli = false;
-          } else {
-            this.showLogin = false;
-          }
-        }
-      } catch (err) {
-        rLogOut = true;
-      }
-      if (rLogOut) {
-        if (rlo !== null && rlo !== undefined) {
           rlo();
-        } else {
-          this.rafterUser.rafterLogout();
-        }
+          return true;
+        }  return false;
+      } catch (err) {
+        rlo();
+        return true;
       }
     } else {
-      if (sli === null || sli === undefined) {
-        sli = this.showLogin;
-      }
-      if (cipr !== null && cipr !== undefined) {
-        cipr(sli);
-      }
+      cipr(sli);
+      return true;
     }
   }
 
