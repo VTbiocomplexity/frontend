@@ -31,7 +31,7 @@ export class Rafter {
   async activate() {
     this.uid = this.app.auth.getTokenPayload().sub;
     this.user = await this.app.appState.getUser(this.uid);
-    this.rafterUser = new RafterUser();
+    this.rafterUser = new RafterUser(this.app.httpClient);
     this.checkIfLoggedIn();
   }
 
@@ -466,7 +466,7 @@ export class Rafter {
       window.localStorage.setItem('rafterUser', rafterUser);
       this.rafterUserID = JSON.parse(rafterUser).id;
       document.getElementsByClassName('userServiceError')[0].innerHTML = '';
-      this.initVol(token);
+      this.rafterUser.initVol(token);
       this.activate();
     }).catch((err) => {
       //console.log(err);
@@ -474,22 +474,22 @@ export class Rafter {
     });
   }
 
-  initVol(mToken) {
-    this.app.httpClient.fetch('/rafter/vsinit', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({token: mToken})
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      document.getElementsByClassName('rafterLogout')[0].style.display = 'block';
-    }).catch((err) => {
-      console.log(err);
-    });
-  }
+  // initVol(mToken) {
+  //   this.app.httpClient.fetch('/rafter/vsinit', {
+  //     method: 'post',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify({token: mToken})
+  //   })
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     console.log(data);
+  //     document.getElementsByClassName('rafterLogout')[0].style.display = 'block';
+  //   }).catch((err) => {
+  //     console.log(err);
+  //   });
+  // }
 
   attached() {
     const cili = this.checkIfLoggedIn;
