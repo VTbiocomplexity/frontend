@@ -22,4 +22,21 @@ export class RafterUser {
       return false;
     } return true;
   }
+
+  checkIfPageReload(sli) {
+    let reloadPage = false;
+    let logoutButton = document.getElementsByClassName('rafterLogout')[0];
+    if (logoutButton !== null && logoutButton !== undefined) {
+      if (logoutButton.style.display === 'block') {
+        reloadPage = true;
+        logoutButton.style.display === 'none';
+      }
+    }
+    console.log('you are not logged in');
+    sli = true;
+    /* istanbul ignore next */
+    if (process.env.NODE_ENV !== 'test' && reloadPage) {
+      window.location.reload();
+    }
+  }
 }

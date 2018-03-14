@@ -364,25 +364,18 @@ export class Rafter {
     this.reader.readAsText(rafterFilePath.files[0]);
   }
 
-  checkIfLoggedIn(cep, rlo, sli) {
+  checkIfLoggedIn(cep, rlo, sli, cipr) {
     if (window.localStorage.getItem('rafterToken') !== null && window.localStorage.getItem('rafterToken') !== undefined) {
-      //console.log('howdy rafter user');
       let rtok = window.localStorage.getItem('rafterToken');
-      //this.rafterUserID = JSON.parse(localStorage.getItem('rafterUser')).id;
-      //this.rafterUserID = localStorage.getItem('rafterUser')
-      //console.log(rtok);
       try {
         let decoded = jwtDecode(rtok);
-        //console.log(decoded);
         let validToken;
         if (cep !== null && cep !== undefined) {
           validToken = cep(decoded);
-          //console.log(validToken);
         } else {
           validToken = this.rafterUser.checkExpired(decoded);
         }
         if (!validToken) {
-          console.log('your token is bad, logging you out!');
           if (rlo !== null && rlo !== undefined) {
             rlo();
           } else {
@@ -396,9 +389,6 @@ export class Rafter {
           }
         }
       } catch (err) {
-        // The token is invalid
-        //console.log(err);
-        //console.log('your token is bad, logging you out!');
         if (rlo !== null && rlo !== undefined) {
           rlo();
         } else {
@@ -406,31 +396,11 @@ export class Rafter {
         }
       }
     } else {
-      let reloadPage = false;
-      let logoutButton = document.getElementsByClassName('rafterLogout')[0];
-      if (logoutButton !== null && logoutButton !== undefined) {
-        if (logoutButton.style.display === 'block') {
-          reloadPage = true;
-        }
+      if (sli === null || sli === undefined) {
+        sli = this.showLogin;
       }
-      console.log('you our not logged in');
-      if (sli !== null && sli !== undefined) {
-        console.log(sli);
-        // if (!sli) {
-        //reloadPage = true;
-        // }
-        sli = true;
-        //window.location.reload();
-      } else {
-        console.log(this.showLogin);
-        // if (!this.showLogin) {
-        //   reloadPage = true;
-        // }
-        this.showLogin = true;
-      }
-      /* istanbul ignore next */
-      if (process.env.NODE_ENV !== 'test' && reloadPage) {
-        window.location.reload();
+      if (cipr !== null && cipr !== undefined) {
+        cipr(sli);
       }
     }
   }
@@ -502,8 +472,9 @@ export class Rafter {
     const cep = this.rafterUser.checkExpired;
     const sli = this.showLogin;
     const rlo = this.rafterUser.rafterLogout;
+    const cipr = this.rafterUser.checkIfPageReload;
     setInterval(function() {
-      cili(cep, rlo, sli);
+      cili(cep, rlo, sli, cipr);
     }
     , 3400);
 
