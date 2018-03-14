@@ -35,6 +35,30 @@ export class Rafter {
     this.checkIfLoggedIn();
   }
 
+  hideThisFileDetail() {
+    document.getElementsByClassName('homeDirContent')[0].style.display = 'none';
+    document.getElementsByClassName('hfd')[0].style.display = 'none';
+    document.getElementsByClassName('sfd')[0].style.display = 'block';
+  }
+
+  showThisFileDetail() {
+    document.getElementsByClassName('homeDirContent')[0].style.display = 'block';
+    document.getElementsByClassName('hfd')[0].style.display = 'block';
+    document.getElementsByClassName('sfd')[0].style.display = 'none';
+  }
+
+  hideInsideFolderDetail() {
+    document.getElementsByClassName('subDirContent')[0].style.display = 'none';
+    document.getElementsByClassName('hifd')[0].style.display = 'none';
+    document.getElementsByClassName('sifd')[0].style.display = 'block';
+  }
+
+  showInsideFolderDetail() {
+    document.getElementsByClassName('subDirContent')[0].style.display = 'block';
+    document.getElementsByClassName('hifd')[0].style.display = 'block';
+    document.getElementsByClassName('sifd')[0].style.display = 'none';
+  }
+
   navHomeDir() {
     console.log('you clicked me');
     let hdc = JSON.stringify(this.homeDirJson);
@@ -378,11 +402,6 @@ export class Rafter {
         }
         if (!validToken) {
           rlogOut = true;
-          // if (rlo !== null && rlo !== undefined) {
-          //   rlo();
-          // } else {
-          //   this.rafterUser.rafterLogout();
-          // }
         } else {
           if (sli !== null && sli !== undefined) {
             sli = false;
@@ -392,11 +411,6 @@ export class Rafter {
         }
       } catch (err) {
         rLogOut = true;
-        // if (rlo !== null && rlo !== undefined) {
-        //   rlo();
-        // } else {
-        //   this.rafterUser.rafterLogout();
-        // }
       }
       if (rLogOut) {
         if (rlo !== null && rlo !== undefined) {

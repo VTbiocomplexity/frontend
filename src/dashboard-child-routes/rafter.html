@@ -38,20 +38,34 @@
             <div class="fileMeta">
               <div class="fileDetailsTitle" style="display:none">
                 <hr>
-                <p><strong>File/Folder Details</strong></p>
+                <div>
+                  <div style="float:left; margin-left:33%; margin-right: -33%">
+                    <i class="fa fa-plus-square hoverHand sfd" style="display:none" click.delegate="showThisFileDetail()"></i>
+                    <i class="fa fa-minus-square hoverHand hfd" click.delegate="hideThisFileDetail()"></i>
+                  </div>
+                  <div><p>&nbsp;&nbsp;&nbsp;<strong>File/Folder Details</strong></p></div>
+                </div>
+
               </div>
               <p class="homeDirContent" style="margin:10px;text-align:left;overflow-x:auto"></p>
             </div>
             <div class="insideFolderDetails" style="display:none">
               <hr>
-              <p><strong>Inside of Folder Details</strong></p>
+              <div>
+                <div style="float:left; margin-left:32%; margin-right:-26%">
+                  <i class="fa fa-plus-square hoverHand sifd" style="display:none" click.delegate="showInsideFolderDetail()"></i>
+                  <i class="fa fa-minus-square hoverHand hifd" click.delegate="hideInsideFolderDetail()"></i>
+                </div>
+                <div><p>&nbsp;&nbsp;&nbsp;<strong>Inside of Folder Details</strong></p></div>
+              </div>
+              <!-- <p><strong>Inside of Folder Details</strong></p> -->
               <p class="subDirContent" style="margin:10px;text-align:left;;overflow-x:auto"></p>
             </div>
           </div>
         </div>
         <div class="elevation3 createNew" style="min-width:4.5in; display:none">
-          <h4 style="text-align:center"><strong>Inside of <span class="folderName">home/${rafterUserID}</span></strong></h4>
-          <div class="elevation3 fileCreate" style="max-width:3in">
+          <h4 style="text-align:center; margin-left:-40px"><strong>Inside of <span class="folderName">home/${rafterUserID}</span></strong></h4>
+          <div class="elevation3 fileCreate" style="max-width:3in; margin-left:30px">
             <p style="text-align:center"><i><strong>Create Empty File<span class="isHomeDir"> or Folder</span></strong></i></p>
             <form style="margin-left:0.75in">
               <label style="margin-top:0;padding-top:0">Name<span style="font-weight:normal;font-style:italic;font-size:9pt"> (no spaces)</span></label>
@@ -72,7 +86,7 @@
             </form>
           </div>
           <p>&nbsp;</p>
-          <div class="fileUpload elevation3" style="min-width:3in">
+          <div class="fileUpload elevation3" style="min-width:3in; margin-left:30px">
             <p style="text-align:center"><i><strong>Upload a File</strong></i></p>
             <form style="max-width:2.5in; margin-left:20px">
               <input id="rafterFilePath" type="file" accept="" files.bind="selectedFiles" change.delegate="rafterFileValidate()"/>
