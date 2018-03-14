@@ -365,6 +365,7 @@ export class Rafter {
   }
 
   checkIfLoggedIn(cep, rlo, sli, cipr) {
+    let rLogOut = false;
     if (window.localStorage.getItem('rafterToken') !== null && window.localStorage.getItem('rafterToken') !== undefined) {
       let rtok = window.localStorage.getItem('rafterToken');
       try {
@@ -376,11 +377,12 @@ export class Rafter {
           validToken = this.rafterUser.checkExpired(decoded);
         }
         if (!validToken) {
-          if (rlo !== null && rlo !== undefined) {
-            rlo();
-          } else {
-            this.rafterUser.rafterLogout();
-          }
+          rlogOut = true;
+          // if (rlo !== null && rlo !== undefined) {
+          //   rlo();
+          // } else {
+          //   this.rafterUser.rafterLogout();
+          // }
         } else {
           if (sli !== null && sli !== undefined) {
             sli = false;
@@ -389,6 +391,14 @@ export class Rafter {
           }
         }
       } catch (err) {
+        rLogOut = true;
+        // if (rlo !== null && rlo !== undefined) {
+        //   rlo();
+        // } else {
+        //   this.rafterUser.rafterLogout();
+        // }
+      }
+      if (rLogOut) {
         if (rlo !== null && rlo !== undefined) {
           rlo();
         } else {
