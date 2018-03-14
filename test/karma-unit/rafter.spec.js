@@ -328,10 +328,13 @@ describe('The Rafter Dashboard', () => {
     '-i9vRVuzPJEWxPHhXZTSzLXiwPlLB5P9VOlzgDPhmVuPwx2n0q-T9hbV6vGt1E0EL-oKex1dpVE10iM0BWujXvQRC8gPJXhIBNR6zUDXX5ziO_8Y48CNWvKBDKhTjcrGEuj7CEMSt9kZBlgt-E_DnkibnFfHl763k_vPWqJ4okWkhELXtpCj7ObKrjNGRjYzKrMRyjJkIHLOc6ZEsTKkWt4ATzOXN_jVYFqN5tzRpMqiqC-G0oS-aSOiML6HZpqiEu26oLoQ4a6RDAXPp6Me9SXwkhw7K-JNDvW68LRyXIMnz7HisLWhc6-1XykgQ6MLcu4uvsOBD11VQpVmO-5Dkdf2vAlr7jbQ8tvKZaJi4W2PEiVIfR6lNhGPLyU4Zx4bg084tzi6n3jSipKcavfPY' +
     '-iNAbZOYDXlB8GKdDIEFpRQmO11Yyr1_B9OjRYFWrf1scdlLhdXcRQT33FHQo_sakhZMI36s50ksj6B4ghrEHhdvgE1TFBgMg6uyRiNiZiRVgd08kMok_JmlJrjGkqoUIgvZeC9NkjGU8YcV5bF5ZTeJpTlJ7l28W8fY_lkjOs4LBsxoJDdnrdGR-FsfFMQJajL4LEuwXGlpBHjfiLpqflRYhf8poDRU';
     localStorage.setItem('rafterToken', tkn);
-    rd.rafterUser = new RafterUser();
+    rd.rafterUser = new RafterUser(rd.app.httpClient);
     rd.rafterUser.checkExpired = function() {return true;};
-    rd.checkIfLoggedIn();
+    const rlo = rd.rafterUser.rafterLogout;
+    const cipr = rd.rafterUser.checkIfPageReload;
+    rd.showLogin = rd.checkIfLoggedIn(rd.rafterUser.checkExpired, rlo, this.showLogin, cipr);
     expect(localStorage.getItem('rafterToken')).not.toBe(null);
+    expect(rd.showLogin).toBe(false);
     done();
   });
   it('checks if the user has logged during a set interval and removes the token if is has expired', (done) => {
@@ -342,7 +345,7 @@ describe('The Rafter Dashboard', () => {
     localStorage.setItem('rafterToken', tkn);
     //expect(isValid).toBe(false);
     //tkn = {exp: 999999999999};
-    let cep = function() {};
+    let cep = function() {return false;};
     let rlo = function() {localStorage.removeItem('rafterToken');};
     let sli = true;
     rd.checkIfLoggedIn(cep, rlo, sli);
@@ -402,7 +405,7 @@ describe('The Rafter Dashboard', () => {
     let ruserObj = {name: 'howdy'};
     localStorage.setItem('rafterUser', JSON.stringify(ruserObj));
     document.body.innerHTML = '<div class="rafterLogout" style="display:block"></div>';
-    rd.rafterUser = {rafterLogout: function() {}};
+    rd.rafterUser = {rafterLogout: function() {}, checkIfPageReload: function() {}};
     rd.attached();
     jasmine.clock().tick(5500);
     //setTimeout(() => {
