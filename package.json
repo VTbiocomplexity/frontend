@@ -10,8 +10,7 @@
   "author": "Biocomplexity",
   "license": "MIT",
   "engines": {
-    "node": "8.10.0",
-    "npm": "5.7.1"
+    "node": "8.10.0"
   },
   "scripts": {
     "start": "nps",
