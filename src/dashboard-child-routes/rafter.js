@@ -13,7 +13,7 @@ export class Rafter {
     this.rafterUserID = '';
     this.rafter = {
       id: '',
-      password: ''
+      secret: ''
     };
     this.rafterFile = {name: '', createType: 'file', path: ''};
     this.tv = null;
@@ -104,14 +104,8 @@ export class Rafter {
       foldersArr[j].domDiv.addEventListener('click', function(evt) {
         //console.log(evt);
         showFile(foldersArr[j].id, hdj, raf, rvs, myApp, rui, mtws, tv, showFile, displayTree, subDirFiles, mnj);
-        //mtws();
       });
     }
-    // tv.on('select', function(evt) {
-    //   console.log(evt.data);
-    //   showFile(evt.data.id, allData, raf, rvs, myApp, rui, null, null, null, null);
-    // });
-    //tv.expandAll();
     //console.log(filesInFolder.innerHTML);
     let fif = [];
     if (filesInFolder !== null && filesInFolder !== undefined) {
@@ -129,7 +123,6 @@ export class Rafter {
       allData = hdj;
     }
     //console.log(allData);
-    //hdj = idf;
     for (let k = 0; k < fif.length; k++) {
       let fileID = fif[k].getElementsByClassName('tree-leaf-content')[0];
       let fileIDsJson = fileID.getAttribute('data-item');
@@ -137,7 +130,6 @@ export class Rafter {
       fif[k].addEventListener('click', function(evt) {
         console.log('I clicked the file inside sub folder');
         showFile(fileIDJson.id, allData, raf, rvs, myApp, rui, null, null, null, null, subDirFiles, mnj);
-        //mtws();
       });
     }
     tv.on('select', function(evt) {
@@ -145,8 +137,6 @@ export class Rafter {
       console.log(evt.data.id);
       showFile(evt.data.id, hdj, raf, rvs, myApp, rui, null, null, null, null, subDirFiles, mnj);
     });
-    // let treeViewDiv = document.getElementById('treeView');
-    // treeViewDiv.innerHTML = '<div class="homeDirLink"><a id="homeDirClicker">home/JoshuaVSherman</a></div>' + treeViewDiv.innerHTML;
   }
 
   showFileDetails(id, hdj, raf, rvs, myApp, rui, mtws = null, tv, showFile, displayTree, subDirFiles, mnj) {
@@ -175,7 +165,6 @@ export class Rafter {
           document.getElementsByClassName('fileDetailsTitle')[0].style.display = 'none';
           document.getElementsByClassName('folderName')[0].innerHTML = hdj[i].name;
           raf.path = '/' + hdj[i].name;
-          //document.getElementsByClassName('uploadForm')[0].style.display = 'block';
           //console.log('line 86?');
           return rvs('ls', myApp, rui, raf, mtws, hdj[i].id, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj);
         }
@@ -186,9 +175,7 @@ export class Rafter {
         return;
       }
     }
-    //console.log('line 175');
     if (subDirFiles !== null && subDirFiles !== undefined) {
-      //console.log('line 177');
       for (let j = 0; j < subDirFiles.length; j++) {
         if (id === subDirFiles[j].id) {
           console.log('i found a match!');
@@ -252,8 +239,12 @@ export class Rafter {
       },
       body: JSON.stringify({token: localStorage.getItem('rafterToken'), userName: rui, command: cmd, rafterFile: raf})
     })
-    .then((response) => response.json())
+    .then(function(response) {
+      console.log(response);
+      return response.json();
+    })
     .then((data) => {
+      console.log(data);
       if (cmd === 'ls') {
         if (raf.path === '') {
           this.homeDirJson = data;
@@ -270,9 +261,7 @@ export class Rafter {
         this.navHomeDir();
       }
     }).catch(function (err) {
-      // if (cmd !== 'ls') {
       console.log(err);
-      // }
     });
   }
 
@@ -412,7 +401,7 @@ export class Rafter {
   }
 
   postUSV() {
-    this.app.httpClient.fetch('/rafter/rlogin', {
+    this.app.httpClient.fetch('/rafter/rinit', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json'
@@ -421,46 +410,32 @@ export class Rafter {
     })
     .then((response) => response.json())
     .then((data) => {
-      let data1 = data.replace(/&#34;/g, '');
-      let token = data1.split('authorization_token: ')[1];
-      token = token.split('}')[0];
-      token = token.replace(/\r?\n|\r/g, '');
+      console.log(data);
+      //let data1 = data.replace(/&#34;/g, '');
+      //let token = data1.split('authorization_token: ')[1];
+      //token = token.split('}')[0];
+      //token = token.replace(/\r?\n|\r/g, '');
       //console.log(token);
-      window.localStorage.setItem('rafterToken', token);
-      //console.log(data);
-      let rafterUser = data.split('&#34;user&#34;:')[1];
-      rafterUser = rafterUser.split('}')[0];
-      rafterUser = rafterUser + '}';
-      rafterUser = rafterUser.replace(/&#34;/g, '"');
-      //console.log(rafterUser);
-      //console.log(JSON.parse(rafterUser));
-      window.localStorage.setItem('rafterUser', rafterUser);
-      this.rafterUserID = JSON.parse(rafterUser).id;
+      window.localStorage.setItem('rafterToken', data);
+      let user = jwtDecode(data);
+      console.log(user);
+      // let rafterUser = data.split('&#34;user&#34;:')[1];
+      // rafterUser = rafterUser.split('}')[0];
+      // rafterUser = rafterUser + '}';
+      // rafterUser = rafterUser.replace(/&#34;/g, '"');
+      // console.log(rafterUser);
+      //let ruser1 = {id: user.sub, }
+      //window.localStorage.setItem('rafterUser', user.sub);
+      //console.log(user.sub);
+      this.rafterUserID = user.sub;
       document.getElementsByClassName('userServiceError')[0].innerHTML = '';
-      this.rafterUser.initVol(token);
+      this.rafterUser.initVol(data);
       this.activate();
     }).catch((err) => {
-      //console.log(err);
+      console.log(err);
       document.getElementsByClassName('userServiceError')[0].innerHTML = '<br>Wrong userid or password';
     });
   }
-
-  // initVol(mToken) {
-  //   this.app.httpClient.fetch('/rafter/vsinit', {
-  //     method: 'post',
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify({token: mToken})
-  //   })
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     console.log(data);
-  //     document.getElementsByClassName('rafterLogout')[0].style.display = 'block';
-  //   }).catch((err) => {
-  //     console.log(err);
-  //   });
-  // }
 
   attached() {
     const cili = this.checkIfLoggedIn;
@@ -473,10 +448,11 @@ export class Rafter {
     }
     , 3400);
 
-    let ruser = JSON.parse(localStorage.getItem('rafterUser'));
+    let rT = (localStorage.getItem('rafterToken'));
     //console.log(ruser.id);
-    if (ruser !== null && ruser !== undefined) {
-      this.rafterUserID = ruser.id;
+    if (rT !== null && rT !== undefined) {
+      let rU = jwtDecode(rT);
+      this.rafterUserID = rU.sub;
       document.getElementsByClassName('rafterLogout')[0].style.display = 'block';
     }
   }
