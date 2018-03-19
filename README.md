@@ -6,9 +6,11 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/VTbiocomplexity/frontend/badge.svg)](https://snyk.io/test/github/VTbiocomplexity/frontend)
 
 ## Installation
-
-* Install Node.js, version listed in package.json
-* Install Yarn (not required, but recommended), see Yarn's installation instructions for your OS.
+* Install node version manager (nvm), close and open terminal afterwards
+* Use nvm to install Node.js, version listed in package.json 
+  - nvm install lts/*
+* Install Yarn - see Yarn's installation instructions for your OS.
+* Install Chrome (needed for browser-based testing)
 * Create a .env file at the project root, then request the contents from an app owner.
 * First time or as a recovery, `npm run cleaninstall`
 * For minor updates, `yarn install`  
