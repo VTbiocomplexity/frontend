@@ -11,6 +11,6 @@
   - ```nvm install lts/*```
 * Install Yarn - see Yarn's installation instructions for your OS.
 * Install Chrome (needed for browser-based testing)
-* clone this repo, then navigate into the project folder
+* Clone this repo, then navigate into the project folder
 * Create a .env file at the project root, then request the contents from an app owner.
 * ```yarn install``` 
