@@ -15,7 +15,7 @@ export class Rafter {
       id: '',
       secret: ''
     };
-    this.rafterFile = {name: '', createType: 'file', path: ''};
+    this.rafterFile = {name: '', createType: 'file', path: '', fileType: 'unspecified'};
     this.tv = null;
     this.homeDirJson = null;
     this.subDirJson = [];
@@ -27,6 +27,7 @@ export class Rafter {
     // //   this.auth = auth;
     // //
   }
+  fileTypes = ['intersim-im-11-1_runoutput', 'intersim-im-11-1_runlog', 'GraphABM_rank', 'json', 'text', 'jsonh+fasta', 'png', 'jpg', 'pdf', 'xml', 'fasta'];
 
   async activate() {
     this.uid = this.app.auth.getTokenPayload().sub;
@@ -36,6 +37,8 @@ export class Rafter {
     const rlo = this.rafterUser.rafterLogout;
     const cipr = this.rafterUser.checkIfPageReload;
     this.showLogin = this.checkIfLoggedIn(cep, rlo, this.showLogin, cipr);
+    this.fileTypes.sort();
+    this.fileTypes.splice(0, 0, 'unspecified');
   }
 
   hideDetail(ic1, ic2, content) {
@@ -232,6 +235,9 @@ export class Rafter {
     }
     raf.name = raf.name.replace(/\s/g, '');
     raf.name = raf.name.replace(/!/g, '');
+    if (raf.name === '') {
+      raf.name = 'unspecified';
+    }
     myApp.httpClient.fetch('/rafter/vs', {
       method: 'post',
       headers: {

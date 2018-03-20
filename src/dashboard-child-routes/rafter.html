@@ -5,9 +5,9 @@
         <button style="text-align:center" class="rafterLogoutButton" click.delegate="rafterUser.rafterLogout()">Rafter<br>Logout</button>
       </div>
       <h3 style="margin:auto; padding-top:10px; padding-bottom:5px;text-align:center"><strong>Rafter Dashboard</strong></h3>
-      <p style="text-align:center; margin-left:50px"><i>We are going to try out some Rafter APIs here!</i></p>
+      <p style="text-align:center;"><i>We are going to try out some Rafter APIs here!</i></p>
       <div class="rafterLogin elevation3" style="max-width:3in; margin:auto" show.bind="showLogin">
-        <form style="margin-left:20px">
+        <form style="margin-left:8px">
           <label>Rafter App Id</label>
           <input type="text" value.bind="rafter.id" change.delegate="validate()" keyup.delegate="validate()" style="width:2.65in">
           <label>Rafter App Key</label>
@@ -16,6 +16,7 @@
             <p>&nbsp;</p>
             <button disabled class="rafterLoginButton" click.delegate="postUSV()">Login To Rafter</button>
           </div>
+          <p><br>Need an account? Follow these <a href="https://docs.google.com/document/d/1BF11gUYfXU8xBSsBW3J2wjK2HWf6NnWzz0y-1XtzoNE/#heading=h.5z7lybzc053j" target="_blank">instructions.</a></p>
         </form>
       </div>
       <div class="homeDirLink" style="">
@@ -67,19 +68,20 @@
           <h4 style="text-align:center; margin-left:-40px"><strong>Inside of <span class="folderName">home/${rafterUserID}</span></strong></h4>
           <div class="elevation3 fileCreate" style="max-width:3in; margin-left:30px">
             <p style="text-align:center"><i><strong>Create Empty File<span class="isHomeDir"> or Folder</span></strong></i></p>
-            <form style="margin-left:0.75in">
-              <label style="margin-top:0;padding-top:0">Name<span style="font-weight:normal;font-style:italic;font-size:9pt"> (no spaces)</span></label>
-              <input type="text" value.bind="rafterFile.name">
+            <form style="margin-left:10px">
+              <label>Name<span style="font-weight:normal;font-style:italic;font-size:9pt"> (no spaces)</span></label>
+              <input type="text" value.bind="rafterFile.name" style="width: 1.5in">
+              <label>Type</label>
+              <select id="fileType" class="form-control" value.bind="rafterFile.fileType" style="margin-top:0;width: 1.5in">
+                <option repeat.for="type of fileTypes" model.bind="type">${type}</option>
+              </select>
               <p style="margin:0">&nbsp;</p>
               <div class="isHomeDir">
-                <!-- <input type="radio" id="fileType1" name="ftype" value="file" checked> -->
                 <input type="radio" id="fileType1" name="ftype" value="file" checked change.delegate="radioClicked()">
                 <label for="fileType1" style="display:inline; margin-right:30px">File</label>
-                <!-- <input type="radio" id="fileType2"name="ftype" value="folder"> -->
                 <input type="radio" id="fileType2" name="ftype" value="folder" change.delegate="radioClicked()">
                 <label for="fileType2" style="display:inline">Folder</label>
               </div>
-              <!-- <p><strong>Path:</strong> ${rafterFile.path}</p> -->
               <div class="rafterFile" style="max-width:2in;text-align:left">
                 <button style="text-align:center" class="rafterMakeFileButton" click.delegate="rafterVolumeService('create')">Create</button>
               </div>
