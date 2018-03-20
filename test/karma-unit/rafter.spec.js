@@ -100,7 +100,6 @@ describe('The Rafter Dashboard', () => {
     //rd.reader.onerror();
   }));
 
-
   it('Validates the login form', testAsync(async function() {
     document.body.innerHTML = '<div><button disabled class="rafterLoginButton"></button></div>';
     rd.rafter = {id: 'yo', password: 'yo'};
@@ -114,6 +113,7 @@ describe('The Rafter Dashboard', () => {
     console.log(buttonDisabled);
     expect(buttonDisabled).toBe('');
   }));
+
   it('Logs in a rafter user', testAsync(async function() {
     document.body.innerHTML += '<div class="userServiceError">error</div>';
     await rd.postUSV();
@@ -402,8 +402,10 @@ describe('The Rafter Dashboard', () => {
 
   it('continues to check for expired token when there is a user defined', (done) => {
     jasmine.clock().install();
-    let ruserObj = {name: 'howdy'};
-    localStorage.setItem('rafterUser', JSON.stringify(ruserObj));
+    let tkn = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6W10sImZpcnN0X25hbWUiOiJuZHNzbCIsImxhc3RfbmFtZSI6ImFwcCIsInJvbGVzIjpbXSwidGVhbXMiOlsiQHVzZXJzIl0sImlhdCI6MTUxNzk0Nzk2MSwibmJmIjoxNTE3OTQ3OTYxLCJleHAiOjE1MTgwMzQzNjEsImF1ZCI6WyJAY29yZSIsIiNwdWJsaWMiXSwiaXNzIjoiaHR0cHM6Ly9yYWZ0ZXIuYmkudnQuZWR1L3VzZXJzdmMvcHVibGljX2tleSIsInN1YiI6Im5kc3NsQXBwIn0.a_q5Hq2MKWizi1KFbq8RMKAeQQbpsPweexIRCQwQ2a65J5Ojukf9vv' +
+    '-i9vRVuzPJEWxPHhXZTSzLXiwPlLB5P9VOlzgDPhmVuPwx2n0q-T9hbV6vGt1E0EL-oKex1dpVE10iM0BWujXvQRC8gPJXhIBNR6zUDXX5ziO_8Y48CNWvKBDKhTjcrGEuj7CEMSt9kZBlgt-E_DnkibnFfHl763k_vPWqJ4okWkhELXtpCj7ObKrjNGRjYzKrMRyjJkIHLOc6ZEsTKkWt4ATzOXN_jVYFqN5tzRpMqiqC-G0oS-aSOiML6HZpqiEu26oLoQ4a6RDAXPp6Me9SXwkhw7K-JNDvW68LRyXIMnz7HisLWhc6-1XykgQ6MLcu4uvsOBD11VQpVmO-5Dkdf2vAlr7jbQ8tvKZaJi4W2PEiVIfR6lNhGPLyU4Zx4bg084tzi6n3jSipKcavfPY' +
+    '-iNAbZOYDXlB8GKdDIEFpRQmO11Yyr1_B9OjRYFWrf1scdlLhdXcRQT33FHQo_sakhZMI36s50ksj6B4ghrEHhdvgE1TFBgMg6uyRiNiZiRVgd08kMok_JmlJrjGkqoUIgvZeC9NkjGU8YcV5bF5ZTeJpTlJ7l28W8fY_lkjOs4LBsxoJDdnrdGR-FsfFMQJajL4LEuwXGlpBHjfiLpqflRYhf8poDRU';
+    localStorage.setItem('rafterToken', tkn);
     document.body.innerHTML = '<div class="rafterLogout" style="display:block"></div>';
     rd.rafterUser = {rafterLogout: function() {}, checkIfPageReload: function() {}};
     rd.attached();
