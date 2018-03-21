@@ -453,42 +453,42 @@ export class Rafter {
     }
   }
 
-  postUSV() {
-    this.app.httpClient.fetch('/rafter/rinit', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(this.rafter)
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      //let data1 = data.replace(/&#34;/g, '');
-      //let token = data1.split('authorization_token: ')[1];
-      //token = token.split('}')[0];
-      //token = token.replace(/\r?\n|\r/g, '');
-      //console.log(token);
-      window.localStorage.setItem('rafterToken', data);
-      let user = jwtDecode(data);
-      console.log(user);
-      // let rafterUser = data.split('&#34;user&#34;:')[1];
-      // rafterUser = rafterUser.split('}')[0];
-      // rafterUser = rafterUser + '}';
-      // rafterUser = rafterUser.replace(/&#34;/g, '"');
-      // console.log(rafterUser);
-      //let ruser1 = {id: user.sub, }
-      //window.localStorage.setItem('rafterUser', user.sub);
-      //console.log(user.sub);
-      this.rafterUserID = user.sub;
-      document.getElementsByClassName('userServiceError')[0].innerHTML = '';
-      this.rafterUser.initVol(data);
-      this.activate();
-    }).catch((err) => {
-      console.log(err);
-      document.getElementsByClassName('userServiceError')[0].innerHTML = '<br>Wrong userid or password';
-    });
-  }
+  // postUSV() {
+  //   this.app.httpClient.fetch('/rafter/rinit', {
+  //     method: 'post',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify(this.rafter)
+  //   })
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     console.log(data);
+  //     //let data1 = data.replace(/&#34;/g, '');
+  //     //let token = data1.split('authorization_token: ')[1];
+  //     //token = token.split('}')[0];
+  //     //token = token.replace(/\r?\n|\r/g, '');
+  //     //console.log(token);
+  //     window.localStorage.setItem('rafterToken', data);
+  //     let user = jwtDecode(data);
+  //     console.log(user);
+  //     // let rafterUser = data.split('&#34;user&#34;:')[1];
+  //     // rafterUser = rafterUser.split('}')[0];
+  //     // rafterUser = rafterUser + '}';
+  //     // rafterUser = rafterUser.replace(/&#34;/g, '"');
+  //     // console.log(rafterUser);
+  //     //let ruser1 = {id: user.sub, }
+  //     //window.localStorage.setItem('rafterUser', user.sub);
+  //     //console.log(user.sub);
+  //     this.rafterUserID = user.sub;
+  //     document.getElementsByClassName('userServiceError')[0].innerHTML = '';
+  //     this.rafterUser.initVol(data);
+  //     this.activate();
+  //   }).catch((err) => {
+  //     console.log(err);
+  //     document.getElementsByClassName('userServiceError')[0].innerHTML = '<br>Wrong userid or password';
+  //   });
+  // }
 
   attached() {
     const cili = this.checkIfLoggedIn;
