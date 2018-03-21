@@ -22,36 +22,42 @@ class UserAct {
     return this.fetch(process.env.BackendUrl + '/user/', fetchData)
     .then((response) => response.json())
     .then((data) => {
-      let fname = '';
-      let lname = '';
-      if (data[0].first_name !== undefined && data[0].last_name !== undefined) {
-        fname = data[0].first_name;
-        lname = data[0].last_name;
-      } else {
-        let nameArr = data[0].name.split(' ');
-        fname = nameArr[0];
-        lname = nameArr[1];
-      }
-      document.getElementsByClassName('uprofFirstName')[0].value = fname;
-      document.getElementsByClassName('uprofLastName')[0].value = lname;
-      let org = '';
-      if (data[0].affiliation !== undefined) {
-        org = data[0].affiliation;
-      }
-      document.getElementsByClassName('uprofAff')[0].value = org;
-      let organis = '';
-      if (data[0].organisms !== undefined) {
-        organis = data[0].organisms;
-      }
-      document.getElementsByClassName('uprofOrganisms')[0].value = organis;
-      let intr = '';
-      if (data[0].interests !== undefined) {
-        intr = data[0].interests;
-      }
-      document.getElementsByClassName('uprofInterests')[0].value = intr;
-      document.getElementsByClassName('uprofEmail')[0].value = data[0].email;
-      this.uid = data[0]._id;
+      this.fillInFields(data);
+    }).catch((err) => {
+      console.log(err);
     });
+  }
+
+  fillInFields(data) {
+    let fname = '';
+    let lname = '';
+    if (data[0].first_name !== undefined && data[0].last_name !== undefined) {
+      fname = data[0].first_name;
+      lname = data[0].last_name;
+    } else {
+      let nameArr = data[0].name.split(' ');
+      fname = nameArr[0];
+      lname = nameArr[1];
+    }
+    document.getElementsByClassName('uprofFirstName')[0].value = fname;
+    document.getElementsByClassName('uprofLastName')[0].value = lname;
+    let org = '';
+    if (data[0].affiliation !== undefined) {
+      org = data[0].affiliation;
+    }
+    document.getElementsByClassName('uprofAff')[0].value = org;
+    let organis = '';
+    if (data[0].organisms !== undefined) {
+      organis = data[0].organisms;
+    }
+    document.getElementsByClassName('uprofOrganisms')[0].value = organis;
+    let intr = '';
+    if (data[0].interests !== undefined) {
+      intr = data[0].interests;
+    }
+    document.getElementsByClassName('uprofInterests')[0].value = intr;
+    document.getElementsByClassName('uprofEmail')[0].value = data[0].email;
+    this.uid = data[0]._id;
   }
 
   updateUserPrefs(thisUserType) {
