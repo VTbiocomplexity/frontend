@@ -146,6 +146,10 @@ export class Rafter {
 
   showFileDetails(id, hdj, raf, rvs, myApp, rui, mtws = null, tv, showFile, displayTree, subDirFiles, mnj) {
     document.getElementsByClassName('displayFileContent')[0].innerHTML = '';
+    const dnldbt = document.getElementsByClassName('dnldButton')[0];
+    const dfcbt = document.getElementsByClassName('displayButton')[0];
+    dnldbt.style.display = 'none';
+    dfcbt.style.display = 'none';
     console.log('going to display the file details now');
     console.log(id);
     console.log('is this a sub directory?');
@@ -179,12 +183,9 @@ export class Rafter {
         document.getElementsByClassName('dnldButton')[0].innerHTML = ('Download<br>' + hdj[i].name);
         document.getElementsByClassName('deleteButton')[0].innerHTML = ('Delete<br>' + hdj[i].name);
         document.getElementsByClassName('displayButton')[0].innerHTML = ('Display<br>' + hdj[i].name);
-        if (hdj[i].state === 'empty') {
-          document.getElementsByClassName('dnldButton')[0].style.display = 'none';
-          document.getElementsByClassName('displayButton')[0].style.display = 'none';
-        } else {
-          document.getElementsByClassName('dnldButton')[0].style.display = 'block';
-          document.getElementsByClassName('displayButton')[0].style.display = 'block';
+        if (hdj[i].state !== 'empty') {
+          dnldbt.style.display = 'block';
+          dfcbt.style.display = 'block';
         }
         return;
       }
@@ -196,12 +197,9 @@ export class Rafter {
           document.getElementsByClassName('dnldButton')[0].innerHTML = ('Download<br>' + subDirFiles[j].name);
           document.getElementsByClassName('deleteButton')[0].innerHTML = ('Delete<br>' + subDirFiles[j].name);
           document.getElementsByClassName('displayButton')[0].innerHTML = ('Display<br>' + subDirFiles[j].name);
-          if (subDirFiles[j].state === 'empty') {
-            document.getElementsByClassName('dnldButton')[0].style.display = 'none';
-            document.getElementsByClassName('displayButton')[0].style.display = 'none';
-          } else {
-            document.getElementsByClassName('dnldButton')[0].style.display = 'block';
-            document.getElementsByClassName('displayButton')[0].style.display = 'block';
+          if (subDirFiles[j].state !== 'empty') {
+            dnldbt.style.display = 'block';
+            dfcbt.style.display = 'block';
           }
           return document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[j]);
         }
