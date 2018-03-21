@@ -1,3 +1,4 @@
+const jwtDecode = require('jwt-decode');
 export class RafterUser {
   constructor(httpClient) {
     this.httpClient = httpClient;
@@ -13,6 +14,7 @@ export class RafterUser {
       window.location.reload();
     }
   }
+
   checkExpired(decoded) {
     console.log('check expired');
     let d = new Date();
@@ -55,6 +57,33 @@ export class RafterUser {
       document.getElementsByClassName('rafterLogout')[0].style.display = 'block';
     }).catch((err) => {
       console.log(err);
+    });
+  }
+
+  initRafter(ruid, rObj) {
+    this.httpClient.fetch('/rafter/rinit', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(rObj)
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      window.localStorage.setItem('rafterToken', data);
+      let user = jwtDecode(data);
+      console.log(user);
+      ruid = user.sub;
+      document.getElementsByClassName('userServiceError')[0].innerHTML = '';
+      this.initVol(data);
+      /* istanbul ignore if */
+      if (process.env.NODE_ENV !== 'test') {
+        window.location.reload();
+      }
+    }).catch((err) => {
+      console.log(err);
+      document.getElementsByClassName('userServiceError')[0].innerHTML = '<br>Wrong userid or password';
     });
   }
 }

@@ -174,18 +174,15 @@ describe('The Rafter Dashboard', () => {
 
   it('Logs in a rafter user', testAsync(async function() {
     document.body.innerHTML += '<div class="userServiceError">error</div>';
-    await rd.postUSV();
+    rd.rafterUser = new RafterUser(rd.app.httpClient);
+    await rd.rafterUser.initRafter(rd.rafterUserID, rd.rafter);
     expect(document.getElementsByClassName('userServiceError')).innerHTML = '';
-    //expect(window.localStorage.getItem('rafterToken')).not.toBe(null);
-    //expect(window.localStorage.getItem('rafterUser')).not.toBe(null);
-
     window.localStorage.removeItem('rafterToken');
     window.localStorage.removeItem('rafterUser');
-    await rd2.postUSV();
+    await rd2.rafterUser.initRafter(rd.rafterUserID, rd.rafter);
     expect(document.getElementsByClassName('userServiceError')).innerHTML = '<br>Wrong userid or password';
-    //expect(window.localStorage.getItem('rafterToken')).toBe(null);
-    //expect(window.localStorage.getItem('rafterUser')).toBe(null);
   }));
+
   it('retrieves the home directory', testAsync(async function() {
     document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
     await rd.rafterVolumeService('ls');
