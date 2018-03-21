@@ -141,22 +141,22 @@ describe('the App module', () => {
     viewport.reset();
   });
 
-  it('should toggle menu to be icons only', () => {
-    app2.activate();
-    app2.fullmenu = true;
-    //console.log(app1);
-    app2.toggleMenu();
-    expect(app2.fullmenu).toBe(false);
-    expect(app2.drawerWidth).toBe('50px');
-    //done();
-  });
+  // it('should toggle menu to be icons only', () => {
+  //   app2.activate();
+  //   app2.fullmenu = true;
+  //   //console.log(app1);
+  //   app2.toggleMenu();
+  //   expect(app2.fullmenu).toBe(false);
+  //   expect(app2.drawerWidth).toBe('50px');
+  //   //done();
+  // });
 
-  it('should toggle menu to be icons with text', () => {
-    app1.fullmenu = false;
-    //console.log(app1);
-    app1.toggleMenu();
-    expect(app1.fullmenu).toBe(true);
-    expect(app1.drawerWidth).toBe('175px');
-  });
-  // done();
+//   it('should toggle menu to be icons with text', () => {
+//     app1.fullmenu = false;
+//     //console.log(app1);
+//     app1.toggleMenu();
+//     expect(app1.fullmenu).toBe(true);
+//     expect(app1.drawerWidth).toBe('175px');
+//   });
+//
 });

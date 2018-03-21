@@ -3,6 +3,7 @@ System.import('whatwg-fetch');
 //System.import('popper.js');
 import {PLATFORM} from 'aurelia-pal';
 import {inject, bindable} from 'aurelia-framework';
+//import {inject} from 'aurelia-framework';
 import {AuthorizeStep, AuthService} from 'aurelia-auth';
 import {UserAccess} from './classes/UserAccess.js';
 import {HttpClient} from 'aurelia-fetch-client';
@@ -12,11 +13,6 @@ export class App {
   constructor(auth, httpClient) {
     this.auth = auth;
     this.httpClient = httpClient;
-    //this.fullmenu = true;
-    //this.dashboardTitle = 'Dashboard';
-    //this.role = '';
-    //this.configHttpClient();
-    //this.checkUser();
   }
 
   dashboardTitle = 'Dashboard';
@@ -33,8 +29,6 @@ export class App {
 
   @bindable
   fullmenu = true;
-
-  //mobileDrawerOpen = false;
 
   async activate() {
     this.configHttpClient();
@@ -81,7 +75,6 @@ export class App {
     if (mobilemenutoggle !== null) {
       mobilemenutoggle.style.backgroundColor = '#2a222a';
     }
-    //}
     this.setFooter(style);
     return result;
   }
@@ -92,30 +85,10 @@ export class App {
       /* istanbul ignore else */
     if (footer !== null) {
       footer.style.backgroundColor = '#2a222a';
-      // if (style === 'ohaf') {
-      //   footer.style.backgroundColor = '#565656';
-      //   color = '#c09580';
-      // }
       footer.innerHTML = '<div style="text-align: center">' +
-      // '<a target="_blank" style="color:' + color + '" href="https://github.com/WebJamApps"><i class="fa fa-github fa-2x" aria-hidden="true"></i></a>' +
-      // '<span>&nbsp;&nbsp;</span><a target="_blank" style="color:' + color + '"  href="https://www.linkedin.com/company-beta/16257103"><i class="fa fa-linkedin fa-2x" aria-hidden="true"></i></a>' +
       '<span>&nbsp;&nbsp;</span><a target="_blank" style="color:' + color + '"  href="https://www.facebook.com/biocomplexity/"><i class="fa fa-facebook-square fa-2x" aria-hidden="true"></i></a>' +
-      // '<span>&nbsp;&nbsp;</span><a target="_blank" style="color:' + color + '"  href="https://plus.google.com/u/1/109586499331294076292"><i class="fa fa-google-plus-square fa-2x" aria-hidden="true"></i></a>' +
       '<span>&nbsp;&nbsp;</span><a target="_blank" style="color:' + color + '"  href="https://twitter.com/ndssl_bi"><i class="fa fa-twitter fa-2x" aria-hidden="true"></i></a><br>' +
-      // '<span style="color:white; font-size: 9pt; padding-left:18px;">Powered by ' +
-      // '<a class="wjllc" target="_blank" href="https://www.web-jam.com">Web Jam LLC</a>
       '</span></div>';
-    }
-  }
-
-  toggleMenu() {
-    //console.debug(this.fullmenu);
-    if (this.fullmenu) {
-      this.fullmenu = false;
-      this.drawerWidth = '50px';
-    } else {
-      this.fullmenu = true;
-      this.drawerWidth = '175px';
     }
   }
 
@@ -123,7 +96,6 @@ export class App {
     let drawer = document.getElementById('drawerPanel');
     if (drawer !== null) {
       drawer.closeDrawer();
-      //console.log(drawer);
     }
     if (!this.widescreen) {
       let mobilemenutoggle = document.getElementById('mobilemenutoggle');
@@ -135,14 +107,11 @@ export class App {
   }
 
   hideToggle() {
-    //console.log('going to hide you hamburger!');
     let mobilemenutoggle = document.getElementById('mobilemenutoggle');
         /* istanbul ignore else */
     if (mobilemenutoggle !== null) {
       mobilemenutoggle.style.display = 'none';
     }
-    //let drawer = document.getElementById('drawerPanel');
-    //console.log(drawer);
   }
 
   configHttpClient() {
@@ -183,38 +152,21 @@ export class App {
     this.router = router;
   }
 
-
   async checkUser() {
     if (this.auth.isAuthenticated()) {
       this.authenticated = true; //Logout element is reliant upon a local var;
       let uid = this.auth.getTokenPayload().sub;
-      //console.log(uid);
       this.user = await this.appState.getUser(uid);
-      // if (this.user !== undefined){
-      //   this.role = this.user.userType;
-      // }
     }
   }
 
   logout() {
-    //this.appState.setUser({});
     this.authenticated = false;
-    //if (this.role !== 'Charity' && this.role !== 'Volunteer'){
     this.auth.logout('/')
     .then(() => {
       localStorage.clear();
-      // localStorage.removeItem('token');
-      // localStorage.removeItem('userEmail');
       console.log('Promise fulfilled, logged out');
     });
-    // } else {
-    //   this.auth.logout('/ohaf')
-    //   .then(() => {
-    //     console.log('Promise fulfilled, logged out');
-    //   });
-    //  }
-    //this.role =  '';
-    //this.appState.isOhafLogin = false;
   }
 
 }
