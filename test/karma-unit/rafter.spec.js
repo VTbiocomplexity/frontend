@@ -62,6 +62,64 @@ describe('The Rafter Dashboard', () => {
     //expect(rd.uid).toBe('3456');
   }));
 
+  it('displays the content of a file on the webpage', testAsync(async function() {
+    let httpmock = {fetch: function() {
+      let debug = {hello: 'world'};
+      let blob = new Blob([JSON.stringify(debug, null, 2)], {type: 'application/json'});
+      return Promise.resolve({
+        blob: function() {
+          return Promise.resolve(blob);
+        }
+      });
+    }
+    };
+    let app3 = new App(auth, httpmock);
+    app3.router = new RouterStub();
+    app3.activate();
+    let rd3 = new Rafter(app3);
+    rd3.app.appState = new AppStateStub();
+    rd3.activate();
+    document.body.innerHTML = '<div class="displayFileContent"></div><div class="homeDirContent">{"state":"analyzing","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"a185e810-af88-11e7-ab0c-717499928918","creation_date":"2017-10-12T20:05:01.841Z","name":"someName"}</div>';
+    rd3.rafterUserID = 'Tester';
+    localStorage.setItem('rafterToken', JSON.stringify({token: '123'}));
+    console.log('do I have a file reader?');
+    rd3.reader = new FileReader();
+    console.log(rd3.reader);
+    await rd3.fileDisplay();
+    // let evt = {target: {result: 'howdy'}};
+    // rd3.reader.onload(evt);
+    // rd.reader.onerror();
+    //rd3.reader.onerror();
+    //expect(rd.uid).toBe('3456');
+  }));
+
+  it('catches error on attempt to display the content of a file on the webpage', testAsync(async function() {
+    let httpmock = {fetch: function() {
+      //let debug = {hello: 'world'};
+      //let blob = new Blob([JSON.stringify(debug, null, 2)], {type: 'application/json'});
+      return Promise.resolve({
+        blob: function() {
+          return Promise.resolve(new Error({message: 'you fail'}));
+        }
+      });
+    }
+    };
+    let app3 = new App(auth, httpmock);
+    app3.router = new RouterStub();
+    app3.activate();
+    let rd3 = new Rafter(app3);
+    rd3.app.appState = new AppStateStub();
+    rd3.activate();
+    document.body.innerHTML = '<div class="displayFileContent"></div><div class="homeDirContent">{"state":"analyzing","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"a185e810-af88-11e7-ab0c-717499928918","creation_date":"2017-10-12T20:05:01.841Z","name":"someName"}</div>';
+    rd3.rafterUserID = 'Tester';
+    localStorage.setItem('rafterToken', JSON.stringify({token: '123'}));
+    console.log('do I have a file reader?');
+    rd3.reader = new FileReader();
+    console.log(rd3.reader);
+    await rd3.fileDisplay();
+    //expect(rd.uid).toBe('3456');
+  }));
+
   it('Validates the file type to be uploaded', testAsync(async function() {
     document.body.innerHTML = '<div><input id="rafterFilePath" type="file" accept=""/><button style="display:none" id="uploadButton"></button></div>';
     window.rafterFilePath = {files: [new Blob()]};
@@ -241,14 +299,15 @@ describe('The Rafter Dashboard', () => {
     //expect(document.getElementsByClassName('tlfolder')[0]).not.toBe(undefined);
     done();
   });
-  it('shows the file details from a tree menu click', (done) => {
+  it('displays the metadata of an empty file after a tree menu click', (done) => {
     rd.app.httpClient = new HttpMock();
     //rd.showFileDetails = function() {};
     document.body.innerHTML = '<button class="displayButton"></button><div class="displayFileContent"></div><button class="deleteButton"></button><button class="dnldButton"></button><div class="fileDetailsTitle"></div><div class="rafterLogout"></div><div class="fileDld"></div><button class="rafterCheckHome"></button><div class="createNew"></div><div id="divId"></div><p class="fileDetailsTitle"></p><div class="isHomeDir"></div><div class="isHomeDir"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div>';
-    const nameArr = [{name: 'filename', id: '123', type: 'unspecified', isContainer: false, children: []}];
+    const nameArr = [{state: 'empty', name: 'filename', id: '123', type: 'unspecified', isContainer: false, children: []}];
     rd.showFileDetails('123', nameArr, null, null, null, null, null, null, null, nameArr, null);
     //document.getElementsByClassName('tree-leaf-text')[0].click();
     expect(document.getElementsByClassName('homeDirContent')[0].innerHTML).not.toBe('');
+    expect(document.getElementsByClassName('displayButton')[0].style.display).toBe('none');
     done();
   });
   it('shows the inside of folder details from a tree menu click', (done) => {
@@ -278,15 +337,28 @@ describe('The Rafter Dashboard', () => {
     expect(document.getElementsByClassName('subDirContent')[0].innerHTML).toBe(JSON.stringify(rd.homeDirJson));
     done();
   });
-  it('displays the file details of a file that is inside a sub folder', (done) => {
+  it('displays the metadata of an empty file that is inside a sub folder', (done) => {
     rd.homeDirJson = {name: 'howdy'};
-    rd.subDirJson = [{name: 'howdy', id: '123'}];
+    rd.subDirJson = [{state: 'empty', name: 'howdy', id: '123'}];
     document.body.innerHTML = '<button class="displayButton"></button><div class="displayFileContent"></div><button class="deleteButton"></button><button class="dnldButton"></button><div class="fileDetailsTitle"></div><div class="rafterLogout"></div><div class="fileDld"></div><div class="userServiceError"></div><button class="rafterCheckHome"></button><div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"><p class="folderName"></p></div><p class="fileDetailsTitle"></p><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div><div class="subDirContent"></div>';
     rd.showFileDetails('123', [], null, null, null, null, null, null, null, null, rd.subDirJson );
     expect(document.getElementsByClassName('homeDirContent')[0].innerHTML).toBe(JSON.stringify(rd.subDirJson[0]));
     document.getElementsByClassName('homeDirContent')[0].innerHTML = '';
     rd.showFileDetails('1234', [], null, null, null, null, null, null, null, null, rd.subDirJson );
     expect(document.getElementsByClassName('homeDirContent')[0].innerHTML).toBe('');
+    expect(document.getElementsByClassName('displayButton')[0].style.display).toBe('none');
+    done();
+  });
+  it('displays the metadata of a not empty file that is inside a sub folder', (done) => {
+    rd.homeDirJson = {name: 'howdy'};
+    rd.subDirJson = [{state: 'ready', name: 'howdy', id: '123'}];
+    document.body.innerHTML = '<button class="displayButton"></button><div class="displayFileContent"></div><button class="deleteButton"></button><button class="dnldButton"></button><div class="fileDetailsTitle"></div><div class="rafterLogout"></div><div class="fileDld"></div><div class="userServiceError"></div><button class="rafterCheckHome"></button><div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"><p class="folderName"></p></div><p class="fileDetailsTitle"></p><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div><div class="subDirContent"></div>';
+    rd.showFileDetails('123', [], null, null, null, null, null, null, null, null, rd.subDirJson );
+    expect(document.getElementsByClassName('homeDirContent')[0].innerHTML).toBe(JSON.stringify(rd.subDirJson[0]));
+    document.getElementsByClassName('homeDirContent')[0].innerHTML = '';
+    rd.showFileDetails('1234', [], null, null, null, null, null, null, null, null, rd.subDirJson );
+    expect(document.getElementsByClassName('homeDirContent')[0].innerHTML).toBe('');
+    expect(document.getElementsByClassName('displayButton')[0].style.display).toBe('block');
     done();
   });
   it('does not show the file details when the id is missing', (done) => {
