@@ -72,8 +72,10 @@ export class Rafter {
   radioClicked() {
     if (document.getElementById('fileType2').checked) {
       this.rafterFile.createType = 'folder';
+      document.getElementsByClassName('fileTypeSelector')[0].style.display = 'none';
     } else {
       this.rafterFile.createType = 'file';
+      document.getElementsByClassName('fileTypeSelector')[0].style.display = 'block';
     }
   }
 
@@ -143,6 +145,7 @@ export class Rafter {
   }
 
   showFileDetails(id, hdj, raf, rvs, myApp, rui, mtws = null, tv, showFile, displayTree, subDirFiles, mnj) {
+    document.getElementsByClassName('displayFileContent')[0].innerHTML = '';
     console.log('going to display the file details now');
     console.log(id);
     console.log('is this a sub directory?');
@@ -172,9 +175,17 @@ export class Rafter {
           return rvs('ls', myApp, rui, raf, mtws, hdj[i].id, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj);
         }
         //set Filename
-        //console.log(hdj[i].name);
+        console.log(hdj[i].state);
         document.getElementsByClassName('dnldButton')[0].innerHTML = ('Download<br>' + hdj[i].name);
         document.getElementsByClassName('deleteButton')[0].innerHTML = ('Delete<br>' + hdj[i].name);
+        document.getElementsByClassName('displayButton')[0].innerHTML = ('Display<br>' + hdj[i].name);
+        if (hdj[i].state === 'empty') {
+          document.getElementsByClassName('dnldButton')[0].style.display = 'none';
+          document.getElementsByClassName('displayButton')[0].style.display = 'none';
+        } else {
+          document.getElementsByClassName('dnldButton')[0].style.display = 'block';
+          document.getElementsByClassName('displayButton')[0].style.display = 'block';
+        }
         return;
       }
     }
@@ -184,6 +195,14 @@ export class Rafter {
           console.log('i found a match!');
           document.getElementsByClassName('dnldButton')[0].innerHTML = ('Download<br>' + subDirFiles[j].name);
           document.getElementsByClassName('deleteButton')[0].innerHTML = ('Delete<br>' + subDirFiles[j].name);
+          document.getElementsByClassName('displayButton')[0].innerHTML = ('Display<br>' + subDirFiles[j].name);
+          if (subDirFiles[j].state === 'empty') {
+            document.getElementsByClassName('dnldButton')[0].style.display = 'none';
+            document.getElementsByClassName('displayButton')[0].style.display = 'none';
+          } else {
+            document.getElementsByClassName('dnldButton')[0].style.display = 'block';
+            document.getElementsByClassName('displayButton')[0].style.display = 'block';
+          }
           return document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[j]);
         }
       }
@@ -298,6 +317,33 @@ export class Rafter {
       body: JSON.stringify({ command: 'get', fileID: this.rafterFileID})
     }).then((response) => response.blob()).then((blob) => {
       saveAs(blob, fdJson.name);
+    }).catch(function (err) {
+      console.log(err);
+    });
+  }
+
+  fileDisplay() {
+    let fileDetails = document.getElementsByClassName('homeDirContent')[0].innerHTML;
+    let fdJson = JSON.parse(fileDetails);
+    this.rafterFileID = fdJson.id;
+    this.app.httpClient.fetch('/rafter/vs', { method: 'post', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ command: 'get', fileID: this.rafterFileID})
+    }).then((response) => response.blob()).then((blob) => {
+      console.log(blob);
+      async function loaded (evt) {
+        console.log('in function loaded');
+        console.log(evt.target);
+        const fileString = evt.target.result;
+        console.log(fileString);
+        document.getElementsByClassName('displayFileContent')[0].innerHTML = fileString;
+      }
+      function errorHandler(evt) {
+        alert('The file could not be read');
+      }
+      this.reader.onload = loaded;
+      this.reader.onerror = errorHandler;
+      this.reader.readAsText(blob);
+      //console.log(fileContents);
     }).catch(function (err) {
       console.log(err);
     });

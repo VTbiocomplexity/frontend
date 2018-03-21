@@ -27,6 +27,8 @@
           <button class="dnldButton" type="button" click.delegate="fileDownload()">Download</button>
           <p>&nbsp;</p>
           <button class="deleteButton" type="button" click.delegate="fileDelete()">Delete</button>
+          <p>&nbsp;</p>
+          <button class="displayButton" type="button" click.delegate="fileDisplay()">Display</button>
         </div>
         <!-- <div class="fileDetailsTitle fileDld" style="display:none; margin-right:30px; margin-top:30px"></div> -->
         <div id="treeView" style="max-width:2in"></div>
@@ -39,14 +41,15 @@
             <div class="fileMeta">
               <div class="fileDetailsTitle" style="display:none">
                 <hr>
+                <div class="displayFileContent"></div>
                 <div>
+                  <p>&nbsp;</p>
                   <div style="float:left; margin-left:33%; margin-right: -33%">
                     <i class="fa fa-plus-square hoverHand sfd" style="display:none" click.delegate="showDetail('hfd','sfd','homeDirContent')"></i>
                     <i class="fa fa-minus-square hoverHand hfd" click.delegate="hideDetail('hfd','sfd','homeDirContent')"></i>
                   </div>
                   <div><p>&nbsp;&nbsp;&nbsp;<strong>File/Folder Details</strong></p></div>
                 </div>
-
               </div>
               <p class="homeDirContent" style="margin:10px;text-align:left;overflow-x:auto"></p>
             </div>
@@ -59,7 +62,6 @@
                 </div>
                 <div><p>&nbsp;&nbsp;&nbsp;<strong>Inside of Folder Details</strong></p></div>
               </div>
-              <!-- <p><strong>Inside of Folder Details</strong></p> -->
               <p class="subDirContent" style="margin:10px;text-align:left;;overflow-x:auto"></p>
             </div>
           </div>
@@ -69,19 +71,21 @@
           <div class="elevation3 fileCreate" style="max-width:3in; margin-left:30px">
             <p style="text-align:center"><i><strong>Create Empty File<span class="isHomeDir"> or Folder</span></strong></i></p>
             <form style="margin-left:10px">
-              <label>Name<span style="font-weight:normal;font-style:italic;font-size:9pt"> (no spaces)</span></label>
-              <input type="text" value.bind="rafterFile.name" style="width: 1.5in">
-              <label>Type</label>
-              <select id="fileType" class="form-control" value.bind="rafterFile.fileType" style="margin-top:0;width: 1.5in">
-                <option repeat.for="type of fileTypes" model.bind="type">${type}</option>
-              </select>
-              <p style="margin:0">&nbsp;</p>
               <div class="isHomeDir">
                 <input type="radio" id="fileType1" name="ftype" value="file" checked change.delegate="radioClicked()">
                 <label for="fileType1" style="display:inline; margin-right:30px">File</label>
                 <input type="radio" id="fileType2" name="ftype" value="folder" change.delegate="radioClicked()">
                 <label for="fileType2" style="display:inline">Folder</label>
               </div>
+              <label>Name<span style="font-weight:normal;font-style:italic;font-size:9pt"> (no spaces)</span></label>
+              <input class="form-control" type="text" value.bind="rafterFile.name" style="width: 1.75in">
+              <div class="fileTypeSelector">
+              <label>Type</label>
+              <select id="fileType" class="form-control" value.bind="rafterFile.fileType" style="margin-top:0;width: 1.75in">
+                <option repeat.for="type of fileTypes" model.bind="type">${type}</option>
+              </select>
+            </div>
+              <p style="margin:0">&nbsp;</p>
               <div class="rafterFile" style="max-width:2in;text-align:left">
                 <button style="text-align:center" class="rafterMakeFileButton" click.delegate="rafterVolumeService('create')">Create</button>
               </div>
