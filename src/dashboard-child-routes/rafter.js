@@ -337,6 +337,7 @@ export class Rafter {
         console.log(fileString);
         document.getElementsByClassName('displayFileContent')[0].innerHTML = fileString;
       }
+      /* istanbul ignore next */
       function errorHandler(evt) {
         alert('The file could not be read');
       }
