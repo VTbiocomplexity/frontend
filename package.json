@@ -22,12 +22,10 @@
     "test:jest": "cross-env NODE_ENV=test jest --config jest.config.json --notify",
     "eslint-fix": "./node_modules/eslint/bin/eslint.js --fix .",
     "fix:aurelia-val": "rm -rf ./node_modules/aurelia-validation/node_modules",
-    "postinstall": "bower install && npm run vulc && npm run fix:aurelia-val && npm start -- build",
-    "vulc": "rm -rf static/includes.html && polymer-bundler --inline-scripts --inline-css includes.html > static/includes.html",
-    "installglobals": "npm install -g npm@latest && npm install -g bower@latest",
+    "postinstall": "npm run fix:aurelia-val && npm start -- build",
+    "installglobals": "npm install -g npm@latest",
     "cleaninstall": "rm -rf bower_components && rm -rf yarn.lock && rm -rf node_modules && yarn cache clean && npm run installglobals && yarn install",
-    "prepublish": "npm run snyk-protect",
-    "prod": "npm start -- build && npm start -- serve"
+    "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
     "ajv": "^5.0.0",
@@ -66,7 +64,6 @@
     "babel-register": "^6.26.0",
     "bluebird": "^3.5.0",
     "bootstrap": "^4.0.0",
-    "bower": "^1.8.2",
     "copy-webpack-plugin": "^4.0.1",
     "cross-env": "^5.0.1",
     "css-loader": "^0.28.4",
@@ -88,7 +85,6 @@
     "nps": "^5.6.0",
     "nps-utils": "^1.2.0",
     "popper.js": "^1.12.9",
-    "polymer-bundler": "^2.0.1",
     "postcss-loader": "^2.0.6",
     "snyk": "^1.69.10",
     "style-loader": "^0.18.2",

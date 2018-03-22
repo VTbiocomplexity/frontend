@@ -74,25 +74,25 @@ describe('the App module', () => {
     //done();
   }));
 
-  it('displays the mobile menu hamburger when drawer is closed and not widescreen', testAsync(async function() {
-    document.body.innerHTML = '';
-    isOpen = app1.drawerOpen;
-    expect(isOpen).toBe(false);
-    document.body.innerHTML = '<div id="mobilemenutoggle" style="display:none"></div><div id="drawerPanel"></div>';
-    let drawer = document.getElementById('drawerPanel');
-    drawer.closeDrawer = function() {};
-    drawer.selected = 'drawer';
-    let isOpen = app1.drawerOpen;
-    expect(isOpen).toBe(true);
-    drawer.selected = '';
-    isOpen = app1.drawerOpen;
-    expect(isOpen).toBe(false);
-    viewport.set(320);
-    app1.close();
-    expect(document.getElementById('mobilemenutoggle').style.display).toBe('block');
-    //done();
-    viewport.reset();
-  }));
+  // it('displays the mobile menu hamburger when drawer is closed and not widescreen', testAsync(async function() {
+  //   document.body.innerHTML = '';
+  //   // isOpen = app1.drawerOpen;
+  //   // expect(isOpen).toBe(false);
+  //   document.body.innerHTML = '<div id="mobilemenutoggle" style="display:none"></div><div id="drawerPanel"></div>';
+  //   let drawer = document.getElementById('drawerPanel');
+  //   drawer.closeDrawer = function() {};
+  //   drawer.selected = 'drawer';
+  //   let isOpen = app1.drawerOpen;
+  //   expect(isOpen).toBe(true);
+  //   drawer.selected = '';
+  //   isOpen = app1.drawerOpen;
+  //   expect(isOpen).toBe(false);
+  //   viewport.set(320);
+  //   app1.close();
+  //   expect(document.getElementById('mobilemenutoggle').style.display).toBe('block');
+  //   //done();
+  //   viewport.reset();
+  // }));
 
 
   // it('closes the menu on cellphone display', (done) => {
