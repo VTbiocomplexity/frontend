@@ -95,14 +95,14 @@ describe('the App module', () => {
   // }));
 
 
-  // it('closes the menu on cellphone display', (done) => {
-  //   //console.log(app1);
-  //   app1.activate().then(() => {
-  //     app1.close();
-  //     //expect(app1.authenticated).toBe(false);
-  //   });
-  //   done();
-  // });
+  it('closes the menu on cellphone display', (done) => {
+    //console.log(app1);
+    app1.activate().then(() => {
+      app1.close();
+      //expect(app1.authenticated).toBe(false);
+    });
+    done();
+  });
 
   it('does not display the mobile menu hamburger when in widescreen', testAsync(async function() {
     document.body.innerHTML = '<div id="mobilemenutoggle"></div>';
@@ -125,14 +125,26 @@ describe('the App module', () => {
   });
 
   it('closes the menu on cellphone display', (done) => {
-    //console.log(app1);
-    app1.activate().then(() => {
-      app1.close();
-      //expect(app1.authenticated).toBe(false);
-    });
+    viewport.set(500);
+    document.body.innerHTML = '<div class="page-host"><div class="drawer-container"><div class="drawer"></div></div><div class="main-panel"><i class="mobile-menu-toggle"></i></div></div>';
+    app1.close();
+    expect(document.getElementsByClassName('drawer')[0].style.display).toBe('none');
     done();
+    viewport.reset();
   });
-  it('should get widescreen', (done) => {
+
+  it('opens the menu on cellphone display, then closes it', (done) => {
+    viewport.set(500);
+    document.body.innerHTML = '<div class="page-host"><div class="drawer-container"><div class="drawer" style="display:none"></div></div><div class="main-panel"><i class="mobile-menu-toggle"></i></div></div>';
+    app1.toggleMobileMenu();
+    expect(document.getElementsByClassName('drawer')[0].style.display).toBe('block');
+    document.getElementsByClassName('page-host')[0].click();
+    expect(document.getElementsByClassName('drawer')[0].style.display).toBe('none');
+    done();
+    viewport.reset();
+  });
+
+  it('should get widescreen as true', (done) => {
     //console.log(app1);
     viewport.set(1000);
     const app3 = new App(new AuthStub, new HttpMock);

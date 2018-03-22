@@ -38,6 +38,34 @@ export class App {
     console.log('hello!');
   }
 
+  get widescreen() {
+    let isWide = document.documentElement.clientWidth > 766;
+    let drawer = document.getElementsByClassName('drawer')[0];
+    let mobileMenuToggle = document.getElementsByClassName('mobile-menu-toggle')[0];
+    this.contentWidth = '0px';
+    if (!this.menuToggled && !isWide) {
+         /* istanbul ignore else */
+      if (drawer !== null && drawer !== undefined) {
+        drawer.style.display = 'none';
+        $(drawer).parent().css('display', 'none');
+        mobileMenuToggle.style.display = 'block';
+      }
+    }
+    if (isWide) {
+      if (drawer !== null && drawer !== undefined) {
+        this.contentWidth = '181px';
+        drawer.style.display = 'block';
+        $(drawer).parent().css('display', 'block');
+        mobileMenuToggle.style.display = 'none';
+      }
+    }
+    let mainP = document.getElementsByClassName('main-panel')[0];
+    if (mainP !== null && mainP !== undefined) {
+      mainP.style.marginRight = this.contentWidth;
+    }
+    return isWide;
+  }
+
   toggleMobileMenu(toggle) {
     document.getElementsByClassName('page-host')[0].style.overflow = 'auto';
     if (toggle !== 'close') {
@@ -45,6 +73,7 @@ export class App {
       document.getElementsByClassName('page-host')[0].addEventListener('click', function() {
         let drawer = document.getElementsByClassName('drawer')[0];
         let toggleIcon = document.getElementsByClassName('mobile-menu-toggle')[0];
+        /* istanbul ignore else */
         if (event.target.className !== 'nav-list' && event.target.className !== 'menu-item') {
           drawer.style.display = 'none';
           $(drawer).parent().css('display', 'none');
@@ -64,6 +93,13 @@ export class App {
       drawer.style.display = 'none';
       $(drawer).parent().css('display', 'none');
       toggleIcon.style.display = 'block';
+    }
+  }
+
+  close() {
+    console.log('going to close the menu if not widescreen');
+    if (!this.widescreen) {
+      this.toggleMobileMenu('close');
     }
   }
 
@@ -88,33 +124,6 @@ export class App {
     return result;
   }
 
-  get widescreen() {
-    let isWide = document.documentElement.clientWidth > 766;
-    let drawer = document.getElementsByClassName('drawer')[0];
-    let mobileMenuToggle = document.getElementsByClassName('mobile-menu-toggle')[0];
-    this.contentWidth = '0px';
-    if (!this.menuToggled && !isWide) {
-      if (drawer !== null && drawer !== undefined) {
-        drawer.style.display = 'none';
-        $(drawer).parent().css('display', 'none');
-        mobileMenuToggle.style.display = 'block';
-      }
-    }
-    if (isWide) {
-      if (drawer !== null && drawer !== undefined) {
-        this.contentWidth = '181px';
-        drawer.style.display = 'block';
-        $(drawer).parent().css('display', 'block');
-        mobileMenuToggle.style.display = 'none';
-      }
-    }
-    let mainP = document.getElementsByClassName('main-panel')[0];
-    if (mainP !== null && mainP !== undefined) {
-      mainP.style.marginRight = this.contentWidth;
-    }
-    return isWide;
-  }
-
   setFooter(style) {
     let footer = document.getElementById('wjfooter');
     let color = '';
@@ -125,13 +134,6 @@ export class App {
       '<span>&nbsp;&nbsp;</span><a target="_blank" style="color:' + color + '"  href="https://www.facebook.com/biocomplexity/"><i class="fa fa-facebook-square fa-2x"></i></a>' +
       '<span>&nbsp;&nbsp;</span><a target="_blank" style="color:' + color + '"  href="https://twitter.com/ndssl_bi"><i class="fa fa-twitter fa-2x"></i></a><br>' +
       '</span></div>';
-    }
-  }
-
-  close() {
-    console.log('going to close the menu if not widescreen');
-    if (!this.widescreen) {
-      this.toggleMobileMenu('close');
     }
   }
 
@@ -190,8 +192,8 @@ export class App {
     });
   }
 
-  attached() {
-    console.log(this.widescreen);
-  }
+  // attached() {
+  //   console.log(this.widescreen);
+  // }
 
 }
