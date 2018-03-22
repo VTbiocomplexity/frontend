@@ -15,7 +15,7 @@
   "scripts": {
     "start": "nps",
     "snyk-protect": "snyk protect",
-    "test": "rm -rf coverage && nps test.lint && npm run test:jest && npm run test:karma && nps e2e && npm run combine-coverage",
+    "test": "rm -rf coverage && nps test.lint && npm run test:jest && npm run test:karma && npm run webdriver-update && nps e2e && npm run combine-coverage",
     "combine-coverage": "istanbul-combine -d coverage -p none -r lcov -r html coverage/jest/coverage-final.json coverage/karma/coverage-final.json",
     "test:karma": "cross-env NODE_ENV=test karma start test/karma.conf.js",
     "test:debug": "cross-env NODE_ENV=test nps test.karma.debug",
@@ -25,7 +25,8 @@
     "postinstall": "npm run fix:aurelia-val && npm start -- build",
     "installglobals": "npm install -g npm@latest",
     "cleaninstall": "rm -rf bower_components && rm -rf yarn.lock && rm -rf node_modules && yarn cache clean && npm run installglobals && yarn install",
-    "prepublish": "npm run snyk-protect"
+    "prepublish": "npm run snyk-protect",
+    "webdriver-update": "webdriver-manager update"
   },
   "dependencies": {
     "ajv": "^5.0.0",
