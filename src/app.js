@@ -38,26 +38,61 @@ export class App {
     console.log('hello!');
   }
 
-  // get drawerOpen() {
-  //   let drawer = document.getElementById('drawerPanel');
-  //   if (drawer !== null) {
-  //     if (drawer.selected === 'drawer') {
-  //       this.hideToggle();
-  //       return true;
-  //     }
-  //   }
-  //   this.close();
-  //   return false;
-  // }
+  toggleMobileMenu(toggle) {
+    document.getElementsByClassName('page-host')[0].style.overflow = 'auto';
+    if (toggle !== 'close') {
+      document.getElementsByClassName('page-host')[0].style.overflow = 'hidden';
+      document.getElementsByClassName('page-host')[0].addEventListener('click', function() {
+        let drawer = document.getElementsByClassName('drawer')[0];
+        let toggleIcon = document.getElementsByClassName('mobile-menu-toggle')[0];
+        if (event.target.className !== 'nav-list' && event.target.className !== 'menu-item') {
+          drawer.style.display = 'none';
+          $(drawer).parent().css('display', 'none');
+          toggleIcon.style.display = 'block';
+          document.getElementsByClassName('page-host')[0].style.overflow = 'auto';
+        }
+      });
+    }
+    this.menuToggled = true;
+    let drawer = document.getElementsByClassName('drawer')[0];
+    let toggleIcon = document.getElementsByClassName('mobile-menu-toggle')[0];
+    if (drawer.style.display === 'none' && toggle !== 'close') {
+      drawer.style.display = 'block';
+      $(drawer).parent().css('display', 'block');
+      toggleIcon.style.display = 'none';
+    } else {
+      drawer.style.display = 'none';
+      $(drawer).parent().css('display', 'none');
+      toggleIcon.style.display = 'block';
+    }
+  }
+
+  get currentStyles() {
+    let result = {};
+    let style = 'wj';
+    let mobilemenutoggle = document.getElementById('mobilemenutoggle');
+    result = {
+      headerImagePath: '../static/imgs/BI_logo.jpg',
+      headerText1: 'NDSSL',
+      headerClass: 'home-header',
+      headerImageClass: 'home-header-image',
+      sidebarClass: 'home-sidebar',
+      menuToggleClass: 'home-menu-toggle'
+    };
+    result.sidebarImagePath = '../static/imgs/BI_logo2.jpg';
+    /* istanbul ignore else */
+    if (mobilemenutoggle !== null) {
+      mobilemenutoggle.style.backgroundColor = '#2a222a';
+    }
+    this.setFooter(style);
+    return result;
+  }
 
   get widescreen() {
     console.log('trying to get widescreen');
     let isWide = document.documentElement.clientWidth > 766;
     let drawer = document.getElementsByClassName('drawer')[0];
     let mobileMenuToggle = document.getElementsByClassName('mobile-menu-toggle')[0];
-    // if (drawer !== null && drawer !== undefined){
-    //   drawer.style.display = 'none';
-    // }
     console.log('hello!');
     if (!this.menuToggled) {
       console.log('did not toggle menu');
@@ -97,73 +132,6 @@ export class App {
     return isWide;
   }
 
-  toggleMobileMenu(toggle) {
-    //event.stopImmediatePropagation();
-    if (toggle !== 'close') {
-      document.getElementsByClassName('page-host')[0].style.overflow = 'hidden';
-      document.getElementsByClassName('page-host')[0].addEventListener('click', function() {
-        console.log('howdy');
-        let drawer = document.getElementsByClassName('drawer')[0];
-        let toggleIcon = document.getElementsByClassName('mobile-menu-toggle')[0];
-        console.log(event);
-        if (event.target.className !== 'nav-list' && event.target.className !== 'menu-item') {
-          drawer.style.display = 'none';
-          $(drawer).parent().css('display', 'none');
-          toggleIcon.style.display = 'block';
-          document.getElementsByClassName('page-host')[0].style.overflow = 'auto';
-        }
-      });
-    } else {
-      document.getElementsByClassName('page-host')[0].style.overflow = 'auto';
-      // document.getElementsByClassName('page-host')[0].removeEventListener('click', function(){
-      //   console.log('howdy');
-      // });
-    }
-    console.log(event);
-    let isWide = document.documentElement.clientWidth > 766;
-    let valid = true;
-    if (!isWide && toggle === 'close' && (event.target.className === 'nav-list' || event.target.className === 'menu-item')) {
-      valid = false;
-    }
-    if (valid) {
-      if (!this.widescreen) {
-        this.menuToggled = true;
-        let drawer = document.getElementsByClassName('drawer')[0];
-        let toggleIcon = document.getElementsByClassName('mobile-menu-toggle')[0];
-        if (drawer.style.display === 'none' && toggle !== 'close') {
-          drawer.style.display = 'block';
-          $(drawer).parent().css('display', 'block');
-          toggleIcon.style.display = 'none';
-        } else {
-          drawer.style.display = 'none';
-          $(drawer).parent().css('display', 'none');
-          toggleIcon.style.display = 'block';
-        }
-      }
-    }
-  }
-
-  get currentStyles() {
-    let result = {};
-    let style = 'wj';
-    let mobilemenutoggle = document.getElementById('mobilemenutoggle');
-    result = {
-      headerImagePath: '../static/imgs/BI_logo.jpg',
-      headerText1: 'NDSSL',
-      headerClass: 'home-header',
-      headerImageClass: 'home-header-image',
-      sidebarClass: 'home-sidebar',
-      menuToggleClass: 'home-menu-toggle'
-    };
-    result.sidebarImagePath = '../static/imgs/BI_logo2.jpg';
-    /* istanbul ignore else */
-    if (mobilemenutoggle !== null) {
-      mobilemenutoggle.style.backgroundColor = '#2a222a';
-    }
-    this.setFooter(style);
-    return result;
-  }
-
   setFooter(style) {
     let footer = document.getElementById('wjfooter');
     let color = '';
@@ -171,38 +139,18 @@ export class App {
     if (footer !== null) {
       footer.style.backgroundColor = '#2a222a';
       footer.innerHTML = '<div style="text-align: center">' +
-      '<span>&nbsp;&nbsp;</span><a target="_blank" style="color:' + color + '"  href="https://www.facebook.com/biocomplexity/"><i class="fa fa-facebook-square fa-2x" aria-hidden="true"></i></a>' +
-      '<span>&nbsp;&nbsp;</span><a target="_blank" style="color:' + color + '"  href="https://twitter.com/ndssl_bi"><i class="fa fa-twitter fa-2x" aria-hidden="true"></i></a><br>' +
+      '<span>&nbsp;&nbsp;</span><a target="_blank" style="color:' + color + '"  href="https://www.facebook.com/biocomplexity/"><i class="fa fa-facebook-square fa-2x"></i></a>' +
+      '<span>&nbsp;&nbsp;</span><a target="_blank" style="color:' + color + '"  href="https://twitter.com/ndssl_bi"><i class="fa fa-twitter fa-2x"></i></a><br>' +
       '</span></div>';
     }
   }
 
   close() {
-    console.log('going to close the menu');
-    this.toggleMobileMenu('close');
+    console.log('going to close the menu if not widescreen');
+    if (!this.widescreen) {
+      this.toggleMobileMenu('close');
+    }
   }
-
-  // close() {
-  //   let drawer = document.getElementById('drawerPanel');
-  //   if (drawer !== null) {
-  //     drawer.closeDrawer();
-  //   }
-  //   if (!this.widescreen) {
-  //     let mobilemenutoggle = document.getElementById('mobilemenutoggle');
-  //     /* istanbul ignore else */
-  //     if (mobilemenutoggle !== null) {
-  //       mobilemenutoggle.style.display = 'block';
-  //     }
-  //   }
-  // }
-
-  // hideToggle() {
-  //   let mobilemenutoggle = document.getElementById('mobilemenutoggle');
-  //   /* istanbul ignore else */
-  //   if (mobilemenutoggle !== null) {
-  //     mobilemenutoggle.style.display = 'none';
-  //   }
-  // }
 
   configHttpClient() {
     this.backend = '';
