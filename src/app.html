@@ -55,7 +55,7 @@
       </div>
     </div>
     <div class="main-panel">
-      <i click.delegate="toggleMobileMenu()" id="mobilemenutoggle" class="fa fa-bars pull-right fa-1.5x mobile-menu-toggle"></i>
+      <i show.bind="!widescreen" click.delegate="toggleMobileMenu()" id="mobilemenutoggle" class="fa fa-bars pull-right fa-1.5x mobile-menu-toggle"></i>
       <div class="mainPanel">
         <div class="material-header ${currentStyles.headerClass}">
           <div class="headercontent">
