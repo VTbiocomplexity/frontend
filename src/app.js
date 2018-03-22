@@ -25,7 +25,7 @@ export class App {
   drawerWidth = '175px';
 
   @bindable
-  contentWidth = '62px';
+  contentWidth = '0px';
 
   @bindable
   fullmenu = true;
@@ -89,37 +89,20 @@ export class App {
   }
 
   get widescreen() {
-    console.log('trying to get widescreen');
     let isWide = document.documentElement.clientWidth > 766;
     let drawer = document.getElementsByClassName('drawer')[0];
     let mobileMenuToggle = document.getElementsByClassName('mobile-menu-toggle')[0];
-    console.log('hello!');
-    if (!this.menuToggled) {
-      console.log('did not toggle menu');
-      if (!isWide) {
-        if (drawer !== null && drawer !== undefined) {
-          this.contentWidth = '0px';
-          drawer.style.display = 'none';
-          $(drawer).parent().css('display', 'none');
-          mobileMenuToggle.style.display = 'block';
-        }
-      } else {
-        if (drawer !== null && drawer !== undefined) {
-          this.contentWidth = '0px';
-          drawer.style.display = 'block';
-          $(drawer).parent().css('display', 'block');
-          mobileMenuToggle.style.display = 'none';
-        }
+    this.contentWidth = '0px';
+    if (!this.menuToggled && !isWide) {
+      if (drawer !== null && drawer !== undefined) {
+        drawer.style.display = 'none';
+        $(drawer).parent().css('display', 'none');
+        mobileMenuToggle.style.display = 'block';
       }
     }
     if (isWide) {
       if (drawer !== null && drawer !== undefined) {
-        if (this.fullmenu) {
-          this.contentWidth = '181px';
-        } else {
-          this.contentWidth = '62px';
-        }
-
+        this.contentWidth = '181px';
         drawer.style.display = 'block';
         $(drawer).parent().css('display', 'block');
         mobileMenuToggle.style.display = 'none';
