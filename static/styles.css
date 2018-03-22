@@ -171,7 +171,7 @@ div.page-host {
 
 .home-header {
   background-color: #2a222a;
-  margin: 0;
+  /* margin: 0; */
   height: 70px;
 }
 
@@ -407,4 +407,47 @@ button[disabled]:hover {
 .hoverHand {
   cursor: pointer;
   cursor: hand;
+}
+
+@media screen and (max-width: 766px) {
+  .drawer {
+    background-color: rgb(192, 192, 192);
+    float: right;
+    height: 100%;
+  }
+  .drawer-container {
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 766px) {
+  .drawer-container {
+    float: right;
+    position: fixed;
+    right: 0;
+  }
+}
+
+.drawer-container {
+  z-index: 999;
+  height: 100%;
+}
+
+.nav-list {
+  position: fixed;
+  top: 70px;
+  right: 0;
+  width: 188px;
+  height: 100%;
+  z-index: 90000;
+  background-color: rgb(192, 192, 192);
+}
+
+.navImage {
+  position: fixed;
+  top: 0;
+  right: 0;
 }

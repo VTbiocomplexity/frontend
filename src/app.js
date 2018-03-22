@@ -1,9 +1,7 @@
 System.import('isomorphic-fetch');
 System.import('whatwg-fetch');
-//System.import('popper.js');
 import {PLATFORM} from 'aurelia-pal';
 import {inject, bindable} from 'aurelia-framework';
-//import {inject} from 'aurelia-framework';
 import {AuthorizeStep, AuthService} from 'aurelia-auth';
 import {UserAccess} from './classes/UserAccess.js';
 import {HttpClient} from 'aurelia-fetch-client';
@@ -13,19 +11,21 @@ export class App {
   constructor(auth, httpClient) {
     this.auth = auth;
     this.httpClient = httpClient;
+    this.menuToggled = false;
   }
 
   dashboardTitle = 'Dashboard';
   role = '';
-  authenticated = false;
   email = '';
   password = '';
   authenticated = false;
   token = '';
-  expanded = false;
 
   @bindable
   drawerWidth = '175px';
+
+  @bindable
+  contentWidth = '62px';
 
   @bindable
   fullmenu = true;
@@ -35,27 +35,112 @@ export class App {
     this.appState = new AppState(this.httpClient);
     this.userAccess = new UserAccess(this.appState);
     await this.checkUser();
+    console.log('hello!');
   }
 
-  get drawerOpen() {
-    let drawer = document.getElementById('drawerPanel');
-    if (drawer !== null) {
-      if (drawer.selected === 'drawer') {
-        this.hideToggle();
-        return true;
-      }
-    }
-    this.close();
-    return false;
-  }
+  // get drawerOpen() {
+  //   let drawer = document.getElementById('drawerPanel');
+  //   if (drawer !== null) {
+  //     if (drawer.selected === 'drawer') {
+  //       this.hideToggle();
+  //       return true;
+  //     }
+  //   }
+  //   this.close();
+  //   return false;
+  // }
 
   get widescreen() {
-    let isWidescreen = document.documentElement.clientWidth > 766;
-    /* istanbul ignore else */
-    if (isWidescreen) {
-      this.hideToggle();
+    console.log('trying to get widescreen');
+    let isWide = document.documentElement.clientWidth > 766;
+    let drawer = document.getElementsByClassName('drawer')[0];
+    let mobileMenuToggle = document.getElementsByClassName('mobile-menu-toggle')[0];
+    // if (drawer !== null && drawer !== undefined){
+    //   drawer.style.display = 'none';
+    // }
+    console.log('hello!');
+    if (!this.menuToggled) {
+      console.log('did not toggle menu');
+      if (!isWide) {
+        if (drawer !== null && drawer !== undefined) {
+          this.contentWidth = '0px';
+          drawer.style.display = 'none';
+          $(drawer).parent().css('display', 'none');
+          mobileMenuToggle.style.display = 'block';
+        }
+      } else {
+        if (drawer !== null && drawer !== undefined) {
+          this.contentWidth = '0px';
+          drawer.style.display = 'block';
+          $(drawer).parent().css('display', 'block');
+          mobileMenuToggle.style.display = 'none';
+        }
+      }
     }
-    return isWidescreen;
+    if (isWide) {
+      if (drawer !== null && drawer !== undefined) {
+        if (this.fullmenu) {
+          this.contentWidth = '181px';
+        } else {
+          this.contentWidth = '62px';
+        }
+
+        drawer.style.display = 'block';
+        $(drawer).parent().css('display', 'block');
+        mobileMenuToggle.style.display = 'none';
+      }
+    }
+    let mainP = document.getElementsByClassName('main-panel')[0];
+    if (mainP !== null && mainP !== undefined) {
+      mainP.style.marginRight = this.contentWidth;
+    }
+    return isWide;
+  }
+
+  toggleMobileMenu(toggle) {
+    //event.stopImmediatePropagation();
+    if (toggle !== 'close') {
+      document.getElementsByClassName('page-host')[0].style.overflow = 'hidden';
+      document.getElementsByClassName('page-host')[0].addEventListener('click', function() {
+        console.log('howdy');
+        let drawer = document.getElementsByClassName('drawer')[0];
+        let toggleIcon = document.getElementsByClassName('mobile-menu-toggle')[0];
+        console.log(event);
+        if (event.target.className !== 'nav-list' && event.target.className !== 'menu-item') {
+          drawer.style.display = 'none';
+          $(drawer).parent().css('display', 'none');
+          toggleIcon.style.display = 'block';
+          document.getElementsByClassName('page-host')[0].style.overflow = 'auto';
+        }
+      });
+    } else {
+      document.getElementsByClassName('page-host')[0].style.overflow = 'auto';
+      // document.getElementsByClassName('page-host')[0].removeEventListener('click', function(){
+      //   console.log('howdy');
+      // });
+    }
+    console.log(event);
+    let isWide = document.documentElement.clientWidth > 766;
+    let valid = true;
+    if (!isWide && toggle === 'close' && (event.target.className === 'nav-list' || event.target.className === 'menu-item')) {
+      valid = false;
+    }
+    if (valid) {
+      if (!this.widescreen) {
+        this.menuToggled = true;
+        let drawer = document.getElementsByClassName('drawer')[0];
+        let toggleIcon = document.getElementsByClassName('mobile-menu-toggle')[0];
+        if (drawer.style.display === 'none' && toggle !== 'close') {
+          drawer.style.display = 'block';
+          $(drawer).parent().css('display', 'block');
+          toggleIcon.style.display = 'none';
+        } else {
+          drawer.style.display = 'none';
+          $(drawer).parent().css('display', 'none');
+          toggleIcon.style.display = 'block';
+        }
+      }
+    }
   }
 
   get currentStyles() {
@@ -71,7 +156,7 @@ export class App {
       menuToggleClass: 'home-menu-toggle'
     };
     result.sidebarImagePath = '../static/imgs/BI_logo2.jpg';
-      /* istanbul ignore else */
+    /* istanbul ignore else */
     if (mobilemenutoggle !== null) {
       mobilemenutoggle.style.backgroundColor = '#2a222a';
     }
@@ -82,7 +167,7 @@ export class App {
   setFooter(style) {
     let footer = document.getElementById('wjfooter');
     let color = '';
-      /* istanbul ignore else */
+    /* istanbul ignore else */
     if (footer !== null) {
       footer.style.backgroundColor = '#2a222a';
       footer.innerHTML = '<div style="text-align: center">' +
@@ -93,26 +178,31 @@ export class App {
   }
 
   close() {
-    let drawer = document.getElementById('drawerPanel');
-    if (drawer !== null) {
-      drawer.closeDrawer();
-    }
-    if (!this.widescreen) {
-      let mobilemenutoggle = document.getElementById('mobilemenutoggle');
-          /* istanbul ignore else */
-      if (mobilemenutoggle !== null) {
-        mobilemenutoggle.style.display = 'block';
-      }
-    }
+    console.log('going to close the menu');
+    this.toggleMobileMenu('close');
   }
 
-  hideToggle() {
-    let mobilemenutoggle = document.getElementById('mobilemenutoggle');
-        /* istanbul ignore else */
-    if (mobilemenutoggle !== null) {
-      mobilemenutoggle.style.display = 'none';
-    }
-  }
+  // close() {
+  //   let drawer = document.getElementById('drawerPanel');
+  //   if (drawer !== null) {
+  //     drawer.closeDrawer();
+  //   }
+  //   if (!this.widescreen) {
+  //     let mobilemenutoggle = document.getElementById('mobilemenutoggle');
+  //     /* istanbul ignore else */
+  //     if (mobilemenutoggle !== null) {
+  //       mobilemenutoggle.style.display = 'block';
+  //     }
+  //   }
+  // }
+
+  // hideToggle() {
+  //   let mobilemenutoggle = document.getElementById('mobilemenutoggle');
+  //   /* istanbul ignore else */
+  //   if (mobilemenutoggle !== null) {
+  //     mobilemenutoggle.style.display = 'none';
+  //   }
+  // }
 
   configHttpClient() {
     this.backend = '';
@@ -167,6 +257,10 @@ export class App {
       localStorage.clear();
       console.log('Promise fulfilled, logged out');
     });
+  }
+
+  attached() {
+    console.log(this.widescreen);
   }
 
 }
