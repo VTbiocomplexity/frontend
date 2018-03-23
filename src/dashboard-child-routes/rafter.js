@@ -11,10 +11,7 @@ export class Rafter {
     this.reader = reader;
     this.app = app;
     this.rafterUserID = '';
-    this.rafter = {
-      id: '',
-      secret: ''
-    };
+    this.rafter = {id: '', secret: ''};
     this.rafterFile = {name: '', createType: 'file', path: '', fileType: 'unspecified'};
     this.tv = null;
     this.homeDirJson = null;
@@ -39,6 +36,28 @@ export class Rafter {
     this.showLogin = this.checkIfLoggedIn(cep, rlo, this.showLogin, cipr);
     this.fileTypes.sort();
     this.fileTypes.splice(0, 0, 'unspecified');
+    console.log('this is the user');
+    console.log(this.user);
+    if (this.user.r_app_secret !== null && this.user.r_app_secret !== undefined && this.user.r_app_id !== null && this.user.r_app_id !== undefined && (localStorage.getItem('rafterToken') === null || localStorage.getItem('rafterToken') === undefined)) {
+      console.log('I have an app id, secret, but no token');
+      this.rafter = {id: this.user.r_app_id, secret: this.user.r_app_secret};
+      await this.rafterUser.initRafter(this.rafterUserID, this.rafter, this.user._id, this.interval);
+      //document.getElementsByClassName('rafterLogout')[0].style.display = 'none';
+      let rT = (localStorage.getItem('rafterToken'));
+      if (rT !== null && rT !== undefined) {
+        let rU = jwtDecode(rT);
+        this.rafterUserID = rU.sub;
+      }
+    }
+  }
+
+  async handleRafterLogin() {
+    await this.rafterUser.initRafter(this.rafterUserID, this.rafter, this.user._id, this.interval);
+    // let rT = (localStorage.getItem('rafterToken'));
+    // if (rT !== null && rT !== undefined) {
+    //   //await this.activate();
+    //   console.log(this.user);
+    // }
   }
 
   hideDetail(ic1, ic2, content) {
@@ -442,51 +461,12 @@ export class Rafter {
 
   validate() {
     let submitButton = document.getElementsByClassName('rafterLoginButton')[0];
-    if (this.rafter.id !== '' && this.rafter.password !== '') {
-      //console.log('enable the button!');
-      //console.log(submitButton);
+    if (this.rafter.id !== '' && this.rafter.secret !== '') {
       submitButton.removeAttribute('disabled');
     } else {
       submitButton.setAttribute('disabled', '');
     }
   }
-
-  // postUSV() {
-  //   this.app.httpClient.fetch('/rafter/rinit', {
-  //     method: 'post',
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify(this.rafter)
-  //   })
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     console.log(data);
-  //     //let data1 = data.replace(/&#34;/g, '');
-  //     //let token = data1.split('authorization_token: ')[1];
-  //     //token = token.split('}')[0];
-  //     //token = token.replace(/\r?\n|\r/g, '');
-  //     //console.log(token);
-  //     window.localStorage.setItem('rafterToken', data);
-  //     let user = jwtDecode(data);
-  //     console.log(user);
-  //     // let rafterUser = data.split('&#34;user&#34;:')[1];
-  //     // rafterUser = rafterUser.split('}')[0];
-  //     // rafterUser = rafterUser + '}';
-  //     // rafterUser = rafterUser.replace(/&#34;/g, '"');
-  //     // console.log(rafterUser);
-  //     //let ruser1 = {id: user.sub, }
-  //     //window.localStorage.setItem('rafterUser', user.sub);
-  //     //console.log(user.sub);
-  //     this.rafterUserID = user.sub;
-  //     document.getElementsByClassName('userServiceError')[0].innerHTML = '';
-  //     this.rafterUser.initVol(data);
-  //     this.activate();
-  //   }).catch((err) => {
-  //     console.log(err);
-  //     document.getElementsByClassName('userServiceError')[0].innerHTML = '<br>Wrong userid or password';
-  //   });
-  // }
 
   attached() {
     const cili = this.checkIfLoggedIn;
@@ -494,17 +474,15 @@ export class Rafter {
     const sli = this.showLogin;
     const rlo = this.rafterUser.rafterLogout;
     const cipr = this.rafterUser.checkIfPageReload;
-    setInterval(function() {
+    this.interval = setInterval(function() {
       cili(cep, rlo, sli, cipr);
     }
     , 3400);
-
     let rT = (localStorage.getItem('rafterToken'));
-    //console.log(ruser.id);
     if (rT !== null && rT !== undefined) {
       let rU = jwtDecode(rT);
       this.rafterUserID = rU.sub;
-      document.getElementsByClassName('rafterLogout')[0].style.display = 'block';
+      //document.getElementsByClassName('rafterLogout')[0].style.display = 'block';
     }
   }
 

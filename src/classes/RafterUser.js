@@ -5,12 +5,9 @@ export class RafterUser {
   }
 
   rafterLogout() {
-    //console.log('going to log you out');
     localStorage.removeItem('rafterToken');
-    //localStorage.removeItem('rafterUser');
     /* istanbul ignore if */
     if (process.env.NODE_ENV !== 'test') {
-      //console.log('is this a test?');
       window.location.reload();
     }
   }
@@ -19,9 +16,7 @@ export class RafterUser {
     console.log('check expired');
     let d = new Date();
     let checkd = d.valueOf() / 1000;
-    //console.log(checkd);
     if (checkd > decoded.exp) {
-      //console.log('expired');
       return false;
     } return true;
   }
@@ -31,6 +26,7 @@ export class RafterUser {
     let logoutButton = document.getElementsByClassName('rafterLogout')[0];
     if (logoutButton !== null && logoutButton !== undefined) {
       if (logoutButton.style.display === 'block') {
+        console.log('why is logout button?');
         reloadPage = true;
         logoutButton.style.display === 'none';
       }
@@ -39,6 +35,7 @@ export class RafterUser {
     sli = true;
     /* istanbul ignore next */
     if (process.env.NODE_ENV !== 'test' && reloadPage) {
+      console.log('am i here?');
       window.location.reload();
     }
   }
@@ -60,8 +57,11 @@ export class RafterUser {
     });
   }
 
-  initRafter(ruid, rObj) {
-    this.httpClient.fetch('/rafter/rinit', {
+  initRafter(ruid, rObj, uid, interval) {
+    rObj.uid = uid;
+    let userServiceError = document.getElementsByClassName('userServiceError')[0];
+    console.log(JSON.stringify(rObj));
+    return this.httpClient.fetch('/rafter/rinit', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json'
@@ -70,20 +70,32 @@ export class RafterUser {
     })
     .then((response) => response.json())
     .then((data) => {
+      console.log('am i on line 71?');
       console.log(data);
-      window.localStorage.setItem('rafterToken', data);
-      let user = jwtDecode(data);
-      console.log(user);
-      ruid = user.sub;
-      document.getElementsByClassName('userServiceError')[0].innerHTML = '';
-      this.initVol(data);
+      console.log(typeof data);
+      console.log(data.includes('error'));
+      if (!data.includes('error')) {
+        window.localStorage.setItem('rafterToken', data);
+        let user = jwtDecode(data);
+        console.log(user);
+        ruid = user.sub;
+        if (userServiceError !== null && userServiceError !== undefined) {
+          userServiceError.innerHTML = '';
+        }
+        this.initVol(data);
       /* istanbul ignore if */
-      if (process.env.NODE_ENV !== 'test') {
-        window.location.reload();
+        if (process.env.NODE_ENV !== 'test') {
+          window.location.reload();
+        }
+      } else {
+        document.getElementsByClassName('userServiceError')[0].innerHTML = '<br>Wrong userid or password';
       }
     }).catch((err) => {
       console.log(err);
-      document.getElementsByClassName('userServiceError')[0].innerHTML = '<br>Wrong userid or password';
+      window.clearInterval(interval);
+      if (userServiceError !== null && userServiceError !== undefined) {
+        userServiceError.innerHTML = '<br>Wrong userid or password';
+      }
     });
   }
 }
