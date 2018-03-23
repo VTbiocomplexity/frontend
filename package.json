@@ -20,7 +20,7 @@
     "test:karma": "cross-env NODE_ENV=test karma start test/karma.conf.js",
     "test:debug": "cross-env NODE_ENV=test nps test.karma.debug",
     "test:jest": "cross-env NODE_ENV=test jest --config jest.config.json --notify",
-    "eslint-fix": "./node_modules/eslint/bin/eslint.js --fix .",
+    "eslint:fix": "./node_modules/eslint/bin/eslint.js --fix .",
     "fix:aurelia-val": "rm -rf ./node_modules/aurelia-validation/node_modules",
     "postinstall": "npm run fix:aurelia-val && npm start -- build",
     "installglobals": "npm install -g npm@latest",
