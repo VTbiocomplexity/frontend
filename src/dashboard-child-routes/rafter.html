@@ -10,11 +10,11 @@
         <form style="margin-left:8px">
           <label>Rafter App Id</label>
           <input type="text" value.bind="rafter.id" change.delegate="validate()" keyup.delegate="validate()" style="width:2.65in">
-          <label>Rafter App Key</label>
+          <label>Rafter App Secret</label>
           <input type="text" value.bind="rafter.secret" change.delegate="validate()" keyup.delegate="validate()" style="width:2.65in">
           <div>
             <p>&nbsp;</p>
-            <button disabled class="rafterLoginButton" click.delegate="rafterUser.initRafter(rafterUserID,rafter)">Login To Rafter</button>
+            <button disabled class="rafterLoginButton" click.delegate="handleRafterLogin()">Login To Rafter</button>
           </div>
           <p><br>Need an account? Follow these <a href="https://docs.google.com/document/d/1BF11gUYfXU8xBSsBW3J2wjK2HWf6NnWzz0y-1XtzoNE/#heading=h.5z7lybzc053j" target="_blank">instructions.</a></p>
         </form>
