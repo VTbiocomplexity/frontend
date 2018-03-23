@@ -7,8 +7,7 @@
 
 ## Installation
 1. Install node version manager (nvm), close and open terminal afterwards
-2. Use nvm to install Node.js, version listed in package.json
-  - ```nvm install lts/*```
+2. Use nvm to install Node.js, version listed in package.json<br>```nvm install lts/*```
 3. Install Yarn - see Yarn's installation instructions for your OS.
 4. Install Chrome (needed for browser-based testing)
 5. Clone this repo, then navigate into the project folder
