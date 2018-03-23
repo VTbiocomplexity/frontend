@@ -16,6 +16,8 @@ describe('The Rafter Dashboard', () => {
   let auth;
   let app;
   let app2;
+  let app4;
+  let rd4;
   beforeEach(() => {
     auth = new AuthStub();
     auth.setToken({sub: '3456'});
@@ -31,11 +33,23 @@ describe('The Rafter Dashboard', () => {
     rd2 = new Rafter(app2);
     rd2.app.appState = new AppStateStub();
     rd2.activate();
+    app4 = new App(auth, new HttpMock('rafterInitError'));
+    app4.router = new RouterStub();
+    app4.activate();
+    rd4 = new Rafter(app4);
+    rd4.app.appState = new AppStateStub();
+    rd4.activate();
   });
 
   it('should activate', testAsync(async function() {
     await rd.activate();
     expect(rd.uid).toBe('3456');
+  }));
+
+  it('should activate with a user that has a rafter app id and secret', testAsync(async function() {
+    rd.app.appState = {getUser: function() {return {_id: 'yo', r_app_secret: 'hi', r_app_id: 'howdy'};}};
+    await rd.activate();
+    //expect(rd.uid).toBe('3456');
   }));
 
   it('downloads a file', testAsync(async function() {
@@ -176,17 +190,36 @@ describe('The Rafter Dashboard', () => {
     document.body.innerHTML += '<div class="userServiceError">error</div>';
     rd.rafterUser = new RafterUser(rd.app.httpClient);
     await rd.rafterUser.initRafter(rd.rafterUserID, rd.rafter);
-    expect(document.getElementsByClassName('userServiceError')).innerHTML = '';
+    expect(document.getElementsByClassName('userServiceError')[0].innerHTML).toBe('');
     window.localStorage.removeItem('rafterToken');
-    window.localStorage.removeItem('rafterUser');
-    await rd2.rafterUser.initRafter(rd.rafterUserID, rd.rafter);
-    expect(document.getElementsByClassName('userServiceError')).innerHTML = '<br>Wrong userid or password';
+    await rd2.rafterUser.initRafter(rd2.rafterUserID, rd2.rafter);
+    expect(document.getElementsByClassName('userServiceError')[0].innerHTML).toBe('<br>Wrong app id or app secret');
+    document.body.innerHTML = '';
+    await rd.rafterUser.initRafter(rd.rafterUserID, rd.rafter);
+    await rd2.rafterUser.initRafter(rd2.rafterUserID, rd2.rafter);
+  }));
+
+  it('receives an error message from rafter init', testAsync(async function() {
+    document.body.innerHTML += '<div class="userServiceError">error</div>';
+    rd4.rafterUser = new RafterUser(rd4.app.httpClient);
+    await rd4.rafterUser.initRafter(rd4.rafterUserID, rd4.rafter);
+    expect(document.getElementsByClassName('userServiceError')[0].innerHTML).toBe('<br>Wrong app id or app secret');
+    document.body.innerHTML = '';
+    await rd4.rafterUser.initRafter(rd4.rafterUserID, rd4.rafter);
   }));
 
   it('retrieves the home directory', testAsync(async function() {
     document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
     await rd.rafterVolumeService('ls');
   }));
+
+  it('hangles a login to rafter button click', testAsync(async function() {
+    document.body.innerHTML = '<div class="userServiceError">error</div><button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
+    rd.rafterUser = new RafterUser(rd.app.httpClient);
+    rd.user = {_id: 'yo'};
+    await rd.handleRafterLogin();
+  }));
+
   it('tries to retrieves the home directory, but gets an error', testAsync(async function() {
     document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
     rd.app.httpClient = new HttpMock('rafterError');

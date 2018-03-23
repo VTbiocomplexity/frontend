@@ -60,6 +60,7 @@ export class RafterUser {
   initRafter(ruid, rObj, uid, interval) {
     rObj.uid = uid;
     let userServiceError = document.getElementsByClassName('userServiceError')[0];
+    let message = '<br>Wrong app id or app secret';
     console.log(JSON.stringify(rObj));
     return this.httpClient.fetch('/rafter/rinit', {
       method: 'post',
@@ -89,14 +90,14 @@ export class RafterUser {
         }
       } else {
         if (userServiceError !== null && userServiceError !== undefined) {
-          userServiceError.innerHTML = '<br>Wrong userid or password';
+          userServiceError.innerHTML = message;
         }
       }
     }).catch((err) => {
       console.log(err);
       window.clearInterval(interval);
       if (userServiceError !== null && userServiceError !== undefined) {
-        userServiceError.innerHTML = '<br>Wrong app id or app secret';
+        userServiceError.innerHTML = message;
       }
     });
   }
