@@ -88,13 +88,15 @@ export class RafterUser {
           window.location.reload();
         }
       } else {
-        document.getElementsByClassName('userServiceError')[0].innerHTML = '<br>Wrong userid or password';
+        if (userServiceError !== null && userServiceError !== undefined) {
+          userServiceError.innerHTML = '<br>Wrong userid or password';
+        }
       }
     }).catch((err) => {
       console.log(err);
       window.clearInterval(interval);
       if (userServiceError !== null && userServiceError !== undefined) {
-        userServiceError.innerHTML = '<br>Wrong userid or password';
+        userServiceError.innerHTML = '<br>Wrong app id or app secret';
       }
     });
   }
