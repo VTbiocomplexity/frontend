@@ -38,6 +38,32 @@ export class App {
     console.log('hello!');
   }
 
+  checkIfLoggedIn() {
+    let token = localStorage.getItem('ndssl_id_token');
+    if (token !== null) {
+      this.auth.setToken(token);
+      this.authenticated = true;
+      this.router.navigate('dashboard');
+    }
+  }
+
+  showForm(appName, className) {
+    className.startup(appName);
+  }
+
+  authenticate(name) {
+    let ret;
+    // if (this.appState.isOhafLogin) {
+      // ret = this.auth.authenticate(name, false, {'isOhafUser': true });
+    // } else {
+    ret = this.auth.authenticate(name, false, {});
+    // }
+    ret.then((data) => {
+      this.auth.setToken(data.token);
+    }, undefined);
+    return ret;
+  }
+
   get widescreen() {
     let isWide = document.documentElement.clientWidth > 766;
     let drawer = document.getElementsByClassName('drawer')[0];
@@ -167,9 +193,10 @@ export class App {
     config.map([
       { route: 'dashboard', name: 'dashboard-router', moduleId: PLATFORM.moduleName('./dashboard-router'), nav: false, title: '', auth: true, settings: 'fa fa-tachometer'},
       { route: 'login', name: 'login', moduleId: PLATFORM.moduleName('./login'), nav: false, title: 'Login', settings: 'fa fa-sign-in'},
+      { route: 'register', name: 'register', moduleId: PLATFORM.moduleName('./register'), nav: false, title: 'Register', settings: 'fa fa-user-plus'},
       { route: ['', 'home'], name: 'home', moduleId: PLATFORM.moduleName('./home'), nav: false, title: '', settings: 'fa fa-home' },
       { route: 'userutil', name: 'userutil', moduleId: PLATFORM.moduleName('./userutil'), nav: false, title: '' },
-      { route: ['welcome', 'welcome'], name: 'welcome',      moduleId: PLATFORM.moduleName('./welcome'),      nav: true, title: 'Welcome' }
+      { route: ['welcome', 'welcome'], name: 'welcome',      moduleId: PLATFORM.moduleName('./welcome'), nav: true, title: 'Welcome' }
     ]);
     config.fallbackRoute('/');
     this.router = router;

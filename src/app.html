@@ -8,9 +8,15 @@
         <div if.bind="!fullmenu" class="material-header ${currentStyles.headerClass}" style="width: 50px; height:70px"></div>
         <div class="nav-list">
           <div class="menu-item" if.bind="!authenticated">
-            <a paper-drawer-toggle href="/login" class="nav-link" click.delegate="(close() || 1) && wjLogin()">
+            <a paper-drawer-toggle href="/login" class="nav-link" click.delegate="close()">
               <span class="fa fa-sign-in"></span>
               <span if.bind="fullmenu" class="nav-item">Login</span>
+            </a>
+          </div>
+          <div class="menu-item" if.bind="!authenticated">
+            <a paper-drawer-toggle href="/register" class="nav-link" click.delegate="close()">
+              <span class="fa fa-user-plus"></span>
+              <span if.bind="fullmenu" class="nav-item">Register</span>
             </a>
           </div>
           <div class="menu-item" if.bind="authenticated">

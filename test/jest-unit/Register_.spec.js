@@ -5,7 +5,7 @@ let reg = new Register_();
 describe('The Register module', () => {
   it('hides a registration form with click Cancel button', () => {
     document.body.innerHTML = '<div class="home"></div>';
-    reg.register();
+    reg.startup();
     document.getElementsByClassName('nevermind')[0].click();
     let regform = document.getElementsByClassName('RegistrationForm');
     expect(regform[0].style.display).toBe('none');
@@ -13,7 +13,7 @@ describe('The Register module', () => {
 
   it('hides the submit button when registration form is not valid email', () => {
     document.body.innerHTML = '<div class="home"></div>';
-    reg.register('');
+    reg.startup('');
     document.getElementsByClassName('email')[0].value = 'google.@gmail.com';
     document.getElementsByClassName('email')[0].checkValidity = function() {return false;};
     document.getElementsByClassName('password')[0].checkValidity = function() {return true;};
@@ -25,7 +25,7 @@ describe('The Register module', () => {
 
   it('hides the submit button when registration form is not valid name', () => {
     document.body.innerHTML = '<div class="home"></div>';
-    reg.register('PATRIC');
+    reg.startup('PATRIC');
     document.getElementsByClassName('password')[0].checkValidity = function() {return true;};
     document.getElementsByClassName('email')[0].checkValidity = function() {return true;};
     document.getElementsByClassName('firstname')[0].value = '';
@@ -37,7 +37,7 @@ describe('The Register module', () => {
 
   it('hides the submit button when registration form is not valid password', () => {
     document.body.innerHTML = '<div class="home"></div>';
-    reg.register('PATRIC');
+    reg.startup('PATRIC');
     document.getElementsByClassName('email')[0].value = 'google.@gb.com';
     document.getElementsByClassName('firstname')[0].value = 'Bob';
     document.getElementsByClassName('lastname')[0].value = 'Smith';
@@ -51,7 +51,7 @@ describe('The Register module', () => {
 
   it('shows the submit button when registration form is valid', () => {
     document.body.innerHTML = '<div class="home"></div>';
-    reg.register('PATRIC');
+    reg.startup('PATRIC');
     document.getElementsByClassName('firstname')[0].value = 'Joe';
     document.getElementsByClassName('lastname')[0].value = 'Smith';
     document.getElementsByClassName('email')[0].value = 'joe@smith.com';
@@ -70,7 +70,7 @@ describe('The Register module', () => {
 
   it('hides register button when email format is not valid', () => {
     document.body.innerHTML = '<div class="home"></div>';
-    reg.register('PATRIC');
+    reg.startup('PATRIC');
     document.getElementsByClassName('firstname')[0].value = 'Joe';
     document.getElementsByClassName('lastname')[0].value = 'Smith';
     document.getElementsByClassName('email')[0].value = 'joe@smith.com';
@@ -90,7 +90,7 @@ describe('The Register module', () => {
   it('create a new user for this app', () => {
     document.body.innerHTML = '<div class="home"></div>';
     reg.appName = '';
-    reg.register();
+    reg.startup();
     document.getElementsByClassName('firstname')[0].value = 'Joe';
     document.getElementsByClassName('lastname')[0].value = 'Smith';
     document.getElementsByClassName('email')[0].value = 'joe@smith.com';
@@ -115,7 +115,7 @@ describe('The Register module', () => {
 
   it('it does not create a new user when there is an response error message from post', () => {
     document.body.innerHTML = '<div class="home"></div>';
-    reg.register('PATRIC');
+    reg.startup('PATRIC');
     document.getElementsByClassName('firstname')[0].value = 'Joe';
     document.getElementsByClassName('lastname')[0].value = 'Smith';
     document.getElementsByClassName('email')[0].value = 'joe@smith.com';
@@ -139,7 +139,7 @@ describe('The Register module', () => {
 
   it('it catches error on create a new user', () => {
     document.body.innerHTML = '<div class="home"></div>';
-    reg.register('');
+    reg.startup('');
     document.getElementsByClassName('firstname')[0].value = 'Joe';
     document.getElementsByClassName('lastname')[0].value = 'Smith';
     document.getElementsByClassName('email')[0].value = 'joe@smith.com';
@@ -160,7 +160,7 @@ describe('The Register module', () => {
 
   it('it initiates an email varification', () => {
     document.body.innerHTML = '<div class="home"></div>';
-    reg.register('');
+    reg.startup('');
     document.getElementsByClassName('firstname')[0].value = 'Joe';
     document.getElementsByClassName('lastname')[0].value = 'Smith';
     document.getElementsByClassName('email')[0].value = 'joe@smith.com';
