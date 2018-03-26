@@ -418,8 +418,11 @@ button[disabled]:hover {
   .drawer-container {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    position: absolute;
+    position: fixed;
     width: 100%;
+  }
+  .content-block {
+    overflow-x: hidden;
   }
 }
 
@@ -428,6 +431,29 @@ button[disabled]:hover {
     float: right;
     position: fixed;
     right: 0;
+  }
+  .main-panel {
+    overflow: hidden;
+    position: relative;
+    height: 100%;
+    display: block;
+    margin-right: 187px;
+  }
+  .content-block {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: auto;
+    margin-top: 80px;
+    margin-right: inherit;
+  }
+
+  .footer {
+    /* position:absolute;
+    bottom:0px; */
+    width: 100%;
   }
 }
 
