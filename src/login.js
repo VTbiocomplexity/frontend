@@ -28,7 +28,7 @@ export class Login {
   }
 
   checkIfLoggedIn() {
-    let token = localStorage.getItem('token');
+    let token = localStorage.getItem('ndssl_id_token');
     console.log(token);
     if (token !== null) {
       this.app.auth.setToken(token);

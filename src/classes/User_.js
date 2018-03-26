@@ -8,7 +8,7 @@ class User_ {
     this.changeEmail = this.searchParams.get('changeemail');
     this.formType = '';
     this.formType += this.searchParams.get('form');
-    this.userToken = localStorage.getItem('token');
+    this.userToken = localStorage.getItem('ndssl_id_token');
     this.verifyEmail();
   }
 
@@ -186,19 +186,6 @@ class User_ {
       }
     };
     return runFetch(fetchClient, process.env.BackendUrl, '/auth/updateemail', fetchData);
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     if (data.message) {
-  //       let messagediv = document.getElementsByClassName('loginerror')[0];
-  //       messagediv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';
-  //     } else {
-  //       localStorage.setItem('useremail', document.getElementsByClassName('email')[0].value);
-  //       this.nevermind('RegistrationForm');
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     console.log(error);
-  //   });
   }
 }
 

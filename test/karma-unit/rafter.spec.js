@@ -71,7 +71,7 @@ describe('The Rafter Dashboard', () => {
     rd3.activate();
     document.body.innerHTML = '<div class="homeDirContent">{"state":"analyzing","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"a185e810-af88-11e7-ab0c-717499928918","creation_date":"2017-10-12T20:05:01.841Z","name":"someName"}</div>';
     rd3.rafterUserID = 'Tester';
-    localStorage.setItem('rafterToken', JSON.stringify({token: '123'}));
+    sessionStorage.setItem('rafterToken', JSON.stringify({token: '123'}));
     await rd3.fileDownload();
     //expect(rd.uid).toBe('3456');
   }));
@@ -95,7 +95,7 @@ describe('The Rafter Dashboard', () => {
     rd3.activate();
     document.body.innerHTML = '<div class="displayFileContent"></div><div class="homeDirContent">{"state":"analyzing","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"a185e810-af88-11e7-ab0c-717499928918","creation_date":"2017-10-12T20:05:01.841Z","name":"someName"}</div>';
     rd3.rafterUserID = 'Tester';
-    localStorage.setItem('rafterToken', JSON.stringify({token: '123'}));
+    sessionStorage.setItem('rafterToken', JSON.stringify({token: '123'}));
     console.log('do I have a file reader?');
     rd3.reader = new FileReader();
     console.log(rd3.reader);
@@ -126,7 +126,7 @@ describe('The Rafter Dashboard', () => {
     rd3.activate();
     document.body.innerHTML = '<div class="displayFileContent"></div><div class="homeDirContent">{"state":"analyzing","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"a185e810-af88-11e7-ab0c-717499928918","creation_date":"2017-10-12T20:05:01.841Z","name":"someName"}</div>';
     rd3.rafterUserID = 'Tester';
-    localStorage.setItem('rafterToken', JSON.stringify({token: '123'}));
+    sessionStorage.setItem('rafterToken', JSON.stringify({token: '123'}));
     console.log('do I have a file reader?');
     rd3.reader = new FileReader();
     console.log(rd3.reader);
@@ -191,7 +191,7 @@ describe('The Rafter Dashboard', () => {
     rd.rafterUser = new RafterUser(rd.app.httpClient);
     await rd.rafterUser.initRafter(rd.rafterUserID, rd.rafter);
     expect(document.getElementsByClassName('userServiceError')[0].innerHTML).toBe('');
-    window.localStorage.removeItem('rafterToken');
+    window.sessionStorage.removeItem('rafterToken');
     await rd2.rafterUser.initRafter(rd2.rafterUserID, rd2.rafter);
     expect(document.getElementsByClassName('userServiceError')[0].innerHTML).toBe('<br>Wrong app id or app secret');
     document.body.innerHTML = '';
@@ -429,13 +429,13 @@ describe('The Rafter Dashboard', () => {
     let tkn = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6W10sImZpcnN0X25hbWUiOiJuZHNzbCIsImxhc3RfbmFtZSI6ImFwcCIsInJvbGVzIjpbXSwidGVhbXMiOlsiQHVzZXJzIl0sImlhdCI6MTUxNzk0Nzk2MSwibmJmIjoxNTE3OTQ3OTYxLCJleHAiOjE1MTgwMzQzNjEsImF1ZCI6WyJAY29yZSIsIiNwdWJsaWMiXSwiaXNzIjoiaHR0cHM6Ly9yYWZ0ZXIuYmkudnQuZWR1L3VzZXJzdmMvcHVibGljX2tleSIsInN1YiI6Im5kc3NsQXBwIn0.a_q5Hq2MKWizi1KFbq8RMKAeQQbpsPweexIRCQwQ2a65J5Ojukf9vv' +
     '-i9vRVuzPJEWxPHhXZTSzLXiwPlLB5P9VOlzgDPhmVuPwx2n0q-T9hbV6vGt1E0EL-oKex1dpVE10iM0BWujXvQRC8gPJXhIBNR6zUDXX5ziO_8Y48CNWvKBDKhTjcrGEuj7CEMSt9kZBlgt-E_DnkibnFfHl763k_vPWqJ4okWkhELXtpCj7ObKrjNGRjYzKrMRyjJkIHLOc6ZEsTKkWt4ATzOXN_jVYFqN5tzRpMqiqC-G0oS-aSOiML6HZpqiEu26oLoQ4a6RDAXPp6Me9SXwkhw7K-JNDvW68LRyXIMnz7HisLWhc6-1XykgQ6MLcu4uvsOBD11VQpVmO-5Dkdf2vAlr7jbQ8tvKZaJi4W2PEiVIfR6lNhGPLyU4Zx4bg084tzi6n3jSipKcavfPY' +
     '-iNAbZOYDXlB8GKdDIEFpRQmO11Yyr1_B9OjRYFWrf1scdlLhdXcRQT33FHQo_sakhZMI36s50ksj6B4ghrEHhdvgE1TFBgMg6uyRiNiZiRVgd08kMok_JmlJrjGkqoUIgvZeC9NkjGU8YcV5bF5ZTeJpTlJ7l28W8fY_lkjOs4LBsxoJDdnrdGR-FsfFMQJajL4LEuwXGlpBHjfiLpqflRYhf8poDRU';
-    localStorage.setItem('rafterToken', tkn);
+    sessionStorage.setItem('rafterToken', tkn);
     rd.rafterUser = new RafterUser(rd.app.httpClient);
     rd.rafterUser.checkExpired = function() {return true;};
     const rlo = rd.rafterUser.rafterLogout;
     const cipr = rd.rafterUser.checkIfPageReload;
     rd.showLogin = rd.checkIfLoggedIn(rd.rafterUser.checkExpired, rlo, this.showLogin, cipr);
-    expect(localStorage.getItem('rafterToken')).not.toBe(null);
+    expect(sessionStorage.getItem('rafterToken')).not.toBe(null);
     expect(rd.showLogin).toBe(false);
     done();
   });
@@ -444,14 +444,14 @@ describe('The Rafter Dashboard', () => {
     let tkn = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6W10sImZpcnN0X25hbWUiOiJuZHNzbCIsImxhc3RfbmFtZSI6ImFwcCIsInJvbGVzIjpbXSwidGVhbXMiOlsiQHVzZXJzIl0sImlhdCI6MTUxNzk0Nzk2MSwibmJmIjoxNTE3OTQ3OTYxLCJleHAiOjE1MTgwMzQzNjEsImF1ZCI6WyJAY29yZSIsIiNwdWJsaWMiXSwiaXNzIjoiaHR0cHM6Ly9yYWZ0ZXIuYmkudnQuZWR1L3VzZXJzdmMvcHVibGljX2tleSIsInN1YiI6Im5kc3NsQXBwIn0.a_q5Hq2MKWizi1KFbq8RMKAeQQbpsPweexIRCQwQ2a65J5Ojukf9vv' +
     '-i9vRVuzPJEWxPHhXZTSzLXiwPlLB5P9VOlzgDPhmVuPwx2n0q-T9hbV6vGt1E0EL-oKex1dpVE10iM0BWujXvQRC8gPJXhIBNR6zUDXX5ziO_8Y48CNWvKBDKhTjcrGEuj7CEMSt9kZBlgt-E_DnkibnFfHl763k_vPWqJ4okWkhELXtpCj7ObKrjNGRjYzKrMRyjJkIHLOc6ZEsTKkWt4ATzOXN_jVYFqN5tzRpMqiqC-G0oS-aSOiML6HZpqiEu26oLoQ4a6RDAXPp6Me9SXwkhw7K-JNDvW68LRyXIMnz7HisLWhc6-1XykgQ6MLcu4uvsOBD11VQpVmO-5Dkdf2vAlr7jbQ8tvKZaJi4W2PEiVIfR6lNhGPLyU4Zx4bg084tzi6n3jSipKcavfPY' +
     '-iNAbZOYDXlB8GKdDIEFpRQmO11Yyr1_B9OjRYFWrf1scdlLhdXcRQT33FHQo_sakhZMI36s50ksj6B4ghrEHhdvgE1TFBgMg6uyRiNiZiRVgd08kMok_JmlJrjGkqoUIgvZeC9NkjGU8YcV5bF5ZTeJpTlJ7l28W8fY_lkjOs4LBsxoJDdnrdGR-FsfFMQJajL4LEuwXGlpBHjfiLpqflRYhf8poDRU';
-    localStorage.setItem('rafterToken', tkn);
+    sessionStorage.setItem('rafterToken', tkn);
     //expect(isValid).toBe(false);
     //tkn = {exp: 999999999999};
     let cep = function() {return false;};
-    let rlo = function() {localStorage.removeItem('rafterToken');};
+    let rlo = function() {sessionStorage.removeItem('rafterToken');};
     let sli = true;
     rd.checkIfLoggedIn(cep, rlo, sli);
-    expect(localStorage.getItem('rafterToken')).toBe(null);
+    expect(sessionStorage.getItem('rafterToken')).toBe(null);
     //expect(sli).toBe(false);
     //expect(isValid).toBe(true);
     done();
@@ -461,14 +461,14 @@ describe('The Rafter Dashboard', () => {
     let tkn = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6W10sImZpcnN0X25hbWUiOiJuZHNzbCIsImxhc3RfbmFtZSI6ImFwcCIsInJvbGVzIjpbXSwidGVhbXMiOlsiQHVzZXJzIl0sImlhdCI6MTUxNzk0Nzk2MSwibmJmIjoxNTE3OTQ3OTYxLCJleHAiOjE1MTgwMzQzNjEsImF1ZCI6WyJAY29yZSIsIiNwdWJsaWMiXSwiaXNzIjoiaHR0cHM6Ly9yYWZ0ZXIuYmkudnQuZWR1L3VzZXJzdmMvcHVibGljX2tleSIsInN1YiI6Im5kc3NsQXBwIn0.a_q5Hq2MKWizi1KFbq8RMKAeQQbpsPweexIRCQwQ2a65J5Ojukf9vv' +
     '-i9vRVuzPJEWxPHhXZTSzLXiwPlLB5P9VOlzgDPhmVuPwx2n0q-T9hbV6vGt1E0EL-oKex1dpVE10iM0BWujXvQRC8gPJXhIBNR6zUDXX5ziO_8Y48CNWvKBDKhTjcrGEuj7CEMSt9kZBlgt-E_DnkibnFfHl763k_vPWqJ4okWkhELXtpCj7ObKrjNGRjYzKrMRyjJkIHLOc6ZEsTKkWt4ATzOXN_jVYFqN5tzRpMqiqC-G0oS-aSOiML6HZpqiEu26oLoQ4a6RDAXPp6Me9SXwkhw7K-JNDvW68LRyXIMnz7HisLWhc6-1XykgQ6MLcu4uvsOBD11VQpVmO-5Dkdf2vAlr7jbQ8tvKZaJi4W2PEiVIfR6lNhGPLyU4Zx4bg084tzi6n3jSipKcavfPY' +
     '-iNAbZOYDXlB8GKdDIEFpRQmO11Yyr1_B9OjRYFWrf1scdlLhdXcRQT33FHQo_sakhZMI36s50ksj6B4ghrEHhdvgE1TFBgMg6uyRiNiZiRVgd08kMok_JmlJrjGkqoUIgvZeC9NkjGU8YcV5bF5ZTeJpTlJ7l28W8fY_lkjOs4LBsxoJDdnrdGR-FsfFMQJajL4LEuwXGlpBHjfiLpqflRYhf8poDRU';
-    localStorage.setItem('rafterToken', tkn);
+    sessionStorage.setItem('rafterToken', tkn);
     //expect(isValid).toBe(false);
     //tkn = {exp: 999999999999};
     let cep = function() {return true;};
-    let rlo = function() {localStorage.removeItem('rafterToken');};
+    let rlo = function() {sessionStorage.removeItem('rafterToken');};
     let sli = true;
     rd.checkIfLoggedIn(cep, rlo, sli);
-    expect(localStorage.getItem('rafterToken')).not.toBe(null);
+    expect(sessionStorage.getItem('rafterToken')).not.toBe(null);
     //expect(sli).toBe(false);
     //expect(isValid).toBe(true);
     done();
@@ -476,23 +476,23 @@ describe('The Rafter Dashboard', () => {
   it('checks if the user has logged during a set interval and detects an invalid token', (done) => {
     document.body.innerHTML = '<div class="rafterLogout" style="display:block"></div>';
     let tkn = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpCIsImxhc3RfbmFtZSI6ImFwcCIsInJvbGVzIjpbXSwidGVhbXMiOlsiQHVzZXJzIl0sImlhdCI6MTUxNzk0Nzk2MSwibmJmIjoxNTE3OTQ3OTYxLCJleHAiOjE1MTgwMzQzNjEsImF1ZCI6WyJAY29yZSIsIiNwdWJsaWMiXSwiaXNzIjoiaHR0cHM6Ly9yYWZ0ZXIuYmkudnQuZWR1L3VzZXJzdmMvcHVibGljX2tleSIsInN1YiI6Im5kc3NsQXBwIn0.a_q5Hq2MKWizi1KFbq8RMKAeQQbpsPweexIRCQwQ2a65J5Ojukf9vv';
-    localStorage.setItem('rafterToken', tkn);
+    sessionStorage.setItem('rafterToken', tkn);
     //expect(isValid).toBe(false);
     //tkn = {exp: 999999999999};
     let cep = function() {return false;};
-    let rlo = function() {localStorage.removeItem('rafterToken');};
+    let rlo = function() {sessionStorage.removeItem('rafterToken');};
     let sli = true;
     rd.checkIfLoggedIn(cep, rlo, sli);
-    expect(localStorage.getItem('rafterToken')).toBe(null);
+    expect(sessionStorage.getItem('rafterToken')).toBe(null);
     //expect(sli).toBe(false);
     //expect(isValid).toBe(true);
     done();
   });
-  it('reloads the page if localstorage was deleted', testAsync(async function() {
+  it('reloads the page if sessionStorage was deleted', testAsync(async function() {
     document.body.innerHTML = '<div class="rafterLogout" style="display:block"></div>';
     rd.rafterUser = new RafterUser();
     let cep = function() {return false;};
-    let rlo = function() {localStorage.removeItem('rafterToken');};
+    let rlo = function() {sessionStorage.removeItem('rafterToken');};
     let sli = true;
     await rd.checkIfLoggedIn(cep, rlo, sli, rd.rafterUser.checkIfPageReload);
     document.body.innerHTML = '<div class="rafterLogout" style="display:none"></div>';
@@ -507,7 +507,7 @@ describe('The Rafter Dashboard', () => {
     let tkn = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6W10sImZpcnN0X25hbWUiOiJuZHNzbCIsImxhc3RfbmFtZSI6ImFwcCIsInJvbGVzIjpbXSwidGVhbXMiOlsiQHVzZXJzIl0sImlhdCI6MTUxNzk0Nzk2MSwibmJmIjoxNTE3OTQ3OTYxLCJleHAiOjE1MTgwMzQzNjEsImF1ZCI6WyJAY29yZSIsIiNwdWJsaWMiXSwiaXNzIjoiaHR0cHM6Ly9yYWZ0ZXIuYmkudnQuZWR1L3VzZXJzdmMvcHVibGljX2tleSIsInN1YiI6Im5kc3NsQXBwIn0.a_q5Hq2MKWizi1KFbq8RMKAeQQbpsPweexIRCQwQ2a65J5Ojukf9vv' +
     '-i9vRVuzPJEWxPHhXZTSzLXiwPlLB5P9VOlzgDPhmVuPwx2n0q-T9hbV6vGt1E0EL-oKex1dpVE10iM0BWujXvQRC8gPJXhIBNR6zUDXX5ziO_8Y48CNWvKBDKhTjcrGEuj7CEMSt9kZBlgt-E_DnkibnFfHl763k_vPWqJ4okWkhELXtpCj7ObKrjNGRjYzKrMRyjJkIHLOc6ZEsTKkWt4ATzOXN_jVYFqN5tzRpMqiqC-G0oS-aSOiML6HZpqiEu26oLoQ4a6RDAXPp6Me9SXwkhw7K-JNDvW68LRyXIMnz7HisLWhc6-1XykgQ6MLcu4uvsOBD11VQpVmO-5Dkdf2vAlr7jbQ8tvKZaJi4W2PEiVIfR6lNhGPLyU4Zx4bg084tzi6n3jSipKcavfPY' +
     '-iNAbZOYDXlB8GKdDIEFpRQmO11Yyr1_B9OjRYFWrf1scdlLhdXcRQT33FHQo_sakhZMI36s50ksj6B4ghrEHhdvgE1TFBgMg6uyRiNiZiRVgd08kMok_JmlJrjGkqoUIgvZeC9NkjGU8YcV5bF5ZTeJpTlJ7l28W8fY_lkjOs4LBsxoJDdnrdGR-FsfFMQJajL4LEuwXGlpBHjfiLpqflRYhf8poDRU';
-    localStorage.setItem('rafterToken', tkn);
+    sessionStorage.setItem('rafterToken', tkn);
     document.body.innerHTML = '<div class="rafterLogout" style="display:block"></div>';
     rd.rafterUser = {rafterLogout: function() {}, checkIfPageReload: function() {}};
     rd.attached();
@@ -519,12 +519,9 @@ describe('The Rafter Dashboard', () => {
   });
   it('continues to check for expired token when there is not a user defined', (done) => {
     document.body.innerHTML = '<div class="rafterLogout" style="display:block"></div>';
-    localStorage.removeItem('rafterUser');
+    sessionStorage.removeItem('rafterUser');
     rd.rafterUser = {rafterLogout: function() {}};
     rd.attached();
-    //   setTimeout(() => {
     done();
-    //   }, 5400);
-    // }, 5400);
   });
 });

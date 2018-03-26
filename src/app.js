@@ -188,6 +188,7 @@ export class App {
     this.auth.logout('/')
     .then(() => {
       localStorage.clear();
+      sessionStorage.clear();
       console.log('Promise fulfilled, logged out');
     });
   }

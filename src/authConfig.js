@@ -12,7 +12,7 @@ let configForDevelopment = {
   // signupRoute: '/signup',
   tokenRoot: false,
   //tokenName: 'token',
-  tokenPrefix: 'aurelia',
+  tokenPrefix: 'ndssl',
   responseTokenProp: 'access_token',
   unlinkUrl: '/auth/unlink/',
   unlinkMethod: 'get',
@@ -20,7 +20,7 @@ let configForDevelopment = {
   authToken: 'Bearer',
   withCredentials: true,
   platform: 'browser',
-  storage: 'sessionStorage',
+  storage: 'localStorage',
   providers: {
     google: {
       name: 'google',

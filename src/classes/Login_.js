@@ -182,7 +182,7 @@ class Login_ {
     .then((response) => response.json())
     .then((data) => {
       if (data.token !== undefined) {
-        localStorage.setItem('token', data.token);
+        localStorage.setItem('ndssl_id_token', data.token);
         localStorage.setItem('userEmail', data.email);
         //Login.app.auth.setToken(data.token);
         // if (appName === 'PATRIC') {
@@ -204,24 +204,5 @@ class Login_ {
       console.log(error);
     });
   }
-
-  // generateSession(useremail) {
-
-  //   let bodyData = {'email': useremail };
-  //   let fetchData = {
-  //     method: 'POST',
-  //     body: JSON.stringify(bodyData),
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json',
-  //       'Authorization': 'Bearer ' + localStorage.getItem('token')
-  //     }
-  //   };
-  //   return this.fetch(process.env.BackendUrl + '/user/', fetchData)
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     console.log(data);
-  //   });
-  // }
 }
 module.exports = Login_;
