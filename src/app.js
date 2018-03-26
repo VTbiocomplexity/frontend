@@ -53,7 +53,7 @@ export class App {
     }
     if (isWide) {
       if (drawer !== null && drawer !== undefined) {
-        this.contentWidth = '181px';
+        this.contentWidth = '187px';
         drawer.style.display = 'block';
         $(drawer).parent().css('display', 'block');
         mobileMenuToggle.style.display = 'none';
