@@ -38,11 +38,11 @@ export class Rafter {
     this.fileTypes.splice(0, 0, 'unspecified');
     console.log('this is the user');
     console.log(this.user);
-    if (this.user.r_app_secret !== null && this.user.r_app_secret !== undefined && this.user.r_app_id !== null && this.user.r_app_id !== undefined && (localStorage.getItem('rafterToken') === null || localStorage.getItem('rafterToken') === undefined)) {
+    if (this.user.r_app_secret !== null && this.user.r_app_secret !== undefined && this.user.r_app_id !== null && this.user.r_app_id !== undefined && (sessionStorage.getItem('rafterToken') === null || sessionStorage.getItem('rafterToken') === undefined)) {
       console.log('I have an app id, secret, but no token');
       this.rafter = {id: this.user.r_app_id, secret: this.user.r_app_secret};
       await this.rafterUser.initRafter(this.rafterUserID, this.rafter, this.user._id, this.interval);
-      let rT = (localStorage.getItem('rafterToken'));
+      let rT = (sessionStorage.getItem('rafterToken'));
       /* istanbul ignore else */
       if (rT !== null && rT !== undefined) {
         let rU = jwtDecode(rT);
@@ -274,7 +274,7 @@ export class Rafter {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({token: localStorage.getItem('rafterToken'), userName: rui, command: cmd, rafterFile: raf})
+      body: JSON.stringify({token: sessionStorage.getItem('rafterToken'), userName: rui, command: cmd, rafterFile: raf})
     })
     .then(function(response) {
       console.log(response);
@@ -414,7 +414,7 @@ export class Rafter {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({token: localStorage.getItem('rafterToken'), userName: rui, command: 'create', rafterFile: {name: cleanFileName, path: filePath, content: fileString, createType: 'file'}})
+        body: JSON.stringify({token: sessionStorage.getItem('rafterToken'), userName: rui, command: 'create', rafterFile: {name: cleanFileName, path: filePath, content: fileString, createType: 'file'}})
       })
         .then((response) => response.json())
         .then((data) => {
@@ -434,8 +434,8 @@ export class Rafter {
   }
 
   checkIfLoggedIn(cep, rlo, sli, cipr) {
-    if (window.localStorage.getItem('rafterToken') !== null && window.localStorage.getItem('rafterToken') !== undefined) {
-      let rtok = window.localStorage.getItem('rafterToken');
+    if (window.sessionStorage.getItem('rafterToken') !== null && window.sessionStorage.getItem('rafterToken') !== undefined) {
+      let rtok = window.sessionStorage.getItem('rafterToken');
       try {
         let decoded = jwtDecode(rtok);
         let validToken;
@@ -473,7 +473,7 @@ export class Rafter {
       cili(cep, rlo, sli, cipr);
     }
     , 3400);
-    let rT = (localStorage.getItem('rafterToken'));
+    let rT = (sessionStorage.getItem('rafterToken'));
     if (rT !== null && rT !== undefined) {
       let rU = jwtDecode(rT);
       this.rafterUserID = rU.sub;

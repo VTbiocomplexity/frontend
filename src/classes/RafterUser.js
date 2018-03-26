@@ -5,7 +5,7 @@ export class RafterUser {
   }
 
   rafterLogout() {
-    localStorage.removeItem('rafterToken');
+    sessionStorage.removeItem('rafterToken');
     /* istanbul ignore if */
     if (process.env.NODE_ENV !== 'test') {
       window.location.reload();
@@ -76,7 +76,7 @@ export class RafterUser {
       console.log(typeof data);
       console.log(data.includes('error'));
       if (!data.includes('error')) {
-        window.localStorage.setItem('rafterToken', data);
+        window.sessionStorage.setItem('rafterToken', data);
         let user = jwtDecode(data);
         console.log(user);
         ruid = user.sub;

@@ -16,7 +16,7 @@ class UserAct {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
+        'Authorization': 'Bearer ' + localStorage.getItem('ndssl_id_token')
       }
     };
     return this.fetch(process.env.BackendUrl + '/user/', fetchData)
@@ -71,7 +71,7 @@ class UserAct {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
+        'Authorization': 'Bearer ' + localStorage.getItem('ndssl_id_token')
       }
     };
     return this.fetch(process.env.BackendUrl + '/user/' + this.uid, fetchData)
