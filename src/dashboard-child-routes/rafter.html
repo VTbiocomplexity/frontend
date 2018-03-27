@@ -8,6 +8,8 @@
       <p style="text-align:center;"><i>We are going to try out some Rafter APIs here!</i></p>
       <div class="rafterLogin elevation3" style="max-width:3in; margin:auto" show.bind="showLogin">
         <form style="margin-left:8px">
+          <label>Rafter App Name</label>
+          <input type="text" value.bind="rafter.appName" change.delegate="validate()" keyup.delegate="validate()" style="width:2.65in">
           <label>Rafter App Id</label>
           <input type="text" value.bind="rafter.id" change.delegate="validate()" keyup.delegate="validate()" style="width:2.65in">
           <label>Rafter App Secret</label>
