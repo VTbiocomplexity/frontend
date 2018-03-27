@@ -1,8 +1,8 @@
 const Fetch = require('isomorphic-fetch');
 class UserAct {
-  constructor() {
+  constructor(uid) {
     this.fetch = Fetch;
-    this.uid = '';
+    this.uid = uid;
     this.populateForm();
   }
 
@@ -87,7 +87,7 @@ class UserAct {
         // if (process.env.FrontendUrl !== undefined) {
         //   feurl = process.env.FrontendUrl;
         // }
-        window.location.href = process.env.FrontendUrl + '/';
+        window.location.href = process.env.FrontendUrl + '/dashboard';
       }
     });
   }

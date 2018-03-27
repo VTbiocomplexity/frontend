@@ -12,13 +12,10 @@ export class UserAccount {
     this.uid = this.app.auth.getTokenPayload().sub;
     this.user = await this.app.appState.getUser(this.uid);
     this.canChangeUserType = true;
-    // if (this.userActClass !== undefined) {
-    //   console.log(this.userActClass);
-    // }
     console.log(this.user);
   }
   attached() {
-    this.userActClass = new Uact();
+    this.userActClass = new Uact(this.uid);
     this.checkUserRole();
     // let optionRequired = document.getElementById('optrequired');
     // console.log(optionRequired);
@@ -60,21 +57,9 @@ export class UserAccount {
   }
 
   updateUserPrefs() {
-    console.log('update user prefs');
-    let fname = document.getElementsByClassName('uprofFirstName')[0].value;
-    let fspace = fname.split(' ');
-    let lname = document.getElementsByClassName('uprofLastName')[0].value;
-    let lspace = lname.split(' ');
-    if (fname === '' || lname === '' || fspace.length > 1 || lspace.length > 1) {
-      console.log('not valid');
-      return document.getElementsByClassName('formerrors')[0].innerHTML = '<p>Name is not valid, please fix</p>';
-    }
-    if (this.user.userType === '') {
-      return document.getElementsByClassName('formerrors')[0].innerHTML = '<p>Select a primary user type.</p>';
-    }
-    document.getElementsByClassName('formerrors')[0].innerHTML = '';
     this.userActClass.updateUserPrefs(this.user.userType);
   }
+
   changeUserEmail() {
     let isemailvalid = document.getElementsByClassName('uprofEmail')[0].checkValidity();
     let emValue = document.getElementsByClassName('uprofEmail')[0].value;

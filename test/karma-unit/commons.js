@@ -153,6 +153,7 @@ class HttpMock {
         json: () => Promise.reject({message: 'error'})
       });
     }
+
     if (url === '/rafter/rlogin') {
       console.log('login rafter test');
       if (!this.error) {
