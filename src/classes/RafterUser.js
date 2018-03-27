@@ -23,12 +23,12 @@ export class RafterUser {
 
   checkIfPageReload(sli) {
     let reloadPage = false;
-    let logoutButton = document.getElementsByClassName('rafterLogout')[0];
-    if (logoutButton !== null && logoutButton !== undefined) {
-      if (logoutButton.style.display === 'block') {
-        console.log('why is logout button?');
+    let showHideHD = document.getElementsByClassName('showHideHD')[0];
+    if (showHideHD !== null && showHideHD !== undefined) {
+      if (showHideHD.style.display === 'block') {
+        //console.log('why is logout button?');
         reloadPage = true;
-        logoutButton.style.display === 'none';
+        showHideHD.style.display === 'none';
       }
     }
     console.log('you are not logged in');
@@ -51,9 +51,11 @@ export class RafterUser {
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
-      document.getElementsByClassName('rafterLogout')[0].style.display = 'block';
+      return true;
+      //document.getElementsByClassName('rafterLogout')[0].style.display = 'block';
     }).catch((err) => {
       console.log(err);
+      return false;
     });
   }
 

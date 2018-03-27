@@ -46,9 +46,33 @@ describe('The Rafter Dashboard', () => {
     expect(rd.uid).toBe('3456');
   }));
 
-  it('should activate with a user that has a rafter app id and secret', testAsync(async function() {
-    rd.app.appState = {getUser: function() {return {_id: 'yo', r_app_secret: 'hi', r_app_id: 'howdy'};}};
-    await rd.activate();
+  it('automatically inits rafter if user has credentials', testAsync(async function() {
+    rd.user = {r_app_secret: 'wow', r_app_id: 'yo'};
+    rd.rafterUser = new RafterUser(rd.app.httpClient);
+    await rd.autoInitRafter();
+    //expect(rd.uid).toBe('3456');
+  }));
+
+  it('inits vs if rafter token is in sessionStorage', testAsync(async function() {
+    rd.user = {r_app_secret: 'wow', r_app_id: 'yo'};
+    let tkn = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6W10sImZpcnN0X25hbWUiOiJuZHNzbCIsImxhc3RfbmFtZSI6ImFwcCIsInJvbGVzIjpbXSwidGVhbXMiOlsiQHVzZXJzIl0sImlhdCI6MTUxNzk0Nzk2MSwibmJmIjoxNTE3OTQ3OTYxLCJleHAiOjE1MTgwMzQzNjEsImF1ZCI6WyJAY29yZSIsIiNwdWJsaWMiXSwiaXNzIjoiaHR0cHM6Ly9yYWZ0ZXIuYmkudnQuZWR1L3VzZXJzdmMvcHVibGljX2tleSIsInN1YiI6Im5kc3NsQXBwIn0.a_q5Hq2MKWizi1KFbq8RMKAeQQbpsPweexIRCQwQ2a65J5Ojukf9vv' +
+      '-i9vRVuzPJEWxPHhXZTSzLXiwPlLB5P9VOlzgDPhmVuPwx2n0q-T9hbV6vGt1E0EL-oKex1dpVE10iM0BWujXvQRC8gPJXhIBNR6zUDXX5ziO_8Y48CNWvKBDKhTjcrGEuj7CEMSt9kZBlgt-E_DnkibnFfHl763k_vPWqJ4okWkhELXtpCj7ObKrjNGRjYzKrMRyjJkIHLOc6ZEsTKkWt4ATzOXN_jVYFqN5tzRpMqiqC-G0oS-aSOiML6HZpqiEu26oLoQ4a6RDAXPp6Me9SXwkhw7K-JNDvW68LRyXIMnz7HisLWhc6-1XykgQ6MLcu4uvsOBD11VQpVmO-5Dkdf2vAlr7jbQ8tvKZaJi4W2PEiVIfR6lNhGPLyU4Zx4bg084tzi6n3jSipKcavfPY' +
+      '-iNAbZOYDXlB8GKdDIEFpRQmO11Yyr1_B9OjRYFWrf1scdlLhdXcRQT33FHQo_sakhZMI36s50ksj6B4ghrEHhdvgE1TFBgMg6uyRiNiZiRVgd08kMok_JmlJrjGkqoUIgvZeC9NkjGU8YcV5bF5ZTeJpTlJ7l28W8fY_lkjOs4LBsxoJDdnrdGR-FsfFMQJajL4LEuwXGlpBHjfiLpqflRYhf8poDRU';
+    sessionStorage.setItem('rafterToken', tkn);
+    rd.rafterUser = new RafterUser(rd.app.httpClient);
+    await rd.attached();
+    //expect(rd.uid).toBe('3456');
+  }));
+
+  it('does not inits vs if rafter token is in sessionStorage and it has already been initialized', testAsync(async function() {
+    rd.user = {r_app_secret: 'wow', r_app_id: 'yo'};
+    let tkn = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6W10sImZpcnN0X25hbWUiOiJuZHNzbCIsImxhc3RfbmFtZSI6ImFwcCIsInJvbGVzIjpbXSwidGVhbXMiOlsiQHVzZXJzIl0sImlhdCI6MTUxNzk0Nzk2MSwibmJmIjoxNTE3OTQ3OTYxLCJleHAiOjE1MTgwMzQzNjEsImF1ZCI6WyJAY29yZSIsIiNwdWJsaWMiXSwiaXNzIjoiaHR0cHM6Ly9yYWZ0ZXIuYmkudnQuZWR1L3VzZXJzdmMvcHVibGljX2tleSIsInN1YiI6Im5kc3NsQXBwIn0.a_q5Hq2MKWizi1KFbq8RMKAeQQbpsPweexIRCQwQ2a65J5Ojukf9vv' +
+      '-i9vRVuzPJEWxPHhXZTSzLXiwPlLB5P9VOlzgDPhmVuPwx2n0q-T9hbV6vGt1E0EL-oKex1dpVE10iM0BWujXvQRC8gPJXhIBNR6zUDXX5ziO_8Y48CNWvKBDKhTjcrGEuj7CEMSt9kZBlgt-E_DnkibnFfHl763k_vPWqJ4okWkhELXtpCj7ObKrjNGRjYzKrMRyjJkIHLOc6ZEsTKkWt4ATzOXN_jVYFqN5tzRpMqiqC-G0oS-aSOiML6HZpqiEu26oLoQ4a6RDAXPp6Me9SXwkhw7K-JNDvW68LRyXIMnz7HisLWhc6-1XykgQ6MLcu4uvsOBD11VQpVmO-5Dkdf2vAlr7jbQ8tvKZaJi4W2PEiVIfR6lNhGPLyU4Zx4bg084tzi6n3jSipKcavfPY' +
+      '-iNAbZOYDXlB8GKdDIEFpRQmO11Yyr1_B9OjRYFWrf1scdlLhdXcRQT33FHQo_sakhZMI36s50ksj6B4ghrEHhdvgE1TFBgMg6uyRiNiZiRVgd08kMok_JmlJrjGkqoUIgvZeC9NkjGU8YcV5bF5ZTeJpTlJ7l28W8fY_lkjOs4LBsxoJDdnrdGR-FsfFMQJajL4LEuwXGlpBHjfiLpqflRYhf8poDRU';
+    sessionStorage.setItem('rafterToken', tkn);
+    rd.rafterUser = new RafterUser(rd.app.httpClient);
+    rd.isVolInit = true;
+    await rd.attached();
     //expect(rd.uid).toBe('3456');
   }));
 
@@ -100,11 +124,6 @@ describe('The Rafter Dashboard', () => {
     rd3.reader = new FileReader();
     console.log(rd3.reader);
     await rd3.fileDisplay();
-    // let evt = {target: {result: 'howdy'}};
-    // rd3.reader.onload(evt);
-    // rd.reader.onerror();
-    //rd3.reader.onerror();
-    //expect(rd.uid).toBe('3456');
   }));
 
   it('catches error on attempt to display the content of a file on the webpage', testAsync(async function() {
@@ -113,7 +132,7 @@ describe('The Rafter Dashboard', () => {
       //let blob = new Blob([JSON.stringify(debug, null, 2)], {type: 'application/json'});
       return Promise.resolve({
         blob: function() {
-          return Promise.resolve(new Error({message: 'you fail'}));
+          return Promise.resolve(new Error({message: 'you fail', status: 500}));
         }
       });
     }

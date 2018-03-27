@@ -196,9 +196,10 @@ class HttpMock {
         //if (this.errorType === 'rafterCreateError') {
         //errormsg = {error: 'incorrect stuff'};
         //}
+      console.log('error on rafter vs');
       return Promise.resolve({
         Headers: this.headers,
-        json: () => Promise.reject(new Error({error: 'fail'}))
+        json: () => Promise.reject(new Error({error: 'fail', status: 500}))
       });
     }
 
