@@ -17,6 +17,7 @@ export class Rafter {
     this.homeDirJson = null;
     this.subDirJson = [];
     this.rafterFileID = '';
+    this.isVolInit = false;
     //this.createType = 'file';
     //   this.vs = new VolumeService('http://rafter.bi.vt.edu/volumesvc/', 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6W10sImZpcnN0X25hbWUiOiJuZHNzbCIsImxhc3RfbmFtZSI6ImFwcCIsInJvbGVzIjpbXSwidGVhbXMiOlsiQHVzZXJzIl0sImlhdCI6MTUxNzk0Nzk2MSwibmJmIjoxNTE3OTQ3OTYxLCJleHAiOjE1MTgwMzQzNjEsImF1ZCI6WyJAY29yZSIsIiNwdWJsaWMiXSwiaXNzIjoiaHR0cHM6Ly9yYWZ0ZXIuYmkudnQuZWR1L3VzZXJzdmMvcHVibGljX2tleSIsInN1YiI6Im5kc3NsQXBwIn0.a_q5Hq2MKWizi1KFbq8RMKAeQQbpsPweexIRCQwQ2a65J5Ojukf9vv' +
     //   '-i9vRVuzPJEWxPHhXZTSzLXiwPlLB5P9VOlzgDPhmVuPwx2n0q-T9hbV6vGt1E0EL-oKex1dpVE10iM0BWujXvQRC8gPJXhIBNR6zUDXX5ziO_8Y48CNWvKBDKhTjcrGEuj7CEMSt9kZBlgt-E_DnkibnFfHl763k_vPWqJ4okWkhELXtpCj7ObKrjNGRjYzKrMRyjJkIHLOc6ZEsTKkWt4ATzOXN_jVYFqN5tzRpMqiqC-G0oS-aSOiML6HZpqiEu26oLoQ4a6RDAXPp6Me9SXwkhw7K-JNDvW68LRyXIMnz7HisLWhc6-1XykgQ6MLcu4uvsOBD11VQpVmO-5Dkdf2vAlr7jbQ8tvKZaJi4W2PEiVIfR6lNhGPLyU4Zx4bg084tzi6n3jSipKcavfPY' +
@@ -38,7 +39,11 @@ export class Rafter {
     this.fileTypes.splice(0, 0, 'unspecified');
     console.log('this is the user');
     console.log(this.user);
-    if (this.user.r_app_secret !== null && this.user.r_app_secret !== undefined && this.user.r_app_id !== null && this.user.r_app_id !== undefined && (sessionStorage.getItem('rafterToken') === null || sessionStorage.getItem('rafterToken') === undefined)) {
+    await this.autoInitRafter();
+  }
+
+  async autoInitRafter() {
+    if (this.user.r_app_secret !== null && this.user.r_app_secret !== undefined && this.user.r_app_id !== null && this.user.r_app_id !== undefined && sessionStorage.getItem('rafterToken') === null) {
       console.log('I have an app id, secret, but no token');
       this.rafter = {id: this.user.r_app_id, secret: this.user.r_app_secret};
       await this.rafterUser.initRafter(this.rafterUserID, this.rafter, this.user._id, this.interval);
@@ -47,12 +52,14 @@ export class Rafter {
       if (rT !== null && rT !== undefined) {
         let rU = jwtDecode(rT);
         this.rafterUserID = rU.sub;
+        this.isVolInit = true;
       }
     }
   }
 
   async handleRafterLogin() {
     await this.rafterUser.initRafter(this.rafterUserID, this.rafter, this.user._id, this.interval);
+    this.isVolInit = true;
   }
 
   hideDetail(ic1, ic2, content) {
@@ -67,7 +74,8 @@ export class Rafter {
     document.getElementsByClassName(ic2)[0].style.display = 'none';
   }
 
-  navHomeDir() {
+  async navHomeDir() {
+    //await this.rafterUser.initVol(sessionStorage.getItem('rafterToken'));
     console.log('you clicked me');
     let hdc = JSON.stringify(this.homeDirJson);
     this.rafterFile.path = '';
@@ -299,6 +307,14 @@ export class Rafter {
       }
     }).catch(function (err) {
       console.log(err);
+      /* istanbul ignore if */
+      if (err.status === 500) {
+        console.log('init volume');
+        /* istanbul ignore next */
+        if (process.env.NODE_ENV !== 'test') {
+          window.location.reload();
+        }
+      }
     });
   }
 
@@ -463,7 +479,7 @@ export class Rafter {
     }
   }
 
-  attached() {
+  async attached() {
     const cili = this.checkIfLoggedIn;
     const cep = this.rafterUser.checkExpired;
     const sli = this.showLogin;
@@ -477,6 +493,10 @@ export class Rafter {
     if (rT !== null && rT !== undefined) {
       let rU = jwtDecode(rT);
       this.rafterUserID = rU.sub;
+      if (!this.isVolInit) {
+        await this.rafterUser.initVol(rT);
+        this.isVolInit = true;
+      }
       //document.getElementsByClassName('rafterLogout')[0].style.display = 'block';
     }
   }
