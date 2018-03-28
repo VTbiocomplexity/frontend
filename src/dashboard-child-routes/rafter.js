@@ -48,7 +48,10 @@ export class Rafter {
   }
 
   nevermind() {
-    window.location.reload();
+    /* istanbul ignore if */
+    if (process.env.NODE_ENV !== 'test') {
+      window.location.reload();
+    }
   }
 
   async changeApp() {
@@ -524,6 +527,8 @@ export class Rafter {
         this.isVolInit = true;
       }
       document.getElementsByClassName('rafterAddApp')[0].style.display = 'block';
+      console.log('this is the rafterApps');
+      console.log(this.user.rafterApps);
       if (this.user.rafterApps !== undefined && this.user.rafterApps.length > 1) {
         for (let i = 0; i < this.user.rafterApps.length; i++) {
           this.appNames.push(this.user.rafterApps[i].r_app_name);

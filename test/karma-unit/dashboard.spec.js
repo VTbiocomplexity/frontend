@@ -25,7 +25,7 @@ describe('the Dashboard module', () => {
 
   it('should activate dashboard', testAsync(async function() {
     await dashboard.activate();
-    expect(dashboard.user.name).toBe('Iddris Elba');
+    expect(dashboard.user.name).toBe('Cathy Elba');
   }));
 
   it('sets the local storage token to the session stored aurelia token id', testAsync(async function() {
