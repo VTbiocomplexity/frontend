@@ -73,11 +73,11 @@ class AppStateStub {
   }
   getUser(uid) {
     if (uid === '1') {
-      this.user = {name: 'Iddris Elba', userType: 'Charity', _id: '3333333', volTalents: ['childcare', 'other'], volCauses: ['Environmental', 'other'], volWorkPrefs: ['counseling', 'other'], volCauseOther: '', volTalentOther: '', volWorkOther: ''};
+      this.user = {_id: '1', userType: 'Developer', name: 'Adrean Elba', email: 'one@one.com', rafterApps: [{r_app_name: 'yo'}, {r_app_name: 'slow'}]};
     } else if (uid === '2') {
-      this.user = {name: 'Iddris Elba', userType: 'Volunteer', _id: '3333333', volTalents: ['childcare', 'other'], volCauses: ['Environmental', 'other'], volWorkPrefs: ['counseling', 'other'], volCauseOther: '', volTalentOther: '', volWorkOther: ''};
+      this.user = {_id: '2', userType: 'Developer', name: 'Bogus Elba', email: 'two@two.com', rafterApps: [{r_app_name: 'yo'}, {r_app_name: 'slow'}]};
     } else {
-      this.user = {name: 'Iddris Elba', userType: 'Developer', _id: '3333333', volTalents: [], volCauses: [], volWorkPrefs: [], volCauseOther: '', volTalentOther: '', volWorkOther: ''};
+      this.user = {name: 'Cathy Elba', userType: 'Developer', email: 'three@three.com', rafterApps: [{r_app_name: 'yo'}, {r_app_name: 'slow'}]};
     }
       // return Promise.resolve({
       //   //Headers: this.headers,

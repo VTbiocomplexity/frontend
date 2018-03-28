@@ -18,7 +18,13 @@ describe('The Rafter Dashboard', () => {
   let app2;
   let app4;
   let rd4;
+  //let handlers;
   beforeEach(() => {
+    // handlers = {
+    //   locationReload: window.location.reload // handle for location.reload()
+    //   //reloadPage: reloadPage      // handle for your reloadPage()
+    // };
+    // spyOn(handlers.locationReload);
     auth = new AuthStub();
     auth.setToken({sub: '3456'});
     app = new App(auth, new HttpMock());
@@ -39,7 +45,7 @@ describe('The Rafter Dashboard', () => {
     rd4 = new Rafter(app4);
     rd4.app.appState = new AppStateStub();
     rd4.activate();
-    document.body.innerHTML = '<div class="rafterAddApp"></div><div class="appSelector"></div><div class="displayFileContent"></div><div class="homeDirContent">{"state":"analyzing","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"a185e810-af88-11e7-ab0c-717499928918","creation_date":"2017-10-12T20:05:01.841Z","name":"someName"}</div>';
+    document.body.innerHTML = '<input id="appName"></input><div class="rafterAddApp"></div><div class="appSelector"></div><div class="displayFileContent"></div><div class="homeDirContent">{"state":"analyzing","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"a185e810-af88-11e7-ab0c-717499928918","creation_date":"2017-10-12T20:05:01.841Z","name":"someName"}</div>';
   });
 
   it('should activate', testAsync(async function() {
@@ -54,8 +60,31 @@ describe('The Rafter Dashboard', () => {
     //expect(rd.uid).toBe('3456');
   }));
 
+  it('changes the app', testAsync(async function() {
+    rd.user = {rafterApps: [{r_app_secret: 'wow', r_app_id: 'yo', r_app_name: 'cool'}, {r_app_secret: 'how', r_app_id: 'numba2', r_app_name: 'baby'}]};
+    rd.rafterUser = new RafterUser(rd.app.httpClient);
+    rd.appNames = ['cool', 'numba2'];
+    document.getElementById('appName').value = 'numba2';
+    await rd.changeApp();
+    //expect(rd.uid).toBe('3456');
+  }));
+
+  it('displays the login form to add an additional app', testAsync(async function() {
+    rd.showLogin = false;
+    await rd.rafterAddApp();
+    expect(rd.showLogin).toBe(true);
+  }));
+
+  it('allows user to cancel request to add additional app', testAsync(async function() {
+    //rd.showLogin = true;
+    await rd.nevermind();
+    //expect(handlers.locationReload).toHaveBeenCalled();
+  }));
+
   it('inits vs if rafter token is in sessionStorage', testAsync(async function() {
-    rd.user = {r_app_secret: 'wow', r_app_id: 'yo'};
+    //rd.user = {rafterApps: [{r_app_name: 'yo'}, {r_app_name: 'slow'}]};
+    console.log('this is the user');
+    console.log(rd.user);
     let tkn = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6W10sImZpcnN0X25hbWUiOiJuZHNzbCIsImxhc3RfbmFtZSI6ImFwcCIsInJvbGVzIjpbXSwidGVhbXMiOlsiQHVzZXJzIl0sImlhdCI6MTUxNzk0Nzk2MSwibmJmIjoxNTE3OTQ3OTYxLCJleHAiOjE1MTgwMzQzNjEsImF1ZCI6WyJAY29yZSIsIiNwdWJsaWMiXSwiaXNzIjoiaHR0cHM6Ly9yYWZ0ZXIuYmkudnQuZWR1L3VzZXJzdmMvcHVibGljX2tleSIsInN1YiI6Im5kc3NsQXBwIn0.a_q5Hq2MKWizi1KFbq8RMKAeQQbpsPweexIRCQwQ2a65J5Ojukf9vv' +
       '-i9vRVuzPJEWxPHhXZTSzLXiwPlLB5P9VOlzgDPhmVuPwx2n0q-T9hbV6vGt1E0EL-oKex1dpVE10iM0BWujXvQRC8gPJXhIBNR6zUDXX5ziO_8Y48CNWvKBDKhTjcrGEuj7CEMSt9kZBlgt-E_DnkibnFfHl763k_vPWqJ4okWkhELXtpCj7ObKrjNGRjYzKrMRyjJkIHLOc6ZEsTKkWt4ATzOXN_jVYFqN5tzRpMqiqC-G0oS-aSOiML6HZpqiEu26oLoQ4a6RDAXPp6Me9SXwkhw7K-JNDvW68LRyXIMnz7HisLWhc6-1XykgQ6MLcu4uvsOBD11VQpVmO-5Dkdf2vAlr7jbQ8tvKZaJi4W2PEiVIfR6lNhGPLyU4Zx4bg084tzi6n3jSipKcavfPY' +
       '-iNAbZOYDXlB8GKdDIEFpRQmO11Yyr1_B9OjRYFWrf1scdlLhdXcRQT33FHQo_sakhZMI36s50ksj6B4ghrEHhdvgE1TFBgMg6uyRiNiZiRVgd08kMok_JmlJrjGkqoUIgvZeC9NkjGU8YcV5bF5ZTeJpTlJ7l28W8fY_lkjOs4LBsxoJDdnrdGR-FsfFMQJajL4LEuwXGlpBHjfiLpqflRYhf8poDRU';
@@ -73,6 +102,15 @@ describe('The Rafter Dashboard', () => {
     sessionStorage.setItem('rafterToken', tkn);
     rd.rafterUser = new RafterUser(rd.app.httpClient);
     rd.isVolInit = true;
+    await rd.attached();
+    //expect(rd.uid).toBe('3456');
+  }));
+
+  it('does not set the rafterUser when there is no token', testAsync(async function() {
+    //rd.user = {r_app_secret: 'wow', r_app_id: 'yo'};
+    sessionStorage.removeItem('rafterToken');
+    rd.rafterUser = new RafterUser(rd.app.httpClient);
+    rd.isVolInit = false;
     await rd.attached();
     //expect(rd.uid).toBe('3456');
   }));
@@ -209,7 +247,7 @@ describe('The Rafter Dashboard', () => {
     document.body.innerHTML += '<div class="userServiceError">error</div>';
     rd.rafterUser = new RafterUser(rd.app.httpClient);
     await rd.rafterUser.initRafter(rd.rafterUserID, rd.rafter);
-    expect(document.getElementsByClassName('userServiceError')[0].innerHTML).toBe('');
+    //expect(document.getElementsByClassName('userServiceError')[0].innerHTML).toBe('');
     window.sessionStorage.removeItem('rafterToken');
     await rd2.rafterUser.initRafter(rd2.rafterUserID, rd2.rafter);
     expect(document.getElementsByClassName('userServiceError')[0].innerHTML).toBe('<br>Wrong app id or app secret');
