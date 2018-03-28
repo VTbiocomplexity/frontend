@@ -46,12 +46,12 @@ describe('The Rafter Dashboard', () => {
     expect(rd.uid).toBe('3456');
   }));
 
-  it('automatically inits rafter if user has credentials', testAsync(async function() {
-    rd.user = {r_app_secret: 'wow', r_app_id: 'yo'};
-    rd.rafterUser = new RafterUser(rd.app.httpClient);
-    await rd.autoInitRafter();
-    //expect(rd.uid).toBe('3456');
-  }));
+  // it('automatically inits rafter if user has credentials', testAsync(async function() {
+  //   rd.user = {r_app_secret: 'wow', r_app_id: 'yo'};
+  //   rd.rafterUser = new RafterUser(rd.app.httpClient);
+  //   await rd.autoInitRafter();
+  //   //expect(rd.uid).toBe('3456');
+  // }));
 
   it('inits vs if rafter token is in sessionStorage', testAsync(async function() {
     rd.user = {r_app_secret: 'wow', r_app_id: 'yo'};
