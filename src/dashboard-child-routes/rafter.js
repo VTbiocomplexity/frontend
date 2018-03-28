@@ -18,6 +18,7 @@ export class Rafter {
     this.subDirJson = [];
     this.rafterFileID = '';
     this.isVolInit = false;
+    this.appNames = [];
     //this.createType = 'file';
     //   this.vs = new VolumeService('http://rafter.bi.vt.edu/volumesvc/', 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6W10sImZpcnN0X25hbWUiOiJuZHNzbCIsImxhc3RfbmFtZSI6ImFwcCIsInJvbGVzIjpbXSwidGVhbXMiOlsiQHVzZXJzIl0sImlhdCI6MTUxNzk0Nzk2MSwibmJmIjoxNTE3OTQ3OTYxLCJleHAiOjE1MTgwMzQzNjEsImF1ZCI6WyJAY29yZSIsIiNwdWJsaWMiXSwiaXNzIjoiaHR0cHM6Ly9yYWZ0ZXIuYmkudnQuZWR1L3VzZXJzdmMvcHVibGljX2tleSIsInN1YiI6Im5kc3NsQXBwIn0.a_q5Hq2MKWizi1KFbq8RMKAeQQbpsPweexIRCQwQ2a65J5Ojukf9vv' +
     //   '-i9vRVuzPJEWxPHhXZTSzLXiwPlLB5P9VOlzgDPhmVuPwx2n0q-T9hbV6vGt1E0EL-oKex1dpVE10iM0BWujXvQRC8gPJXhIBNR6zUDXX5ziO_8Y48CNWvKBDKhTjcrGEuj7CEMSt9kZBlgt-E_DnkibnFfHl763k_vPWqJ4okWkhELXtpCj7ObKrjNGRjYzKrMRyjJkIHLOc6ZEsTKkWt4ATzOXN_jVYFqN5tzRpMqiqC-G0oS-aSOiML6HZpqiEu26oLoQ4a6RDAXPp6Me9SXwkhw7K-JNDvW68LRyXIMnz7HisLWhc6-1XykgQ6MLcu4uvsOBD11VQpVmO-5Dkdf2vAlr7jbQ8tvKZaJi4W2PEiVIfR6lNhGPLyU4Zx4bg084tzi6n3jSipKcavfPY' +
@@ -40,6 +41,31 @@ export class Rafter {
     console.log('this is the user');
     console.log(this.user);
     await this.autoInitRafter();
+  }
+
+  rafterAddApp() {
+    this.showLogin = true;
+  }
+
+  nevermind() {
+    window.location.reload();
+  }
+
+  async changeApp() {
+    let selection = document.getElementById('appName').value;
+    console.log(selection);
+    let myIndex = this.appNames.indexOf(selection);
+    console.log(myIndex);
+    console.log(this.user.rafterApps[myIndex]);
+    this.rafter = {id: this.user.rafterApps[myIndex].r_app_id, secret: this.user.rafterApps[myIndex].r_app_secret, appName: this.user.rafterApps[myIndex].r_app_name};
+    await this.rafterUser.initRafter(this.rafterUserID, this.rafter, this.user._id, this.interval);
+    let rT = (sessionStorage.getItem('rafterToken'));
+    /* istanbul ignore else */
+    if (rT !== null && rT !== undefined) {
+      let rU = jwtDecode(rT);
+      this.rafterUserID = rU.sub;
+      this.isVolInit = true;
+    }
   }
 
   async autoInitRafter() {
@@ -497,7 +523,13 @@ export class Rafter {
         await this.rafterUser.initVol(rT);
         this.isVolInit = true;
       }
-      //document.getElementsByClassName('rafterLogout')[0].style.display = 'block';
+      document.getElementsByClassName('rafterAddApp')[0].style.display = 'block';
+      if (this.user.rafterApps !== undefined && this.user.rafterApps.length > 1) {
+        for (let i = 0; i < this.user.rafterApps.length; i++) {
+          this.appNames.push(this.user.rafterApps[i].r_app_name);
+        }
+        document.getElementsByClassName('appSelector')[0].style.display = 'block';
+      }
     }
   }
 

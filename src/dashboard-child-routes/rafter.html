@@ -1,12 +1,20 @@
 <template>
   <div class="page-content">
     <div class="material-content">
-      <div class="rafterLogout" style="margin-left:10px; margin-top:10px; max-width:1.75in;text-align:center; display:none; position:relative; float:left">
-        <button style="text-align:center" class="rafterLogoutButton" click.delegate="rafterUser.rafterLogout()">Rafter<br>Logout</button>
+      <div class="rafterAddApp" style="margin-left:3px; margin-top:6px; margin-right:2px;width:0.95in;text-align:center; display:none; position:relative; float:left; border-right:1px solid">
+        <button style="text-align:center" class="rafterAddAppButton" click.delegate="rafterAddApp()">Add App</button>
+        <div class="appSelector" style="display:none;margin-top:0">
+          <!-- <hr style="margin-bottom:4px; padding-bottom:0; margin-top:6px"> -->
+          <!-- <p style="text-align:center; margin-bottom:0;padding-bottom:0; font-size:9pt">Change<br>App</p> -->
+          <select id="appName" class="form-control" style="margin-top:5px;width: 0.93in; padding:0" change.delegate="changeApp()">
+            <option value="" label="Change App"> </option>
+            <option repeat.for="name of appNames" model.bind="name">${name}</option>
+          </select>
+        </div>
       </div>
       <h3 style="margin:auto; padding-top:10px; padding-bottom:5px;text-align:center"><strong>Rafter Dashboard</strong></h3>
       <p style="text-align:center;"><i>We are going to try out some Rafter APIs here!</i></p>
-      <div class="rafterLogin elevation3" style="max-width:3in; margin:auto" show.bind="showLogin">
+      <div class="rafterLogin elevation3" style="max-width:3in; margin:auto; margin-bottom:20px" show.bind="showLogin">
         <form style="margin-left:8px">
           <label>Rafter App Name</label>
           <input type="text" value.bind="rafter.appName" change.delegate="validate()" keyup.delegate="validate()" style="width:2.65in">
@@ -16,7 +24,7 @@
           <input type="text" value.bind="rafter.secret" change.delegate="validate()" keyup.delegate="validate()" style="width:2.65in">
           <div>
             <p>&nbsp;</p>
-            <button disabled class="rafterLoginButton" click.delegate="handleRafterLogin()">Login To Rafter</button>
+            <button disabled class="rafterLoginButton" click.delegate="handleRafterLogin()">Login To Rafter</button><span style="margin-left:60px"> </span><button click.delegate="nevermind()">Nevermind</button>
           </div>
           <p><br>Need an account? Follow these <a href="https://docs.google.com/document/d/1BF11gUYfXU8xBSsBW3J2wjK2HWf6NnWzz0y-1XtzoNE/#heading=h.5z7lybzc053j" target="_blank">instructions.</a></p>
         </form>
@@ -82,11 +90,11 @@
               <label>Name<span style="font-weight:normal;font-style:italic;font-size:9pt"> (no spaces)</span></label>
               <input class="form-control" type="text" value.bind="rafterFile.name" style="width: 1.75in">
               <div class="fileTypeSelector">
-              <label>Type</label>
-              <select id="fileType" class="form-control" value.bind="rafterFile.fileType" style="margin-top:0;width: 1.75in">
-                <option repeat.for="type of fileTypes" model.bind="type">${type}</option>
-              </select>
-            </div>
+                <label>Type</label>
+                <select id="fileType" class="form-control" value.bind="rafterFile.fileType" style="margin-top:0;width: 1.75in">
+                  <option repeat.for="type of fileTypes" model.bind="type">${type}</option>
+                </select>
+              </div>
               <p style="margin:0">&nbsp;</p>
               <div class="rafterFile" style="max-width:2in;text-align:left">
                 <button style="text-align:center" class="rafterMakeFileButton" click.delegate="rafterVolumeService('create')">Create</button>
