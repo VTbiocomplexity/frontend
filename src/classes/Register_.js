@@ -21,7 +21,7 @@ class Register_ {
     '<input class="email" type="email" name="email" style="width:100%;" required></td>' + '<td><input style="width:100%" class="password" pattern=".{8,}" title="8 characters minimum" type="password" name="password" style="width:100%;" required>' +
     '</td></tr>' +
     '<tr><th colspan="2">Role / Organization</th></tr><tr><td colspan="2"><input style="width:100%" class="organization" type="text" name="affiliation" value=""></td></tr>' +
-    '<tr><th colspan="2">Area of Expertise</th></tr><tr><td colspan="2"><div><input style="width:100%;" class="organisms" type="text" name="organisms" value=""></div></td></tr>' +
+    '<tr><th colspan="2">Area of Expertise</th></tr><tr><td colspan="2"><div><input style="width:100%;" class="expertise" type="text" name="expertise" value=""></div></td></tr>' +
     '<tr><th colspan="2">Other Interests</th></tr><tr><td colspan="2"><div><textarea style="width:100%;" class="interests" rows="5" cols="50" name="interests" style="height:75px;" value=""></textarea></div></td></tr>' +
     '</tbody></table><p><span style="color:red">*</span> <i>Indicates required field</i></p></div><div style="text-align:center;padding:2px;margin:10px;">' +
     '<div class="registererror" style="color:red"></div>' +
@@ -130,10 +130,10 @@ class Register_ {
     let runFetch = evt.target.runFetch;
     let lastname = document.getElementsByClassName('lastname')[0].value;
     let orgString = document.getElementsByClassName('organization')[0].value;
-    let organismString = document.getElementsByClassName('organisms')[0].value;
+    let expertisetring = document.getElementsByClassName('expertise')[0].value;
     let userdetString = document.getElementsByClassName('interests')[0].value;
     let bodyData = {'name': firstname + ' ' + lastname, 'email': document.getElementsByClassName('email')[0].value, 'password': document.getElementsByClassName('password')[0].value,
-      'first_name': firstname, 'last_name': lastname, 'affiliation': orgString, 'organisms': organismString, 'interests': userdetString};
+      'first_name': firstname, 'last_name': lastname, 'affiliation': orgString, 'expertise': expertisetring, 'interests': userdetString};
     let fetchData = {
       method: 'POST',
       body: JSON.stringify(bodyData),

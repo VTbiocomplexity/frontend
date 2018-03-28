@@ -47,10 +47,10 @@ class UserAct {
     }
     document.getElementsByClassName('uprofAff')[0].value = org;
     let organis = '';
-    if (data[0].organisms !== undefined) {
-      organis = data[0].organisms;
+    if (data[0].expertise !== undefined) {
+      organis = data[0].expertise;
     }
-    document.getElementsByClassName('uprofOrganisms')[0].value = organis;
+    document.getElementsByClassName('uprofexpertise')[0].value = organis;
     let intr = '';
     if (data[0].interests !== undefined) {
       intr = data[0].interests;
@@ -64,7 +64,7 @@ class UserAct {
     let fname = document.getElementsByClassName('uprofFirstName')[0].value;
     let lname = document.getElementsByClassName('uprofLastName')[0].value;
     let bodyData = {'first_name': fname, 'last_name': lname, 'name': fname + ' ' + lname, userType: thisUserType,
-      'affiliation': document.getElementsByClassName('uprofAff')[0].value, 'organisms': document.getElementsByClassName('uprofOrganisms')[0].value, 'interests': document.getElementsByClassName('uprofInterests')[0].value};
+      'affiliation': document.getElementsByClassName('uprofAff')[0].value, 'expertise': document.getElementsByClassName('uprofexpertise')[0].value, 'interests': document.getElementsByClassName('uprofInterests')[0].value};
     let fetchData = {
       method: 'PUT',
       body: JSON.stringify(bodyData),
