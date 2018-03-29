@@ -61,7 +61,7 @@ export class Rafter {
     console.log(myIndex);
     console.log(this.user.rafterApps[myIndex]);
     this.rafter = {id: this.user.rafterApps[myIndex].r_app_id, secret: this.user.rafterApps[myIndex].r_app_secret, appName: this.user.rafterApps[myIndex].r_app_name};
-    await this.rafterUser.initRafter(this.rafterUserID, this.rafter, this.user._id, this.interval);
+    await this.rafterUser.initRafter(this.rafterUserID, this.rafter, this.user._id, this.interval, this.showLogin);
     let rT = (sessionStorage.getItem('rafterToken'));
     /* istanbul ignore else */
     if (rT !== null && rT !== undefined) {
@@ -75,7 +75,7 @@ export class Rafter {
     if (this.user.rafterApps !== undefined && this.user.rafterApps.length > 0 && sessionStorage.getItem('rafterToken') === null) {
       console.log('I have an app id, secret, but no token');
       this.rafter = {id: this.user.rafterApps[0].r_app_id, secret: this.user.rafterApps[0].r_app_secret, appName: this.user.rafterApps[0].r_app_name};
-      await this.rafterUser.initRafter(this.rafterUserID, this.rafter, this.user._id, this.interval);
+      await this.rafterUser.initRafter(this.rafterUserID, this.rafter, this.user._id, this.interval, this.showLogin);
       let rT = (sessionStorage.getItem('rafterToken'));
       /* istanbul ignore else */
       if (rT !== null && rT !== undefined) {
@@ -87,8 +87,7 @@ export class Rafter {
   }
 
   async handleRafterLogin() {
-    await this.rafterUser.initRafter(this.rafterUserID, this.rafter, this.user._id, this.interval);
-    this.isVolInit = true;
+    await this.rafterUser.initRafter(this.rafterUserID, this.rafter, this.user._id, this.interval, this.showLogin);
   }
 
   hideDetail(ic1, ic2, content) {

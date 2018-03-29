@@ -45,7 +45,7 @@ describe('The Rafter Dashboard', () => {
     rd4 = new Rafter(app4);
     rd4.app.appState = new AppStateStub();
     rd4.activate();
-    document.body.innerHTML = '<input id="appName"></input><div class="rafterAddApp"></div><div class="appSelector"></div><div class="displayFileContent"></div><div class="homeDirContent">{"state":"analyzing","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"a185e810-af88-11e7-ab0c-717499928918","creation_date":"2017-10-12T20:05:01.841Z","name":"someName"}</div>';
+    document.body.innerHTML = '<div class="rafterCheckHome"></div><div class="rafterLogin aurelia-hide" show.bind=""></div><input id="appName"></input><div class="rafterAddApp"></div><div class="appSelector"></div><div class="displayFileContent"></div><div class="homeDirContent">{"state":"analyzing","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"a185e810-af88-11e7-ab0c-717499928918","creation_date":"2017-10-12T20:05:01.841Z","name":"someName"}</div>';
   });
 
   it('should activate', testAsync(async function() {
@@ -250,7 +250,7 @@ describe('The Rafter Dashboard', () => {
     //expect(document.getElementsByClassName('userServiceError')[0].innerHTML).toBe('');
     window.sessionStorage.removeItem('rafterToken');
     await rd2.rafterUser.initRafter(rd2.rafterUserID, rd2.rafter);
-    expect(document.getElementsByClassName('userServiceError')[0].innerHTML).toBe('<br>Wrong app id or app secret');
+    expect(document.getElementsByClassName('userServiceError')[0].innerHTML).toBe('Wrong app id or app secret');
     document.body.innerHTML = '';
     await rd.rafterUser.initRafter(rd.rafterUserID, rd.rafter);
     await rd2.rafterUser.initRafter(rd2.rafterUserID, rd2.rafter);
@@ -260,7 +260,7 @@ describe('The Rafter Dashboard', () => {
     document.body.innerHTML += '<div class="userServiceError">error</div>';
     rd4.rafterUser = new RafterUser(rd4.app.httpClient);
     await rd4.rafterUser.initRafter(rd4.rafterUserID, rd4.rafter);
-    expect(document.getElementsByClassName('userServiceError')[0].innerHTML).toBe('<br>Wrong app id or app secret');
+    expect(document.getElementsByClassName('userServiceError')[0].innerHTML).toBe('Wrong app id or app secret');
     document.body.innerHTML = '';
     await rd4.rafterUser.initRafter(rd4.rafterUserID, rd4.rafter);
   }));
