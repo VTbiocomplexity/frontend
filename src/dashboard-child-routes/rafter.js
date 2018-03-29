@@ -48,23 +48,26 @@ export class Rafter {
     this.showLogin = true;
   }
 
-  nevermind() {
+  async removeApp() {
+    let appName = document.getElementById('appName2').value;
+    console.log('going to remove: ' + appName);
+    let myIndex = this.appNames.indexOf(appName);
+    console.log(this.user.rafterApps[myIndex]);
+    this.user.rafterApps.splice(myIndex, 1);
+    console.log(this.user.rafterApps);
+    await this.app.updateById('/user/', this.uid, this.user);
     /* istanbul ignore if */
     if (process.env.NODE_ENV !== 'test') {
       window.location.reload();
     }
   }
 
-  // async changeApp() {
-  //   let selection = document.getElementById('appName').value;
-  //   console.log(selection);
-  //   let myIndex = this.appNames.indexOf(selection);
-  //   console.log(myIndex);
-  //   console.log(this.user.rafterApps[myIndex]);
-  //   this.rafter = {id: this.user.rafterApps[myIndex].r_app_id, secret: this.user.rafterApps[myIndex].r_app_secret, appName: this.user.rafterApps[myIndex].r_app_name};
-  //   await this.rafterUser.initRafter(this.rafterUserID, this.rafter, this.user._id, this.interval, this.showLogin);
-  //   this.setRafterUserId();
-  // }
+  nevermind() {
+    /* istanbul ignore if */
+    if (process.env.NODE_ENV !== 'test') {
+      window.location.reload();
+    }
+  }
 
   setRafterUserId() {
     let rT = (sessionStorage.getItem('rafterToken'));
@@ -74,22 +77,6 @@ export class Rafter {
       //this.isVolInit = true;
     }
   }
-
-  // async autoInitRafter() {
-  //   if (this.user.rafterApps !== undefined && this.user.rafterApps.length > 0 && sessionStorage.getItem('rafterToken') === null) {
-  //     console.log('I have an app id, secret, but no token');
-  //     this.rafter = {id: this.user.rafterApps[0].r_app_id, secret: this.user.rafterApps[0].r_app_secret, appName: this.user.rafterApps[0].r_app_name};
-  //     await this.rafterUser.initRafter(this.rafterUserID, this.rafter, this.user._id, this.interval, this.showLogin);
-  //     this.setRafterUserId();
-  //     // let rT = (sessionStorage.getItem('rafterToken'));
-  //     // /* istanbul ignore else */
-  //     // if (rT !== null && rT !== undefined) {
-  //     //   let rU = jwtDecode(rT);
-  //     //   this.rafterUserID = rU.sub;
-  //     //
-  //     // }
-  //   }
-  // }
 
   async handleRafterLogin(option) {
     if (option === 'changeApp') {
@@ -549,6 +536,7 @@ export class Rafter {
           this.appNames.push(this.user.rafterApps[i].r_app_name);
         }
         document.getElementsByClassName('appSelector')[0].style.display = 'block';
+        document.getElementsByClassName('appSelector')[1].style.display = 'block';
       }
     }
   }

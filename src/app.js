@@ -4,7 +4,7 @@ import {PLATFORM} from 'aurelia-pal';
 import {inject, bindable} from 'aurelia-framework';
 import {AuthorizeStep, AuthService} from 'aurelia-auth';
 import {UserAccess} from './classes/UserAccess.js';
-import {HttpClient} from 'aurelia-fetch-client';
+import {HttpClient, json} from 'aurelia-fetch-client';
 import {AppState} from './classes/AppState.js';
 @inject(AuthService, HttpClient)
 export class App {
@@ -220,8 +220,19 @@ export class App {
     });
   }
 
-  // attached() {
-  //   console.log(this.widescreen);
-  // }
+  async updateById(route, id, dataObj) {
+    console.log('update by id');
+    await fetch;
+    return this.httpClient.fetch(route + id, {
+      method: 'put',
+      body: json(dataObj)
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      }).catch((error) => {
+        console.log(error);
+      });
+  }
 
 }

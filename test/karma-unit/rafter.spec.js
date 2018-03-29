@@ -45,7 +45,7 @@ describe('The Rafter Dashboard', () => {
     rd4 = new Rafter(app4);
     rd4.app.appState = new AppStateStub();
     rd4.activate();
-    document.body.innerHTML = '<div class="rafterCheckHome"></div><div class="rafterLogin aurelia-hide" show.bind=""></div><input id="appName"></input><div class="rafterAddApp"></div><div class="appSelector"></div><div class="displayFileContent"></div><div class="homeDirContent">{"state":"analyzing","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"a185e810-af88-11e7-ab0c-717499928918","creation_date":"2017-10-12T20:05:01.841Z","name":"someName"}</div>';
+    document.body.innerHTML = '<div class="rafterCheckHome"></div><div class="rafterLogin aurelia-hide" show.bind=""></div><input id="appName"></input><input id="appName2"></input><div class="rafterAddApp"></div><div class="appSelector"></div><div class="appSelector"></div><div class="displayFileContent"></div><div class="homeDirContent">{"state":"analyzing","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"a185e810-af88-11e7-ab0c-717499928918","creation_date":"2017-10-12T20:05:01.841Z","name":"someName"}</div>';
   });
 
   it('should activate', testAsync(async function() {
@@ -60,20 +60,22 @@ describe('The Rafter Dashboard', () => {
     //expect(rd.uid).toBe('3456');
   }));
 
-  // it('does not automatically inits rafter if token is there already', testAsync(async function() {
-  //   rd.user = {rafterApps: []};
-  //   rd.rafterUser = new RafterUser(rd.app.httpClient);
-  //   sessionStorage.setItem('rafterToken', 'token');
-  //   await rd.handleRafterLogin('autoInitRafter');
-  //   //expect(rd.uid).toBe('3456');
-  // }));
-
   it('changes the app', testAsync(async function() {
     rd.user = {rafterApps: [{r_app_secret: 'wow', r_app_id: 'yo', r_app_name: 'cool'}, {r_app_secret: 'how', r_app_id: 'numba2', r_app_name: 'baby'}]};
     rd.rafterUser = new RafterUser(rd.app.httpClient);
     rd.appNames = ['cool', 'numba2'];
     document.getElementById('appName').value = 'numba2';
     await rd.handleRafterLogin('changeApp');
+    //expect(rd.uid).toBe('3456');
+  }));
+
+  it('removes the app', testAsync(async function() {
+    rd.user = {rafterApps: [{r_app_secret: 'wow', r_app_id: 'yo', r_app_name: 'cool'}, {r_app_secret: 'how', r_app_id: 'numba2', r_app_name: 'baby'}]};
+    rd.rafterUser = new RafterUser(rd.app.httpClient);
+    rd.appNames = ['cool', 'numba2'];
+    document.getElementById('appName2').value = 'numba2';
+    await rd.removeApp();
+    //expect(rd.user.rafterApps.length).toBe(1);
     //expect(rd.uid).toBe('3456');
   }));
 
@@ -337,12 +339,14 @@ describe('The Rafter Dashboard', () => {
     rd.app.httpClient = new HttpMock();
     await rd.rafterVolumeService('bogas');
   }));
+
   it('catches error on create a new file', testAsync(async function() {
     document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
     rd.app.httpClient = new HttpMock('rafterCreateError');
     await rd.rafterVolumeService('create');
     //expect(document.getElementsByClassName('userServiceError')[0].innerHTML).not.toBe('&nbsp;');
   }));
+
   it('sets the create to be a new folder', testAsync(async function() {
     rd.rafterFile = {};
     document.body.innerHTML = '<div class="fileTypeSelector"></div><button class="displayButton"></button><div class="displayFileContent"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div><input id="fileType1" type="radio"><input id="fileType2" type="radio" checked>';
