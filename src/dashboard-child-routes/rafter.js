@@ -17,7 +17,7 @@ export class Rafter {
     this.homeDirJson = null;
     this.subDirJson = [];
     this.rafterFileID = '';
-    this.isVolInit = false;
+    //this.isVolInit = false;
     this.appNames = [];
     //this.createType = 'file';
     //   this.vs = new VolumeService('http://rafter.bi.vt.edu/volumesvc/', 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6W10sImZpcnN0X25hbWUiOiJuZHNzbCIsImxhc3RfbmFtZSI6ImFwcCIsInJvbGVzIjpbXSwidGVhbXMiOlsiQHVzZXJzIl0sImlhdCI6MTUxNzk0Nzk2MSwibmJmIjoxNTE3OTQ3OTYxLCJleHAiOjE1MTgwMzQzNjEsImF1ZCI6WyJAY29yZSIsIiNwdWJsaWMiXSwiaXNzIjoiaHR0cHM6Ly9yYWZ0ZXIuYmkudnQuZWR1L3VzZXJzdmMvcHVibGljX2tleSIsInN1YiI6Im5kc3NsQXBwIn0.a_q5Hq2MKWizi1KFbq8RMKAeQQbpsPweexIRCQwQ2a65J5Ojukf9vv' +
@@ -38,9 +38,10 @@ export class Rafter {
     this.showLogin = this.checkIfLoggedIn(cep, rlo, this.showLogin, cipr);
     this.fileTypes.sort();
     this.fileTypes.splice(0, 0, 'unspecified');
-    console.log('this is the user');
-    console.log(this.user);
-    await this.autoInitRafter();
+    /*istanbul ignore else */
+    if (this.user.rafterApps !== undefined && this.user.rafterApps.length > 0 && sessionStorage.getItem('rafterToken') === null) {
+      await this.handleRafterLogin('autoInitRafter');
+    }
   }
 
   rafterAddApp() {
@@ -54,43 +55,56 @@ export class Rafter {
     }
   }
 
-  async changeApp() {
-    let selection = document.getElementById('appName').value;
-    console.log(selection);
-    let myIndex = this.appNames.indexOf(selection);
-    console.log(myIndex);
-    console.log(this.user.rafterApps[myIndex]);
-    this.rafter = {id: this.user.rafterApps[myIndex].r_app_id, secret: this.user.rafterApps[myIndex].r_app_secret, appName: this.user.rafterApps[myIndex].r_app_name};
-    await this.rafterUser.initRafter(this.rafterUserID, this.rafter, this.user._id, this.interval, this.showLogin);
-    this.setRafterUserId();
-  }
+  // async changeApp() {
+  //   let selection = document.getElementById('appName').value;
+  //   console.log(selection);
+  //   let myIndex = this.appNames.indexOf(selection);
+  //   console.log(myIndex);
+  //   console.log(this.user.rafterApps[myIndex]);
+  //   this.rafter = {id: this.user.rafterApps[myIndex].r_app_id, secret: this.user.rafterApps[myIndex].r_app_secret, appName: this.user.rafterApps[myIndex].r_app_name};
+  //   await this.rafterUser.initRafter(this.rafterUserID, this.rafter, this.user._id, this.interval, this.showLogin);
+  //   this.setRafterUserId();
+  // }
 
   setRafterUserId() {
     let rT = (sessionStorage.getItem('rafterToken'));
     if (rT !== null && rT !== undefined) {
       let rU = jwtDecode(rT);
       this.rafterUserID = rU.sub;
-      this.isVolInit = true;
+      //this.isVolInit = true;
     }
   }
 
-  async autoInitRafter() {
-    if (this.user.rafterApps !== undefined && this.user.rafterApps.length > 0 && sessionStorage.getItem('rafterToken') === null) {
-      console.log('I have an app id, secret, but no token');
+  // async autoInitRafter() {
+  //   if (this.user.rafterApps !== undefined && this.user.rafterApps.length > 0 && sessionStorage.getItem('rafterToken') === null) {
+  //     console.log('I have an app id, secret, but no token');
+  //     this.rafter = {id: this.user.rafterApps[0].r_app_id, secret: this.user.rafterApps[0].r_app_secret, appName: this.user.rafterApps[0].r_app_name};
+  //     await this.rafterUser.initRafter(this.rafterUserID, this.rafter, this.user._id, this.interval, this.showLogin);
+  //     this.setRafterUserId();
+  //     // let rT = (sessionStorage.getItem('rafterToken'));
+  //     // /* istanbul ignore else */
+  //     // if (rT !== null && rT !== undefined) {
+  //     //   let rU = jwtDecode(rT);
+  //     //   this.rafterUserID = rU.sub;
+  //     //
+  //     // }
+  //   }
+  // }
+
+  async handleRafterLogin(option) {
+    if (option === 'changeApp') {
+      let selection = document.getElementById('appName').value;
+      // console.log(selection);
+      let myIndex = this.appNames.indexOf(selection);
+      // console.log(myIndex);
+      // console.log(this.user.rafterApps[myIndex]);
+      this.rafter = {id: this.user.rafterApps[myIndex].r_app_id, secret: this.user.rafterApps[myIndex].r_app_secret, appName: this.user.rafterApps[myIndex].r_app_name};
+    }
+    if (option === 'autoInitRafter') {
       this.rafter = {id: this.user.rafterApps[0].r_app_id, secret: this.user.rafterApps[0].r_app_secret, appName: this.user.rafterApps[0].r_app_name};
-      await this.rafterUser.initRafter(this.rafterUserID, this.rafter, this.user._id, this.interval, this.showLogin);
-      let rT = (sessionStorage.getItem('rafterToken'));
-      /* istanbul ignore else */
-      if (rT !== null && rT !== undefined) {
-        let rU = jwtDecode(rT);
-        this.rafterUserID = rU.sub;
-        this.isVolInit = true;
-      }
     }
-  }
-
-  async handleRafterLogin() {
     await this.rafterUser.initRafter(this.rafterUserID, this.rafter, this.user._id, this.interval, this.showLogin);
+    this.setRafterUserId();
   }
 
   hideDetail(ic1, ic2, content) {
