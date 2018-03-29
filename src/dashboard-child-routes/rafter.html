@@ -1,7 +1,7 @@
 <template>
   <div class="page-content">
     <div class="material-content">
-      <div class="rafterAddApp" style="margin-left:3px; margin-top:6px; margin-right:2px;width:0.75in;text-align:center; display:none; position:relative; float:left; border-right:1px solid; margin-bottom:10px">
+      <div class="rafterAddApp" style="margin-left:3px; margin-top:6px; margin-right:2px;width:0.78in;text-align:center; display:none; position:relative; float:left; border-right:1px solid; margin-bottom:10px">
         <button style="text-align:center" class="rafterAddAppButton" click.delegate="rafterAddApp()">Add</button>
         <div class="appSelector" style="display:none;margin:auto; width:0.7in">
           <!-- <hr style="margin-bottom:4px; padding-bottom:0; margin-top:6px"> -->
@@ -14,7 +14,7 @@
         <div class="appSelector" style="display:none;margin:auto; width:0.7in">
           <!-- <hr style="margin-bottom:4px; padding-bottom:0; margin-top:6px"> -->
           <!-- <p style="text-align:center; margin-bottom:0;padding-bottom:0; font-size:9pt">Change<br>App</p> -->
-          <select id="appName2" class="form-control" style="margin-top:5px;width: 0.69in; padding:0; text-align:center;" change.delegate="removeApp()">
+          <select id="appName2" class="form-control" style="margin-top:5px;width: 0.72in; padding:0; text-align:center;" change.delegate="removeApp()">
             <option value="" label="Remove"></option>
             <option repeat.for="name of appNames" model.bind="name">${name}</option>
           </select>
