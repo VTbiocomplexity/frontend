@@ -1,13 +1,13 @@
 <template>
   <div class="page-content">
     <div class="material-content">
-      <div class="rafterAddApp" style="margin-left:3px; margin-top:6px; margin-right:2px;width:0.95in;text-align:center; display:none; position:relative; float:left; border-right:1px solid">
-        <button style="text-align:center" class="rafterAddAppButton" click.delegate="rafterAddApp()">Add App</button>
-        <div class="appSelector" style="display:none;margin-top:0">
+      <div class="rafterAddApp" style="margin-left:3px; margin-top:6px; margin-right:2px;width:0.75in;text-align:center; display:none; position:relative; float:left; border-right:1px solid; margin-bottom:10px">
+        <button style="text-align:center" class="rafterAddAppButton" click.delegate="rafterAddApp()">Add</button>
+        <div class="appSelector" style="display:none;margin:auto; width:0.7in">
           <!-- <hr style="margin-bottom:4px; padding-bottom:0; margin-top:6px"> -->
           <!-- <p style="text-align:center; margin-bottom:0;padding-bottom:0; font-size:9pt">Change<br>App</p> -->
-          <select id="appName" class="form-control" style="margin-top:5px;width: 0.93in; padding:0" change.delegate="changeApp()">
-            <option value="" label="Change App"> </option>
+          <select id="appName" class="form-control" style="margin-top:5px;width: 0.67in; padding:0; text-align:center;" change.delegate="changeApp()">
+            <option value="" label="Change"> </option>
             <option repeat.for="name of appNames" model.bind="name">${name}</option>
           </select>
         </div>
@@ -24,12 +24,12 @@
           <input type="text" value.bind="rafter.secret" change.delegate="validate()" keyup.delegate="validate()" style="width:2.65in">
           <div>
             <p>&nbsp;</p>
-            <button disabled class="rafterLoginButton" click.delegate="handleRafterLogin()">Login To Rafter</button><span style="margin-left:60px"> </span><button click.delegate="nevermind()">Nevermind</button>
+            <button disabled class="rafterLoginButton" click.delegate="handleRafterLogin()">Connect To Rafter</button><span style="margin-left:60px"> </span><button click.delegate="nevermind()">Nevermind</button>
           </div>
           <p><br>Need an account? Follow these <a href="https://docs.google.com/document/d/1BF11gUYfXU8xBSsBW3J2wjK2HWf6NnWzz0y-1XtzoNE/#heading=h.5z7lybzc053j" target="_blank">instructions.</a></p>
         </form>
       </div>
-      <div class="homeDirLink" style="">
+      <div class="homeDirLink" style="margin-top:30px">
         <div class="showHideHD" style="display:none">
           <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><i class="fa fa-folder"></i> <a class="rafterHomeLink" click.delegate="navHomeDir()">home/${rafterUserID}</a>
         </div>
@@ -43,7 +43,7 @@
         <!-- <div class="fileDetailsTitle fileDld" style="display:none; margin-right:30px; margin-top:30px"></div> -->
         <div id="treeView" style="max-width:2in"></div>
       </div>
-      <div style="margin:auto; text-align:center"><p class="userServiceError" style="color:red"></p></div>
+      <div style="margin:auto; text-align:center"><p class="userServiceError" style="color:red; margin-top:-20px"></p></div>
       <div show.bind="!showLogin">
         <div class="rafterFile" style="text-align:center; margin-auto">
           <button style="text-align:center" class="rafterCheckHome" click.delegate="rafterVolumeService('ls')">Display home/${rafterUserID}</button>

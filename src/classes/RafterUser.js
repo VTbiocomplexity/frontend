@@ -59,10 +59,13 @@ export class RafterUser {
     });
   }
 
-  initRafter(ruid, rObj, uid, interval) {
+  initRafter(ruid, rObj, uid, interval, sli) {
+    // if (noreload === null) {
+    //   noreload = false;
+    // }
     rObj.uid = uid;
     let userServiceError = document.getElementsByClassName('userServiceError')[0];
-    let message = '<br>Wrong app id or app secret';
+    let message = 'Wrong app id or app secret';
     console.log(JSON.stringify(rObj));
     return this.httpClient.fetch('/rafter/rinit', {
       method: 'post',
@@ -93,6 +96,17 @@ export class RafterUser {
       } else {
         if (userServiceError !== null && userServiceError !== undefined) {
           userServiceError.innerHTML = message;
+          console.log(sli);
+        }
+        if (!sli) {
+          //tried to select an app, but the app secret was readAsText
+          //display the rafter login form
+          let rafterlogin = document.getElementsByClassName('rafterLogin')[0];
+          rafterlogin.removeAttribute('show.bind');
+          rafterlogin.classList.remove('aurelia-hide');
+          console.log(rafterlogin);
+          document.getElementsByClassName('rafterCheckHome')[0].style.display = 'none';
+          //sli = true;
         }
       }
     }).catch((err) => {
