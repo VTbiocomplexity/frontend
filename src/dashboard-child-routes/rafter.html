@@ -6,7 +6,7 @@
         <div class="appSelector" style="display:none;margin:auto; width:0.7in">
           <!-- <hr style="margin-bottom:4px; padding-bottom:0; margin-top:6px"> -->
           <!-- <p style="text-align:center; margin-bottom:0;padding-bottom:0; font-size:9pt">Change<br>App</p> -->
-          <select id="appName" class="form-control" style="margin-top:5px;width: 0.67in; padding:0; text-align:center;" change.delegate="changeApp()">
+          <select id="appName" class="form-control" style="margin-top:5px;width: 0.67in; padding:0; text-align:center;" change.delegate="handleRafterLogin('changeApp')">
             <option value="" label="Change"> </option>
             <option repeat.for="name of appNames" model.bind="name">${name}</option>
           </select>
