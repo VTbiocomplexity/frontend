@@ -62,8 +62,11 @@ export class Rafter {
     console.log(this.user.rafterApps[myIndex]);
     this.rafter = {id: this.user.rafterApps[myIndex].r_app_id, secret: this.user.rafterApps[myIndex].r_app_secret, appName: this.user.rafterApps[myIndex].r_app_name};
     await this.rafterUser.initRafter(this.rafterUserID, this.rafter, this.user._id, this.interval, this.showLogin);
+    this.setRafterUserId();
+  }
+
+  setRafterUserId() {
     let rT = (sessionStorage.getItem('rafterToken'));
-    /* istanbul ignore else */
     if (rT !== null && rT !== undefined) {
       let rU = jwtDecode(rT);
       this.rafterUserID = rU.sub;
@@ -519,12 +522,11 @@ export class Rafter {
     , 3400);
     let rT = (sessionStorage.getItem('rafterToken'));
     if (rT !== null && rT !== undefined) {
-      let rU = jwtDecode(rT);
-      this.rafterUserID = rU.sub;
-      if (!this.isVolInit) {
-        await this.rafterUser.initVol(rT);
-        this.isVolInit = true;
-      }
+      this.setRafterUserId();
+      // if (!this.isVolInit) {
+      //   await this.rafterUser.initVol(rT);
+      //   this.isVolInit = true;
+      // }
       document.getElementsByClassName('rafterAddApp')[0].style.display = 'block';
       console.log('this is the rafterApps');
       console.log(this.user.rafterApps);
