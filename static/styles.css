@@ -24,6 +24,11 @@ a:hover {
   color: #009c3a;
 }
 
+select {
+  cursor: pointer;
+  cursor: hand;
+}
+
 button:hover {
   background-color: #80dfff;
 }
