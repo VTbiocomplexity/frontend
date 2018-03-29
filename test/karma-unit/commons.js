@@ -218,9 +218,16 @@ class HttpMock {
       });
     }
 
+    if (this.data !== 'error') {
+      return Promise.resolve({
+        Headers: this.headers,
+        json: () => Promise.resolve(this.user)
+      });
+    }
+    console.log('error somewhere');
     return Promise.resolve({
       Headers: this.headers,
-      json: () => Promise.resolve(this.user)
+      json: () => Promise.reject(new Error({error: 'fail', status: 500}))
     });
   }
   }
