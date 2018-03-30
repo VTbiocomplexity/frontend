@@ -1,9 +1,9 @@
 import {inject} from 'aurelia-framework';
 import {App} from '../app';
-import { saveAs } from 'file-saver';
 import { RafterUser } from '../classes/RafterUser';
 const jwtDecode = require('jwt-decode');
 const TreeView = require('js-treeview');
+const FileSaver = require('file-saver');
 @inject(App, FileReader)
 export class Rafter {
   constructor(app, reader) {
@@ -363,7 +363,6 @@ export class Rafter {
           window.location.reload();
         }
       }
-      //saveAs(blob, fdJson.name);
     }).catch(function (err) {
       console.log(err);
     });
@@ -371,12 +370,14 @@ export class Rafter {
 
   fileDownload() {
     let fileDetails = document.getElementsByClassName('homeDirContent')[0].innerHTML;
+    console.log(fileDetails);
     let fdJson = JSON.parse(fileDetails);
     this.rafterFileID = fdJson.id;
     this.app.httpClient.fetch('/rafter/vs', { method: 'post', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ command: 'get', fileID: this.rafterFileID})
     }).then((response) => response.blob()).then((blob) => {
-      saveAs(blob, fdJson.name);
+      console.log(blob);
+      FileSaver.saveAs(blob, fdJson.name);
     }).catch(function (err) {
       console.log(err);
     });
@@ -524,13 +525,10 @@ export class Rafter {
     let rT = (sessionStorage.getItem('rafterToken'));
     if (rT !== null && rT !== undefined) {
       this.setRafterUserId();
-      // if (!this.isVolInit) {
-      //   await this.rafterUser.initVol(rT);
-      //   this.isVolInit = true;
-      // }
       document.getElementsByClassName('rafterAddApp')[0].style.display = 'block';
-      console.log('this is the rafterApps');
-      console.log(this.user.rafterApps);
+      document.getElementsByClassName('rafterCheckHome')[0].style.display = 'block';
+      // console.log('this is the rafterApps');
+      // console.log(this.user.rafterApps);
       if (this.user.rafterApps !== undefined && this.user.rafterApps.length > 1) {
         for (let i = 0; i < this.user.rafterApps.length; i++) {
           this.appNames.push(this.user.rafterApps[i].r_app_name);
@@ -538,6 +536,7 @@ export class Rafter {
         document.getElementsByClassName('appSelector')[0].style.display = 'block';
         document.getElementsByClassName('appSelector')[1].style.display = 'block';
       }
+      await this.rafterUser.initVol(rT);
     }
   }
 

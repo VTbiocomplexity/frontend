@@ -33,6 +33,10 @@ button:hover {
   background-color: #80dfff;
 }
 
+select:hover {
+  background-color: #80dfff;
+}
+
 label {
   /* font-size: 11pt; */
   /* padding-top: 20px; */
@@ -237,7 +241,7 @@ a:hover {
 
 .mobile-menu-toggle {
   position: fixed;
-  top: 32px;
+  top: 26px;
   right: 16px;
   background-color: #2a222a;
   color: white;

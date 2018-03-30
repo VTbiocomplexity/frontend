@@ -18,6 +18,8 @@ describe('The Rafter Dashboard', () => {
   let app2;
   let app4;
   let rd4;
+  let rd5;
+  let app5;
   //let handlers;
   beforeEach(() => {
     // handlers = {
@@ -45,6 +47,12 @@ describe('The Rafter Dashboard', () => {
     rd4 = new Rafter(app4);
     rd4.app.appState = new AppStateStub();
     rd4.activate();
+    app5 = new App(auth, new HttpMock({name: 'billy', rafterApps: [{r_app_name: 'yo'}]}));
+    app5.router = new RouterStub();
+    app5.activate();
+    rd5 = new Rafter(app5);
+    rd5.app.appState = new AppStateStub();
+    rd5.activate();
     document.body.innerHTML = '<div class="rafterCheckHome"></div><div class="rafterLogin aurelia-hide" show.bind=""></div><input id="appName"></input><input id="appName2"></input><div class="rafterAddApp"></div><div class="appSelector"></div><div class="appSelector"></div><div class="displayFileContent"></div><div class="homeDirContent">{"state":"analyzing","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"a185e810-af88-11e7-ab0c-717499928918","creation_date":"2017-10-12T20:05:01.841Z","name":"someName"}</div>';
   });
 
@@ -102,6 +110,20 @@ describe('The Rafter Dashboard', () => {
     //rd.isVolInit = false;
     await rd.attached();
     expect(document.getElementsByClassName('appSelector')[0].style.display).toBe('block');
+  }));
+
+  it('does not builds a drop down to change app if there is only app', testAsync(async function() {
+    rd5.user = {rafterApps: [{r_app_name: 'yo'}]};
+    document.getElementsByClassName('appSelector')[0].style.display = 'none';
+    let tkn = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6W10sImZpcnN0X25hbWUiOiJuZHNzbCIsImxhc3RfbmFtZSI6ImFwcCIsInJvbGVzIjpbXSwidGVhbXMiOlsiQHVzZXJzIl0sImlhdCI6MTUxNzk0Nzk2MSwibmJmIjoxNTE3OTQ3OTYxLCJleHAiOjE1MTgwMzQzNjEsImF1ZCI6WyJAY29yZSIsIiNwdWJsaWMiXSwiaXNzIjoiaHR0cHM6Ly9yYWZ0ZXIuYmkudnQuZWR1L3VzZXJzdmMvcHVibGljX2tleSIsInN1YiI6Im5kc3NsQXBwIn0.a_q5Hq2MKWizi1KFbq8RMKAeQQbpsPweexIRCQwQ2a65J5Ojukf9vv' +
+      '-i9vRVuzPJEWxPHhXZTSzLXiwPlLB5P9VOlzgDPhmVuPwx2n0q-T9hbV6vGt1E0EL-oKex1dpVE10iM0BWujXvQRC8gPJXhIBNR6zUDXX5ziO_8Y48CNWvKBDKhTjcrGEuj7CEMSt9kZBlgt-E_DnkibnFfHl763k_vPWqJ4okWkhELXtpCj7ObKrjNGRjYzKrMRyjJkIHLOc6ZEsTKkWt4ATzOXN_jVYFqN5tzRpMqiqC-G0oS-aSOiML6HZpqiEu26oLoQ4a6RDAXPp6Me9SXwkhw7K-JNDvW68LRyXIMnz7HisLWhc6-1XykgQ6MLcu4uvsOBD11VQpVmO-5Dkdf2vAlr7jbQ8tvKZaJi4W2PEiVIfR6lNhGPLyU4Zx4bg084tzi6n3jSipKcavfPY' +
+      '-iNAbZOYDXlB8GKdDIEFpRQmO11Yyr1_B9OjRYFWrf1scdlLhdXcRQT33FHQo_sakhZMI36s50ksj6B4ghrEHhdvgE1TFBgMg6uyRiNiZiRVgd08kMok_JmlJrjGkqoUIgvZeC9NkjGU8YcV5bF5ZTeJpTlJ7l28W8fY_lkjOs4LBsxoJDdnrdGR-FsfFMQJajL4LEuwXGlpBHjfiLpqflRYhf8poDRU';
+    sessionStorage.setItem('rafterToken', tkn);
+    rd5.rafterUser = new RafterUser(rd.app.httpClient);
+    console.log('this is the user');
+    console.log(rd5.user);
+    await rd5.attached();
+    //expect(document.getElementsByClassName('appSelector')[0].style.display).toBe('none');
   }));
 
   it('does not inits vs if rafter token is in sessionStorage and it has already been initialized', testAsync(async function() {

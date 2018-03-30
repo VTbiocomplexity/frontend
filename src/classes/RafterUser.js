@@ -24,11 +24,21 @@ export class RafterUser {
   checkIfPageReload(sli) {
     let reloadPage = false;
     let showHideHD = document.getElementsByClassName('showHideHD')[0];
+    let rafterCheckHome = document.getElementsByClassName('rafterCheckHome')[0];
+    console.log(showHideHD);
+    console.log(rafterCheckHome);
     if (showHideHD !== null && showHideHD !== undefined) {
       if (showHideHD.style.display === 'block') {
         //console.log('why is logout button?');
         reloadPage = true;
         showHideHD.style.display === 'none';
+      }
+    }
+    if (rafterCheckHome !== null && rafterCheckHome !== undefined) {
+      if (rafterCheckHome.style.display === 'block') {
+        //console.log('why is logout button?');
+        reloadPage = true;
+        rafterCheckHome.style.display === 'none';
       }
     }
     console.log('you are not logged in');

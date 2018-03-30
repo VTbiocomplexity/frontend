@@ -1,15 +1,15 @@
 const Fetch = require('isomorphic-fetch');
-const patric = require('../commons/patric.js');
+const utils = require('../commons/utils.js');
 class Register_ {
   constructor() {
     this.fetch = Fetch;
     this.appName = '';
-    this.patric = patric;
+    this.utils = utils;
   }
 
   createRegistrationForm(appName) {
-    this.patric.nevermind('LoginForm');
-    this.patric.nevermind('RegistrationForm');
+    this.utils.nevermind('LoginForm');
+    this.utils.nevermind('RegistrationForm');
     this.appName = appName;
     const regform = document.createElement('div');
     regform.className = 'RegistrationForm';
