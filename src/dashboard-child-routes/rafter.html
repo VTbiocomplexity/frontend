@@ -4,24 +4,23 @@
       <div class="rafterAddApp" style="margin-left:3px; margin-top:6px; margin-right:2px;width:0.78in;text-align:center; display:none; position:relative; float:left; border-right:1px solid; margin-bottom:10px">
         <button style="text-align:center" class="rafterAddAppButton btn btn-outline-primary" click.delegate="rafterAddApp()">Add</button>
         <div class="appSelector" style="display:none;margin:auto; width:0.7in">
-          <!-- <hr style="margin-bottom:4px; padding-bottom:0; margin-top:6px"> -->
-          <!-- <p style="text-align:center; margin-bottom:0;padding-bottom:0; font-size:9pt">Change<br>App</p> -->
           <select id="appName" class="form-control" style="margin-top:5px;width: 0.69in; padding:0; text-align:center;" change.delegate="handleRafterLogin('changeApp')">
             <option value="" label="Change"></option>
             <option repeat.for="name of appNames" model.bind="name">${name}</option>
           </select>
         </div>
         <div class="appSelector" style="display:none;margin:auto; width:0.7in">
-          <!-- <hr style="margin-bottom:4px; padding-bottom:0; margin-top:6px"> -->
-          <!-- <p style="text-align:center; margin-bottom:0;padding-bottom:0; font-size:9pt">Change<br>App</p> -->
           <select id="appName2" class="form-control" style="margin-top:5px;width: 0.72in; padding:0; text-align:center;" change.delegate="removeApp()">
             <option value="" label="Remove"></option>
             <option repeat.for="name of appNames" model.bind="name">${name}</option>
           </select>
         </div>
       </div>
-      <h3 style="margin:auto; padding-top:10px; padding-bottom:5px;text-align:center"><strong>Rafter Dashboard</strong></h3>
-      <p style="text-align:center;"><i>We are going to try out some Rafter APIs here!</i></p>
+      <div style="text-align:center: margin-auto; max-width:4in">
+        <h3 style="margin:auto; padding-top:10px; padding-bottom:5px;text-align:center"><strong>Rafter Dashboard</strong></h3>
+        <p style="text-align:center;"><i>We are going to try out some Rafter APIs here!</i></p>
+        <button style="text-align:center;margin:auto; display:none" class="rafterCheckHome btn" click.delegate="rafterVolumeService('ls')">Display home/${rafterUserID}</button>
+      </div>
       <div class="rafterLogin elevation3" style="max-width:3in; margin:auto; margin-bottom:20px" show.bind="showLogin">
         <form style="margin-left:8px">
           <label>Rafter App Name</label>
@@ -41,27 +40,24 @@
         <div class="showHideHD" style="display:none">
           <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><i class="fa fa-folder"></i> <a class="rafterHomeLink" click.delegate="navHomeDir()">home/${rafterUserID}</a>
         </div>
-        <div class="fileDetailsTitle fileDld" style="display:none; position:relative; float:right; margin-right:30px">
-          <button class="dnldButton" type="button" click.delegate="fileDownload()">Download</button>
-          <p>&nbsp;</p>
-          <button class="deleteButton" type="button" click.delegate="fileDelete()">Delete</button>
-          <p>&nbsp;</p>
-          <button class="displayButton" type="button" click.delegate="fileDisplay()">Display</button>
+        <div class="fileDetailsTitle fileDld" style="display:none; position:relative; float:right; margin-right:6px;margin-top:-11px">
+          <button class="displayButton btn-primary" type="button" click.delegate="fileDisplay()">Display</button>
+          <p style="font-size:4px; margin:0">&nbsp;</p>
+          <button class="dnldButton btn-success" type="button" click.delegate="fileDownload()">Download</button>
+          <p style="font-size:4px; margin:0">&nbsp;</p>
+          <button class="deleteButton btn-danger" type="button" click.delegate="fileDelete()">Delete</button>
         </div>
-        <!-- <div class="fileDetailsTitle fileDld" style="display:none; margin-right:30px; margin-top:30px"></div> -->
-        <div id="treeView" style="max-width:2in; margin-left:84px"></div>
+        <div id="treeView" style="max-width:2in; margin-left:86px; min-height:100px"></div>
       </div>
       <div style="margin:auto; text-align:center"><p class="userServiceError" style="color:red; margin-top:-20px"></p></div>
       <div show.bind="!showLogin">
         <div class="rafterFile" style="text-align:center; margin-auto">
-          <button style="text-align:center" class="rafterCheckHome" click.delegate="rafterVolumeService('ls')">Display home/${rafterUserID}</button>
           <div class="fileDetails">
             <div class="fileMeta">
               <div class="fileDetailsTitle" style="display:none">
                 <hr>
                 <div class="displayFileContent"></div>
                 <div>
-                  <!-- <p>&nbsp;</p> -->
                   <div style="float:left; margin-left:33%; margin-right: -33%">
                     <i class="fa fa-plus-square hoverHand sfd" style="display:none" click.delegate="showDetail('hfd','sfd','homeDirContent')"></i>
                     <i class="fa fa-minus-square hoverHand hfd" click.delegate="hideDetail('hfd','sfd','homeDirContent')"></i>
@@ -121,10 +117,7 @@
             </form>
           </div>
         </div>
-        <p>&nbsp;</p>
       </div>
-      <!-- <p>This news (or blog) will appear on the News page and will also be published to Facebook, Twitter, Instagram, and Google</p> -->
     </div>
-    <!-- <div id="wjfooter" class="footer" style="padding:8px; background-color: #2a222a"></div> -->
   </div>
 </template>

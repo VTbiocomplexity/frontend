@@ -180,26 +180,13 @@ describe('The Register module', () => {
     });
   });
 
-  // it('logs out the user', () => {
-  //   const mockStorage = {setItem: function(item, value) {
-  //     //do nothing
-  //   }, removeItem: function(item) {
-  //     //do nothing
-  //   }};
-  //   window.localStorage = mockStorage;
-  //   document.body.innerHTML += '<div class="loginerror"></div><div class="ShowWAuth"></div><div class="HideWAuth"></div>';
-  //   reg.logout();
-  //   let showA = document.getElementsByClassName('ShowWAuth')[0];
-  //   expect(showA.style.display).toBe('none');
-  // });
-
   it('it navigates to the user preferences page', () => {
     reg.userAccount();
   });
 
   it('it hides the registration form', () => {
     document.body.innerHTML = '<div><div class="RegistrationForm" style="display:block"></div></div>';
-    reg.patric.nevermind('RegistrationForm');
+    reg.utils.nevermind('RegistrationForm');
     expect(document.getElementsByClassName('RegistrationForm')[0].style.display).toBe('none');
   });
 });

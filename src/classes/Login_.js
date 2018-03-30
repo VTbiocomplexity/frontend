@@ -1,6 +1,6 @@
 //import {inject} from 'aurelia-framework';
 const Fetch = require('isomorphic-fetch');
-const patric = require('../commons/patric.js');
+const utils = require('../commons/utils.js');
 //import {App} from '../app';
 //@inject(App)
 class Login_ {
@@ -11,8 +11,8 @@ class Login_ {
   }
 
   createLoginForm(appName) {
-    patric.nevermind('LoginForm');
-    patric.nevermind('RegistrationForm');
+    utils.nevermind('LoginForm');
+    utils.nevermind('RegistrationForm');
     let useremailinput = '<tr class="emailheader"><th style="border:none">Email</th></tr><tr class="emailinput"><td>' +
     '<input class="loginemail" type="email" name="email" style="width:300px;" value="" required></td></tr>';
     let useridrow = '<tr class="uidheader"><th style="border:none">Email or Userid</th></tr><tr class="uidinput"><td>' +
@@ -31,11 +31,8 @@ class Login_ {
     '<button class="nevermind" style="margin-left:12px;margin-top:20px" type="button">Cancel</button></div></div></form>';
     let home = document.getElementsByClassName('home');
     home[0].insertBefore(loginform, home[0].childNodes[0]);
-    // let pArr = ['uidheader', 'uidinput', 'nevermind'];
-    // let nArr = ['emailheader', 'emailinput'];
-    // patric.showHideElements(appName, pArr, nArr);
     let elementsObj = {'PATRIC': ['patric', 'uidheader', 'uidinput'], 'nArr': ['emailheader', 'emailinput']};
-    patric.showHideElements2(appName, elementsObj);
+    utils.showHideElements2(appName, elementsObj);
   }
 
   startup(appName) {
