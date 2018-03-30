@@ -99,8 +99,9 @@ export class App {
       document.getElementsByClassName('page-host')[0].addEventListener('click', function() {
         let drawer = document.getElementsByClassName('drawer')[0];
         let toggleIcon = document.getElementsByClassName('mobile-menu-toggle')[0];
+        console.log(event.target.className);
         /* istanbul ignore else */
-        if (event.target.className !== 'nav-list' && event.target.className !== 'menu-item') {
+        if (event.target.className !== 'menu-item') {
           drawer.style.display = 'none';
           $(drawer).parent().css('display', 'none');
           toggleIcon.style.display = 'block';
