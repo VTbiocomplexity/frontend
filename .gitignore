@@ -16,3 +16,4 @@ django_montage/local_settings.py
 private.pem
 public.pem
 bower_components
+yarn-error.log

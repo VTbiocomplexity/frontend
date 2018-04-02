@@ -6,12 +6,22 @@ import {AuthorizeStep, AuthService} from 'aurelia-auth';
 import {UserAccess} from './classes/UserAccess.js';
 import {HttpClient, json} from 'aurelia-fetch-client';
 import {AppState} from './classes/AppState.js';
+//const ZingTouch = require('zingtouch');
+//const swipe = require('jquery-touchswipe')($);
+const Hammer = require('hammerjs');
 @inject(AuthService, HttpClient)
 export class App {
   constructor(auth, httpClient) {
+    //this.hammer = hammer;
     this.auth = auth;
     this.httpClient = httpClient;
     this.menuToggled = false;
+    // this.swipeEvent = (e) => {
+    //   console.log(e);
+    //   let drawer = document.getElementsByClassName('drawer')[0];
+    //   let toggleIcon = document.getElementsByClassName('mobile-menu-toggle')[0];
+    // };
+    //this.swipe = new Hammer.Swipe();
   }
 
   dashboardTitle = 'Dashboard';
@@ -93,21 +103,50 @@ export class App {
   }
 
   toggleMobileMenu(toggle) {
+    const clickFunc = function() {
+      let drawer = document.getElementsByClassName('drawer')[0];
+      let toggleIcon = document.getElementsByClassName('mobile-menu-toggle')[0];
+      console.log(event.target.className);
+      /* istanbul ignore else */
+      if (event.target.className !== 'menu-item') {
+        document.getElementsByClassName('swipe-area')[0].style.display = 'none';
+        //this.manager.off('swipe', this.close.bind(this));
+        drawer.style.display = 'none';
+        $(drawer).parent().css('display', 'none');
+        toggleIcon.style.display = 'block';
+        document.getElementsByClassName('page-host')[0].style.overflow = 'auto';
+      }
+    };
     document.getElementsByClassName('page-host')[0].style.overflow = 'auto';
     if (toggle !== 'close') {
       document.getElementsByClassName('page-host')[0].style.overflow = 'hidden';
-      document.getElementsByClassName('page-host')[0].addEventListener('click', function() {
-        let drawer = document.getElementsByClassName('drawer')[0];
-        let toggleIcon = document.getElementsByClassName('mobile-menu-toggle')[0];
-        console.log(event.target.className);
-        /* istanbul ignore else */
-        if (event.target.className !== 'menu-item') {
-          drawer.style.display = 'none';
-          $(drawer).parent().css('display', 'none');
-          toggleIcon.style.display = 'block';
-          document.getElementsByClassName('page-host')[0].style.overflow = 'auto';
-        }
-      });
+      document.getElementsByClassName('swipe-area')[0].style.display = 'block';
+      // this.zt.bind(document.getElementsByClassName('swipe-area')[0], 'swipe', function(e) {
+      //   console.log(e.detail);
+      // });
+      //this.hammer.on('swipe', this.swipeEvent);
+      // });
+      //console.log($('.swipe-area').swipe());
+      // $('.swipe-area').swipe({
+      //   //console.log(event);
+      //   swipe: function(event, direction, distance, duration, fingerCount, fingerData) {
+      //     console.log('swipe');
+      //   }
+      //   //   console.log('swipped');
+      //   //   if (direction === 'left') {
+      //   //     document.getElementsByClassName('drawer')[0].style.display = 'block';
+      //   //     document.getElementsByClassName('mobile-menu-toggle')[0].style.display = 'none';
+      //   //     return false;
+      //   //   }
+      //   //   if (direction === 'right') {
+      //   //     document.getElementsByClassName('drawer')[0].style.display = 'none';
+      //   //     document.getElementsByClassName('mobile-menu-toggle')[0].style.display = 'block';
+      //   //     return false;
+      //   //   }
+      //   // }
+      // });
+      document.getElementsByClassName('page-host')[0].addEventListener('click', clickFunc);
+      this.manager.on('swipe', this.close.bind(this));
     }
     this.menuToggled = true;
     let drawer = document.getElementsByClassName('drawer')[0];
@@ -116,10 +155,20 @@ export class App {
       drawer.style.display = 'block';
       $(drawer).parent().css('display', 'block');
       toggleIcon.style.display = 'none';
+      // document.getElementsByClassName('swipe-area')[0].style.display = 'block';
+      // this.manager.on('swipe', this.close.bind(this));
     } else {
       drawer.style.display = 'none';
       $(drawer).parent().css('display', 'none');
       toggleIcon.style.display = 'block';
+      this.manager.off('swipe', this.close.bind(this));
+      //document.getElementsByClassName('page-host')[0].removeEventListener('click', clickFunc);
+      //document.getElementsByClassName('swipe-area')[0].style.display = 'none';
+    }
+    if (toggle === 'close') {
+      document.getElementsByClassName('page-host')[0].removeEventListener('click', clickFunc);
+      document.getElementsByClassName('swipe-area')[0].style.display = 'none';
+      this.manager.off('swipe', this.close.bind(this));
     }
   }
 
@@ -235,5 +284,19 @@ export class App {
         console.log(error);
       });
   }
-
+  attached() {
+    this.manager = new Hammer.Manager(document.getElementsByClassName('swipe-area')[0], {
+      recognizers: [
+              [Hammer.Swipe, { direction: Hammer.DIRECTION_HORIZONTAL }]
+      ]
+    });
+    //this.manager.add(this.swipe);
+    //let sf = this.swipeEvent;
+    //this.manager.on('swipe', this.swipeEvent.bind(this));
+    console.log(this.manager);
+    document.getElementsByClassName('swipe-area')[0].style.display = 'none';
+  }
+  // detached() {
+  //   //this.manager.off('swipe', this.swipeEvent.bind(this));
+  // }
 }
