@@ -109,6 +109,8 @@ export class App {
       console.log(event.target.className);
       /* istanbul ignore else */
       if (event.target.className !== 'menu-item') {
+        document.getElementsByClassName('swipe-area')[0].style.display = 'none';
+        //this.manager.off('swipe', this.close.bind(this));
         drawer.style.display = 'none';
         $(drawer).parent().css('display', 'none');
         toggleIcon.style.display = 'block';
@@ -118,7 +120,7 @@ export class App {
     document.getElementsByClassName('page-host')[0].style.overflow = 'auto';
     if (toggle !== 'close') {
       document.getElementsByClassName('page-host')[0].style.overflow = 'hidden';
-
+      document.getElementsByClassName('swipe-area')[0].style.display = 'block';
       // this.zt.bind(document.getElementsByClassName('swipe-area')[0], 'swipe', function(e) {
       //   console.log(e.detail);
       // });
@@ -153,12 +155,20 @@ export class App {
       drawer.style.display = 'block';
       $(drawer).parent().css('display', 'block');
       toggleIcon.style.display = 'none';
+      // document.getElementsByClassName('swipe-area')[0].style.display = 'block';
+      // this.manager.on('swipe', this.close.bind(this));
     } else {
       drawer.style.display = 'none';
       $(drawer).parent().css('display', 'none');
       toggleIcon.style.display = 'block';
       this.manager.off('swipe', this.close.bind(this));
+      //document.getElementsByClassName('page-host')[0].removeEventListener('click', clickFunc);
+      //document.getElementsByClassName('swipe-area')[0].style.display = 'none';
+    }
+    if (toggle === 'close') {
       document.getElementsByClassName('page-host')[0].removeEventListener('click', clickFunc);
+      document.getElementsByClassName('swipe-area')[0].style.display = 'none';
+      this.manager.off('swipe', this.close.bind(this));
     }
   }
 
@@ -284,6 +294,7 @@ export class App {
     //let sf = this.swipeEvent;
     //this.manager.on('swipe', this.swipeEvent.bind(this));
     console.log(this.manager);
+    document.getElementsByClassName('swipe-area')[0].style.display = 'none';
   }
   // detached() {
   //   //this.manager.off('swipe', this.swipeEvent.bind(this));
