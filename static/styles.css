@@ -241,12 +241,23 @@ a:hover {
 
 .mobile-menu-toggle {
   position: fixed;
-  top: 26px;
+  top: 25px;
   right: 16px;
   background-color: #2a222a;
   color: white;
   padding: 6px;
   z-index: 90000;
+}
+
+.swipe-area {
+  position: absolute;
+  width: 50px;
+  left: 122px;
+  top: 0;
+  height: 100%;
+  /* background: #f3f3f3; */
+  z-index: 9999;
+  /* touch-action: auto; */
 }
 
 .header-text {
@@ -268,16 +279,6 @@ a:hover {
   box-sizing: border-box;
   border-radius: 2px;
 }
-
-/* a:not([href]):not([tabindex]) {
-  text-decoration: underline;
-  color: #007bff;
-} */
-
-/* a:not([href]):not([tabindex]):hover {
-  text-decoration: underline;
-  color: #0056b3;
-} */
 
 button {
   cursor: pointer;

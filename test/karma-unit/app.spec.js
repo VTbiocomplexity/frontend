@@ -117,9 +117,18 @@ describe('the App module', () => {
     done();
   });
 
+  it('makes a swipeable area', (done) => {
+    document.body.innerHTML = '<div class="swipe-area"></div>';
+    //app1.router = routre;
+    app1.attached();
+    expect(app1.manager).toBeDefined;
+    done();
+  });
+
   it('closes the menu on cellphone display', (done) => {
     viewport.set(500);
-    document.body.innerHTML = '<div class="page-host"><div class="drawer-container"><div class="drawer"></div></div><div class="main-panel"><i class="mobile-menu-toggle"></i></div></div>';
+    document.body.innerHTML = '<div class="page-host"><div class="swipe-area"></div><div class="drawer-container"><div class="drawer"></div></div><div class="main-panel"><i class="mobile-menu-toggle"></i></div></div>';
+    app1.manager = {on: function() {}, off: function() {}};
     app1.close();
     expect(document.getElementsByClassName('drawer')[0].style.display).toBe('none');
     done();
@@ -128,7 +137,8 @@ describe('the App module', () => {
 
   it('opens the menu on cellphone display, then closes it', (done) => {
     viewport.set(500);
-    document.body.innerHTML = '<div class="page-host"><div class="drawer-container"><div class="drawer" style="display:none"></div></div><div class="main-panel"><i class="mobile-menu-toggle"></i></div></div>';
+    document.body.innerHTML = '<div class="page-host"><div class="swipe-area"></div><div class="drawer-container"><div class="drawer" style="display:none"></div></div><div class="main-panel"><i class="mobile-menu-toggle"></i></div></div>';
+    app1.manager = {on: function() {}, off: function() {}};
     app1.toggleMobileMenu();
     expect(document.getElementsByClassName('drawer')[0].style.display).toBe('block');
     document.getElementsByClassName('page-host')[0].click();

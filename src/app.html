@@ -37,12 +37,6 @@
               <span if.bind="fullmenu" class="nav-item">User Account</span>
             </a>
           </div>
-          <!-- <div class="menu-item">
-            <a paper-drawer-toggle href="/welcome" class="nav-link" click.delegate="close()">
-              <span class="fa fa-microphone"></span>
-              <span class="nav-item" if.bind="fullmenu">Welcome</span>
-            </a>
-          </div> -->
           <div class="menu-item">
             <a paper-drawer-toggle href="/" class="nav-link" click.delegate="close()">
               <span class="fa fa-home"></span>
@@ -63,11 +57,12 @@
     <div class="main-panel">
       <i show.bind="!widescreen" click.delegate="toggleMobileMenu()" id="mobilemenutoggle" class="fa fa-bars pull-right fa-1.5x mobile-menu-toggle"></i>
       <div class="mainPanel">
+        <div class="swipe-area"></div>
         <div class="material-header ${currentStyles.headerClass}">
           <div class="headercontent">
             <img src="${currentStyles.headerImagePath}" class="${currentStyles.headerImageClass}">
           </div>
-          <div class="headercontent ${currentStyles.headerClass} header-text-card" style="top:8px; height:30px">
+          <div class="headercontent ${currentStyles.headerClass} header-text-card" style="top:9px; height:28px">
             <h3 class="header-text">
               ${currentStyles.headerText1}
             </h3>
