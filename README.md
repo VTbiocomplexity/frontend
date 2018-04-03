@@ -22,4 +22,4 @@
 
 <br>
 <a href="https://www.browserstack.com"><img src="https://d3but80xmlhqzj.cloudfront.net/production/images/static/header/header-logo.svg" alt="BrowserStack" width="200px"/></a>
-<br>We are using BrowserStack to test compatibility accross Chrome, Firefox, Safari, Edge, and IE 11, and we thank them for supporting open-source projects.
+<br>We are using <a href="https://www.browserstack.com">BrowserStack</a> to test compatibility accross Chrome, Firefox, Safari, Edge, and IE 11, and we thank them for supporting open-source projects.
