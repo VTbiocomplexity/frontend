@@ -272,5 +272,6 @@ export class App {
   }
   detached() {
     this.manager.off('swipe', this.close.bind(this));
+    document.getElementsByClassName('page-host')[0].removeEventListener('click', this.clickFunc);
   }
 }
