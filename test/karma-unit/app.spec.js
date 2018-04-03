@@ -117,7 +117,7 @@ describe('the App module', () => {
     done();
   });
 
-  fit('makes a swipeable area and disables it when navigated away from this page', testAsync(async function() {
+  it('makes a swipeable area and disables it when navigated away from this page', testAsync(async function() {
     document.body.innerHTML = '<div class="page-host" hasEvent="true"><div class="swipe-area"></div></div>';
     await app1.attached();
     expect(app1.manager).toBeDefined;
