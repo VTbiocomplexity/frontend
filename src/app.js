@@ -272,6 +272,8 @@ export class App {
   }
   detached() {
     this.manager.off('swipe', this.close.bind(this));
-    document.getElementsByClassName('page-host')[0].removeEventListener('click', this.clickFunc);
+    let ph = document.getElementsByClassName('page-host')[0];
+    ph.removeEventListener('click', this.clickFunc);
+    ph.setAttribute('hasEvent', false);
   }
 }
