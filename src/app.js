@@ -102,51 +102,27 @@ export class App {
     return isWide;
   }
 
+  clickFunc() {
+    let drawer = document.getElementsByClassName('drawer')[0];
+    let toggleIcon = document.getElementsByClassName('mobile-menu-toggle')[0];
+    console.log(event.target.className);
+    /* istanbul ignore else */
+    if (event.target.className !== 'menu-item') {
+      document.getElementsByClassName('swipe-area')[0].style.display = 'none';
+      drawer.style.display = 'none';
+      $(drawer).parent().css('display', 'none');
+      toggleIcon.style.display = 'block';
+      document.getElementsByClassName('page-host')[0].style.overflow = 'auto';
+    }
+  }
+
   toggleMobileMenu(toggle) {
-    const clickFunc = function() {
-      let drawer = document.getElementsByClassName('drawer')[0];
-      let toggleIcon = document.getElementsByClassName('mobile-menu-toggle')[0];
-      console.log(event.target.className);
-      /* istanbul ignore else */
-      if (event.target.className !== 'menu-item') {
-        document.getElementsByClassName('swipe-area')[0].style.display = 'none';
-        //this.manager.off('swipe', this.close.bind(this));
-        drawer.style.display = 'none';
-        $(drawer).parent().css('display', 'none');
-        toggleIcon.style.display = 'block';
-        document.getElementsByClassName('page-host')[0].style.overflow = 'auto';
-      }
-    };
     document.getElementsByClassName('page-host')[0].style.overflow = 'auto';
     if (toggle !== 'close') {
       document.getElementsByClassName('page-host')[0].style.overflow = 'hidden';
       document.getElementsByClassName('swipe-area')[0].style.display = 'block';
-      // this.zt.bind(document.getElementsByClassName('swipe-area')[0], 'swipe', function(e) {
-      //   console.log(e.detail);
-      // });
-      //this.hammer.on('swipe', this.swipeEvent);
-      // });
-      //console.log($('.swipe-area').swipe());
-      // $('.swipe-area').swipe({
-      //   //console.log(event);
-      //   swipe: function(event, direction, distance, duration, fingerCount, fingerData) {
-      //     console.log('swipe');
-      //   }
-      //   //   console.log('swipped');
-      //   //   if (direction === 'left') {
-      //   //     document.getElementsByClassName('drawer')[0].style.display = 'block';
-      //   //     document.getElementsByClassName('mobile-menu-toggle')[0].style.display = 'none';
-      //   //     return false;
-      //   //   }
-      //   //   if (direction === 'right') {
-      //   //     document.getElementsByClassName('drawer')[0].style.display = 'none';
-      //   //     document.getElementsByClassName('mobile-menu-toggle')[0].style.display = 'block';
-      //   //     return false;
-      //   //   }
-      //   // }
-      // });
-      document.getElementsByClassName('page-host')[0].addEventListener('click', clickFunc);
-      this.manager.on('swipe', this.close.bind(this));
+      document.getElementsByClassName('page-host')[0].addEventListener('click', this.clickFunc);
+      //this.manager.on('swipe', this.close.bind(this));
     }
     this.menuToggled = true;
     let drawer = document.getElementsByClassName('drawer')[0];
@@ -161,14 +137,14 @@ export class App {
       drawer.style.display = 'none';
       $(drawer).parent().css('display', 'none');
       toggleIcon.style.display = 'block';
-      this.manager.off('swipe', this.close.bind(this));
+      //this.manager.off('swipe', this.close.bind(this));
       //document.getElementsByClassName('page-host')[0].removeEventListener('click', clickFunc);
       //document.getElementsByClassName('swipe-area')[0].style.display = 'none';
     }
     if (toggle === 'close') {
-      document.getElementsByClassName('page-host')[0].removeEventListener('click', clickFunc);
+      document.getElementsByClassName('page-host')[0].removeEventListener('click', this.clickFunc);
       document.getElementsByClassName('swipe-area')[0].style.display = 'none';
-      this.manager.off('swipe', this.close.bind(this));
+      //this.manager.off('swipe', this.close.bind(this));
     }
   }
 
@@ -290,13 +266,11 @@ export class App {
               [Hammer.Swipe, { direction: Hammer.DIRECTION_HORIZONTAL }]
       ]
     });
-    //this.manager.add(this.swipe);
-    //let sf = this.swipeEvent;
-    //this.manager.on('swipe', this.swipeEvent.bind(this));
-    console.log(this.manager);
+    this.manager.on('swipe', this.close.bind(this));
+    //console.log(this.manager);
     document.getElementsByClassName('swipe-area')[0].style.display = 'none';
   }
-  // detached() {
-  //   //this.manager.off('swipe', this.swipeEvent.bind(this));
-  // }
+  detached() {
+    this.manager.off('swipe', this.close.bind(this));
+  }
 }

@@ -117,13 +117,26 @@ describe('the App module', () => {
     done();
   });
 
-  it('makes a swipeable area', (done) => {
+  it('makes a swipeable area and disables it when navigated away from this page', testAsync(async function() {
     document.body.innerHTML = '<div class="swipe-area"></div>';
     //app1.router = routre;
-    app1.attached();
+    await app1.attached();
+    //console.log(app1.manager.options);
     expect(app1.manager).toBeDefined;
-    done();
-  });
+    await app1.detached();
+    //let options = JSON.parse(app1.manager);
+    //console.log(app1.manager.options);
+    //expect(app1.manager.domEvents).toBe(false);
+    // done();
+  }));
+
+  // it('disables the event on swipe', (done) => {
+  //   document.body.innerHTML = '<div class="swipe-area"></div>';
+  //   //app1.router = routre;
+  //   app1.attached();
+  //   expect(app1.manager).toBeDefined;
+  //   done();
+  // });
 
   it('closes the menu on cellphone display', (done) => {
     viewport.set(500);
