@@ -18,6 +18,7 @@ class AuthStub2 extends AuthStub {
 describe('the App module', () => {
   let app1;
   let app2;
+  let app4;
   beforeEach(() => {
     app1 = new App(new AuthStub(), new HttpMock());
     app1.auth.setToken({sub: 'token'});
@@ -26,6 +27,10 @@ describe('the App module', () => {
     app2 = new App(new AuthStub2(), new HttpMock());
     app2.activate();
     app2.appState = new AppStateStub();
+    app4 = new App(new AuthStub(), new HttpMock('error'));
+    app4.auth.setToken({sub: 'token'});
+    app4.activate();
+    app4.appState = new AppStateStub();
   });
 
   afterEach(() => {
@@ -65,6 +70,15 @@ describe('the App module', () => {
     done();
   });
 
+  it('updates by id', testAsync(async function() {
+    await app1.updateById('/user/', '123', {});
+  }));
+
+  it('catches error on update by id', testAsync(async function() {
+    //app1.app.httpClient = new HttpMock('error');
+    await app4.updateById('/user/', '123', {});
+  }));
+
   it('should logout and then display the login button', testAsync(async function() {
     await app1.logout();
     await app1.checkUser();
@@ -74,35 +88,14 @@ describe('the App module', () => {
     //done();
   }));
 
-  it('displays the mobile menu hamburger when drawer is closed and not widescreen', testAsync(async function() {
-    document.body.innerHTML = '';
-    isOpen = app1.drawerOpen;
-    expect(isOpen).toBe(false);
-    document.body.innerHTML = '<div id="mobilemenutoggle" style="display:none"></div><div id="drawerPanel"></div>';
-    let drawer = document.getElementById('drawerPanel');
-    drawer.closeDrawer = function() {};
-    drawer.selected = 'drawer';
-    let isOpen = app1.drawerOpen;
-    expect(isOpen).toBe(true);
-    drawer.selected = '';
-    isOpen = app1.drawerOpen;
-    expect(isOpen).toBe(false);
-    viewport.set(320);
-    app1.close();
-    expect(document.getElementById('mobilemenutoggle').style.display).toBe('block');
-    //done();
-    viewport.reset();
-  }));
-
-
-  // it('closes the menu on cellphone display', (done) => {
-  //   //console.log(app1);
-  //   app1.activate().then(() => {
-  //     app1.close();
-  //     //expect(app1.authenticated).toBe(false);
-  //   });
-  //   done();
-  // });
+  it('closes the menu on cellphone display', (done) => {
+    //console.log(app1);
+    app1.activate().then(() => {
+      app1.close();
+      //expect(app1.authenticated).toBe(false);
+    });
+    done();
+  });
 
   it('does not display the mobile menu hamburger when in widescreen', testAsync(async function() {
     document.body.innerHTML = '<div id="mobilemenutoggle"></div>';
@@ -124,15 +117,37 @@ describe('the App module', () => {
     done();
   });
 
+  it('makes a swipeable area and disables it when navigated away from this page', testAsync(async function() {
+    document.body.innerHTML = '<div class="page-host" hasEvent="true"><div class="swipe-area"></div></div>';
+    await app1.attached();
+    expect(app1.manager).toBeDefined;
+    await app1.detached();
+    expect(document.getElementsByClassName('page-host')[0].getAttribute('hasEvent')).toBe('false');
+  }));
+
   it('closes the menu on cellphone display', (done) => {
-    //console.log(app1);
-    app1.activate().then(() => {
-      app1.close();
-      //expect(app1.authenticated).toBe(false);
-    });
+    viewport.set(500);
+    document.body.innerHTML = '<div class="page-host"><div class="swipe-area"></div><div class="drawer-container"><div class="drawer"></div></div><div class="main-panel"><i class="mobile-menu-toggle"></i></div></div>';
+    app1.manager = {on: function() {}, off: function() {}};
+    app1.close();
+    expect(document.getElementsByClassName('drawer')[0].style.display).toBe('none');
     done();
+    viewport.reset();
   });
-  it('should get widescreen', (done) => {
+
+  it('opens the menu on cellphone display, then closes it', (done) => {
+    viewport.set(500);
+    document.body.innerHTML = '<div class="page-host"><div class="swipe-area"></div><div class="drawer-container"><div class="drawer" style="display:none"></div></div><div class="main-panel"><i class="mobile-menu-toggle"></i></div></div>';
+    app1.manager = {on: function() {}, off: function() {}};
+    app1.toggleMobileMenu();
+    expect(document.getElementsByClassName('drawer')[0].style.display).toBe('block');
+    document.getElementsByClassName('page-host')[0].click();
+    expect(document.getElementsByClassName('drawer')[0].style.display).toBe('none');
+    done();
+    viewport.reset();
+  });
+
+  it('should get widescreen as true', (done) => {
     //console.log(app1);
     viewport.set(1000);
     const app3 = new App(new AuthStub, new HttpMock);
@@ -140,23 +155,4 @@ describe('the App module', () => {
     done();
     viewport.reset();
   });
-
-  it('should toggle menu to be icons only', () => {
-    app2.activate();
-    app2.fullmenu = true;
-    //console.log(app1);
-    app2.toggleMenu();
-    expect(app2.fullmenu).toBe(false);
-    expect(app2.drawerWidth).toBe('50px');
-    //done();
-  });
-
-  it('should toggle menu to be icons with text', () => {
-    app1.fullmenu = false;
-    //console.log(app1);
-    app1.toggleMenu();
-    expect(app1.fullmenu).toBe(true);
-    expect(app1.drawerWidth).toBe('175px');
-  });
-  // done();
 });

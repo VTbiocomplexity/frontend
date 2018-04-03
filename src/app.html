@@ -1,20 +1,22 @@
 <template>
   <div class="page-host">
-    <paper-drawer-panel id="drawerPanel" disable-edge-swipe right-drawer drawer-width.bind="drawerWidth">
-      <paper-header-panel drawer class="${currentStyles.sidebarClass}">
-        <div if.bind="fullmenu">
-          <img id="webjamwidelogo" src="${currentStyles.sidebarImagePath}" style="width:188px">
+    <div drawer class="${currentStyles.sidebarClass} drawer-container" style="display:none">
+      <div class="drawer">
+        <div if.bind="fullmenu" class="navImage">
+          <img src="${currentStyles.sidebarImagePath}" style="width:188px">
         </div>
         <div if.bind="!fullmenu" class="material-header ${currentStyles.headerClass}" style="width: 50px; height:70px"></div>
         <div class="nav-list">
-          <p if.bind="fullmenu" style="font-size:1px">&nbsp;</p>
-          <div class="menu-item" if.bind="widescreen">
-            <i class="fa fa-bars pull-left fa-1x" click.delegate="toggleMenu()" style="color:#23527c; cursor: pointer; cursor: hand;"></i>
-          </div>
           <div class="menu-item" if.bind="!authenticated">
-            <a paper-drawer-toggle href="/login" class="nav-link" click.delegate="(close() || 1) && wjLogin()">
+            <a paper-drawer-toggle href="/login" class="nav-link" click.delegate="close()">
               <span class="fa fa-sign-in"></span>
               <span if.bind="fullmenu" class="nav-item">Login</span>
+            </a>
+          </div>
+          <div class="menu-item" if.bind="!authenticated">
+            <a paper-drawer-toggle href="/register" class="nav-link" click.delegate="close()">
+              <span class="fa fa-user-plus"></span>
+              <span if.bind="fullmenu" class="nav-item">Register</span>
             </a>
           </div>
           <div class="menu-item" if.bind="authenticated">
@@ -24,15 +26,15 @@
             </a>
           </div>
           <div class="menu-item" if.bind="authenticated">
+            <a paper-drawer-toggle href="/dashboard/rafter" class="nav-link" click.delegate="close()">
+              <span class="fa fa-ship"></span>
+              <span if.bind="fullmenu" class="nav-item">Rafter</span>
+            </a>
+          </div>
+          <div class="menu-item" if.bind="authenticated">
             <a paper-drawer-toggle href="/dashboard/user-account" class="nav-link" click.delegate="close()">
               <span class="fa fa-user"></span>
               <span if.bind="fullmenu" class="nav-item">User Account</span>
-            </a>
-          </div>
-          <div class="menu-item">
-            <a paper-drawer-toggle href="/welcome" class="nav-link" click.delegate="close()">
-              <span class="fa fa-microphone"></span>
-              <span class="nav-item" if.bind="fullmenu">Welcome</span>
             </a>
           </div>
           <div class="menu-item">
@@ -50,23 +52,27 @@
             </button>
           </div>
         </div>
-      </paper-header-panel>
-      <paper-header-panel main class="main-panel">
+      </div>
+    </div>
+    <div class="main-panel">
+      <i show.bind="!widescreen" click.delegate="toggleMobileMenu()" id="mobilemenutoggle" class="fa fa-bars pull-right fa-1.5x mobile-menu-toggle"></i>
+      <div class="mainPanel">
+        <div class="swipe-area"></div>
         <div class="material-header ${currentStyles.headerClass}">
           <div class="headercontent">
             <img src="${currentStyles.headerImagePath}" class="${currentStyles.headerImageClass}">
           </div>
-          <div class="headercontent ${currentStyles.headerClass} header-text-card" style="top:5px; height:50px"
-          if.bind="Menu !== 'charity' && Menu !== 'volunteer' && Menu !== 'ohaf' && role !== 'Charity' && role !=='Volunteer'">
-          <h3 class="header-text">
-            ${currentStyles.headerText1}
-          </h3>
+          <div class="headercontent ${currentStyles.headerClass} header-text-card" style="top:9px; height:28px">
+            <h3 class="header-text">
+              ${currentStyles.headerText1}
+            </h3>
+          </div>
         </div>
+        <div style="width:auto" class="content-block">
+          <router-view></router-view>
+          <div id="wjfooter" class="footer" style="padding:8px;"></div>
+        </div>
+      </div>
     </div>
-    <i id="mobilemenutoggle" show.bind="!drawerOpen" class="fa fa-bars pull-right fa-1.5x mobile-menu-toggle" paper-drawer-toggle aria-hidden="true" click.delegate="hideToggle()"></i>
-    <router-view></router-view>
-    <div id="wjfooter" class="footer" style="padding:8px;margin-top:10px"></div>
-  </paper-header-panel>
-</paper-drawer-panel>
-</div>
+  </div>
 </template>

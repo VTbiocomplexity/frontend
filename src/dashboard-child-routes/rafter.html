@@ -1,27 +1,123 @@
 <template>
   <div class="page-content">
     <div class="material-content">
-    <h4 style="margin:auto; padding-top:10px; padding-bottom:20px;text-align:center"><strong>Rafter Dashboard</strong></h4>
-    <p style="text-align:center">We are going to try out some Rafter APIs here!</p>
-    <div class="rafterLogin elevation3" style="max-width:3in; margin:auto" show.bind="showLogin">
-      <form style="margin-left:20px">
-        <label>Rafter User Id</label>
-        <input type="text" value.bind="rafter.id" change.delegate="validate()" keyup.delegate="validate()">
-
-        <label>Rafter Password</label>
-        <input type="password" value.bind="rafter.password" change.delegate="validate()" keyup.delegate="validate()">
-        <div>
-          <p>&nbsp;</p>
-          <p class="userServiceError" style="color:red">&nbsp;</p>
-        <button disabled class="rafterLoginButton" click.delegate="postUSV()">Login To Rafter</button>
+      <div class="rafterAddApp" style="margin-left:3px; margin-top:6px; margin-right:2px;width:0.78in;text-align:center; display:none; position:relative; float:left; border-right:1px solid; margin-bottom:10px">
+        <button style="text-align:center" class="rafterAddAppButton btn btn-outline-primary" click.delegate="rafterAddApp()">Add</button>
+        <div class="appSelector" style="display:none;margin:auto; width:0.7in">
+          <select id="appName" class="form-control" style="margin-top:5px;width: 0.69in; padding:0; text-align:center;" change.delegate="handleRafterLogin('changeApp')">
+            <option value="" label="Change"></option>
+            <option repeat.for="name of appNames" model.bind="name">${name}</option>
+          </select>
+        </div>
+        <div class="appSelector" style="display:none;margin:auto; width:0.7in">
+          <select id="appName2" class="form-control" style="margin-top:5px;width: 0.72in; padding:0; text-align:center;" change.delegate="removeApp()">
+            <option value="" label="Remove"></option>
+            <option repeat.for="name of appNames" model.bind="name">${name}</option>
+          </select>
+        </div>
       </div>
-      </form>
+      <div style="text-align:center: margin-auto; max-width:4in">
+        <h3 style="margin:auto; padding-top:10px; padding-bottom:5px;text-align:center"><strong>Rafter Dashboard</strong></h3>
+        <p style="text-align:center;"><i>We are going to try out some Rafter APIs here!</i></p>
+        <button style="text-align:center;margin:auto; display:none" class="rafterCheckHome btn" click.delegate="rafterVolumeService('ls')">Display home/${rafterUserID}</button>
+      </div>
+      <div class="rafterLogin elevation3" style="max-width:3in; margin:auto; margin-bottom:20px" show.bind="showLogin">
+        <form style="margin-left:8px">
+          <label>Rafter App Name</label>
+          <input type="text" value.bind="rafter.appName" change.delegate="validate()" keyup.delegate="validate()" style="width:2.65in">
+          <label>Rafter App Id</label>
+          <input type="text" value.bind="rafter.id" change.delegate="validate()" keyup.delegate="validate()" style="width:2.65in">
+          <label>Rafter App Secret</label>
+          <input type="text" value.bind="rafter.secret" change.delegate="validate()" keyup.delegate="validate()" style="width:2.65in">
+          <div>
+            <p>&nbsp;</p>
+            <button disabled class="rafterLoginButton" click.delegate="handleRafterLogin()">Connect To Rafter</button><span style="margin-left:60px"> </span><button click.delegate="nevermind()">Nevermind</button>
+          </div>
+          <p><br>Need an account? Follow these <a href="https://docs.google.com/document/d/1BF11gUYfXU8xBSsBW3J2wjK2HWf6NnWzz0y-1XtzoNE/#heading=h.5z7lybzc053j" target="_blank">instructions.</a></p>
+        </form>
+      </div>
+      <div class="homeDirLink" style="margin-top:30px; margin-bottom:30px">
+        <div class="showHideHD" style="display:none">
+          <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><i class="fa fa-folder"></i> <a class="rafterHomeLink" click.delegate="navHomeDir()">home/${rafterUserID}</a>
+        </div>
+        <div class="fileDetailsTitle fileDld" style="display:none; position:relative; float:right; margin-right:6px;margin-top:-11px">
+          <button class="displayButton btn-primary" type="button" click.delegate="fileDisplay()">Display</button>
+          <p style="font-size:4px; margin:0">&nbsp;</p>
+          <button class="dnldButton btn-success" type="button" click.delegate="fileDownload()">Download</button>
+          <p style="font-size:4px; margin:0">&nbsp;</p>
+          <button class="deleteButton btn-danger" type="button" click.delegate="fileDelete()">Delete</button>
+        </div>
+        <div id="treeView" style="max-width:2in; margin-left:86px; min-height:100px"></div>
+      </div>
+      <div style="margin:auto; text-align:center"><p class="userServiceError" style="color:red; margin-top:-20px"></p></div>
+      <div show.bind="!showLogin">
+        <div class="rafterFile" style="text-align:center; margin-auto">
+          <div class="fileDetails">
+            <div class="fileMeta">
+              <div class="fileDetailsTitle" style="display:none">
+                <hr>
+                <div class="displayFileContent"></div>
+                <div>
+                  <div style="float:left; margin-left:33%; margin-right: -33%">
+                    <i class="fa fa-plus-square hoverHand sfd" style="display:none" click.delegate="showDetail('hfd','sfd','homeDirContent')"></i>
+                    <i class="fa fa-minus-square hoverHand hfd" click.delegate="hideDetail('hfd','sfd','homeDirContent')"></i>
+                  </div>
+                  <div><p>&nbsp;&nbsp;&nbsp;<strong>File/Folder Details</strong></p></div>
+                </div>
+              </div>
+              <p class="homeDirContent" style="margin:10px;text-align:left;overflow-x:auto"></p>
+            </div>
+            <div class="insideFolderDetails" style="display:none">
+              <hr>
+              <div>
+                <div style="float:left; margin-left:32%; margin-right:-26%">
+                  <i class="fa fa-plus-square hoverHand sifd" style="display:none" click.delegate="showDetail('hifd', 'sifd', 'subDirContent')"></i>
+                  <i class="fa fa-minus-square hoverHand hifd" click.delegate="hideDetail('hifd', 'sifd', 'subDirContent')"></i>
+                </div>
+                <div><p>&nbsp;&nbsp;&nbsp;<strong>Inside of Folder Details</strong></p></div>
+              </div>
+              <p class="subDirContent" style="margin:10px;text-align:left;;overflow-x:auto"></p>
+            </div>
+          </div>
+        </div>
+        <div class="elevation3 createNew" style="min-width:4.5in; display:none">
+          <h4 style="text-align:center; margin-left:-40px"><strong>Inside of <span class="folderName">home/${rafterUserID}</span></strong></h4>
+          <div class="elevation3 fileCreate" style="max-width:3in; margin-left:30px">
+            <p style="text-align:center"><i><strong>Create Empty File<span class="isHomeDir"> or Folder</span></strong></i></p>
+            <form style="margin-left:10px">
+              <div class="isHomeDir">
+                <input type="radio" id="fileType1" name="ftype" value="file" checked change.delegate="radioClicked()">
+                <label for="fileType1" style="display:inline; margin-right:30px">File</label>
+                <input type="radio" id="fileType2" name="ftype" value="folder" change.delegate="radioClicked()">
+                <label for="fileType2" style="display:inline">Folder</label>
+              </div>
+              <label>Name<span style="font-weight:normal;font-style:italic;font-size:9pt"> (no spaces)</span></label>
+              <input class="form-control" type="text" value.bind="rafterFile.name" style="width: 1.75in">
+              <div class="fileTypeSelector">
+                <label>Type</label>
+                <select id="fileType" class="form-control" value.bind="rafterFile.fileType" style="margin-top:0;width: 1.75in">
+                  <option repeat.for="type of fileTypes" model.bind="type">${type}</option>
+                </select>
+              </div>
+              <p style="margin:0">&nbsp;</p>
+              <div class="rafterFile" style="max-width:2in;text-align:left">
+                <button style="text-align:center" class="rafterMakeFileButton" click.delegate="rafterVolumeService('create')">Create</button>
+              </div>
+            </form>
+          </div>
+          <p>&nbsp;</p>
+          <div class="fileUpload elevation3" style="min-width:3in; margin-left:30px">
+            <p style="text-align:center"><i><strong>Upload a File</strong></i></p>
+            <form style="max-width:2.5in; margin-left:20px">
+              <input id="rafterFilePath" type="file" accept="" files.bind="selectedFiles" change.delegate="rafterFileValidate()"/>
+              <p>&nbsp;</p>
+              <button id="uploadButton" class="button-lib" style="display:none" raised click.trigger="uploadRafterFile()">
+                Upload
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="rafterLogout" style="margin:auto; max-width:2in" show.bind="!showLogin">
-      <button style="text-align:center" class="rafterLogoutButton" click.delegate="rafterLogout()">Logout of Rafter</button>
-    </div>
-    <!-- <p>This news (or blog) will appear on the News page and will also be published to Facebook, Twitter, Instagram, and Google</p> -->
-  </div>
-  <!-- <div id="wjfooter" class="footer" style="padding:8px; background-color: #2a222a"></div> -->
   </div>
 </template>

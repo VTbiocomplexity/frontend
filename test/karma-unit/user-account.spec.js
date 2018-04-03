@@ -1,6 +1,13 @@
 import {UserAccount} from '../../src/dashboard-child-routes/user-account';
 import {RouterStub, AuthStub, HttpMock, AppStateStub} from './commons';
 import {App} from '../../src/app';
+const Uact = require('../../src/classes/UserAccount.js');
+
+function testAsync(runAsync) {
+  return (done) => {
+    runAsync().then(done, (e) => { fail(e); done(); });
+  };
+}
 
 describe('the User Account Module', () => {
   let app1;
@@ -16,75 +23,64 @@ describe('the User Account Module', () => {
     ua.activate();
     ua.app.authenticated = true;
     ua.app.appState = new AppStateStub();
-    //sut.app.appState = new AppStateStub();
-    //sut.app.authenticated = false;
-  });
-
-  it('Does not update User Details with an invalid form', (done) => {
-    document.body.innerHTML = '<div class="elevation3" style="max-width:3.25in; margin:auto"><form><table><tbody>' +
+    document.body.innerHTML = '<div class="elevation3 UserProfileForm" style="max-width:3.25in; margin:auto"><form><table><tbody>' +
 '<tr><th>First Name <span style="color:red">*</span></th><th>Last Name <span style="color:red">*</span></th></tr>' +
 '<tr><td><input class="uprofFirstName" style="width:100%" name="first_name" value="" required></td><td><input class="uprofLastName" style="width:100%" name="last_name" value="" required></td></tr>' +
 '<tr><th colspan="2">Organization</th></tr><tr><td colspan="2"><input class="uprofAff" style="width:100%" name="affiliation" value=""></td></tr>' +
-'<tr><th colspan="2">Organisms</th></tr><tr><td colspan="2"><input class="uprofOrganisms" name="organisms" style="width:100%"></td></tr>' +
-'<tr><th colspan="2">Interests</th></tr><tr><td colspan="2"><textarea class="uprofInterests" rows="10" name="interests" style="height:85px;width:100%" value=""></textarea></td></tr>' +
+'<tr><th colspan="2">Area of Expertise</th></tr><tr><td colspan="2"><input class="uprofexpertise" name="expertise" style="width:100%"></td></tr>' +
+'<tr><th colspan="2">Other Interests</th></tr><tr><td colspan="2"><textarea class="uprofInterests" rows="10" name="interests" style="height:85px;width:100%" value=""></textarea></td></tr>' +
 '</tbody></table><div><span style="color:red; font-style: italic; text-align:left; margin-left:-120px">* Indicates a required field</span>' +
-'<button class="updateprofbutton" type="button" style="margin-left:240px" click.delegate="updateUserPrefs()">Update Profile</button></div></form></div>' +
-'<div class="formerrors" style="color:red; margin-top:5px"></div>';
-    ua.updateUserPrefs();
-    expect(document.getElementsByClassName('formerrors')[0].innerHTML).toBe('<p>Name is not valid, please fix</p>');
-    document.getElementsByClassName('uprofFirstName')[0].value = 'Joe';
-    ua.updateUserPrefs();
-    expect(document.getElementsByClassName('formerrors')[0].innerHTML).toBe('<p>Name is not valid, please fix</p>');
-    document.getElementsByClassName('uprofFirstName')[0].value = 'J oe';
-    document.getElementsByClassName('uprofLastName')[0].value = 'Smith';
-    ua.updateUserPrefs();
-    expect(document.getElementsByClassName('formerrors')[0].innerHTML).toBe('<p>Name is not valid, please fix</p>');
-    document.getElementsByClassName('uprofFirstName')[0].value = 'Joe';
-    document.getElementsByClassName('uprofLastName')[0].value = 'Sm ith';
-    ua.updateUserPrefs();
-    expect(document.getElementsByClassName('formerrors')[0].innerHTML).toBe('<p>Name is not valid, please fix</p>');
-    done();
-  });
-  it('Updates User Details with a valid form', (done) => {
-    document.body.innerHTML = '<div class="UserProfileForm"><div class="elevation3" style="max-width:3.25in; margin:auto"><form><table><tbody>' +
-'<tr><th>First Name <span style="color:red">*</span></th><th>Last Name <span style="color:red">*</span></th></tr>' +
-'<tr><td><input class="uprofFirstName" style="width:100%" name="first_name" value="" required></td><td><input class="uprofLastName" style="width:100%" name="last_name" value="" required></td></tr>' +
-'<tr><th colspan="2">Organization</th></tr><tr><td colspan="2"><input class="uprofAff" style="width:100%" name="affiliation" value=""></td></tr>' +
-'<tr><th colspan="2">Organisms</th></tr><tr><td colspan="2"><input class="uprofOrganisms" name="organisms" style="width:100%"></td></tr>' +
-'<tr><th colspan="2">Interests</th></tr><tr><td colspan="2"><textarea class="uprofInterests" rows="10" name="interests" style="height:85px;width:100%" value=""></textarea></td></tr>' +
-'</tbody></table><div><span style="color:red; font-style: italic; text-align:left; margin-left:-120px">* Indicates a required field</span>' +
-'<button class="updateprofbutton" type="button" style="margin-left:240px" click.delegate="updateUserPrefs()">Update Profile</button></div></form></div>' +
-'<div class="formerrors" style="color:red; margin-top:5px"></div></div>';
-    ua.attached();
-    document.getElementsByClassName('uprofFirstName')[0].value = 'Joe';
-    document.getElementsByClassName('uprofLastName')[0].value = 'Smith';
-    ua.user = {userType: 'PATRIC'};
-    ua.updateUserPrefs();
-    expect(document.getElementsByClassName('formerrors')[0].innerHTML).toBe('');
-    ua.user.userType = '';
-    ua.updateUserPrefs();
-    expect(document.getElementsByClassName('formerrors')[0].innerHTML).toBe('<p>Select a primary user type.</p>');
-    done();
+'<div><button class="updateprofbutton" type="button" style="margin-left:240px" click.delegate="updateUserPrefs()">Update Profile</button></div></form>' +
+'<div class="formerrors" style="color:red; margin-top:5px"></div></div><div><input type="email" class="uprofEmail"></input></div>';
   });
 
-  it('Does not initiate a User Email Change Request with invalid email', (done) => {
-    document.body.innerHTML = '<div class="UserProfileForm"><div class="formerrors" style="color:red; margin-top:5px"></div><input class="uprofEmail" style="width:2.5in" type="email" name="email" value="" required></div>';
-    ua.attached();
-    ua.changeUserEmail();
-    expect(document.getElementsByClassName('formerrors')[0].innerHTML).toBe('<p>Email address is not valid</p>');
-    document.getElementsByClassName('uprofEmail')[0].value = 'me@com';
-    ua.changeUserEmail();
-    expect(document.getElementsByClassName('formerrors')[0].innerHTML).toBe('<p>Email address is not valid</p>');
-    done();
-  });
-  it('Initiate a User Email Change Request when given a valid email', (done) => {
-    document.body.innerHTML = '<div class="UserProfileForm"><div class="formerrors" style="color:red; margin-top:5px"></div><input class="uprofEmail" style="width:2.5in" type="email" name="email" value="" required></div>';
-    ua.attached();
-    //ua.changeUserEmail();
-    //expect(document.getElementsByClassName('formerrors')[0].innerHTML).toBe('<p>Email address is not valid</p>');
-    document.getElementsByClassName('uprofEmail')[0].value = 'me@you.com';
-    ua.changeUserEmail();
+  it('creates the user account form and checks for a configured user type', testAsync(async function() {
+    ua.user = {userType: 'Developer'};
+    await ua.attached();
+    expect(document.getElementsByClassName('updateprofbutton')[0].getAttribute('disabled')).toBe(null);
+    ua.user = {userType: ''};
+    await ua.attached();
+    expect(document.getElementsByClassName('updateprofbutton')[0].getAttribute('disabled')).not.toBe(null);
+    ua.user = {userType: 'Developer'};
+    document.getElementsByClassName('formerrors')[0].innerHTML = '<p>some error</p>';
+    await ua.attached();
+    expect(document.getElementsByClassName('updateprofbutton')[0].getAttribute('disabled')).not.toBe(null);
+  }));
+
+  it('checks for a valid user name', testAsync(async function() {
+    ua.user = {userType: 'Developer'};
+    await ua.checkName();
+    expect(document.getElementsByClassName('formerrors')[0].innerHTML).toBe('<p>Name is not valid, please fix</p>');
+    await ua.checkName();
+    expect(document.getElementsByClassName('formerrors')[0].innerHTML).toBe('<p>Name is not valid, please fix</p>');
+    document.getElementsByClassName('uprofFirstName')[0].value = 'Billy';
+    document.getElementsByClassName('uprofLastName')[0].value = 'Joe';
+    await ua.checkName();
+    expect(document.getElementsByClassName('updateprofbutton')[0].getAttribute('disabled')).toBe(null);
+    document.getElementsByClassName('formerrors')[0].innerHTML = '<p>some error</p>';
+    document.getElementsByClassName('updateprofbutton')[0].setAttribute('disabled', true);
+    await ua.checkName();
+    expect(document.getElementsByClassName('updateprofbutton')[0].getAttribute('disabled')).not.toBe(null);
+  }));
+
+  it('updates the user prefs', testAsync(async function() {
+    ua.userActClass = new Uact('123');
+    ua.user = {userType: 'Developer'};
+    document.getElementsByClassName('uprofFirstName')[0].value = 'Billy';
+    document.getElementsByClassName('uprofLastName')[0].value = 'Joe';
+    document.getElementsByClassName('UserProfileForm')[0].style.display = 'block';
+    document.getElementsByClassName('formerrors')[0].innerHTML = '';
+    await ua.updateUserPrefs();
+  }));
+
+  it('requests a change to the user email', testAsync(async function() {
+    ua.userActClass = new Uact('123');
+    ua.user = {userType: 'Developer'};
+    document.getElementsByClassName('uprofEmail')[0].value = 'billy@joe.com';
+    await ua.changeUserEmail();
     expect(document.getElementsByClassName('formerrors')[0].innerHTML).toBe('');
-    done();
-  });
+    document.getElementsByClassName('uprofEmail')[0].value = 'bladiblah';
+    await ua.changeUserEmail();
+    expect(document.getElementsByClassName('formerrors')[0].innerHTML).not.toBe('');
+  }));
 });

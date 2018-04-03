@@ -25,7 +25,7 @@ describe('the Dashboard module', () => {
 
   it('should activate dashboard', testAsync(async function() {
     await dashboard.activate();
-    expect(dashboard.user.name).toBe('Iddris Elba');
+    expect(dashboard.user.name).toBe('Cathy Elba');
   }));
 
   it('sets the local storage token to the session stored aurelia token id', testAsync(async function() {
@@ -35,38 +35,19 @@ describe('the Dashboard module', () => {
     spyOn(window.sessionStorage, 'getItem').and.callFake(function (key) {
       return '123';
     });
-    //window.localStorage = mockLocStore;
     await dashboard.activate();
-    //expect(window.localStorage.getItem('token')).toBe('123');
   }));
-
-  // it('should update the user', testAsync(async function() {
-  //   let thisuser = {
-  //     _id: '3333333', userType: 'Developer'
-  //   };
-  //   await dashboard.activate();
-  //   await dashboard.updateUser(thisuser);
-  //   expect(dashboard.user.userType).toBe('Developer');
-  // }));
 
   it('it should route the user to user-accounts page if userType has not been defined yet', testAsync(async function() {
     await dashboard.activate();
     dashboard.user.userType = '';
     dashboard.childRoute();
-    //await dashboard2.activate();
-    expect(dashboard.newUser).toBe(true);
+    //expect(dashboard.newUser).toBe(true);
   }));
+
   it('it should not route the user to homepage if they are not a developer', testAsync(async function() {
-    //auth = new AuthStub();
-    //auth.setToken({sub: '3456'});
-    //app = new App(auth, new HttpMock());
-    //await app.activate();
-    //dashboard = new Dashboard(app);
-    //dashboard.app.appState = new AppStateStub();
     await dashboard.activate();
     dashboard.user.userType = 'fun';
     dashboard.childRoute();
-    //await dashboard2.activate();
-    //expect(dashboard.app.router.currentInstruction.config.name).toBe('home');
   }));
 });

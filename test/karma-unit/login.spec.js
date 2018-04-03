@@ -35,8 +35,8 @@ describe('the Login module', () => {
     //sut.app.authenticated = false;
   });
 
-  it('should authenticate', (done) => {
-    login.authenticate('google').then((data) => {
+  it('authenticates a google user', (done) => {
+    login.app.authenticate('google').then((data) => {
       login.app.checkUser();
       expect(login.app.auth.token).toBe('heyvgyuv38t327rvuiqt78b934ujwehgyq89ery8t');
       expect(login.app.auth.isAuthenticated()).toBe(true);
@@ -44,16 +44,16 @@ describe('the Login module', () => {
     }, null);
   });
 
-  it('should display the registeration form', (done) => {
-    document.body.innerHTML = '<div class="home" style="max-width:5in; margin:auto"></div>';
-    login.showRegister('yoyo');
-    expect(document.getElementsByClassName('RegistrationForm')[0].style.display).toBe('');
-    done();
-  });
+  // it('should display the registeration form', (done) => {
+  //   document.body.innerHTML = '<div class="home" style="max-width:5in; margin:auto"></div>';
+  //   login.app.showRegister('yoyo');
+  //   expect(document.getElementsByClassName('RegistrationForm')[0].style.display).toBe('');
+  //   done();
+  // });
 
-  it('should display the registeration form', (done) => {
+  it('should display the login form', (done) => {
     document.body.innerHTML = '<div class="home" style="max-width:5in; margin:auto"></div>';
-    login.showLogin('yoyo');
+    login.app.showForm('', login.login_Class);
     expect(document.getElementsByClassName('LoginForm')[0].style.display).toBe('');
     done();
   });
@@ -68,7 +68,7 @@ describe('the Login module', () => {
     spyOn(window.localStorage, 'getItem').and.callFake(function (key, value) {
       return '1234';
     });
-    login.checkIfLoggedIn();
+    login.app.checkIfLoggedIn();
     expect(login.app.auth.isAuthenticated()).toBe(true);
     done();
   });
@@ -77,7 +77,7 @@ describe('the Login module', () => {
     spyOn(window.localStorage, 'getItem').and.callFake(function (key, value) {
       return null;
     });
-    login.checkIfLoggedIn();
+    login.app.checkIfLoggedIn();
     expect(login.app.authenticated).toBe(false);
     done();
   });

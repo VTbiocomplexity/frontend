@@ -1,67 +1,158 @@
 System.import('isomorphic-fetch');
 System.import('whatwg-fetch');
-//System.import('popper.js');
 import {PLATFORM} from 'aurelia-pal';
 import {inject, bindable} from 'aurelia-framework';
 import {AuthorizeStep, AuthService} from 'aurelia-auth';
 import {UserAccess} from './classes/UserAccess.js';
-import {HttpClient} from 'aurelia-fetch-client';
+import {HttpClient, json} from 'aurelia-fetch-client';
 import {AppState} from './classes/AppState.js';
+//const ZingTouch = require('zingtouch');
+//const swipe = require('jquery-touchswipe')($);
+const Hammer = require('hammerjs');
 @inject(AuthService, HttpClient)
 export class App {
   constructor(auth, httpClient) {
+    //this.hammer = hammer;
     this.auth = auth;
     this.httpClient = httpClient;
-    //this.fullmenu = true;
-    //this.dashboardTitle = 'Dashboard';
-    //this.role = '';
-    //this.configHttpClient();
-    //this.checkUser();
+    this.menuToggled = false;
+    // this.swipeEvent = (e) => {
+    //   console.log(e);
+    //   let drawer = document.getElementsByClassName('drawer')[0];
+    //   let toggleIcon = document.getElementsByClassName('mobile-menu-toggle')[0];
+    // };
+    //this.swipe = new Hammer.Swipe();
   }
 
   dashboardTitle = 'Dashboard';
   role = '';
-  authenticated = false;
   email = '';
   password = '';
   authenticated = false;
   token = '';
-  expanded = false;
 
   @bindable
   drawerWidth = '175px';
 
   @bindable
-  fullmenu = true;
+  contentWidth = '0px';
 
-  //mobileDrawerOpen = false;
+  @bindable
+  fullmenu = true;
 
   async activate() {
     this.configHttpClient();
     this.appState = new AppState(this.httpClient);
     this.userAccess = new UserAccess(this.appState);
     await this.checkUser();
+    console.log('hello!');
   }
 
-  get drawerOpen() {
-    let drawer = document.getElementById('drawerPanel');
-    if (drawer !== null) {
-      if (drawer.selected === 'drawer') {
-        this.hideToggle();
-        return true;
-      }
+  checkIfLoggedIn() {
+    let token = localStorage.getItem('ndssl_id_token');
+    if (token !== null) {
+      this.auth.setToken(token);
+      this.authenticated = true;
+      this.router.navigate('dashboard');
     }
-    this.close();
-    return false;
+  }
+
+  showForm(appName, className) {
+    className.startup(appName);
+  }
+
+  authenticate(name) {
+    let ret;
+    // if (this.appState.isOhafLogin) {
+      // ret = this.auth.authenticate(name, false, {'isOhafUser': true });
+    // } else {
+    ret = this.auth.authenticate(name, false, {});
+    // }
+    ret.then((data) => {
+      this.auth.setToken(data.token);
+    }, undefined);
+    return ret;
   }
 
   get widescreen() {
-    let isWidescreen = document.documentElement.clientWidth > 766;
-    /* istanbul ignore else */
-    if (isWidescreen) {
-      this.hideToggle();
+    let isWide = document.documentElement.clientWidth > 766;
+    let drawer = document.getElementsByClassName('drawer')[0];
+    let mobileMenuToggle = document.getElementsByClassName('mobile-menu-toggle')[0];
+    this.contentWidth = '0px';
+    if (!this.menuToggled && !isWide) {
+         /* istanbul ignore else */
+      if (drawer !== null && drawer !== undefined) {
+        drawer.style.display = 'none';
+        $(drawer).parent().css('display', 'none');
+        mobileMenuToggle.style.display = 'block';
+      }
     }
-    return isWidescreen;
+    if (isWide) {
+      if (drawer !== null && drawer !== undefined) {
+        this.contentWidth = '187px';
+        drawer.style.display = 'block';
+        $(drawer).parent().css('display', 'block');
+        mobileMenuToggle.style.display = 'none';
+      }
+    }
+    let mainP = document.getElementsByClassName('main-panel')[0];
+    if (mainP !== null && mainP !== undefined) {
+      mainP.style.marginRight = this.contentWidth;
+    }
+    return isWide;
+  }
+
+  clickFunc() {
+    let drawer = document.getElementsByClassName('drawer')[0];
+    let toggleIcon = document.getElementsByClassName('mobile-menu-toggle')[0];
+    console.log(event.target.className);
+    /* istanbul ignore else */
+    if (event.target.className !== 'menu-item') {
+      document.getElementsByClassName('swipe-area')[0].style.display = 'none';
+      drawer.style.display = 'none';
+      $(drawer).parent().css('display', 'none');
+      toggleIcon.style.display = 'block';
+      document.getElementsByClassName('page-host')[0].style.overflow = 'auto';
+    }
+  }
+
+  toggleMobileMenu(toggle) {
+    document.getElementsByClassName('page-host')[0].style.overflow = 'auto';
+    if (toggle !== 'close') {
+      document.getElementsByClassName('page-host')[0].style.overflow = 'hidden';
+      document.getElementsByClassName('swipe-area')[0].style.display = 'block';
+      document.getElementsByClassName('page-host')[0].addEventListener('click', this.clickFunc);
+      //this.manager.on('swipe', this.close.bind(this));
+    }
+    this.menuToggled = true;
+    let drawer = document.getElementsByClassName('drawer')[0];
+    let toggleIcon = document.getElementsByClassName('mobile-menu-toggle')[0];
+    if (drawer.style.display === 'none' && toggle !== 'close') {
+      drawer.style.display = 'block';
+      $(drawer).parent().css('display', 'block');
+      toggleIcon.style.display = 'none';
+      // document.getElementsByClassName('swipe-area')[0].style.display = 'block';
+      // this.manager.on('swipe', this.close.bind(this));
+    } else {
+      drawer.style.display = 'none';
+      $(drawer).parent().css('display', 'none');
+      toggleIcon.style.display = 'block';
+      //this.manager.off('swipe', this.close.bind(this));
+      //document.getElementsByClassName('page-host')[0].removeEventListener('click', clickFunc);
+      //document.getElementsByClassName('swipe-area')[0].style.display = 'none';
+    }
+    if (toggle === 'close') {
+      document.getElementsByClassName('page-host')[0].removeEventListener('click', this.clickFunc);
+      document.getElementsByClassName('swipe-area')[0].style.display = 'none';
+      //this.manager.off('swipe', this.close.bind(this));
+    }
+  }
+
+  close() {
+    console.log('going to close the menu if not widescreen');
+    if (!this.widescreen) {
+      this.toggleMobileMenu('close');
+    }
   }
 
   get currentStyles() {
@@ -77,11 +168,10 @@ export class App {
       menuToggleClass: 'home-menu-toggle'
     };
     result.sidebarImagePath = '../static/imgs/BI_logo2.jpg';
-      /* istanbul ignore else */
+    /* istanbul ignore else */
     if (mobilemenutoggle !== null) {
       mobilemenutoggle.style.backgroundColor = '#2a222a';
     }
-    //}
     this.setFooter(style);
     return result;
   }
@@ -89,60 +179,14 @@ export class App {
   setFooter(style) {
     let footer = document.getElementById('wjfooter');
     let color = '';
-      /* istanbul ignore else */
+    /* istanbul ignore else */
     if (footer !== null) {
       footer.style.backgroundColor = '#2a222a';
-      // if (style === 'ohaf') {
-      //   footer.style.backgroundColor = '#565656';
-      //   color = '#c09580';
-      // }
       footer.innerHTML = '<div style="text-align: center">' +
-      // '<a target="_blank" style="color:' + color + '" href="https://github.com/WebJamApps"><i class="fa fa-github fa-2x" aria-hidden="true"></i></a>' +
-      // '<span>&nbsp;&nbsp;</span><a target="_blank" style="color:' + color + '"  href="https://www.linkedin.com/company-beta/16257103"><i class="fa fa-linkedin fa-2x" aria-hidden="true"></i></a>' +
-      '<span>&nbsp;&nbsp;</span><a target="_blank" style="color:' + color + '"  href="https://www.facebook.com/biocomplexity/"><i class="fa fa-facebook-square fa-2x" aria-hidden="true"></i></a>' +
-      // '<span>&nbsp;&nbsp;</span><a target="_blank" style="color:' + color + '"  href="https://plus.google.com/u/1/109586499331294076292"><i class="fa fa-google-plus-square fa-2x" aria-hidden="true"></i></a>' +
-      '<span>&nbsp;&nbsp;</span><a target="_blank" style="color:' + color + '"  href="https://twitter.com/ndssl_bi"><i class="fa fa-twitter fa-2x" aria-hidden="true"></i></a><br>' +
-      // '<span style="color:white; font-size: 9pt; padding-left:18px;">Powered by ' +
-      // '<a class="wjllc" target="_blank" href="https://www.web-jam.com">Web Jam LLC</a>
+      '<span>&nbsp;&nbsp;</span><a target="_blank" style="color:' + color + '"  href="https://www.facebook.com/biocomplexity/"><i class="fa fa-facebook-square fa-2x"></i></a>' +
+      '<span>&nbsp;&nbsp;</span><a target="_blank" style="color:' + color + '"  href="https://twitter.com/ndssl_bi"><i class="fa fa-twitter fa-2x"></i></a><br>' +
       '</span></div>';
     }
-  }
-
-  toggleMenu() {
-    //console.debug(this.fullmenu);
-    if (this.fullmenu) {
-      this.fullmenu = false;
-      this.drawerWidth = '50px';
-    } else {
-      this.fullmenu = true;
-      this.drawerWidth = '175px';
-    }
-  }
-
-  close() {
-    let drawer = document.getElementById('drawerPanel');
-    if (drawer !== null) {
-      drawer.closeDrawer();
-      //console.log(drawer);
-    }
-    if (!this.widescreen) {
-      let mobilemenutoggle = document.getElementById('mobilemenutoggle');
-          /* istanbul ignore else */
-      if (mobilemenutoggle !== null) {
-        mobilemenutoggle.style.display = 'block';
-      }
-    }
-  }
-
-  hideToggle() {
-    //console.log('going to hide you hamburger!');
-    let mobilemenutoggle = document.getElementById('mobilemenutoggle');
-        /* istanbul ignore else */
-    if (mobilemenutoggle !== null) {
-      mobilemenutoggle.style.display = 'none';
-    }
-    //let drawer = document.getElementById('drawerPanel');
-    //console.log(drawer);
   }
 
   configHttpClient() {
@@ -175,45 +219,61 @@ export class App {
     config.map([
       { route: 'dashboard', name: 'dashboard-router', moduleId: PLATFORM.moduleName('./dashboard-router'), nav: false, title: '', auth: true, settings: 'fa fa-tachometer'},
       { route: 'login', name: 'login', moduleId: PLATFORM.moduleName('./login'), nav: false, title: 'Login', settings: 'fa fa-sign-in'},
+      { route: 'register', name: 'register', moduleId: PLATFORM.moduleName('./register'), nav: false, title: 'Register', settings: 'fa fa-user-plus'},
       { route: ['', 'home'], name: 'home', moduleId: PLATFORM.moduleName('./home'), nav: false, title: '', settings: 'fa fa-home' },
-      { route: 'userutil', name: 'userutil', moduleId: PLATFORM.moduleName('./userutil'), nav: false, title: '' },
-      { route: ['welcome', 'welcome'], name: 'welcome',      moduleId: PLATFORM.moduleName('./welcome'),      nav: true, title: 'Welcome' }
+      { route: 'userutil', name: 'userutil', moduleId: PLATFORM.moduleName('./userutil'), nav: false, title: '' }
+      // { route: ['welcome', 'welcome'], name: 'welcome',      moduleId: PLATFORM.moduleName('./welcome'), nav: true, title: 'Welcome' }
     ]);
     config.fallbackRoute('/');
     this.router = router;
   }
 
-
   async checkUser() {
     if (this.auth.isAuthenticated()) {
       this.authenticated = true; //Logout element is reliant upon a local var;
       let uid = this.auth.getTokenPayload().sub;
-      //console.log(uid);
       this.user = await this.appState.getUser(uid);
-      // if (this.user !== undefined){
-      //   this.role = this.user.userType;
-      // }
     }
   }
 
   logout() {
-    //this.appState.setUser({});
     this.authenticated = false;
-    //if (this.role !== 'Charity' && this.role !== 'Volunteer'){
     this.auth.logout('/')
     .then(() => {
-      localStorage.removeItem('token');
-      localStorage.removeItem('useremail');
+      localStorage.clear();
+      sessionStorage.clear();
       console.log('Promise fulfilled, logged out');
     });
-    // } else {
-    //   this.auth.logout('/ohaf')
-    //   .then(() => {
-    //     console.log('Promise fulfilled, logged out');
-    //   });
-    //  }
-    //this.role =  '';
-    //this.appState.isOhafLogin = false;
   }
 
+  async updateById(route, id, dataObj) {
+    console.log('update by id');
+    await fetch;
+    return this.httpClient.fetch(route + id, {
+      method: 'put',
+      body: json(dataObj)
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      }).catch((error) => {
+        console.log(error);
+      });
+  }
+  attached() {
+    this.manager = new Hammer.Manager(document.getElementsByClassName('swipe-area')[0], {
+      recognizers: [
+              [Hammer.Swipe, { direction: Hammer.DIRECTION_HORIZONTAL }]
+      ]
+    });
+    this.manager.on('swipe', this.close.bind(this));
+    //console.log(this.manager);
+    document.getElementsByClassName('swipe-area')[0].style.display = 'none';
+  }
+  detached() {
+    this.manager.off('swipe', this.close.bind(this));
+    let ph = document.getElementsByClassName('page-host')[0];
+    ph.removeEventListener('click', this.clickFunc);
+    ph.setAttribute('hasEvent', false);
+  }
 }

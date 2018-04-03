@@ -1,6 +1,6 @@
 //import {inject} from 'aurelia-framework';
 const Fetch = require('isomorphic-fetch');
-const patric = require('../commons/patric.js');
+const utils = require('../commons/utils.js');
 //import {App} from '../app';
 //@inject(App)
 class Login_ {
@@ -11,8 +11,8 @@ class Login_ {
   }
 
   createLoginForm(appName) {
-    patric.nevermind('LoginForm');
-    patric.nevermind('RegistrationForm');
+    utils.nevermind('LoginForm');
+    utils.nevermind('RegistrationForm');
     let useremailinput = '<tr class="emailheader"><th style="border:none">Email</th></tr><tr class="emailinput"><td>' +
     '<input class="loginemail" type="email" name="email" style="width:300px;" value="" required></td></tr>';
     let useridrow = '<tr class="uidheader"><th style="border:none">Email or Userid</th></tr><tr class="uidinput"><td>' +
@@ -31,14 +31,11 @@ class Login_ {
     '<button class="nevermind" style="margin-left:12px;margin-top:20px" type="button">Cancel</button></div></div></form>';
     let home = document.getElementsByClassName('home');
     home[0].insertBefore(loginform, home[0].childNodes[0]);
-    // let pArr = ['uidheader', 'uidinput', 'nevermind'];
-    // let nArr = ['emailheader', 'emailinput'];
-    // patric.showHideElements(appName, pArr, nArr);
     let elementsObj = {'PATRIC': ['patric', 'uidheader', 'uidinput'], 'nArr': ['emailheader', 'emailinput']};
-    patric.showHideElements2(appName, elementsObj);
+    utils.showHideElements2(appName, elementsObj);
   }
 
-  loginUser(appName) {
+  startup(appName) {
     this.createLoginForm(appName);
     let emailInput = document.getElementsByClassName('loginemail')[0];
     this.setEvents(emailInput, appName);
@@ -51,7 +48,7 @@ class Login_ {
     loginButton.fetchClient = this.fetch;
     loginButton.runFetch = this.runFetch;
     //loginButton.checkIfLoggedIn = this.checkIfLoggedIn;
-    loginButton.generateSession = this.generateSession;
+    //loginButton.generateSession = this.generateSession;
     loginButton.addEventListener('click', this.logMeIn);
     let resetPB = document.getElementsByClassName('resetpass')[0];
     resetPB.fetchClient = this.fetch;
@@ -150,7 +147,7 @@ class Login_ {
     let runFetch = evt.target.runFetch;
     let appName = evt.target.appName;
     //let checkIfLoggedIn = evt.target.checkIfLoggedIn;
-    let generateSession = evt.target.generateSession;
+    //let generateSession = evt.target.generateSession;
     let useridValue = '';
     let emailValue = '';
     const passwordValue = document.getElementsByClassName('loginpass')[0].value;
@@ -167,10 +164,10 @@ class Login_ {
         'Content-Type': 'application/json'
       }
     };
-    return runFetch(fetchClient, process.env.BackendUrl, '/auth/login', fetchData, generateSession, appName, null);
+    return runFetch(fetchClient, process.env.BackendUrl, '/auth/login', fetchData, appName, null);
   }
 
-  runFetch(fetchClient, url, route, fetchData, generateSession, appName, loginEmail) {
+  runFetch(fetchClient, url, route, fetchData, appName, loginEmail) {
     let loginform1 = document.getElementsByClassName('LoginForm');
     let messagediv = document.getElementsByClassName('loginerror')[0];
     let feurl = 'http://localhost:7000';
@@ -182,13 +179,13 @@ class Login_ {
     .then((response) => response.json())
     .then((data) => {
       if (data.token !== undefined) {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('useremail', data.email);
+        localStorage.setItem('ndssl_id_token', data.token);
+        localStorage.setItem('userEmail', data.email);
         //Login.app.auth.setToken(data.token);
-        if (appName === 'PATRIC') {
-          //checkIfLoggedIn();
-          generateSession(data.email);
-        }
+        // if (appName === 'PATRIC') {
+        //   //checkIfLoggedIn();
+        //   generateSession(data.email);
+        // }
         loginform1[0].style.display = 'none';
         window.location.href = feurl + '/login/?token=true';
       }
@@ -202,25 +199,6 @@ class Login_ {
     })
     .catch((error) => {
       console.log(error);
-    });
-  }
-
-  generateSession(useremail) {
-    console.log('put some cool code here for session and cookie and storage or something for this user: ' + useremail);
-    let bodyData = {'email': useremail };
-    let fetchData = {
-      method: 'POST',
-      body: JSON.stringify(bodyData),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
-      }
-    };
-    return this.fetch(process.env.BackendUrl + '/user/', fetchData)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
     });
   }
 }

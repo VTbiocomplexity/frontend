@@ -6,23 +6,23 @@
         <table>
           <tbody>
             <tr><th><span style="color:red">*</span> First Name</th><th><span style="color:red">*</span> Last Name</th></tr>
-            <tr><td><input class="uprofFirstName" style="width:100%" name="first_name" value="" required></td>
-              <td><input class="uprofLastName" style="width:100%" name="last_name" value="" required></td></tr>
-              <tr><th colspan="2">Organization</th></tr>
+            <tr><td><input change.delegate="checkName()" keyup.delegate="checkName()" class="uprofFirstName" style="width:100%" name="first_name" value="" required></td>
+              <td><input change.delegate="checkName()" keyup.delegate="checkName()" class="uprofLastName" style="width:100%" name="last_name" value="" required></td></tr>
+              <tr><th colspan="2">Role / Organization</th></tr>
               <tr><td colspan="2"><input class="uprofAff" style="width:100%" name="affiliation" value=""></td></tr>
-              <tr><th colspan="2">Organisms</th></tr>
-              <tr><td colspan="2"><input class="uprofOrganisms" name="organisms" style="width:100%"></td></tr>
-              <tr><th colspan="2">Interests</th></tr>
+              <tr><th colspan="2">Area of Expertise</th></tr>
+              <tr><td colspan="2"><input class="uprofexpertise" name="expertise" style="width:100%"></td></tr>
+              <tr><th colspan="2">Other Interests</th></tr>
               <tr><td colspan="2"><textarea class="uprofInterests" rows="10" name="interests" style="height:85px;width:100%" value=""></textarea></td></tr>
             </tbody>
           </table>
-          <!-- <label class="alignleft">Primary User Type (required)<span if.bind="!canChangeUserType">:<i style="font-weight:normal;"> ${user.userType}</i><br><br></span></label> -->
-          <div style="margin-top:10px; margin-bottom:10px"><span style="color:red; text-align:left; margin-left:-26px">*</span>
-            <select if.bind="canChangeUserType" id="type" class="form-control" value.bind="user.userType" style="width: 1.5in; margin-bottom:10px; display:inline; padding:0; font-size:10pt">
-              <option id="optrequired" value="">Primary User Type</option>
+          <div style="margin-top:10px; margin-bottom:10px">
+            <label style="text-align:left; margin-left:38px;padding-bottom:4px"><span style="color:red; text-align:left; margin-left:-26px">*</span> Primary User Type</label>
+            <select change.delegate="checkUserRole()" if.bind="canChangeUserType" id="type" class="form-control" value.bind="user.userType" style="width: 1.5in; margin-bottom:10px; display:inline; padding:0; font-size:10pt">
+              <option value=""> </option>
               <option repeat.for="type of userTypes" model.bind="type">${type}</option>
             </select>
-            <button class="updateprofbutton" type="button" style="margin-left:30px; top:-2px; padding:2px; display:inline; position:relative" click.delegate="updateUserPrefs()">
+            <button disabled class="updateprofbutton" type="button" style="margin-left:30px; top:-2px; padding:2px; display:inline; position:relative" click.delegate="updateUserPrefs()">
               Update Profile
             </button>
             <p style="color:red; font-style: italic; text-align:left">* <span style="color:black">Indicates a required field</span></p>

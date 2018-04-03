@@ -1,5 +1,5 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.10.1
+version: v1.10.2
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
   'npm:fresh:20170908':
@@ -24,6 +24,90 @@ ignore:
     - aurelia-pal-nodejs > jsdom > content-type-parser:
         reason: None given
         expires: '2018-02-26T16:38:24.007Z'
+    - jsdom > content-type-parser:
+        reason: None given
+        expires: '2018-03-28T21:16:38.309Z'
+    - aurelia-pal-nodejs > jsdom > content-type-parser:
+        reason: None given
+        expires: '2018-03-28T21:16:38.309Z'
+  'npm:hoek:20180212':
+    - wait-on > joi > hoek:
+        reason: None given
+        expires: '2018-03-16T18:50:26.487Z'
+    - wait-on > joi > topo > hoek:
+        reason: None given
+        expires: '2018-03-16T18:50:26.487Z'
+    - jsdom > request > hawk > hoek:
+        reason: None given
+        expires: '2018-03-16T18:50:26.487Z'
+    - aurelia-pal-nodejs > jsdom > request > hawk > hoek:
+        reason: None given
+        expires: '2018-03-16T18:50:26.487Z'
+    - wait-on > request > hawk > hoek:
+        reason: None given
+        expires: '2018-03-16T18:50:26.487Z'
+    - jsdom > request > hawk > boom > hoek:
+        reason: None given
+        expires: '2018-03-16T18:50:26.487Z'
+    - aurelia-pal-nodejs > jsdom > request > hawk > boom > hoek:
+        reason: None given
+        expires: '2018-03-16T18:50:26.487Z'
+    - wait-on > request > hawk > boom > hoek:
+        reason: None given
+        expires: '2018-03-16T18:50:26.487Z'
+    - jsdom > request > hawk > sntp > hoek:
+        reason: None given
+        expires: '2018-03-16T18:50:26.487Z'
+    - aurelia-pal-nodejs > jsdom > request > hawk > sntp > hoek:
+        reason: None given
+        expires: '2018-03-16T18:50:26.487Z'
+    - wait-on > request > hawk > sntp > hoek:
+        reason: None given
+        expires: '2018-03-16T18:50:26.487Z'
+    - jsdom > request > hawk > cryptiles > boom > hoek:
+        reason: None given
+        expires: '2018-03-16T18:50:26.487Z'
+    - aurelia-pal-nodejs > jsdom > request > hawk > cryptiles > boom > hoek:
+        reason: None given
+        expires: '2018-03-16T18:50:26.487Z'
+    - wait-on > request > hawk > cryptiles > boom > hoek:
+        reason: None given
+        expires: '2018-03-16T18:50:26.488Z'
+    - webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > hoek:
+        reason: None given
+        expires: '2018-03-16T18:50:26.488Z'
+    - webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > boom > hoek:
+        reason: None given
+        expires: '2018-03-16T18:50:26.488Z'
+    - webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > cryptiles > boom > hoek:
+        reason: None given
+        expires: '2018-03-16T18:50:26.488Z'
+    - webpack > watchpack > chokidar > fsevents > node-pre-gyp > request > hawk > cryptiles > boom > hoek:
+        reason: None given
+        expires: '2018-03-16T18:50:26.488Z'
+    - webpack > watchpack > chokidar > fsevents > node-pre-gyp > request > hawk > boom > hoek:
+        reason: None given
+        expires: '2018-03-16T18:50:26.488Z'
+    - webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > sntp > hoek:
+        reason: None given
+        expires: '2018-03-16T18:50:26.488Z'
+    - webpack > watchpack > chokidar > fsevents > node-pre-gyp > request > hawk > sntp > hoek:
+        reason: None given
+        expires: '2018-03-16T18:50:26.488Z'
+    - webpack > watchpack > chokidar > fsevents > node-pre-gyp > request > hawk > hoek:
+        reason: None given
+        expires: '2018-03-16T18:50:26.488Z'
+  'npm:braces:20180219':
+    - webpack > watchpack > chokidar > anymatch > micromatch > braces:
+        reason: None given
+        expires: '2018-03-22T13:17:30.085Z'
+  'npm:nwmatcher:20180305':
+    - jsdom > nwmatcher:
+        reason: None given
+        expires: '2018-04-05T14:35:58.364Z'
+    - aurelia-pal-nodejs > jsdom > nwmatcher:
+        reason: None given
+        expires: '2018-04-05T14:35:58.364Z'
 # patches apply the minimum changes required to fix a vulnerability
 patch:
   'npm:debug:20170905':

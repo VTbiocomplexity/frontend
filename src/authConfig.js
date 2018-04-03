@@ -1,7 +1,16 @@
-let configForDevelopment = {
+let config;
+let myBaseUrl;
+if ( window.location.hostname === 'localhost' || process.env.NODE_ENV && process.env.NODE_ENV.match(/dev/i)
+) {
+  myBaseUrl = process.env.BackendUrl;
+} else {
+  myBaseUrl = process.env.AuthProductionBaseURL;
+}
+
+config = {
   httpInterceptor: true,
   loginOnSignup: true,
-  baseUrl: process.env.BackendUrl,
+  baseUrl: myBaseUrl,
   // loginRedirect: '#/',
   // logoutRedirect: '#/',
   // signupRedirect: '#/login',
@@ -11,8 +20,7 @@ let configForDevelopment = {
   // loginRoute: '/login',
   // signupRoute: '/signup',
   tokenRoot: false,
-  //tokenName: 'token',
-  tokenPrefix: 'aurelia',
+  tokenPrefix: 'ndssl',
   responseTokenProp: 'access_token',
   unlinkUrl: '/auth/unlink/',
   unlinkMethod: 'get',
@@ -20,7 +28,7 @@ let configForDevelopment = {
   authToken: 'Bearer',
   withCredentials: true,
   platform: 'browser',
-  storage: 'sessionStorage',
+  storage: 'localStorage',
   providers: {
     google: {
       name: 'google',
@@ -46,11 +54,12 @@ let configForDevelopment = {
   loginRedirect: '/dashboard'
 };
 
-let configForProduction = {
-  providers: {
-    google: {
-      clientId: process.env.GoogleClientId
-    }
+// let configForProduction = {
+//   tokenPrefix: 'ndssl',
+//   providers: {
+//     google: {
+//       clientId: process.env.GoogleClientId
+//     }
     // ,
     // linkedin:{
     //     clientId:'7561959vdub4x1'
@@ -59,28 +68,17 @@ let configForProduction = {
     //     clientId:'1653908914832509'
     // }
 
-  },
-  baseUrl: process.env.AuthProductionBaseURL,
+  // },
+  // baseUrl: process.env.AuthProductionBaseURL,
   // The API specifies that new users register at the POST /users enpoint.
-  signupUrl: 'users',
+  // signupUrl: 'users',
   // Logins happen at the POST /sessions/create endpoint.
-  loginUrl: 'sessions/create',
+  // loginUrl: 'sessions/create',
   // The API serves its tokens with a key of id_token which differs from
   // aureliauth's standard.
-  tokenName: 'id_token',
+  // tokenName: 'id_token',
   // Once logged in, we want to redirect the user to the welcome view.
-  loginRedirect: '/dashboard'
-};
-let config;
-if (
-  window.location.hostname === 'localhost'
-  || process.env.NODE_ENV
-  && process.env.NODE_ENV.match(/dev/i)
-) {
-  config = configForDevelopment;
-} else {
-  config = configForProduction;
-}
-
+//   loginRedirect: '/dashboard'
+// };
 
 export default config;
