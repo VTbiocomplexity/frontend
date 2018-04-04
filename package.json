@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "frontend",
   "main": "dist/index.html",
   "repository": {
@@ -10,7 +10,7 @@
   "author": "Biocomplexity",
   "license": "MIT",
   "engines": {
-    "node": "8.10.0"
+    "node": "8.11.1"
   },
   "scripts": {
     "start": "nps",
