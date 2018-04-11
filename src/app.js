@@ -6,22 +6,13 @@ import {AuthorizeStep, AuthService} from 'aurelia-auth';
 import {UserAccess} from './classes/UserAccess.js';
 import {HttpClient, json} from 'aurelia-fetch-client';
 import {AppState} from './classes/AppState.js';
-//const ZingTouch = require('zingtouch');
-//const swipe = require('jquery-touchswipe')($);
 const Hammer = require('hammerjs');
 @inject(AuthService, HttpClient)
 export class App {
   constructor(auth, httpClient) {
-    //this.hammer = hammer;
     this.auth = auth;
     this.httpClient = httpClient;
     this.menuToggled = false;
-    // this.swipeEvent = (e) => {
-    //   console.log(e);
-    //   let drawer = document.getElementsByClassName('drawer')[0];
-    //   let toggleIcon = document.getElementsByClassName('mobile-menu-toggle')[0];
-    // };
-    //this.swipe = new Hammer.Swipe();
   }
 
   dashboardTitle = 'Dashboard';
@@ -63,11 +54,7 @@ export class App {
 
   authenticate(name) {
     let ret;
-    // if (this.appState.isOhafLogin) {
-      // ret = this.auth.authenticate(name, false, {'isOhafUser': true });
-    // } else {
     ret = this.auth.authenticate(name, false, {});
-    // }
     ret.then((data) => {
       this.auth.setToken(data.token);
     }, undefined);
@@ -80,7 +67,7 @@ export class App {
     let mobileMenuToggle = document.getElementsByClassName('mobile-menu-toggle')[0];
     this.contentWidth = '0px';
     if (!this.menuToggled && !isWide) {
-         /* istanbul ignore else */
+      /* istanbul ignore else */
       if (drawer !== null && drawer !== undefined) {
         drawer.style.display = 'none';
         $(drawer).parent().css('display', 'none');
@@ -122,7 +109,6 @@ export class App {
       document.getElementsByClassName('page-host')[0].style.overflow = 'hidden';
       document.getElementsByClassName('swipe-area')[0].style.display = 'block';
       document.getElementsByClassName('page-host')[0].addEventListener('click', this.clickFunc);
-      //this.manager.on('swipe', this.close.bind(this));
     }
     this.menuToggled = true;
     let drawer = document.getElementsByClassName('drawer')[0];
@@ -131,20 +117,14 @@ export class App {
       drawer.style.display = 'block';
       $(drawer).parent().css('display', 'block');
       toggleIcon.style.display = 'none';
-      // document.getElementsByClassName('swipe-area')[0].style.display = 'block';
-      // this.manager.on('swipe', this.close.bind(this));
     } else {
       drawer.style.display = 'none';
       $(drawer).parent().css('display', 'none');
       toggleIcon.style.display = 'block';
-      //this.manager.off('swipe', this.close.bind(this));
-      //document.getElementsByClassName('page-host')[0].removeEventListener('click', clickFunc);
-      //document.getElementsByClassName('swipe-area')[0].style.display = 'none';
     }
     if (toggle === 'close') {
       document.getElementsByClassName('page-host')[0].removeEventListener('click', this.clickFunc);
       document.getElementsByClassName('swipe-area')[0].style.display = 'none';
-      //this.manager.off('swipe', this.close.bind(this));
     }
   }
 
@@ -221,8 +201,8 @@ export class App {
       { route: 'login', name: 'login', moduleId: PLATFORM.moduleName('./login'), nav: false, title: 'Login', settings: 'fa fa-sign-in'},
       { route: 'register', name: 'register', moduleId: PLATFORM.moduleName('./register'), nav: false, title: 'Register', settings: 'fa fa-user-plus'},
       { route: ['', 'home'], name: 'home', moduleId: PLATFORM.moduleName('./home'), nav: false, title: '', settings: 'fa fa-home' },
-      { route: 'userutil', name: 'userutil', moduleId: PLATFORM.moduleName('./userutil'), nav: false, title: '' }
-      // { route: ['welcome', 'welcome'], name: 'welcome',      moduleId: PLATFORM.moduleName('./welcome'), nav: true, title: 'Welcome' }
+      { route: 'userutil', name: 'userutil', moduleId: PLATFORM.moduleName('./userutil'), nav: false, title: '' },
+      { route: 'react-example', name: 'react-example', moduleId: PLATFORM.moduleName('./react-example'), nav: false, title: 'React Example',  settings: ''}
     ]);
     config.fallbackRoute('/');
     this.router = router;
@@ -253,17 +233,17 @@ export class App {
       method: 'put',
       body: json(dataObj)
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      }).catch((error) => {
-        console.log(error);
-      });
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+    }).catch((error) => {
+      console.log(error);
+    });
   }
   attached() {
     this.manager = new Hammer.Manager(document.getElementsByClassName('swipe-area')[0], {
       recognizers: [
-              [Hammer.Swipe, { direction: Hammer.DIRECTION_HORIZONTAL }]
+        [Hammer.Swipe, { direction: Hammer.DIRECTION_HORIZONTAL }]
       ]
     });
     this.manager.on('swipe', this.close.bind(this));

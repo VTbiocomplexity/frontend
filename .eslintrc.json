@@ -1,5 +1,5 @@
 {
-  "extends": "./node_modules/aurelia-tools/.eslintrc.json",
+  "extends": ["./node_modules/aurelia-tools/.eslintrc.json", "plugin:react/recommended"],
   "rules": {
     "space-before-function-paren": [0, "never"],
     "no-trailing-spaces": [ 1, {"skipBlankLines" : true}],
