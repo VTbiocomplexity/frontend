@@ -92,10 +92,10 @@ class User_ {
     let edot = emValue.split('.');
     let isvalidcode = document.getElementsByClassName('code')[0].value;
     let submitbutton = document.getElementsByClassName('regbutton')[0];
-    console.log(isemailvalid);
-    console.log(isvalidcode);
-    console.log(edot.length);
-    console.log(this.formType);
+    // console.log(isemailvalid);
+    // console.log(isvalidcode);
+    // console.log(edot.length);
+    // console.log(this.formType);
     if (this.formType === 'reset') {
       if (newpasswd.checkValidity() && isemailvalid && edot.length > 1 && isvalidcode > 9999 && isvalidcode < 100000) {
         submitbutton.style.display = 'block';
@@ -148,11 +148,14 @@ class User_ {
         let regform1 = document.getElementsByClassName('RegistrationForm');
         regform1[0].style.display = 'none';
         let feurl = 'http://localhost:7000';
-          /* istanbul ignore if */
+        /* istanbul ignore if */
         if (process.env.FrontendUrl !== undefined) {
           feurl = process.env.FrontendUrl;
         }
-        window.location.href = feurl + '/';
+        /* istanbul ignore if */
+        if (process.env.NODE_ENV !== 'test') {
+          window.location.href = feurl + '/';
+        }
       }
     })
     .catch((error) => {
@@ -165,11 +168,14 @@ class User_ {
     regform1 = document.getElementsByClassName(className);
     regform1[0].style.display = 'none';
     let feurl = 'http://localhost:7000';
-      /* istanbul ignore if */
+    /* istanbul ignore if */
     if (process.env.FrontendUrl !== undefined) {
       feurl = process.env.FrontendUrl;
     }
-    window.location.href = feurl + '/';
+    /* istanbul ignore if */
+    if (process.env.NODE_ENV !== 'test') {
+      window.location.href = feurl + '/';
+    }
   }
 
   verifyChangeEmail(evt) {

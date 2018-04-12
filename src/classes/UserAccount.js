@@ -82,12 +82,10 @@ class UserAct {
         document.getElementsByClassName('formerrors')[0].innerHTML = '<p>' + data.message + '</p>';
       } else {
         document.getElementsByClassName('UserProfileForm')[0].style.display = 'none';
-        //let feurl = 'http://localhost:7000';
-        //   /* istanbul ignore if */
-        // if (process.env.FrontendUrl !== undefined) {
-        //   feurl = process.env.FrontendUrl;
-        // }
-        window.location.href = process.env.FrontendUrl + '/dashboard';
+        /* istanbul ignore if */
+        if (process.env.NODE_ENV !== 'test') {
+          window.location.href = process.env.FrontendUrl + '/dashboard';
+        }
       }
     });
   }
@@ -116,7 +114,10 @@ class UserAct {
         if (process.env.FrontendUrl !== undefined) {
           feurl = process.env.FrontendUrl;
         }
-        window.location.href = feurl + '/userutil/?changeemail=' + document.getElementsByClassName('uprofEmail')[0].value;
+        /* istanbul ignore if */
+        if (process.env.NODE_ENV !== 'test') {
+          window.location.href = feurl + '/userutil/?changeemail=' + document.getElementsByClassName('uprofEmail')[0].value;
+        }
       }
     })
     .catch((error) => {
