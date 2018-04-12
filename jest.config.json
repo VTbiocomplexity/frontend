@@ -1,10 +1,9 @@
 {
   "verbose": true,
-  "bail": true,
   "testPathIgnorePatterns": ["/node_modules/", "/test/karma-unit/", "/test/react-unit/"],
   "coverageDirectory": "coverage/jest",
   "collectCoverageFrom" : ["src/classes/*.{js,jsx}","src/commons/*.{js,jsx}", "!**/node_modules/**", "!src/classes/AppState.js", "!src/classes/UserAccess.js",
   "!src/classes/RafterUser.js"],
   "collectCoverage": true,
-  "testEnvironment": "jest-environment-jsdom-11.0.0"
+  "testEnvironment": "jest-environment-jsdom"
 }
