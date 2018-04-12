@@ -15,7 +15,7 @@
   "scripts": {
     "start": "nps",
     "snyk-protect": "snyk protect",
-    "test": "rm -rf coverage && nps test.lint && npm run test:jest && npm run test:karma && npm run combine-coverage",
+    "test": "rm -rf coverage && nps test.lint && npm run test:jest && npm run test:karma && npm run combine-coverage && npm run test:protractor",
     "combine-coverage": "istanbul-combine -d coverage -p none -r lcov -r html coverage/jest/coverage-final.json coverage/karma/coverage-final.json",
     "test:karma": "cross-env NODE_ENV=test karma start test/karma.conf.js",
     "test:debug": "cross-env NODE_ENV=test nps test.karma.debug",
