@@ -434,6 +434,9 @@ button[disabled]:hover {
   .content-block {
     overflow-x: hidden;
   }
+  ::-webkit-scrollbar:vertical {
+    width: 0;
+  }
 }
 
 @media screen and (min-width: 766px) {

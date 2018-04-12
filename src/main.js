@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../static/styles.css';
 import * as Bluebird from 'bluebird';
 import 'babel-polyfill';
-import 'inputmask';
+//import 'inputmask';
 //import 'jquery-touchswipe';
 // remove out if you don't want a Promise polyfill (remove also from webpack.config.js)
 Bluebird.config({ warnings: { wForgottenReturn: false } });
