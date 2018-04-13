@@ -13,7 +13,7 @@ export class RafterUser {
   }
 
   checkExpired(decoded) {
-    console.log('check expired');
+    //console.log('check expired');
     let d = new Date();
     let checkd = d.valueOf() / 1000;
     if (checkd > decoded.exp) {
@@ -25,8 +25,8 @@ export class RafterUser {
     let reloadPage = false;
     let showHideHD = document.getElementsByClassName('showHideHD')[0];
     let rafterCheckHome = document.getElementsByClassName('rafterCheckHome')[0];
-    console.log(showHideHD);
-    console.log(rafterCheckHome);
+    //console.log(showHideHD);
+    //console.log(rafterCheckHome);
     if (showHideHD !== null && showHideHD !== undefined) {
       if (showHideHD.style.display === 'block') {
         //console.log('why is logout button?');
@@ -41,11 +41,11 @@ export class RafterUser {
         rafterCheckHome.style.display === 'none';
       }
     }
-    console.log('you are not logged in');
+    //console.log('you are not logged in');
     sli = true;
     /* istanbul ignore next */
     if (process.env.NODE_ENV !== 'test' && reloadPage) {
-      console.log('am i here?');
+      //console.log('am i here?');
       window.location.reload();
     }
   }
@@ -60,11 +60,11 @@ export class RafterUser {
     })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      //console.log(data);
       return true;
       //document.getElementsByClassName('rafterLogout')[0].style.display = 'block';
     }).catch((err) => {
-      console.log(err);
+      //console.log(err);
       return false;
     });
   }

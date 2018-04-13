@@ -108,7 +108,7 @@ export class Rafter {
 
   async navHomeDir() {
     //await this.rafterUser.initVol(sessionStorage.getItem('rafterToken'));
-    console.log('you clicked me');
+    //console.log('you clicked me');
     let hdc = JSON.stringify(this.homeDirJson);
     this.rafterFile.path = '';
     document.getElementsByClassName('folderName')[0].innerHTML = 'home/' + this.rafterUserID;
@@ -133,10 +133,10 @@ export class Rafter {
     }
   }
 
-  displayTree(tv, nameArr, divId, showFile, hdj, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj) {
-    let filesInFolder;
-    let insideFolderDetails;
-    let allData = [];
+  displayTree(tv, nameArr, divId, showFile, hdj, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable) {
+    let filesInFolder = null; //these are the files that are inside of a subfolder of the home dir
+    //let insideFolderDetails;
+    //let allData = [];
     tv = new TreeView(nameArr, divId);
     let getTreeLeaves = document.getElementsByClassName('tree-leaf-content');
     //console.log(getTreeLeaves);
@@ -157,56 +157,78 @@ export class Rafter {
     // make folders clickable
     for (let j = 0; j < foldersArr.length; j++) {
       //console.log(foldersArr[j]);
-      filesInFolder = foldersArr[j].domDiv.nextElementSibling;
-      //console.log(filesInFolder);
+      if (foldersArr[j].domDiv.nextElementSibling !== null) {
+        filesInFolder = foldersArr[j].domDiv.nextElementSibling;
+      }
+      console.log(filesInFolder);
       //console.log(filesInFolder.getElementByClassName('tree-leaf'));
       foldersArr[j].domDiv.addEventListener('click', function(evt) {
         //console.log(evt);
-        showFile(foldersArr[j].id, hdj, raf, rvs, myApp, rui, mtws, tv, showFile, displayTree, subDirFiles, mnj);
-      });
-    }
-    //console.log(filesInFolder.innerHTML);
-    let fif = [];
-    if (filesInFolder !== null && filesInFolder !== undefined) {
-      fif = filesInFolder.getElementsByClassName('tree-leaf');
-      //console.log(fif);
-    }
-    insideFolderDetails = document.getElementsByClassName('subDirContent')[0].innerHTML;
-    //console.log(insideFolderDetails);
-    if (insideFolderDetails !== '' && fif.length !== 0) {
-      let ifd = JSON.parse(insideFolderDetails);
-      //console.log(ifd);
-      allData = ifd;
-    } else {
-      //console.log('else line 94');
-      allData = hdj;
-    }
-    //console.log(allData);
-    for (let k = 0; k < fif.length; k++) {
-      let fileID = fif[k].getElementsByClassName('tree-leaf-content')[0];
-      let fileIDsJson = fileID.getAttribute('data-item');
-      let fileIDJson = JSON.parse(fileIDsJson);
-      fif[k].addEventListener('click', function(evt) {
-        console.log('I clicked the file inside sub folder');
-        showFile(fileIDJson.id, allData, raf, rvs, myApp, rui, null, null, null, null, subDirFiles, mnj);
+        showFile(foldersArr[j].id, hdj, raf, rvs, myApp, rui, mtws, tv, showFile, displayTree, subDirFiles, mnj, makeFilesClickable);
       });
     }
     tv.on('select', function(evt) {
       console.log('i clicked the select event from tv');
       console.log(evt.data.id);
-      showFile(evt.data.id, hdj, raf, rvs, myApp, rui, null, null, null, null, subDirFiles, mnj);
+      showFile(evt.data.id, hdj, raf, rvs, myApp, rui, null, null, null, null, subDirFiles, mnj, makeFilesClickable);
     });
+    if (filesInFolder === null) {
+      return console.log('no files in subfolders');
+    }
+    makeFilesClickable(filesInFolder, showFile, raf, rvs, myApp, rui, subDirFiles, mnj, makeFilesClickable);
+    // let fif = [];
+    // if (filesInFolder !== null && filesInFolder !== undefined) {
+    //   fif = filesInFolder.getElementsByClassName('tree-leaf');
+    // }
+    // insideFolderDetails = document.getElementsByClassName('subDirContent')[0].innerHTML;
+    // if (insideFolderDetails !== '' && fif.length !== 0) {
+    //   let ifd = JSON.parse(insideFolderDetails);
+    //   console.log('line190');
+    //   console.log(ifd);
+    //   allData = ifd;
+    // } else {
+    //   console.log('else line 194');
+    //   allData = hdj;
+    // }
+    // //console.log(allData);
+    // for (let k = 0; k < fif.length; k++) {
+    //   let fileID = fif[k].getElementsByClassName('tree-leaf-content')[0];
+    //   let fileIDsJson = fileID.getAttribute('data-item');
+    //   let fileIDJson = JSON.parse(fileIDsJson);
+    //   fif[k].addEventListener('click', function(evt) {
+    //     console.log('I clicked the file inside sub folder');
+    //     showFile(fileIDJson.id, allData, raf, rvs, myApp, rui, null, null, null, null, subDirFiles, mnj, makeFilesClickable);
+    //   });
+    // }
   }
 
-  showFileDetails(id, hdj, raf, rvs, myApp, rui, mtws = null, tv, showFile, displayTree, subDirFiles, mnj) {
+  makeFilesClickable(filesInFolder, showFile, raf, rvs, myApp, rui, subDirFiles, mnj, makeFilesClickable) {
+    console.log('refactoring here');
+    let fif = filesInFolder.getElementsByClassName('tree-leaf');
+    let insideFolderDetails = document.getElementsByClassName('subDirContent')[0].innerHTML;
+    let allData = JSON.parse(insideFolderDetails);
+    let fileID, fileIDsJson;
+    //let clickFunc = function(evt)
+    for (let k = 0; k < fif.length; k++) {
+      fileID = fif[k].getElementsByClassName('tree-leaf-content')[0];
+      fileIDsJson = fileID.getAttribute('data-item');
+      let fileIDJson = JSON.parse(fileIDsJson);
+      fif[k].addEventListener('click', function(evt) {
+        console.log('I clicked the file inside sub folder');
+        showFile(fileIDJson.id, allData, raf, rvs, myApp, rui, null, null, null, null, subDirFiles, mnj, makeFilesClickable);
+      });
+    }
+  }
+
+  showFileDetails(id, hdj, raf, rvs, myApp, rui, mtws = null, tv, showFile, displayTree, subDirFiles, mnj, makeFilesClickable) {
     document.getElementsByClassName('displayFileContent')[0].innerHTML = '';
     const dnldbt = document.getElementsByClassName('dnldButton')[0];
     const dfcbt = document.getElementsByClassName('displayButton')[0];
     dnldbt.style.display = 'none';
     dfcbt.style.display = 'none';
-    console.log('going to display the file details now');
-    console.log(id);
-    console.log('is this a sub directory?');
+    //console.log('going to display the file details now');
+    //console.log(id);
+    //console.log('is this a sub directory?');
     document.getElementsByClassName('fileDetailsTitle')[0].style.display = 'block';
     document.getElementsByClassName('fileDetailsTitle')[1].style.display = 'block';
     let ifd = document.getElementsByClassName('insideFolderDetails')[0];
@@ -224,16 +246,16 @@ export class Rafter {
         document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(hdj[i]);
         //console.log(hdj[i].isContainer);
         if (hdj[i].isContainer) {
-          console.log('I found a folder');
+          //console.log('I found a folder');
           document.getElementsByClassName('fileDld')[0].style.display = 'none';
           document.getElementsByClassName('fileDetailsTitle')[0].style.display = 'none';
           document.getElementsByClassName('folderName')[0].innerHTML = hdj[i].name;
           raf.path = '/' + hdj[i].name;
           //console.log('line 86?');
-          return rvs('ls', myApp, rui, raf, mtws, hdj[i].id, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj);
+          return rvs('ls', myApp, rui, raf, mtws, hdj[i].id, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable);
         }
         //set Filename
-        console.log(hdj[i].state);
+        //console.log(hdj[i].state);
         document.getElementsByClassName('dnldButton')[0].innerHTML = ('Download<br>' + hdj[i].name);
         document.getElementsByClassName('deleteButton')[0].innerHTML = ('Delete<br>' + hdj[i].name);
         document.getElementsByClassName('displayButton')[0].innerHTML = ('Display<br>' + hdj[i].name);
@@ -247,7 +269,7 @@ export class Rafter {
     if (subDirFiles !== null && subDirFiles !== undefined) {
       for (let j = 0; j < subDirFiles.length; j++) {
         if (id === subDirFiles[j].id) {
-          console.log('i found a match!');
+          //console.log('i found a match!');
           document.getElementsByClassName('dnldButton')[0].innerHTML = ('Download<br>' + subDirFiles[j].name);
           document.getElementsByClassName('deleteButton')[0].innerHTML = ('Delete<br>' + subDirFiles[j].name);
           document.getElementsByClassName('displayButton')[0].innerHTML = ('Display<br>' + subDirFiles[j].name);
@@ -273,10 +295,10 @@ export class Rafter {
 
   makeTree(data) {
     let nameArr = this.makeNewJson(data);
-    this.displayTree(this.tv, nameArr, 'treeView', this.showFileDetails, this.homeDirJson, this.rafterFile, this.rafterVolumeService, this.app, this.rafterUserID, this.makeTreeWithSub, this.displayTree, this.subDirJson, this.makeNewJson);
+    this.displayTree(this.tv, nameArr, 'treeView', this.showFileDetails, this.homeDirJson, this.rafterFile, this.rafterVolumeService, this.app, this.rafterUserID, this.makeTreeWithSub, this.displayTree, this.subDirJson, this.makeNewJson, this.makeFilesClickable);
   }
 
-  async makeTreeWithSub(data, hdjId, hdj, tv, showFile, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj) {
+  async makeTreeWithSub(data, hdjId, hdj, tv, showFile, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable) {
     let childArr = mnj(data);
     for (let i = 0; i < tv.data.length; i++) {
       if (hdjId === tv.data[i].id) {
@@ -284,11 +306,11 @@ export class Rafter {
       }
     }
     let newData = tv.data;
-    await displayTree(tv, newData, 'treeView', showFile, hdj, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj);
+    await displayTree(tv, newData, 'treeView', showFile, hdj, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable);
     tv.expandAll();
   }
 
-  rafterVolumeService(cmd, myApp = null, rui = null, raf = null, mtws = null, hdjId = null, hdj = null, tv = null, showFile = null, rvs = null, displayTree = null, subDirFiles = null, mnj) {
+  rafterVolumeService(cmd, myApp = null, rui = null, raf = null, mtws = null, hdjId = null, hdj = null, tv = null, showFile = null, rvs = null, displayTree = null, subDirFiles = null, mnj, makeFilesClickable) {
     document.getElementsByClassName('userServiceError')[0].innerHTML = '';
     document.getElementsByClassName('showHideHD')[0].style.display = 'block';
     document.getElementsByClassName('rafterCheckHome')[0].style.display = 'none';
@@ -317,11 +339,11 @@ export class Rafter {
       body: JSON.stringify({token: sessionStorage.getItem('rafterToken'), userName: rui, command: cmd, rafterFile: raf})
     })
     .then(function(response) {
-      console.log(response);
+      //console.log(response);
       return response.json();
     })
     .then((data) => {
-      console.log(data);
+      //console.log(data);
       if (cmd === 'ls') {
         if (raf.path === '') {
           this.homeDirJson = data;
@@ -329,7 +351,7 @@ export class Rafter {
         }
         document.getElementsByClassName('subDirContent')[0].innerHTML = JSON.stringify(data);
         subDirFiles.push.apply(subDirFiles, data);
-        return mtws(data, hdjId, hdj, tv, showFile, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj);
+        return mtws(data, hdjId, hdj, tv, showFile, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable);
       } else if (data.message !== null && data.message !== '' && data.message !== undefined) {
         return document.getElementsByClassName('userServiceError')[0].innerHTML = data.message;
       } else if (cmd === 'create') {
@@ -358,7 +380,7 @@ export class Rafter {
       body: JSON.stringify({command: 'remove', fileID: this.rafterFileID})
     }).then((response) => response.json()).then((data) => {
       if (data) {
-        /* istanbul ignore if */
+      /* istanbul ignore if */
         if (process.env.NODE_ENV !== 'test') {
           window.location.reload();
         }
@@ -398,14 +420,14 @@ export class Rafter {
         console.log(fileString);
         document.getElementsByClassName('displayFileContent')[0].innerHTML = fileString;
       }
-      /* istanbul ignore next */
+  /* istanbul ignore next */
       function errorHandler(evt) {
         alert('The file could not be read');
       }
       this.reader.onload = loaded;
       this.reader.onerror = errorHandler;
       this.reader.readAsText(blob);
-      //console.log(fileContents);
+  //console.log(fileContents);
     }).catch(function (err) {
       console.log(err);
     });
@@ -427,7 +449,7 @@ export class Rafter {
     // this value cannot be controlled by developer, hence cannot test it.
     /* istanbul ignore if*/
       if (oInput.type === 'text/plain' || oInput.type === 'text/html' || oInput.type === 'application/json') {
-        //console.log('type is a plain text file');
+      //console.log('type is a plain text file');
         nub.style.display = 'block';
         return true;
       }
@@ -465,16 +487,16 @@ export class Rafter {
         },
         body: JSON.stringify({token: sessionStorage.getItem('rafterToken'), userName: rui, command: 'create', rafterFile: {name: cleanFileName, path: filePath, content: fileString, createType: 'file'}})
       })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          /* istanbul ignore if */
-          if (process.env.NODE_ENV !== 'test') {
-            window.location.reload();
-          }
-        }).catch((err) => {
-          console.log(err);
-        });
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      /* istanbul ignore if */
+      if (process.env.NODE_ENV !== 'test') {
+        window.location.reload();
+      }
+    }).catch((err) => {
+      console.log(err);
+    });
     }
 
     this.reader.onload = loaded;
@@ -521,14 +543,14 @@ export class Rafter {
     this.interval = setInterval(function() {
       cili(cep, rlo, sli, cipr);
     }
-    , 3400);
+  , 3400);
     let rT = (sessionStorage.getItem('rafterToken'));
     if (rT !== null && rT !== undefined) {
       this.setRafterUserId();
       document.getElementsByClassName('rafterAddApp')[0].style.display = 'block';
       document.getElementsByClassName('rafterCheckHome')[0].style.display = 'block';
-      // console.log('this is the rafterApps');
-      // console.log(this.user.rafterApps);
+    // console.log('this is the rafterApps');
+    // console.log(this.user.rafterApps);
       if (this.user.rafterApps !== undefined && this.user.rafterApps.length > 1) {
         for (let i = 0; i < this.user.rafterApps.length; i++) {
           this.appNames.push(this.user.rafterApps[i].r_app_name);

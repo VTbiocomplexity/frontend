@@ -321,7 +321,7 @@ button {
 .tree-leaf .tree-leaf-text {
   cursor: pointer;
   text-align: left;
-  margin-left: 25px;
+  margin-left: 40px;
 }
 
 .tree-leaf .tree-leaf-text:hover { color: #23527c; }
@@ -349,7 +349,8 @@ button {
 
 .tlfolder {
   float: left;
-  padding-left: 10px;
+  padding-left: 25px;
+  padding-right: 4px;
 }
 
 #treeView {
