@@ -12,7 +12,7 @@ export class Rafter {
     this.app = app;
     this.rafterUserID = '';
     this.rafter = {id: '', secret: '', appName: ''};
-    this.rafterFile = {name: '', createType: 'file', path: '', fileType: 'unspecified'};
+    this.rafterFile = {name: '', createType: 'file', path: '', fileType: 'unspecified', rfid: ''};
     this.tv = null;
     this.homeDirJson = null;
     this.subDirJson = [];
@@ -114,8 +114,8 @@ export class Rafter {
     document.getElementsByClassName('folderName')[0].innerHTML = 'home/' + this.rafterUserID;
     document.getElementsByClassName('insideFolderDetails')[0].style.display = 'block';
     document.getElementsByClassName('subDirContent')[0].innerHTML = hdc;
+    document.getElementsByClassName('fileActions')[0].style.display = 'none';
     document.getElementsByClassName('fileDetailsTitle')[0].style.display = 'none';
-    document.getElementsByClassName('fileDetailsTitle')[1].style.display = 'none';
     document.getElementsByClassName('homeDirContent')[0].innerHTML = '';
     document.getElementsByClassName('createNew')[0].style.display = 'block';
     document.getElementsByClassName('isHomeDir')[0].style.display = 'block';
@@ -175,50 +175,51 @@ export class Rafter {
     if (filesInFolder === null) {
       return console.log('no files in subfolders');
     }
-    makeFilesClickable(filesInFolder, showFile, raf, rvs, myApp, rui, subDirFiles, mnj, makeFilesClickable);
-    // let fif = [];
-    // if (filesInFolder !== null && filesInFolder !== undefined) {
-    //   fif = filesInFolder.getElementsByClassName('tree-leaf');
-    // }
-    // insideFolderDetails = document.getElementsByClassName('subDirContent')[0].innerHTML;
-    // if (insideFolderDetails !== '' && fif.length !== 0) {
-    //   let ifd = JSON.parse(insideFolderDetails);
-    //   console.log('line190');
-    //   console.log(ifd);
-    //   allData = ifd;
-    // } else {
-    //   console.log('else line 194');
-    //   allData = hdj;
-    // }
-    // //console.log(allData);
-    // for (let k = 0; k < fif.length; k++) {
-    //   let fileID = fif[k].getElementsByClassName('tree-leaf-content')[0];
-    //   let fileIDsJson = fileID.getAttribute('data-item');
-    //   let fileIDJson = JSON.parse(fileIDsJson);
-    //   fif[k].addEventListener('click', function(evt) {
-    //     console.log('I clicked the file inside sub folder');
-    //     showFile(fileIDJson.id, allData, raf, rvs, myApp, rui, null, null, null, null, subDirFiles, mnj, makeFilesClickable);
-    //   });
-    // }
+    makeFilesClickable(filesInFolder, showFile, raf, rvs, myApp, rui, subDirFiles, mnj, makeFilesClickable, mtws, tv, displayTree);
   }
 
-  makeFilesClickable(filesInFolder, showFile, raf, rvs, myApp, rui, subDirFiles, mnj, makeFilesClickable) {
+  makeFilesClickable(filesInFolder, showFile, raf, rvs, myApp, rui, subDirFiles, mnj, makeFilesClickable, mtws, tv, displayTree) {
     console.log('refactoring here');
     let fif = filesInFolder.getElementsByClassName('tree-leaf');
     let insideFolderDetails = document.getElementsByClassName('subDirContent')[0].innerHTML;
     let allData = JSON.parse(insideFolderDetails);
     let fileID, fileIDsJson;
+    console.log('find a folder');
+    //console.log(fif);
     //let clickFunc = function(evt)
     for (let k = 0; k < fif.length; k++) {
       fileID = fif[k].getElementsByClassName('tree-leaf-content')[0];
       fileIDsJson = fileID.getAttribute('data-item');
       let fileIDJson = JSON.parse(fileIDsJson);
+      //console.log(fileIDJson.isContainer);
       fif[k].addEventListener('click', function(evt) {
-        console.log('I clicked the file inside sub folder');
-        showFile(fileIDJson.id, allData, raf, rvs, myApp, rui, null, null, null, null, subDirFiles, mnj, makeFilesClickable);
+        //console.log('I clicked the file inside sub folder');
+        if (!fileIDJson.isContainer) {
+          showFile(fileIDJson.id, allData, raf, rvs, myApp, rui, mtws, tv, showFile, displayTree, subDirFiles, mnj, makeFilesClickable);
+        } else {
+          console.log('got me a sub sub folder');
+          document.getElementsByClassName('fileActions')[0].style.display = 'none';
+          console.log(fileIDJson);
+          document.getElementsByClassName('folderName')[0].innerHTML = fileIDJson.name;
+          document.getElementsByClassName('createNew')[0].style.display = 'none';
+          raf.rfid = fileIDJson.id;
+          //refresh the inside Folder Details
+          //hide the file actions (display, download, delete)
+          //tree view opens with sub sub folder content
+          document.getElementsByClassName('displayFileContent')[0].innerHTML = ''; //this is incase someone clicked view button on a file
+          document.getElementsByClassName('subDirContent')[0].innerHTML = '';
+          rvs('ls', myApp, rui, raf, mtws, null, null, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable);
+          // const dnldbt = document.getElementsByClassName('dnldButton')[0];
+          // const dfcbt = document.getElementsByClassName('displayButton')[0];
+          // dnldbt.style.display = 'none';
+          // dfcbt.style.display = 'none';
+        }
       });
     }
   }
+  // this.subSubFolder(){
+  //   console.log('got me a sub sub folder');
+  // }
 
   showFileDetails(id, hdj, raf, rvs, myApp, rui, mtws = null, tv, showFile, displayTree, subDirFiles, mnj, makeFilesClickable) {
     document.getElementsByClassName('displayFileContent')[0].innerHTML = '';
@@ -229,8 +230,8 @@ export class Rafter {
     //console.log('going to display the file details now');
     //console.log(id);
     //console.log('is this a sub directory?');
+    document.getElementsByClassName('fileActions')[0].style.display = 'block';
     document.getElementsByClassName('fileDetailsTitle')[0].style.display = 'block';
-    document.getElementsByClassName('fileDetailsTitle')[1].style.display = 'block';
     let ifd = document.getElementsByClassName('insideFolderDetails')[0];
     if (mtws === null) {
       ifd.style.display = 'none';
@@ -247,8 +248,8 @@ export class Rafter {
         //console.log(hdj[i].isContainer);
         if (hdj[i].isContainer) {
           //console.log('I found a folder');
-          document.getElementsByClassName('fileDld')[0].style.display = 'none';
-          document.getElementsByClassName('fileDetailsTitle')[0].style.display = 'none';
+          //document.getElementsByClassName('fileDld')[0].style.display = 'none';
+          document.getElementsByClassName('fileActions')[0].style.display = 'none';
           document.getElementsByClassName('folderName')[0].innerHTML = hdj[i].name;
           raf.path = '/' + hdj[i].name;
           //console.log('line 86?');
@@ -322,6 +323,9 @@ export class Rafter {
     }
     if (raf === null) {
       raf = this.rafterFile;
+    }
+    if (raf.rfid !== '') {
+      return console.log('new request by id detected');
     }
     if (raf.createType !== 'folder') {
       raf.createType = 'file';
