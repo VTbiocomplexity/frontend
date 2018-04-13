@@ -1,7 +1,16 @@
-import {ReactElement} from '../../src/components/react-element';
+import {HelloWorld} from '../../src/components/react-element';
 
-test('test for the react element', () => {
-  let rc = new ReactElement();
-  console.log(rc);
-  // rc.bind();
+describe('++ react Element tests', () => {
+  let rc;
+
+  beforeEach(() => {
+    rc = new HelloWorld();
+  });
+
+  it('should bind the component', (done) => {
+    document.body.innerHTML = '<div id="renderer"></div>';
+    rc.element = document.getElementById('renderer');
+    rc.bind();
+    done();
+  });
 });
