@@ -319,28 +319,17 @@ export class Rafter {
   vsFetch(vsFetchSuccess, myApp, rafterUserID, cmd, myRafterFile, fromSubDir, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch) {
     myApp.httpClient.fetch('/rafter/vs', {
       method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({token: sessionStorage.getItem('rafterToken'), userName: rafterUserID, command: cmd, rafterFile: myRafterFile})
     })
-  .then(function(response) {
-    //console.log(response);
-    return response.json();
-  })
-  .then((data) => {
-    //console.log(data);
+  .then(function(response) { return response.json();}).then((data) => {
     if (data.message !== null && data.message !== '' && data.message !== undefined) {
       return document.getElementsByClassName('userServiceError')[0].innerHTML = data.message;
-      //return null;
     }
     document.getElementsByClassName('userServiceError')[0].innerHTML = '';
     document.getElementsByClassName('showHideHD')[0].style.display = 'block';
     document.getElementsByClassName('rafterCheckHome')[0].style.display = 'none';
     if (fromSubDir) {
-    //   console.log('line 350');
-    //   return data;
-
       return vsFetchSuccess(data, vsFetchSuccess, myApp, rafterUserID, cmd, myRafterFile, fromSubDir, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch);
     }
     if (cmd === 'ls') {
@@ -350,28 +339,9 @@ export class Rafter {
       myRafterFile = {name: '', createType: 'file', path: '', fileType: 'unspecified', rfid: ''};
       this.navHomeDir();
     }
-    // document.getElementsByClassName('userServiceError')[0].innerHTML = '';
-    // document.getElementsByClassName('showHideHD')[0].style.display = 'block';
-    // document.getElementsByClassName('rafterCheckHome')[0].style.display = 'none';
-    // if (cmd === 'ls') {
-    //   if (!fromSubDir) {
-    //     this.homeDirJson = data;
-    //     this.makeTree(data);
-    //   } else {
-    //     document.getElementsByClassName('subDirContent')[0].innerHTML = JSON.stringify(data);
-    //     subDirFiles.push.apply(subDirFiles, data);
-    //     mtws(data, hdjId, hdj, tv, showFile, myRafterFile, rvs, myApp, rafterUserID, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch);
-    //   }
-    // } else {
-    //   this.rafterFile = {name: '', createType: 'file', path: '', fileType: 'unspecified', rfid: ''};
-    //   this.navHomeDir();
-    // }
   }).catch(function (err) {
-    console.log(err);
-    /* istanbul ignore if */
     if (err.status === 500) {
-      console.log('init volume');
-      /* istanbul ignore next */
+      /* istanbul ignore if */
       if (process.env.NODE_ENV !== 'test') {
         window.location.reload();
       }
