@@ -17,14 +17,7 @@ export class Rafter {
     this.homeDirJson = null;
     this.subDirJson = [];
     this.rafterFileID = '';
-    //this.isVolInit = false;
     this.appNames = [];
-    //this.createType = 'file';
-    //   this.vs = new VolumeService('http://rafter.bi.vt.edu/volumesvc/', 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6W10sImZpcnN0X25hbWUiOiJuZHNzbCIsImxhc3RfbmFtZSI6ImFwcCIsInJvbGVzIjpbXSwidGVhbXMiOlsiQHVzZXJzIl0sImlhdCI6MTUxNzk0Nzk2MSwibmJmIjoxNTE3OTQ3OTYxLCJleHAiOjE1MTgwMzQzNjEsImF1ZCI6WyJAY29yZSIsIiNwdWJsaWMiXSwiaXNzIjoiaHR0cHM6Ly9yYWZ0ZXIuYmkudnQuZWR1L3VzZXJzdmMvcHVibGljX2tleSIsInN1YiI6Im5kc3NsQXBwIn0.a_q5Hq2MKWizi1KFbq8RMKAeQQbpsPweexIRCQwQ2a65J5Ojukf9vv' +
-    //   '-i9vRVuzPJEWxPHhXZTSzLXiwPlLB5P9VOlzgDPhmVuPwx2n0q-T9hbV6vGt1E0EL-oKex1dpVE10iM0BWujXvQRC8gPJXhIBNR6zUDXX5ziO_8Y48CNWvKBDKhTjcrGEuj7CEMSt9kZBlgt-E_DnkibnFfHl763k_vPWqJ4okWkhELXtpCj7ObKrjNGRjYzKrMRyjJkIHLOc6ZEsTKkWt4ATzOXN_jVYFqN5tzRpMqiqC-G0oS-aSOiML6HZpqiEu26oLoQ4a6RDAXPp6Me9SXwkhw7K-JNDvW68LRyXIMnz7HisLWhc6-1XykgQ6MLcu4uvsOBD11VQpVmO-5Dkdf2vAlr7jbQ8tvKZaJi4W2PEiVIfR6lNhGPLyU4Zx4bg084tzi6n3jSipKcavfPY' +
-    //   '-iNAbZOYDXlB8GKdDIEFpRQmO11Yyr1_B9OjRYFWrf1scdlLhdXcRQT33FHQo_sakhZMI36s50ksj6B4ghrEHhdvgE1TFBgMg6uyRiNiZiRVgd08kMok_JmlJrjGkqoUIgvZeC9NkjGU8YcV5bF5ZTeJpTlJ7l28W8fY_lkjOs4LBsxoJDdnrdGR-FsfFMQJajL4LEuwXGlpBHjfiLpqflRYhf8poDRU');
-    // //   this.auth = auth;
-    // //
   }
   fileTypes = ['intersim-im-11-1_runoutput', 'intersim-im-11-1_runlog', 'GraphABM_rank', 'json', 'text', 'jsonh+fasta', 'png', 'jpg', 'pdf', 'xml', 'fasta'];
 
@@ -38,7 +31,6 @@ export class Rafter {
     this.showLogin = this.checkIfLoggedIn(cep, rlo, this.showLogin, cipr);
     this.fileTypes.sort();
     this.fileTypes.splice(0, 0, 'unspecified');
-    /*istanbul ignore else */
     if (this.user.rafterApps !== undefined && this.user.rafterApps.length > 0 && sessionStorage.getItem('rafterToken') === null) {
       await this.handleRafterLogin('autoInitRafter');
     }
@@ -74,7 +66,6 @@ export class Rafter {
     if (rT !== null && rT !== undefined) {
       let rU = jwtDecode(rT);
       this.rafterUserID = rU.sub;
-      //this.isVolInit = true;
     }
   }
 
@@ -107,7 +98,6 @@ export class Rafter {
   }
 
   async navHomeDir() {
-    //await this.rafterUser.initVol(sessionStorage.getItem('rafterToken'));
     //console.log('you clicked me');
     let hdc = JSON.stringify(this.homeDirJson);
     this.rafterFile.path = '';
@@ -135,8 +125,6 @@ export class Rafter {
 
   displayTree(tv, nameArr, divId, showFile, hdj, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable) {
     let filesInFolder = null; //these are the files that are inside of a subfolder of the home dir
-    //let insideFolderDetails;
-    //let allData = [];
     tv = new TreeView(nameArr, divId);
     let getTreeLeaves = document.getElementsByClassName('tree-leaf-content');
     //console.log(getTreeLeaves);
@@ -186,7 +174,6 @@ export class Rafter {
     let fileID, fileIDsJson;
     console.log('find a folder');
     //console.log(fif);
-    //let clickFunc = function(evt)
     for (let k = 0; k < fif.length; k++) {
       fileID = fif[k].getElementsByClassName('tree-leaf-content')[0];
       fileIDsJson = fileID.getAttribute('data-item');
@@ -217,9 +204,6 @@ export class Rafter {
       });
     }
   }
-  // this.subSubFolder(){
-  //   console.log('got me a sub sub folder');
-  // }
 
   showFileDetails(id, hdj, raf, rvs, myApp, rui, mtws = null, tv, showFile, displayTree, subDirFiles, mnj, makeFilesClickable) {
     document.getElementsByClassName('displayFileContent')[0].innerHTML = '';
@@ -248,7 +232,6 @@ export class Rafter {
         //console.log(hdj[i].isContainer);
         if (hdj[i].isContainer) {
           //console.log('I found a folder');
-          //document.getElementsByClassName('fileDld')[0].style.display = 'none';
           document.getElementsByClassName('fileActions')[0].style.display = 'none';
           document.getElementsByClassName('folderName')[0].innerHTML = hdj[i].name;
           raf.path = '/' + hdj[i].name;
