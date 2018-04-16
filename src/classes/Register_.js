@@ -155,7 +155,10 @@ class Register_ {
       } else {
         document.getElementsByClassName('RegistrationForm')[0].style.display = 'none';
         if (data.email) {
-          window.location.href = process.env.FrontendUrl + '/userutil/?email=' + data.email;
+          /* istanbul ignore if */
+          if (process.env.NODE_ENV !== 'test') {
+            window.location.href = process.env.FrontendUrl + '/userutil/?email=' + data.email;
+          }
         }
       }
     })
@@ -170,7 +173,10 @@ class Register_ {
     if (process.env.FrontendUrl !== undefined) {
       feurl = process.env.FrontendUrl;
     }
-    window.location.href = feurl + '/userutil/?form=prefs';
+    /* istanbul ignore if */
+    if (process.env.NODE_ENV !== 'test') {
+      window.location.href = feurl + '/userutil/?form=prefs';
+    }
   }
 
 }

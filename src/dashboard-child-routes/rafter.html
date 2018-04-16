@@ -19,7 +19,7 @@
       <div style="text-align:center: margin-auto; max-width:4in">
         <h3 style="margin:auto; padding-top:10px; padding-bottom:5px;text-align:center"><strong>Rafter Dashboard</strong></h3>
         <p style="text-align:center;"><i>We are going to try out some Rafter APIs here!</i></p>
-        <button style="text-align:center;margin:auto; display:none" class="rafterCheckHome btn" click.delegate="rafterVolumeService('ls')">Display home/${rafterUserID}</button>
+        <button style="text-align:center;margin:auto; display:none" class="rafterCheckHome btn" click.delegate="fetchVS('ls')">Display home/${rafterUserID}</button>
       </div>
       <div class="rafterLogin elevation3" style="max-width:3in; margin:auto; margin-bottom:20px" show.bind="showLogin">
         <form style="margin-left:8px">
@@ -94,7 +94,7 @@
                 <label for="fileType2" style="display:inline">Folder</label>
               </div>
               <label>Name<span style="font-weight:normal;font-style:italic;font-size:9pt"> (no spaces)</span></label>
-              <input class="form-control" type="text" value.bind="rafterFile.name" style="width: 1.75in">
+              <input input.delegate="valFileName()" class="form-control rfn" type="text" value.bind="rafterFile.name" style="width: 1.75in">
               <div class="fileTypeSelector">
                 <label>Type</label>
                 <select id="fileType" class="form-control" value.bind="rafterFile.fileType" style="margin-top:0;width: 1.75in">
@@ -103,7 +103,7 @@
               </div>
               <p style="margin:0">&nbsp;</p>
               <div class="rafterFile" style="max-width:2in;text-align:left">
-                <button style="text-align:center" class="rafterMakeFileButton" click.delegate="rafterVolumeService('create')">Create</button>
+                <button disabled style="text-align:center" class="rafterMakeFileButton" click.delegate="fetchVS('create')">Create</button>
               </div>
             </form>
           </div>
