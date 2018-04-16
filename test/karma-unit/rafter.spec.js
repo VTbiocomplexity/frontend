@@ -54,6 +54,20 @@ describe('The Rafter Dashboard', () => {
     expect(rd.uid).toBe('3456');
   }));
 
+  it('does not auto init rafter when there is already a rafter token', testAsync(async function() {
+    //let store;
+    spyOn(window.sessionStorage, 'getItem').and.callFake(function (key) {
+      return '123';
+    });
+    //window.sessionStorage = mockstorage;
+    //   getItem: function() {return '123';}
+    // };
+    spyOn(rd, 'handleRafterLogin').and.callThrough();
+    await rd.activate();
+    //console.log(sessionStorage.getItem('rafterToken'));
+    expect(rd.handleRafterLogin).not.toHaveBeenCalled();
+  }));
+
   it('automatically inits rafter if user has credentials and there is no token', testAsync(async function() {
     rd.user = {rafterApps: [{r_app_secret: 'wow', r_app_id: 'yo', r_app_name: 'cool'}]};
     rd.rafterUser = new RafterUser(rd.app.httpClient);
@@ -301,6 +315,16 @@ describe('The Rafter Dashboard', () => {
     await rd4.rafterUser.initRafter(rd4.rafterUserID, rd4.rafter);
   }));
 
+  it('disables/enables the create button when file name is blank/not blank', testAsync(async function() {
+    document.body.innerHTML += '<button class="rafterMakeFileButton"></button><div class="userServiceError">error</div>';
+    rd.rafterFile.name = '';
+    await rd.valFileName();
+    expect(document.getElementsByClassName('rafterMakeFileButton')[0].disabled).toBe(true);
+    rd.rafterFile.name = 'howdy';
+    await rd.valFileName();
+    expect(document.getElementsByClassName('rafterMakeFileButton')[0].getAttribute('disabled')).toBe(null);
+  }));
+
   // it('retrieves the home directory', testAsync(async function() {
   //   document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
   //   await rd.rafterVolumeService('ls');
@@ -377,7 +401,6 @@ describe('The Rafter Dashboard', () => {
     expect(rd.rafterFile.createType).toBe('file');
   }));
   it('tries to init volume service but catches an error', testAsync(async function() {
-    //document.body.innerHTML = '<div class="homeDirContent"></div>';
     rd.app.httpClient = new HttpMock('rafterError');
     rd.rafterUser = new RafterUser(rd.app.httpClient);
     await rd.rafterUser.initVol('yoyo');
@@ -428,41 +451,41 @@ describe('The Rafter Dashboard', () => {
   it('makes clickable files inside subfolder of a tree menu', (done) => {
     let myObj = {hi: 'howdy', low: 'loud', id: '123'};
     let filesInFolder = {getElementsByClassName: function() { return [{addEventListener: function(type, func) {func();}, getElementsByClassName: function() {return [{getAttribute: function() {return JSON.stringify(myObj);}}];}}, {addEventListener: function(type, func) {func();}, getElementsByClassName: function() {return [{getAttribute: function() {return JSON.stringify(myObj);}}];}}];}};
-    let showFiles = function(fij) {
-      //expect(fij.id).toBe('123');
-    };
     rd.app.httpClient = new HttpMock();
-    // rd.showFileDetails = function() {};
-    // rd.makeFilesClickable = function() {};
-    document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="subDirContent"></div>';
-    //const nameArr = [{name: 'folderName', id: '123', type: 'folder', isContainer: true, children: [{name: 'fileInside', id: '1234', type: 'file', isContainer: false, children: []}]}];
+    rd.showFileDetails = function() {};
+    spyOn(rd, 'showFileDetails').and.callThrough();
+    document.body.innerHTML = '<div class="fileActions"></div><div id="divId"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="subDirContent"></div>';
     document.getElementsByClassName('subDirContent')[0].innerHTML = '[{"state":"empty","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"6f1ff340-18cc-11e8-95c2-717499928918","creation_date":"2018-02-23T19:04:55.156Z","name":"file2","owner_id":"JoshuaVSherman","container_id":"a320cc40-17e7-11e8-95c2-717499928918","update_date":"2018-02-23T19:04:55.156Z"},{"state":"empty","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"fb05c9b0-18c3-11e8-95c2-717499928918","creation_date":"2018-02-23T18:04:24.396Z","name":"insideSubFolder1.txt","owner_id":"JoshuaVSherman","container_id":"a320cc40-17e7-11e8-95c2-717499928918","update_date":"2018-02-23T18:04:24.396Z"}]';
-    //rd.displayTree(rd.tv, nameArr, 'treeView', rd.showFileDetails, rd.homeDirJson, rd.rafterFile, rd.rafterVolumeService, rd.app, rd.rafterUserID, rd.makeTreeWithSub, rd.displayTree, null, null, rd.makeFilesClickable);
-    //console.log(document.getElementsByClassName('tree-leaf-text'));
-    //document.getElementsByClassName('tree-leaf-text')[1].click();
-    rd.makeFilesClickable(filesInFolder, showFiles);
-    //filesInFolder.getElementsByClassName('tree-leaf')[0].click();
-    //expect(document.getElementsByClassName('tlfolder')[0]).not.toBe(undefined);
+    rd.makeFilesClickable(filesInFolder, rd.showFileDetails);
+    expect(rd.showFileDetails).toHaveBeenCalled();
+    done();
+  });
+  it('detects a sub sub folder click event', (done) => {
+    let myObj = {hi: 'howdy', low: 'loud', id: '123', isContainer: true};
+    let filesInFolder = {getElementsByClassName: function() { return [{addEventListener: function(type, func) {func();}, getElementsByClassName: function() {return [{getAttribute: function() {return JSON.stringify(myObj);}}];}}, {addEventListener: function(type, func) {func();}, getElementsByClassName: function() {return [{getAttribute: function() {return JSON.stringify(myObj);}}];}}];}};
+    rd.app.httpClient = new HttpMock();
+    rd.showFileDetails = function() {};
+    spyOn(rd, 'showFileDetails').and.callThrough();
+    document.body.innerHTML = '<div class="displayFileContent"></div><div class="createNew"></div><div class="folderName"></div><div class="fileActions"></div><div id="divId"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="subDirContent"></div>';
+    document.getElementsByClassName('subDirContent')[0].innerHTML = '[{"state":"empty","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"6f1ff340-18cc-11e8-95c2-717499928918","creation_date":"2018-02-23T19:04:55.156Z","name":"file2","owner_id":"JoshuaVSherman","container_id":"a320cc40-17e7-11e8-95c2-717499928918","update_date":"2018-02-23T19:04:55.156Z"},{"state":"empty","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"fb05c9b0-18c3-11e8-95c2-717499928918","creation_date":"2018-02-23T18:04:24.396Z","name":"insideSubFolder1.txt","owner_id":"JoshuaVSherman","container_id":"a320cc40-17e7-11e8-95c2-717499928918","update_date":"2018-02-23T18:04:24.396Z"}]';
+    rd.makeFilesClickable(filesInFolder, rd.showFileDetails, rd.rafterFile, rd.rafterVolumeService, rd.app, null, null, null, null, null, null, null, function() {}, function() {});
+    expect(rd.showFileDetails).not.toHaveBeenCalled();
     done();
   });
   it('displays the metadata of an empty file after a tree menu click', (done) => {
     rd.app.httpClient = new HttpMock();
-    //rd.showFileDetails = function() {};
     document.body.innerHTML = '<div class="fileActions"></div><button class="displayButton"></button><div class="displayFileContent"></div><button class="deleteButton"></button><button class="dnldButton"></button><div class="fileDetailsTitle"></div><div class="rafterLogout"></div><div class="fileDld"></div><button class="rafterCheckHome"></button><div class="createNew"></div><div id="divId"></div><p class="fileDetailsTitle"></p><div class="isHomeDir"></div><div class="isHomeDir"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div>';
     const nameArr = [{state: 'empty', name: 'filename', id: '123', type: 'unspecified', isContainer: false, children: []}];
     rd.showFileDetails('123', nameArr, null, null, null, null, null, null, null, nameArr, null);
-    //document.getElementsByClassName('tree-leaf-text')[0].click();
     expect(document.getElementsByClassName('homeDirContent')[0].innerHTML).not.toBe('');
     expect(document.getElementsByClassName('displayButton')[0].style.display).toBe('none');
     done();
   });
   it('shows the inside of folder details from a tree menu click', (done) => {
     rd.app.httpClient = new HttpMock();
-    //rd.showFileDetails = function() {};
     document.body.innerHTML = '<div class="fileActions"></div><button class="displayButton"></button><div class="displayFileContent"></div><button class="deleteButton"></button><button class="dnldButton"></button><div class="fileDetailsTitle"></div><div class="rafterLogout"></div><div class="fileDld"></div><button class="rafterCheckHome"></button><div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"></div><p class="fileDetailsTitle"></p><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div>';
     const nameArr = [{name: 'filename', id: '123', type: 'unspecified', isContainer: false, children: []}];
     rd.showFileDetails('123', nameArr, null, null, null, null, function() {}, null, null, null);
-    //document.getElementsByClassName('tree-leaf-text')[0].click();
     expect(document.getElementsByClassName('homeDirContent')[0].innerHTML).not.toBe('');
     done();
   });
