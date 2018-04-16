@@ -8,7 +8,6 @@ function testAsync(runAsync) {
     runAsync().then(done, (e) => { fail(e); done(); });
   };
 }
-//let dv = new Developer();
 
 describe('The Rafter Dashboard', () => {
   let rd;
@@ -20,13 +19,7 @@ describe('The Rafter Dashboard', () => {
   let rd4;
   let rd5;
   let app5;
-  //let handlers;
   beforeEach(() => {
-    // handlers = {
-    //   locationReload: window.location.reload // handle for location.reload()
-    //   //reloadPage: reloadPage      // handle for your reloadPage()
-    // };
-    // spyOn(handlers.locationReload);
     auth = new AuthStub();
     auth.setToken({sub: '3456'});
     app = new App(auth, new HttpMock());
@@ -308,10 +301,10 @@ describe('The Rafter Dashboard', () => {
     await rd4.rafterUser.initRafter(rd4.rafterUserID, rd4.rafter);
   }));
 
-  it('retrieves the home directory', testAsync(async function() {
-    document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
-    await rd.rafterVolumeService('ls');
-  }));
+  // it('retrieves the home directory', testAsync(async function() {
+  //   document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
+  //   await rd.rafterVolumeService('ls');
+  // }));
 
   it('hangles a login to rafter button click', testAsync(async function() {
     document.body.innerHTML = '<div class="userServiceError">error</div><button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
@@ -320,16 +313,16 @@ describe('The Rafter Dashboard', () => {
     await rd.handleRafterLogin();
   }));
 
-  it('tries to retrieves the home directory, but gets an error', testAsync(async function() {
-    document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
-    rd.app.httpClient = new HttpMock('rafterError');
-    await rd.rafterVolumeService('ls');
-  }));
-  it('tries to retrieves the home directory, but receives a message of error', testAsync(async function() {
-    document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
-    rd.app.httpClient = new HttpMock('rafterMessage');
-    await rd.rafterVolumeService('create');
-  }));
+  // it('tries to retrieves the home directory, but gets an error', testAsync(async function() {
+  //   document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
+  //   rd.app.httpClient = new HttpMock('rafterError');
+  //   await rd.rafterVolumeService('ls');
+  // }));
+  // it('tries to retrieves the home directory, but receives a message of error', testAsync(async function() {
+  //   document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
+  //   rd.app.httpClient = new HttpMock('rafterMessage');
+  //   await rd.rafterVolumeService('create');
+  // }));
   it('retrieves the sub directory', testAsync(async function() {
     rd.app.httpClient = new HttpMock();
     document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div><div class="subDirContent"></div>';
@@ -338,13 +331,13 @@ describe('The Rafter Dashboard', () => {
     rd.subDirJson = [];
     await rd.rafterVolumeService('ls', rd.app, 'tester', rd.rafterFile, rd.makeTreeWithSub, null, null, null, null, null, null, rd.subDirJson);
   }));
-  it('creates a new file', testAsync(async function() {
-    document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
-    rd.app.httpClient = new HttpMock();
-    await rd.rafterVolumeService('create');
-    rd.rafterFile = {name: 'yo', createType: 'folder', path: ''};
-    await rd.rafterVolumeService('create');
-  }));
+  // it('creates a new file', testAsync(async function() {
+  //   document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
+  //   rd.app.httpClient = new HttpMock();
+  //   await rd.rafterVolumeService('create');
+  //   rd.rafterFile = {name: 'yo', createType: 'folder', path: ''};
+  //   await rd.rafterVolumeService('create');
+  // }));
   it('deletes a new file', testAsync(async function() {
     document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent">{"id":"123"}</div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
     rd.app.httpClient = new HttpMock();
@@ -356,18 +349,18 @@ describe('The Rafter Dashboard', () => {
     // rd.rafterFile = {name: 'yo', createType: 'folder', path: ''};
     // await rd.rafterVolumeService('create');
   }));
-  it('does not accept a bogus command', testAsync(async function() {
-    document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
-    rd.app.httpClient = new HttpMock();
-    await rd.rafterVolumeService('bogas');
-  }));
+  // it('does not accept a bogus command', testAsync(async function() {
+  //   document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
+  //   rd.app.httpClient = new HttpMock();
+  //   await rd.rafterVolumeService('bogas');
+  // }));
 
-  it('catches error on create a new file', testAsync(async function() {
-    document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
-    rd.app.httpClient = new HttpMock('rafterCreateError');
-    await rd.rafterVolumeService('create');
-    //expect(document.getElementsByClassName('userServiceError')[0].innerHTML).not.toBe('&nbsp;');
-  }));
+  // it('catches error on create a new file', testAsync(async function() {
+  //   document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
+  //   rd.app.httpClient = new HttpMock('rafterCreateError');
+  //   await rd.rafterVolumeService('create');
+  //   //expect(document.getElementsByClassName('userServiceError')[0].innerHTML).not.toBe('&nbsp;');
+  // }));
 
   it('sets the create to be a new folder', testAsync(async function() {
     rd.rafterFile = {};
