@@ -323,14 +323,14 @@ describe('The Rafter Dashboard', () => {
   //   rd.app.httpClient = new HttpMock('rafterMessage');
   //   await rd.rafterVolumeService('create');
   // }));
-  it('retrieves the sub directory', testAsync(async function() {
-    rd.app.httpClient = new HttpMock();
-    document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div><div class="subDirContent"></div>';
-    rd.makeTreeWithSub = function() {};
-    rd.rafterFile = {path: '/myFolder', name: ' spacey S'};
-    rd.subDirJson = [];
-    await rd.rafterVolumeService('ls', rd.app, 'tester', rd.rafterFile, rd.makeTreeWithSub, null, null, null, null, null, null, rd.subDirJson);
-  }));
+  // it('retrieves the sub directory', testAsync(async function() {
+  //   rd.app.httpClient = new HttpMock();
+  //   document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div><div class="subDirContent"></div>';
+  //   rd.makeTreeWithSub = function() {};
+  //   rd.rafterFile = {path: '/myFolder', name: ' spacey S'};
+  //   rd.subDirJson = [];
+  //   await rd.rafterVolumeService('ls', rd.app, 'tester', rd.rafterFile, rd.makeTreeWithSub, null, null, null, null, null, null, rd.subDirJson);
+  // }));
   // it('creates a new file', testAsync(async function() {
   //   document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
   //   rd.app.httpClient = new HttpMock();
