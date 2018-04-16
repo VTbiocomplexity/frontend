@@ -107,7 +107,7 @@ export class Rafter {
     }
   }
 
-  displayTree(tv, nameArr, divId, showFile, hdj, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch) {
+  displayTree(tv, nameArr, divId, showFile, hdj, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess) {
     let filesInFolder = null; //these are the files that are inside of a subfolder of the home dir
     tv = new TreeView(nameArr, divId);
     let getTreeLeaves = document.getElementsByClassName('tree-leaf-content');
@@ -136,21 +136,21 @@ export class Rafter {
       //console.log(filesInFolder.getElementByClassName('tree-leaf'));
       foldersArr[j].domDiv.addEventListener('click', function(evt) {
         //console.log(evt);
-        showFile(foldersArr[j].id, hdj, raf, rvs, myApp, rui, mtws, tv, showFile, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch);
+        showFile(foldersArr[j].id, hdj, raf, rvs, myApp, rui, mtws, tv, showFile, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess);
       });
     }
     tv.on('select', function(evt) {
       console.log('i clicked the select event from tv');
       console.log(evt.data.id);
-      showFile(evt.data.id, hdj, raf, rvs, myApp, rui, null, null, null, null, subDirFiles, mnj, makeFilesClickable, vsFetch);
+      showFile(evt.data.id, hdj, raf, rvs, myApp, rui, null, null, null, null, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess);
     });
     if (filesInFolder === null) {
       return console.log('no files inside this subfolder');
     }
-    makeFilesClickable(filesInFolder, showFile, raf, rvs, myApp, rui, subDirFiles, mnj, makeFilesClickable, mtws, tv, displayTree, vsFetch);
+    makeFilesClickable(filesInFolder, showFile, raf, rvs, myApp, rui, subDirFiles, mnj, makeFilesClickable, mtws, tv, displayTree, vsFetch, vsFetchSuccess);
   }
 
-  makeFilesClickable(filesInFolder, showFile, raf, rvs, myApp, rui, subDirFiles, mnj, makeFilesClickable, mtws, tv, displayTree, vsFetch) {
+  makeFilesClickable(filesInFolder, showFile, raf, rvs, myApp, rui, subDirFiles, mnj, makeFilesClickable, mtws, tv, displayTree, vsFetch, vsFetchSuccess) {
     console.log('refactoring here');
     let fif = filesInFolder.getElementsByClassName('tree-leaf');
     let insideFolderDetails = document.getElementsByClassName('subDirContent')[0].innerHTML;
@@ -166,7 +166,7 @@ export class Rafter {
       fif[k].addEventListener('click', function(evt) {
         //console.log('I clicked the file inside sub folder');
         if (!fileIDJson.isContainer) {
-          showFile(fileIDJson.id, allData, raf, rvs, myApp, rui, mtws, tv, showFile, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch);
+          showFile(fileIDJson.id, allData, raf, rvs, myApp, rui, mtws, tv, showFile, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess);
         } else {
           console.log('got me a sub sub folder');
           document.getElementsByClassName('fileActions')[0].style.display = 'none';
@@ -179,7 +179,7 @@ export class Rafter {
           //tree view opens with sub sub folder content
           document.getElementsByClassName('displayFileContent')[0].innerHTML = ''; //this is incase someone clicked view button on a file
           document.getElementsByClassName('subDirContent')[0].innerHTML = '';
-          rvs('ls', myApp, rui, raf, mtws, null, null, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch);
+          rvs('ls', myApp, rui, raf, mtws, null, null, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess);
           // const dnldbt = document.getElementsByClassName('dnldButton')[0];
           // const dfcbt = document.getElementsByClassName('displayButton')[0];
           // dnldbt.style.display = 'none';
@@ -189,7 +189,7 @@ export class Rafter {
     }
   }
 
-  showFileDetails(id, hdj, raf, rvs, myApp, rui, mtws = null, tv, showFile, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch) {
+  showFileDetails(id, hdj, raf, rvs, myApp, rui, mtws = null, tv, showFile, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess) {
     document.getElementsByClassName('displayFileContent')[0].innerHTML = '';
     const dnldbt = document.getElementsByClassName('dnldButton')[0];
     const dfcbt = document.getElementsByClassName('displayButton')[0];
@@ -220,7 +220,7 @@ export class Rafter {
           document.getElementsByClassName('folderName')[0].innerHTML = hdj[i].name;
           raf.path = '/' + hdj[i].name;
           //console.log('line 86?');
-          return rvs('ls', myApp, rui, raf, mtws, hdj[i].id, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch);
+          return rvs('ls', myApp, rui, raf, mtws, hdj[i].id, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess);
         }
         //set Filename
         //console.log(hdj[i].state);
@@ -263,10 +263,10 @@ export class Rafter {
 
   makeTree(data) {
     let nameArr = this.makeNewJson(data);
-    this.displayTree(this.tv, nameArr, 'treeView', this.showFileDetails, this.homeDirJson, this.rafterFile, this.rafterVolumeService, this.app, this.rafterUserID, this.makeTreeWithSub, this.displayTree, this.subDirJson, this.makeNewJson, this.makeFilesClickable, this.vsFetch);
+    this.displayTree(this.tv, nameArr, 'treeView', this.showFileDetails, this.homeDirJson, this.rafterFile, this.rafterVolumeService, this.app, this.rafterUserID, this.makeTreeWithSub, this.displayTree, this.subDirJson, this.makeNewJson, this.makeFilesClickable, this.vsFetch, this.vsFetchSuccess);
   }
 
-  async makeTreeWithSub(data, hdjId, hdj, tv, showFile, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch) {
+  async makeTreeWithSub(data, hdjId, hdj, tv, showFile, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess) {
     let childArr = mnj(data);
     for (let i = 0; i < tv.data.length; i++) {
       if (hdjId === tv.data[i].id) {
@@ -274,7 +274,7 @@ export class Rafter {
       }
     }
     let newData = tv.data;
-    await displayTree(tv, newData, 'treeView', showFile, hdj, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch);
+    await displayTree(tv, newData, 'treeView', showFile, hdj, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess);
     tv.expandAll();
   }
 
@@ -312,10 +312,11 @@ export class Rafter {
     if (this.rafterFile.name === '' && cmd === 'create') {
       this.rafterFile.name = 'unspecified';
     }
-    this.vsFetch(this.app, this.rafterUserID, cmd, this.rafterFile, false);
+    //let result = null;
+    this.vsFetch(this.vsFetchSuccess, this.app, this.rafterUserID, cmd, this.rafterFile, false);
   }
 
-  vsFetch(myApp, rafterUserID, cmd, myRafterFile, fromSubDir, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch) {
+  vsFetch(vsFetchSuccess, myApp, rafterUserID, cmd, myRafterFile, fromSubDir, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch) {
     myApp.httpClient.fetch('/rafter/vs', {
       method: 'post',
       headers: {
@@ -328,26 +329,43 @@ export class Rafter {
     return response.json();
   })
   .then((data) => {
-    console.log(data);
+    //console.log(data);
     if (data.message !== null && data.message !== '' && data.message !== undefined) {
       return document.getElementsByClassName('userServiceError')[0].innerHTML = data.message;
+      //return null;
     }
     document.getElementsByClassName('userServiceError')[0].innerHTML = '';
     document.getElementsByClassName('showHideHD')[0].style.display = 'block';
     document.getElementsByClassName('rafterCheckHome')[0].style.display = 'none';
+    if (fromSubDir) {
+    //   console.log('line 350');
+    //   return data;
+
+      return vsFetchSuccess(data, vsFetchSuccess, myApp, rafterUserID, cmd, myRafterFile, fromSubDir, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch);
+    }
     if (cmd === 'ls') {
-      if (!fromSubDir) {
-        this.homeDirJson = data;
-        this.makeTree(data);
-      } else {
-        document.getElementsByClassName('subDirContent')[0].innerHTML = JSON.stringify(data);
-        subDirFiles.push.apply(subDirFiles, data);
-        mtws(data, hdjId, hdj, tv, showFile, myRafterFile, rvs, myApp, rafterUserID, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch);
-      }
+      this.homeDirJson = data;
+      this.makeTree(data);
     } else {
-      this.rafterFile = {name: '', createType: 'file', path: '', fileType: 'unspecified', rfid: ''};
+      myRafterFile = {name: '', createType: 'file', path: '', fileType: 'unspecified', rfid: ''};
       this.navHomeDir();
     }
+    // document.getElementsByClassName('userServiceError')[0].innerHTML = '';
+    // document.getElementsByClassName('showHideHD')[0].style.display = 'block';
+    // document.getElementsByClassName('rafterCheckHome')[0].style.display = 'none';
+    // if (cmd === 'ls') {
+    //   if (!fromSubDir) {
+    //     this.homeDirJson = data;
+    //     this.makeTree(data);
+    //   } else {
+    //     document.getElementsByClassName('subDirContent')[0].innerHTML = JSON.stringify(data);
+    //     subDirFiles.push.apply(subDirFiles, data);
+    //     mtws(data, hdjId, hdj, tv, showFile, myRafterFile, rvs, myApp, rafterUserID, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch);
+    //   }
+    // } else {
+    //   this.rafterFile = {name: '', createType: 'file', path: '', fileType: 'unspecified', rfid: ''};
+    //   this.navHomeDir();
+    // }
   }).catch(function (err) {
     console.log(err);
     /* istanbul ignore if */
@@ -361,14 +379,24 @@ export class Rafter {
   });
   }
 
-  rafterVolumeService(cmd, myApp, rafterUserID, myRafterFile, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch) {
+  vsFetchSuccess(data, vsFetchSuccess, myApp, rafterUserID, cmd, myRafterFile, fromSubDir, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch) {
+    document.getElementsByClassName('subDirContent')[0].innerHTML = JSON.stringify(data);
+    subDirFiles.push.apply(subDirFiles, data);
+    mtws(data, hdjId, hdj, tv, showFile, myRafterFile, rvs, myApp, rafterUserID, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess);
+
+      // console.log(result);
+      // if (result !== null) {
+    // }
+  }
+
+  rafterVolumeService(cmd, myApp, rafterUserID, myRafterFile, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess) {
     if (myRafterFile.rfid !== '') {
       console.log('new request by id detected');
       if (process.env.NODE_ENV !== 'test') {
         return window.location.reload();
       }
     }
-    vsFetch(myApp, rafterUserID, cmd, myRafterFile, true, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch);
+    vsFetch(vsFetchSuccess, myApp, rafterUserID, cmd, myRafterFile, true, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch);
   }
 
   fileDelete() {
