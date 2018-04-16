@@ -288,7 +288,6 @@ export class Rafter {
   }
 
   async navHomeDir() {
-    //console.log('you clicked me');
     let hdc = JSON.stringify(this.homeDirJson);
     this.rafterFile.path = '';
     document.getElementsByClassName('folderName')[0].innerHTML = 'home/' + this.rafterUserID;
@@ -300,10 +299,10 @@ export class Rafter {
     document.getElementsByClassName('createNew')[0].style.display = 'block';
     document.getElementsByClassName('isHomeDir')[0].style.display = 'block';
     document.getElementsByClassName('isHomeDir')[1].style.display = 'block';
-    this.fetchVS('ls');
+    await this.fetchVS('ls');
   }
 
-  fetchVS(cmd) {
+  async fetchVS(cmd) {
     if (this.rafterFile.createType !== 'folder') {
       this.rafterFile.createType = 'file';
     }
@@ -312,12 +311,11 @@ export class Rafter {
     if (this.rafterFile.name === '' && cmd === 'create') {
       this.rafterFile.name = 'unspecified';
     }
-    //let result = null;
-    this.vsFetch(this.vsFetchSuccess, this.app, this.rafterUserID, cmd, this.rafterFile, false);
+    await this.vsFetch(this.vsFetchSuccess, this.app, this.rafterUserID, cmd, this.rafterFile, false);
   }
 
-  vsFetch(vsFetchSuccess, myApp, rafterUserID, cmd, myRafterFile, fromSubDir, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch) {
-    myApp.httpClient.fetch('/rafter/vs', {
+  async vsFetch(vsFetchSuccess, myApp, rafterUserID, cmd, myRafterFile, fromSubDir, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch) {
+    await myApp.httpClient.fetch('/rafter/vs', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({token: sessionStorage.getItem('rafterToken'), userName: rafterUserID, command: cmd, rafterFile: myRafterFile})
@@ -353,10 +351,6 @@ export class Rafter {
     document.getElementsByClassName('subDirContent')[0].innerHTML = JSON.stringify(data);
     subDirFiles.push.apply(subDirFiles, data);
     mtws(data, hdjId, hdj, tv, showFile, myRafterFile, rvs, myApp, rafterUserID, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess);
-
-      // console.log(result);
-      // if (result !== null) {
-    // }
   }
 
   rafterVolumeService(cmd, myApp, rafterUserID, myRafterFile, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess) {
