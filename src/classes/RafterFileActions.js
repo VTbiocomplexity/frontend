@@ -80,4 +80,28 @@ export class RafterFileActions {
       submitButton.setAttribute('disabled', '');
     }
   }
+  fileTypeValidate() {
+    let nub = document.getElementById('uploadButton');
+    nub.style.display = 'none';
+    //console.log('i am validating');
+    //console.log(rafterFilePath.files);
+    if (rafterFilePath.files.length === 0) {
+      alert('no file was selected');
+      return false;
+    }
+    for (let i = 0; i < rafterFilePath.files.length; i++) {
+      let oInput = rafterFilePath.files[i];
+      console.log(oInput.type);
+    // the type is determined automatically during the creation of the Blob.
+    // this value cannot be controlled by developer, hence cannot test it.
+    /* istanbul ignore if*/
+      if (oInput.type === 'text/plain' || oInput.type === 'text/html' || oInput.type === 'application/json') {
+      //console.log('type is a plain text file');
+        nub.style.display = 'block';
+        return true;
+      }
+      alert('Sorry, ' + oInput.type + ' is an invalid file type.');
+      return false;
+    }
+  }
 }
