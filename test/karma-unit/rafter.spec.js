@@ -292,12 +292,12 @@ describe('The Rafter Dashboard', () => {
   it('Validates the login form', testAsync(async function() {
     document.body.innerHTML = '<div><button disabled class="rafterLoginButton"></button></div>';
     rd.rafter = {id: 'yo', password: 'yo'};
-    await rd.validate();
+    await rd.rafterFileActions.validateLogin(rd.rafter);
     let buttonDisabled = document.getElementsByClassName('rafterLoginButton')[0].getAttribute('disabled');
     console.log(buttonDisabled);
     expect(buttonDisabled).toBe(null);
     rd.rafter = {id: '', password: 'yo'};
-    await rd.validate();
+    await rd.rafterFileActions.validateLogin(rd.rafter);
     buttonDisabled = document.getElementsByClassName('rafterLoginButton')[0].getAttribute('disabled');
     console.log(buttonDisabled);
     expect(buttonDisabled).toBe('');

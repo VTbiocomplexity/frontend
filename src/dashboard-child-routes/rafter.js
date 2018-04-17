@@ -512,14 +512,14 @@ export class Rafter {
     }
   }
 
-  validate() {
-    let submitButton = document.getElementsByClassName('rafterLoginButton')[0];
-    if (this.rafter.id !== '' && this.rafter.secret !== '' && this.rafter.appName !== '') {
-      submitButton.removeAttribute('disabled');
-    } else {
-      submitButton.setAttribute('disabled', '');
-    }
-  }
+  // validate() {
+  //   let submitButton = document.getElementsByClassName('rafterLoginButton')[0];
+  //   if (this.rafter.id !== '' && this.rafter.secret !== '' && this.rafter.appName !== '') {
+  //     submitButton.removeAttribute('disabled');
+  //   } else {
+  //     submitButton.setAttribute('disabled', '');
+  //   }
+  // }
 
   async attached() {
     const cili = this.checkIfLoggedIn;

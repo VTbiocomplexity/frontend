@@ -72,4 +72,12 @@ export class RafterFileActions {
       rmfb.removeAttribute('disabled');
     }
   }
+  validateLogin(rlf) {
+    let submitButton = document.getElementsByClassName('rafterLoginButton')[0];
+    if (rlf.id !== '' && rlf.secret !== '' && rlf.appName !== '') {
+      submitButton.removeAttribute('disabled');
+    } else {
+      submitButton.setAttribute('disabled', '');
+    }
+  }
 }
