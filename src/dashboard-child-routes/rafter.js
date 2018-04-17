@@ -315,7 +315,7 @@ export class Rafter {
   }
 
   async vsFetch(vsFetchSuccess, myApp, rafterUserID, cmd, myRafterFile, fromSubDir, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch) {
-    await myApp.httpClient.fetch('/rafter/vs', {
+    return await myApp.httpClient.fetch('/rafter/vs', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({token: sessionStorage.getItem('rafterToken'), userName: rafterUserID, command: cmd, rafterFile: myRafterFile})
@@ -338,6 +338,8 @@ export class Rafter {
       this.navHomeDir();
     }
   }).catch(function (err) {
+    console.log('this is the error');
+    console.log(err);
     if (err.status === 500) {
       /* istanbul ignore if */
       if (process.env.NODE_ENV !== 'test') {
@@ -356,6 +358,7 @@ export class Rafter {
   rafterVolumeService(cmd, myApp, rafterUserID, myRafterFile, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess) {
     if (myRafterFile.rfid !== '') {
       console.log('new request by id detected');
+      /* istanbul ignore if */
       if (process.env.NODE_ENV !== 'test') {
         return window.location.reload();
       }

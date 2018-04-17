@@ -86,7 +86,7 @@ export class RafterUser {
     })
     .then((response) => response.json())
     .then((data) => {
-      console.log('am i on line 71?');
+      //console.log('am i on line 71?');
       console.log(data);
       console.log(typeof data);
       console.log(data.includes('error'));
