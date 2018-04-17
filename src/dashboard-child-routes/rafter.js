@@ -4,7 +4,7 @@ import { RafterUser } from '../classes/RafterUser';
 import { RafterFileActions } from '../classes/RafterFileActions';
 const jwtDecode = require('jwt-decode');
 const TreeView = require('js-treeview');
-const FileSaver = require('file-saver');
+//const FileSaver = require('file-saver');
 @inject(App, FileReader)
 export class Rafter {
   constructor(app, reader) {
@@ -386,20 +386,20 @@ export class Rafter {
   //   });
   // }
 
-  fileDownload() {
-    let fileDetails = document.getElementsByClassName('homeDirContent')[0].innerHTML;
-    console.log(fileDetails);
-    let fdJson = JSON.parse(fileDetails);
-    this.rafterFileID = fdJson.id;
-    this.app.httpClient.fetch('/rafter/vs', { method: 'post', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ command: 'get', fileID: this.rafterFileID})
-    }).then((response) => response.blob()).then((blob) => {
-      console.log(blob);
-      FileSaver.saveAs(blob, fdJson.name);
-    }).catch(function (err) {
-      console.log(err);
-    });
-  }
+  // fileDownload() {
+  //   let fileDetails = document.getElementsByClassName('homeDirContent')[0].innerHTML;
+  //   console.log(fileDetails);
+  //   let fdJson = JSON.parse(fileDetails);
+  //   this.rafterFileID = fdJson.id;
+  //   this.app.httpClient.fetch('/rafter/vs', { method: 'post', headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({ command: 'get', fileID: this.rafterFileID})
+  //   }).then((response) => response.blob()).then((blob) => {
+  //     console.log(blob);
+  //     FileSaver.saveAs(blob, fdJson.name);
+  //   }).catch(function (err) {
+  //     console.log(err);
+  //   });
+  // }
 
   // fileDisplay() {
   //   let fileDetails = document.getElementsByClassName('homeDirContent')[0].innerHTML;
