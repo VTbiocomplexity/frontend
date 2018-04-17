@@ -46,7 +46,11 @@ describe('The Rafter Dashboard', () => {
     rd5 = new Rafter(app5);
     rd5.app.appState = new AppStateStub();
     rd5.activate();
-    document.body.innerHTML = '<div class="rafterCheckHome"></div><div class="rafterLogin aurelia-hide" show.bind=""></div><input id="appName"></input><input id="appName2"></input><div class="rafterAddApp"></div><div class="appSelector"></div><div class="appSelector"></div><div class="displayFileContent"></div><div class="homeDirContent">{"state":"analyzing","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"a185e810-af88-11e7-ab0c-717499928918","creation_date":"2017-10-12T20:05:01.841Z","name":"someName"}</div>';
+    document.body.innerHTML = '<div class="rafterCheckHome"></div><div class="rafterLogin aurelia-hide" show.bind=""></div><input id="appName"></input><input id="appName2"></input><div class="rafterAddApp"></div><div class="appSelector"></div><div class="appSelector"></div><div class="displayFileContent"></div>' +
+    '<div class="homeDirContent">{"state":"analyzing","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"a185e810-af88-11e7-ab0c-717499928918","creation_date":"2017-10-12T20:05:01.841Z","name":"someName"}</div>' +
+    '<button class="dnldButton"></button><button class="displayButton"></button><button class="deleteButton"></button><button class="dnldButton"></button><div class="fileDetailsTitle"></div><div class="rafterLogout"></div>' +
+    '<div class="fileDld"></div><div class="userServiceError"></div><button class="rafterCheckHome"></button><div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"><p class="folderName"></p></div>' +
+    '<p class="fileDetailsTitle"><div class="fileActions"></div></p><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div><div class="subDirContent"></div>';
   });
 
   it('should activate', testAsync(async function() {
@@ -325,10 +329,12 @@ describe('The Rafter Dashboard', () => {
     expect(document.getElementsByClassName('rafterMakeFileButton')[0].getAttribute('disabled')).toBe(null);
   }));
 
-  // it('retrieves the home directory', testAsync(async function() {
-  //   document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
-  //   await rd.rafterVolumeService('ls');
-  // }));
+  it('requests the contents of a subfolder but not a sub sub folder', testAsync(async function() {
+    spyOn(rd, 'vsFetch').and.callThrough();
+    rd.rafterFile.rfid = '';
+    await rd.rafterVolumeService('ls', null, null, rd.rafterFile, null, null, null, null, null, null, null, null, null, null, rd.vsFetch);
+    expect(rd.vsFetch).toHaveBeenCalled();
+  }));
 
   it('hangles a login to rafter button click', testAsync(async function() {
     document.body.innerHTML = '<div class="userServiceError">error</div><button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
@@ -377,13 +383,6 @@ describe('The Rafter Dashboard', () => {
   //   document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
   //   rd.app.httpClient = new HttpMock();
   //   await rd.rafterVolumeService('bogas');
-  // }));
-
-  // it('catches error on create a new file', testAsync(async function() {
-  //   document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
-  //   rd.app.httpClient = new HttpMock('rafterCreateError');
-  //   await rd.rafterVolumeService('create');
-  //   //expect(document.getElementsByClassName('userServiceError')[0].innerHTML).not.toBe('&nbsp;');
   // }));
 
   it('sets the create to be a new folder', testAsync(async function() {
@@ -501,11 +500,72 @@ describe('The Rafter Dashboard', () => {
   });
   it('displays the file details that are inside of the home directory', (done) => {
     rd.homeDirJson = {name: 'howdy'};
-    document.body.innerHTML = '<button class="dnldButton"></button><button class="displayButton"></button><button class="deleteButton"></button><button class="dnldButton"></button><div class="fileDetailsTitle"></div><div class="rafterLogout"></div><div class="fileDld"></div><div class="userServiceError"></div><button class="rafterCheckHome"></button><div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"><p class="folderName"></p></div><p class="fileDetailsTitle"></p><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div><div class="subDirContent"></div>';
     rd.navHomeDir();
     expect(document.getElementsByClassName('subDirContent')[0].innerHTML).toBe(JSON.stringify(rd.homeDirJson));
     done();
   });
+  it('does not default to create file when folder was selected and set the file name to unspecified when blank', (done) => {
+    rd.rafterFile.createType = 'folder';
+    rd.rafterFile.name = '';
+    rd.fetchVS('create');
+    expect(rd.rafterFile.createType).toBe('folder');
+    expect(rd.rafterFile.name).toBe('unspecified');
+    done();
+  });
+  it('displays error messages from volume service commands', testAsync(async function() {
+    let data = {message: 'failed'};
+    let myFetch = function() {
+      return Promise.resolve({
+        Headers: this.headers,
+        json: () => Promise.resolve(data)
+      });
+    };
+    let myApp = {httpClient: {fetch: myFetch}};
+    await rd.vsFetch(null, myApp, null, 'create');
+    expect(document.getElementsByClassName('userServiceError')[0].innerHTML).not.toBe('');
+  }));
+  it('retrieves the contents of a sub directory', testAsync(async function() {
+    let data = {files: ['howdy']};
+    let myFetch = function() {
+      return Promise.resolve({
+        Headers: this.headers,
+        json: () => Promise.resolve(data)
+      });
+    };
+    let myApp = {httpClient: {fetch: myFetch}};
+    spyOn(rd, 'vsFetchSuccess').and.callThrough();
+    await rd.vsFetch(rd.vsFetchSuccess, myApp, null, 'ls', null, true);
+    expect(rd.vsFetchSuccess).toHaveBeenCalled();
+  }));
+  it('makes a tree with subdirectories after receiving the contents of the folder', testAsync(async function() {
+    let data = {files: ['howdy']};
+    // let myFetch = function() {
+    //   return Promise.resolve({
+    //     Headers: this.headers,
+    //     json: () => Promise.resolve(data)
+    //   });
+    // };
+    // let myApp = {httpClient: {fetch: myFetch}};
+    spyOn(rd, 'makeTreeWithSub').and.callThrough();
+    await rd.vsFetchSuccess(data, rd.vsFetchSuccess, null, null, null, null, null, rd.makeTreeWithSub, null, null, null, null, null, null, []);
+    expect(rd.makeTreeWithSub).toHaveBeenCalled();
+  }));
+  it('catches error on create a new file', testAsync(async function() {
+    let serverStatus = 500;
+    let myFetch = function() {
+      return Promise.resolve({
+        Headers: this.headers,
+        json: () => Promise.reject({error: 'fail', status: serverStatus})
+      });
+    };
+    let myApp = {httpClient: {fetch: myFetch}};
+    await rd.vsFetch(null, myApp, null, 'create', null, false);
+    serverStatus = 400;
+    await rd.vsFetch(null, myApp, null, 'create', null, false);
+    // console.log('did I catch an error?');
+    // console.log(catchErr);
+    //expect(document.getElementsByClassName('userServiceError')[0].innerHTML).not.toBe('&nbsp;');
+  }));
   it('displays the metadata of an empty file that is inside a sub folder', (done) => {
     rd.homeDirJson = {name: 'howdy'};
     rd.subDirJson = [{state: 'empty', name: 'howdy', id: '123'}];

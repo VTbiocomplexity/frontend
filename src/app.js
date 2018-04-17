@@ -36,7 +36,7 @@ export class App {
     this.appState = new AppState(this.httpClient);
     this.userAccess = new UserAccess(this.appState);
     await this.checkUser();
-    console.log('hello!');
+    //console.log('hello!');
   }
 
   checkIfLoggedIn() {
