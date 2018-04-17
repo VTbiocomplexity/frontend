@@ -346,14 +346,17 @@ describe('The Rafter Dashboard', () => {
     rd.user = {_id: 'yo'};
     await rd.handleRafterLogin();
   }));
-  it('deletes a new file', testAsync(async function() {
+  it('deletes a file', testAsync(async function() {
     document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent">{"id":"123"}</div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
     rd.app.httpClient = new HttpMock();
-    await rd.fileDelete();
+    rd.rafterFileActions = new RafterFileActions(rd.app.httpClient);
+    await rd.rafterFileActions.fileDelete();
     rd.app.httpClient = new HttpMock('failDelete');
-    await rd.fileDelete();
+    rd.rafterFileActions = new RafterFileActions(rd.app.httpClient);
+    await rd.rafterFileActions.fileDelete();
     rd.app.httpClient = new HttpMock('rafterError');
-    await rd.fileDelete();
+    rd.rafterFileActions = new RafterFileActions(rd.app.httpClient);
+    await rd.rafterFileActions.fileDelete();
   }));
   it('sets the create to be a new folder', testAsync(async function() {
     rd.rafterFile = {};
