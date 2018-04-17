@@ -12,12 +12,12 @@ export class RafterFileActions {
     this.httpClient.fetch('/rafter/vs', { method: 'post', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ command: 'get', fileID: this.rafterFileID})
     }).then((response) => response.blob()).then((blob) => {
-      console.log(blob);
+      //console.log(blob);
       async function loaded (evt) {
         //console.log('in function loaded');
         //console.log(evt.target);
         const fileString = evt.target.result;
-        console.log(fileString);
+        //console.log(fileString);
         document.getElementsByClassName('displayFileContent')[0].innerHTML = fileString;
       }
   /* istanbul ignore next */
@@ -28,6 +28,23 @@ export class RafterFileActions {
       this.reader.onerror = errorHandler;
       this.reader.readAsText(blob);
   //console.log(fileContents);
+    }).catch(function (err) {
+      console.log(err);
+    });
+  }
+  fileDelete() {
+    let fileDetails = document.getElementsByClassName('homeDirContent')[0].innerHTML;
+    let fdJson = JSON.parse(fileDetails);
+    this.rafterFileID = fdJson.id;
+    this.httpClient.fetch('/rafter/vs', { method: 'post', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({command: 'remove', fileID: this.rafterFileID})
+    }).then((response) => response.json()).then((data) => {
+      if (data) {
+    /* istanbul ignore if */
+        if (process.env.NODE_ENV !== 'test') {
+          window.location.reload();
+        }
+      }
     }).catch(function (err) {
       console.log(err);
     });

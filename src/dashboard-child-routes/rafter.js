@@ -368,23 +368,23 @@ export class Rafter {
     vsFetch(vsFetchSuccess, myApp, rafterUserID, cmd, myRafterFile, true, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch);
   }
 
-  fileDelete() {
-    let fileDetails = document.getElementsByClassName('homeDirContent')[0].innerHTML;
-    let fdJson = JSON.parse(fileDetails);
-    this.rafterFileID = fdJson.id;
-    this.app.httpClient.fetch('/rafter/vs', { method: 'post', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({command: 'remove', fileID: this.rafterFileID})
-    }).then((response) => response.json()).then((data) => {
-      if (data) {
-      /* istanbul ignore if */
-        if (process.env.NODE_ENV !== 'test') {
-          window.location.reload();
-        }
-      }
-    }).catch(function (err) {
-      console.log(err);
-    });
-  }
+  // fileDelete() {
+  //   let fileDetails = document.getElementsByClassName('homeDirContent')[0].innerHTML;
+  //   let fdJson = JSON.parse(fileDetails);
+  //   this.rafterFileID = fdJson.id;
+  //   this.app.httpClient.fetch('/rafter/vs', { method: 'post', headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({command: 'remove', fileID: this.rafterFileID})
+  //   }).then((response) => response.json()).then((data) => {
+  //     if (data) {
+  //     /* istanbul ignore if */
+  //       if (process.env.NODE_ENV !== 'test') {
+  //         window.location.reload();
+  //       }
+  //     }
+  //   }).catch(function (err) {
+  //     console.log(err);
+  //   });
+  // }
 
   fileDownload() {
     let fileDetails = document.getElementsByClassName('homeDirContent')[0].innerHTML;
