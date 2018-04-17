@@ -1,6 +1,7 @@
 import {inject} from 'aurelia-framework';
 import {App} from '../app';
 import { RafterUser } from '../classes/RafterUser';
+//import { RafterFile } from '../classes/RafterFile';
 const jwtDecode = require('jwt-decode');
 const TreeView = require('js-treeview');
 const FileSaver = require('file-saver');
@@ -18,6 +19,7 @@ export class Rafter {
     this.subDirJson = [];
     this.rafterFileID = '';
     this.appNames = [];
+    //this.rafterFile = new RafterFile();
   }
   fileTypes = ['intersim-im-11-1_runoutput', 'intersim-im-11-1_runlog', 'GraphABM_rank', 'json', 'text', 'jsonh+fasta', 'png', 'jpg', 'pdf', 'xml', 'fasta'];
 

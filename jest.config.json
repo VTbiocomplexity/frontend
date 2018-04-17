@@ -3,7 +3,7 @@
   "testPathIgnorePatterns": ["/node_modules/", "/test/karma-unit/", "/test/react-unit/"],
   "coverageDirectory": "coverage/jest",
   "collectCoverageFrom" : ["src/classes/*.{js,jsx}","src/commons/*.{js,jsx}", "!**/node_modules/**", "!src/classes/AppState.js", "!src/classes/UserAccess.js",
-  "!src/classes/RafterUser.js"],
+  "!src/classes/RafterUser.js", "!src/classes/RafterFile.js"],
   "collectCoverage": true,
   "testEnvironment": "jest-environment-jsdom"
 }

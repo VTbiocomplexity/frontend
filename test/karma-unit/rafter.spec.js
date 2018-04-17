@@ -50,7 +50,7 @@ describe('The Rafter Dashboard', () => {
     '<div class="homeDirContent">{"state":"analyzing","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"a185e810-af88-11e7-ab0c-717499928918","creation_date":"2017-10-12T20:05:01.841Z","name":"someName"}</div>' +
     '<button class="dnldButton"></button><button class="displayButton"></button><button class="deleteButton"></button><button class="dnldButton"></button><div class="fileDetailsTitle"></div><div class="rafterLogout"></div>' +
     '<div class="fileDld"></div><div class="userServiceError"></div><button class="rafterCheckHome"></button><div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"><p class="folderName"></p></div>' +
-    '<p class="fileDetailsTitle"><div class="fileActions"></div></p><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div><div class="subDirContent"></div>';
+    '<p class="fileDetailsTitle"><div class="fileActions"></div></p><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div><div class="subDirContent"></div><div class="rafterLogout" style="display:block"></div><div class="showHideHD" style="display:block"></div>';
   });
 
   it('should activate', testAsync(async function() {
@@ -342,32 +342,6 @@ describe('The Rafter Dashboard', () => {
     rd.user = {_id: 'yo'};
     await rd.handleRafterLogin();
   }));
-
-  // it('tries to retrieves the home directory, but gets an error', testAsync(async function() {
-  //   document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
-  //   rd.app.httpClient = new HttpMock('rafterError');
-  //   await rd.rafterVolumeService('ls');
-  // }));
-  // it('tries to retrieves the home directory, but receives a message of error', testAsync(async function() {
-  //   document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
-  //   rd.app.httpClient = new HttpMock('rafterMessage');
-  //   await rd.rafterVolumeService('create');
-  // }));
-  // it('retrieves the sub directory', testAsync(async function() {
-  //   rd.app.httpClient = new HttpMock();
-  //   document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div><div class="subDirContent"></div>';
-  //   rd.makeTreeWithSub = function() {};
-  //   rd.rafterFile = {path: '/myFolder', name: ' spacey S'};
-  //   rd.subDirJson = [];
-  //   await rd.rafterVolumeService('ls', rd.app, 'tester', rd.rafterFile, rd.makeTreeWithSub, null, null, null, null, null, null, rd.subDirJson);
-  // }));
-  // it('creates a new file', testAsync(async function() {
-  //   document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
-  //   rd.app.httpClient = new HttpMock();
-  //   await rd.rafterVolumeService('create');
-  //   rd.rafterFile = {name: 'yo', createType: 'folder', path: ''};
-  //   await rd.rafterVolumeService('create');
-  // }));
   it('deletes a new file', testAsync(async function() {
     document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent">{"id":"123"}</div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
     rd.app.httpClient = new HttpMock();
@@ -376,15 +350,7 @@ describe('The Rafter Dashboard', () => {
     await rd.fileDelete();
     rd.app.httpClient = new HttpMock('rafterError');
     await rd.fileDelete();
-    // rd.rafterFile = {name: 'yo', createType: 'folder', path: ''};
-    // await rd.rafterVolumeService('create');
   }));
-  // it('does not accept a bogus command', testAsync(async function() {
-  //   document.body.innerHTML = '<button class="rafterCheckHome"></button><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div>';
-  //   rd.app.httpClient = new HttpMock();
-  //   await rd.rafterVolumeService('bogas');
-  // }));
-
   it('sets the create to be a new folder', testAsync(async function() {
     rd.rafterFile = {};
     document.body.innerHTML = '<div class="fileTypeSelector"></div><button class="displayButton"></button><div class="displayFileContent"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div><input id="fileType1" type="radio"><input id="fileType2" type="radio" checked>';
@@ -688,17 +654,21 @@ describe('The Rafter Dashboard', () => {
     done();
   });
   it('reloads the page if sessionStorage was deleted', testAsync(async function() {
-    document.body.innerHTML = '<div class="rafterLogout" style="display:block"></div>';
-    rd.rafterUser = new RafterUser();
+    //document.body.innerHTML += '<div class="rafterLogout" style="display:block"></div>';
+    document.getElementsByClassName('rafterLogout')[0].style.displays = 'block';
+    rd.rafterUser = new RafterUser(rd.app.httpClient);
     let cep = function() {return false;};
     let rlo = function() {sessionStorage.removeItem('rafterToken');};
     let sli = true;
     await rd.checkIfLoggedIn(cep, rlo, sli, rd.rafterUser.checkIfPageReload);
-    document.body.innerHTML = '<div class="rafterLogout" style="display:none"></div>';
+    document.getElementsByClassName('rafterLogout')[0].style.displays = 'none';
+    //document.body.innerHTML = '<div class="rafterLogout" style="display:none"></div>';
     await rd.checkIfLoggedIn(cep, rlo, sli, rd.rafterUser.checkIfPageReload);
-    document.body.innerHTML = '';
+    //document.body.innerHTML = '';
     await rd.checkIfLoggedIn(cep, rlo, sli, rd.rafterUser.checkIfPageReload);
-    //expect(document.getElementsByClassName('rafterLogout')[0].style.display).toBe('none');
+    document.getElementsByClassName('showHideHD')[0].style.display = 'block';
+    await rd.rafterUser.checkIfPageReload();
+    //expect(document.getElementsByClassName('showHideHD')[0].style.display).toBe('none');
   }));
 
   it('continues to check for expired token when there is a user defined', (done) => {
