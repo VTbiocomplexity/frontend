@@ -1,7 +1,7 @@
 import {inject} from 'aurelia-framework';
 import {App} from '../app';
 import { RafterUser } from '../classes/RafterUser';
-//import { RafterFile } from '../classes/RafterFile';
+import { RafterFileActions } from '../classes/RafterFileActions';
 const jwtDecode = require('jwt-decode');
 const TreeView = require('js-treeview');
 const FileSaver = require('file-saver');
@@ -19,7 +19,6 @@ export class Rafter {
     this.subDirJson = [];
     this.rafterFileID = '';
     this.appNames = [];
-    //this.rafterFile = new RafterFile();
   }
   fileTypes = ['intersim-im-11-1_runoutput', 'intersim-im-11-1_runlog', 'GraphABM_rank', 'json', 'text', 'jsonh+fasta', 'png', 'jpg', 'pdf', 'xml', 'fasta'];
 
@@ -27,6 +26,7 @@ export class Rafter {
     this.uid = this.app.auth.getTokenPayload().sub;
     this.user = await this.app.appState.getUser(this.uid);
     this.rafterUser = new RafterUser(this.app.httpClient);
+    this.rafterFileActions = new RafterFileActions(this.app.httpClient);
     const cep = this.rafterUser.checkExpired;
     const rlo = this.rafterUser.rafterLogout;
     const cipr = this.rafterUser.checkIfPageReload;
@@ -401,33 +401,33 @@ export class Rafter {
     });
   }
 
-  fileDisplay() {
-    let fileDetails = document.getElementsByClassName('homeDirContent')[0].innerHTML;
-    let fdJson = JSON.parse(fileDetails);
-    this.rafterFileID = fdJson.id;
-    this.app.httpClient.fetch('/rafter/vs', { method: 'post', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ command: 'get', fileID: this.rafterFileID})
-    }).then((response) => response.blob()).then((blob) => {
-      console.log(blob);
-      async function loaded (evt) {
-        console.log('in function loaded');
-        console.log(evt.target);
-        const fileString = evt.target.result;
-        console.log(fileString);
-        document.getElementsByClassName('displayFileContent')[0].innerHTML = fileString;
-      }
-  /* istanbul ignore next */
-      function errorHandler(evt) {
-        alert('The file could not be read');
-      }
-      this.reader.onload = loaded;
-      this.reader.onerror = errorHandler;
-      this.reader.readAsText(blob);
-  //console.log(fileContents);
-    }).catch(function (err) {
-      console.log(err);
-    });
-  }
+  // fileDisplay() {
+  //   let fileDetails = document.getElementsByClassName('homeDirContent')[0].innerHTML;
+  //   let fdJson = JSON.parse(fileDetails);
+  //   this.rafterFileID = fdJson.id;
+  //   this.app.httpClient.fetch('/rafter/vs', { method: 'post', headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({ command: 'get', fileID: this.rafterFileID})
+  //   }).then((response) => response.blob()).then((blob) => {
+  //     console.log(blob);
+  //     async function loaded (evt) {
+  //       console.log('in function loaded');
+  //       console.log(evt.target);
+  //       const fileString = evt.target.result;
+  //       console.log(fileString);
+  //       document.getElementsByClassName('displayFileContent')[0].innerHTML = fileString;
+  //     }
+  // /* istanbul ignore next */
+  //     function errorHandler(evt) {
+  //       alert('The file could not be read');
+  //     }
+  //     this.reader.onload = loaded;
+  //     this.reader.onerror = errorHandler;
+  //     this.reader.readAsText(blob);
+  // //console.log(fileContents);
+  //   }).catch(function (err) {
+  //     console.log(err);
+  //   });
+  // }
 
   rafterFileValidate() {
     let nub = document.getElementById('uploadButton');
