@@ -359,72 +359,11 @@ export class Rafter {
     vsFetch(vsFetchSuccess, myApp, rafterUserID, cmd, myRafterFile, true, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch);
   }
 
-  // fileDelete() {
-  //   let fileDetails = document.getElementsByClassName('homeDirContent')[0].innerHTML;
-  //   let fdJson = JSON.parse(fileDetails);
-  //   this.rafterFileID = fdJson.id;
-  //   this.app.httpClient.fetch('/rafter/vs', { method: 'post', headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify({command: 'remove', fileID: this.rafterFileID})
-  //   }).then((response) => response.json()).then((data) => {
-  //     if (data) {
-  //     /* istanbul ignore if */
-  //       if (process.env.NODE_ENV !== 'test') {
-  //         window.location.reload();
-  //       }
-  //     }
-  //   }).catch(function (err) {
-  //     console.log(err);
-  //   });
-  // }
-
-  // fileDownload() {
-  //   let fileDetails = document.getElementsByClassName('homeDirContent')[0].innerHTML;
-  //   console.log(fileDetails);
-  //   let fdJson = JSON.parse(fileDetails);
-  //   this.rafterFileID = fdJson.id;
-  //   this.app.httpClient.fetch('/rafter/vs', { method: 'post', headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify({ command: 'get', fileID: this.rafterFileID})
-  //   }).then((response) => response.blob()).then((blob) => {
-  //     console.log(blob);
-  //     FileSaver.saveAs(blob, fdJson.name);
-  //   }).catch(function (err) {
-  //     console.log(err);
-  //   });
-  // }
-
-  // fileDisplay() {
-  //   let fileDetails = document.getElementsByClassName('homeDirContent')[0].innerHTML;
-  //   let fdJson = JSON.parse(fileDetails);
-  //   this.rafterFileID = fdJson.id;
-  //   this.app.httpClient.fetch('/rafter/vs', { method: 'post', headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify({ command: 'get', fileID: this.rafterFileID})
-  //   }).then((response) => response.blob()).then((blob) => {
-  //     console.log(blob);
-  //     async function loaded (evt) {
-  //       console.log('in function loaded');
-  //       console.log(evt.target);
-  //       const fileString = evt.target.result;
-  //       console.log(fileString);
-  //       document.getElementsByClassName('displayFileContent')[0].innerHTML = fileString;
-  //     }
-  // /* istanbul ignore next */
-  //     function errorHandler(evt) {
-  //       alert('The file could not be read');
-  //     }
-  //     this.reader.onload = loaded;
-  //     this.reader.onerror = errorHandler;
-  //     this.reader.readAsText(blob);
-  // //console.log(fileContents);
-  //   }).catch(function (err) {
-  //     console.log(err);
-  //   });
-  // }
-
   rafterFileValidate() {
     let nub = document.getElementById('uploadButton');
     nub.style.display = 'none';
-    console.log('i am validating');
-    console.log(rafterFilePath.files);
+    //console.log('i am validating');
+    //console.log(rafterFilePath.files);
     if (rafterFilePath.files.length === 0) {
       alert('no file was selected');
       return false;
@@ -449,6 +388,7 @@ export class Rafter {
     const httpClient = this.app.httpClient;
     const rui = this.rafterUserID;
     const fileName = rafterFilePath.files[0].name;
+    //const fileType = rafterFilePath.files[0].name;
     const filePath = this.rafterFile.path;
     console.log(fileName);
     let cleanFileName = fileName.replace(/\s/g, '');
@@ -467,12 +407,13 @@ export class Rafter {
     async function ulrf (fileString) {
       console.log('this is the file?');
       console.log(fileString);
+      console.log(cleanFileName);
       httpClient.fetch('/rafter/vs', {
         method: 'post',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({token: sessionStorage.getItem('rafterToken'), userName: rui, command: 'create', rafterFile: {name: cleanFileName, path: filePath, content: fileString, createType: 'file'}})
+        body: JSON.stringify({token: sessionStorage.getItem('rafterToken'), userName: rui, command: 'create', rafterFile: {fileType: 'text', name: cleanFileName, path: filePath, content: fileString, createType: 'file'}})
       })
     .then((response) => response.json())
     .then((data) => {
@@ -511,15 +452,6 @@ export class Rafter {
       return true;
     }
   }
-
-  // validate() {
-  //   let submitButton = document.getElementsByClassName('rafterLoginButton')[0];
-  //   if (this.rafter.id !== '' && this.rafter.secret !== '' && this.rafter.appName !== '') {
-  //     submitButton.removeAttribute('disabled');
-  //   } else {
-  //     submitButton.setAttribute('disabled', '');
-  //   }
-  // }
 
   async attached() {
     const cili = this.checkIfLoggedIn;
