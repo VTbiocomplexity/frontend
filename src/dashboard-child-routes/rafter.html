@@ -94,7 +94,7 @@
                 <label for="fileType2" style="display:inline">Folder</label>
               </div>
               <label>Name<span style="font-weight:normal;font-style:italic;font-size:9pt"> (no spaces)</span></label>
-              <input input.delegate="valFileName()" class="form-control rfn" type="text" value.bind="rafterFile.name" style="width: 1.75in">
+              <input input.delegate="rafterFileActions.valFileName(rafterFile)" class="form-control rfn" type="text" value.bind="rafterFile.name" style="width: 1.75in">
               <div class="fileTypeSelector">
                 <label>Type</label>
                 <select id="fileType" class="form-control" value.bind="rafterFile.fileType" style="margin-top:0;width: 1.75in">

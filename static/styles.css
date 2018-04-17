@@ -420,6 +420,13 @@ button[disabled]:hover {
   cursor: hand;
 }
 
+.fileActions {
+  display: none;
+  position: fixed;
+  right: 10px;
+  top: 156px;
+}
+
 @media screen and (max-width: 766px) {
   .drawer {
     background-color: rgb(192, 192, 192);
@@ -468,6 +475,10 @@ button[disabled]:hover {
     /* position:absolute;
     bottom:0px; */
     width: 100%;
+  }
+  .fileActions {
+    right: 250px;
+    top: 166px;
   }
 }
 

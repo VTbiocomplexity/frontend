@@ -29,6 +29,7 @@ describe('The Rafter Dashboard', () => {
     rd = new Rafter(app);
     rd.app.appState = new AppStateStub();
     rd.activate();
+    rd.rafterFileActions = new RafterFileActions(rd.app.httpClient);
     app2 = new App(auth, new HttpMock('rafterError'));
     app2.router = new RouterStub();
     app2.activate();
@@ -327,10 +328,10 @@ describe('The Rafter Dashboard', () => {
   it('disables/enables the create button when file name is blank/not blank', testAsync(async function() {
     document.body.innerHTML += '<button class="rafterMakeFileButton"></button><div class="userServiceError">error</div>';
     rd.rafterFile.name = '';
-    await rd.valFileName();
+    await rd.rafterFileActions.valFileName(rd.rafterFile);
     expect(document.getElementsByClassName('rafterMakeFileButton')[0].disabled).toBe(true);
     rd.rafterFile.name = 'howdy';
-    await rd.valFileName();
+    await rd.rafterFileActions.valFileName(rd.rafterFile);
     expect(document.getElementsByClassName('rafterMakeFileButton')[0].getAttribute('disabled')).toBe(null);
   }));
 

@@ -63,4 +63,13 @@ export class RafterFileActions {
       console.log(err);
     });
   }
+
+  valFileName(rf) {
+    let rmfb = document.getElementsByClassName('rafterMakeFileButton')[0];
+    rmfb.setAttribute('disabled', true);
+    //console.log('check file name');
+    if (rf.name !== '') {
+      rmfb.removeAttribute('disabled');
+    }
+  }
 }

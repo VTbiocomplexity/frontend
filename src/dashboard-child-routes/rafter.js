@@ -280,15 +280,6 @@ export class Rafter {
     tv.expandAll();
   }
 
-  valFileName() {
-    let rmfb = document.getElementsByClassName('rafterMakeFileButton')[0];
-    rmfb.setAttribute('disabled', true);
-    console.log('check file name');
-    if (this.rafterFile.name !== '') {
-      rmfb.removeAttribute('disabled');
-    }
-  }
-
   async navHomeDir() {
     let hdc = JSON.stringify(this.homeDirJson);
     this.rafterFile.path = '';
