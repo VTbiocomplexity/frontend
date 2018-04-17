@@ -6,10 +6,16 @@ function testAsync(runAsync) {
   };
 }
 
-describe('the ReactExample Module', () => {
-  let re;
-  it('should construct', testAsync(async function() {
-    re = new ReactExample();
-    expect(re).not.toBe(undefined);
+describe('the React example', () => {
+  let reactExample;
+
+  beforeEach(() => {
+    reactExample = new ReactExample();
+    document.body.innerHTML = '<div class="here"><div><h1>Hello World</h1></div></div>';
+  });
+
+  it('should have the react element inner', testAsync(async function() {
+    await reactExample.attached();
+    expect(reactExample.reactElementInner).toBe('<h1>Hello World</h1>');
   }));
 });
