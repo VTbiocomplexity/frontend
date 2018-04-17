@@ -1,5 +1,4 @@
-//import {inject} from 'aurelia-framework';
-//@inject(FileReader)
+const FileSaver = require('file-saver');
 export class RafterFileActions {
   constructor(httpClient) {
     this.httpClient = httpClient;
@@ -45,6 +44,21 @@ export class RafterFileActions {
           window.location.reload();
         }
       }
+    }).catch(function (err) {
+      console.log(err);
+    });
+  }
+
+  fileDownload() {
+    let fileDetails = document.getElementsByClassName('homeDirContent')[0].innerHTML;
+    //console.log(fileDetails);
+    let fdJson = JSON.parse(fileDetails);
+    this.rafterFileID = fdJson.id;
+    this.httpClient.fetch('/rafter/vs', { method: 'post', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ command: 'get', fileID: this.rafterFileID})
+    }).then((response) => response.blob()).then((blob) => {
+      //console.log(blob);
+      FileSaver.saveAs(blob, fdJson.name);
     }).catch(function (err) {
       console.log(err);
     });

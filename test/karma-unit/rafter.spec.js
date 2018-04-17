@@ -187,10 +187,11 @@ describe('The Rafter Dashboard', () => {
     let rd3 = new Rafter(app3);
     rd3.app.appState = new AppStateStub();
     rd3.activate();
+    rd3.rafterFileActions = new RafterFileActions(rd3.app.httpClient);
     document.body.innerHTML = '<div class="homeDirContent">{"state":"analyzing","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"a185e810-af88-11e7-ab0c-717499928918","creation_date":"2017-10-12T20:05:01.841Z","name":"someName"}</div>';
     rd3.rafterUserID = 'Tester';
     sessionStorage.setItem('rafterToken', JSON.stringify({token: '123'}));
-    await rd3.fileDownload();
+    await rd3.rafterFileActions.fileDownload();
     //expect(rd.uid).toBe('3456');
   }));
 
