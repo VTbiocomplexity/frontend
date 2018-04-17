@@ -24,11 +24,11 @@
       <div class="rafterLogin elevation3" style="max-width:3in; margin:auto; margin-bottom:20px" show.bind="showLogin">
         <form style="margin-left:8px">
           <label>Rafter App Name</label>
-          <input type="text" value.bind="rafter.appName" change.delegate="validate()" keyup.delegate="validate()" style="width:2.65in">
+          <input type="text" value.bind="rafter.appName" change.delegate="rafterFileActions.validateLogin(rafter)" keyup.delegate="rafterFileActions.validateLogin(rafter)" style="width:2.65in">
           <label>Rafter App Id</label>
-          <input type="text" value.bind="rafter.id" change.delegate="validate()" keyup.delegate="validate()" style="width:2.65in">
+          <input type="text" value.bind="rafter.id" change.delegate="rafterFileActions.validateLogin(rafter)" keyup.delegate="rafterFileActions.validateLogin(rafter)" style="width:2.65in">
           <label>Rafter App Secret</label>
-          <input type="text" value.bind="rafter.secret" change.delegate="validate()" keyup.delegate="validate()" style="width:2.65in">
+          <input type="text" value.bind="rafter.secret" change.delegate="rafterFileActions.validateLogin(rafter)" keyup.delegate="rafterFileActions.validateLogin(rafter)" style="width:2.65in">
           <div>
             <p>&nbsp;</p>
             <button disabled class="rafterLoginButton" click.delegate="handleRafterLogin()">Connect To Rafter</button><span style="margin-left:60px"> </span><button click.delegate="nevermind()">Nevermind</button>
