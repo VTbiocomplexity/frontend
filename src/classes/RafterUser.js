@@ -70,51 +70,36 @@ export class RafterUser {
   }
 
   initRafter(ruid, rObj, uid, interval, sli) {
-    // if (noreload === null) {
-    //   noreload = false;
-    // }
     rObj.uid = uid;
     let userServiceError = document.getElementsByClassName('userServiceError')[0];
     let message = 'Wrong app id or app secret';
-    console.log(JSON.stringify(rObj));
+    //console.log(JSON.stringify(rObj));
     return this.httpClient.fetch('/rafter/rinit', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(rObj)
+      method: 'post', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(rObj)
     })
-    .then((response) => response.json())
-    .then((data) => {
+    .then((response) => response.json()).then((data) => {
       //console.log('am i on line 71?');
-      console.log(data);
-      console.log(typeof data);
-      console.log(data.includes('error'));
+      // console.log(data);
+      // console.log(typeof data);
+      // console.log(data.includes('error'));
       if (!data.includes('error')) {
         window.sessionStorage.setItem('rafterToken', data);
         let user = jwtDecode(data);
-        console.log(user);
+        // console.log(user);
         ruid = user.sub;
-        if (userServiceError !== null && userServiceError !== undefined) {
-          userServiceError.innerHTML = '';
-        }
+        if (userServiceError !== null && userServiceError !== undefined) {userServiceError.innerHTML = '';}
         this.initVol(data);
-      /* istanbul ignore if */
-        if (process.env.NODE_ENV !== 'test') {
-          window.location.reload();
-        }
+        /* istanbul ignore if */
+        if (process.env.NODE_ENV !== 'test') {window.location.reload();}
       } else {
-        if (userServiceError !== null && userServiceError !== undefined) {
-          userServiceError.innerHTML = message;
-          console.log(sli);
-        }
+        if (userServiceError !== null && userServiceError !== undefined) {userServiceError.innerHTML = message;}
         if (!sli) {
           //tried to select an app, but the app secret was readAsText
           //display the rafter login form
           let rafterlogin = document.getElementsByClassName('rafterLogin')[0];
           rafterlogin.removeAttribute('show.bind');
           rafterlogin.classList.remove('aurelia-hide');
-          console.log(rafterlogin);
+          //console.log(rafterlogin);
           document.getElementsByClassName('rafterCheckHome')[0].style.display = 'none';
           //sli = true;
         }

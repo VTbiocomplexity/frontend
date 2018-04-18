@@ -4,12 +4,10 @@ import { RafterUser } from '../classes/RafterUser';
 import { RafterFileActions } from '../classes/RafterFileActions';
 const jwtDecode = require('jwt-decode');
 const TreeView = require('js-treeview');
-//const FileSaver = require('file-saver');
 @inject(App)
 export class Rafter {
   constructor(app) {
     this.showLogin = true;
-    //this.reader = reader;
     this.app = app;
     this.rafterUserID = '';
     this.rafter = {id: '', secret: '', appName: ''};
@@ -21,7 +19,6 @@ export class Rafter {
     this.appNames = [];
   }
   fileTypes = ['intersim-im-11-1_runoutput', 'intersim-im-11-1_runlog', 'GraphABM_rank', 'json', 'text', 'jsonh+fasta', 'png', 'jpg', 'pdf', 'xml', 'fasta'];
-
   async activate() {
     this.uid = this.app.auth.getTokenPayload().sub;
     this.user = await this.app.appState.getUser(this.uid);
@@ -37,11 +34,9 @@ export class Rafter {
       await this.handleRafterLogin('autoInitRafter');
     }
   }
-
   rafterAddApp() {
     this.showLogin = true;
   }
-
   async removeApp() {
     let appName = document.getElementById('appName2').value;
     console.log('going to remove: ' + appName);
@@ -55,13 +50,6 @@ export class Rafter {
       window.location.reload();
     }
   }
-
-  // nevermind() {
-  //   /* istanbul ignore if */
-  //   if (process.env.NODE_ENV !== 'test') {
-  //     window.location.reload();
-  //   }
-  // }
 
   setRafterUserId() {
     let rT = (sessionStorage.getItem('rafterToken'));
@@ -86,18 +74,6 @@ export class Rafter {
     await this.rafterUser.initRafter(this.rafterUserID, this.rafter, this.user._id, this.interval, this.showLogin);
     this.setRafterUserId();
   }
-
-  // hideDetail(ic1, ic2, content) {
-  //   document.getElementsByClassName(content)[0].style.display = 'none';
-  //   document.getElementsByClassName(ic1)[0].style.display = 'none';
-  //   document.getElementsByClassName(ic2)[0].style.display = 'block';
-  // }
-
-  // showDetail(ic1, ic2, content) {
-  //   document.getElementsByClassName(content)[0].style.display = 'block';
-  //   document.getElementsByClassName(ic1)[0].style.display = 'block';
-  //   document.getElementsByClassName(ic2)[0].style.display = 'none';
-  // }
 
   radioClicked() {
     if (document.getElementById('fileType2').checked) {
@@ -358,79 +334,6 @@ export class Rafter {
     }
     vsFetch(vsFetchSuccess, myApp, rafterUserID, cmd, myRafterFile, true, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch);
   }
-
-  // rafterFileValidate() {
-  //   let nub = document.getElementById('uploadButton');
-  //   nub.style.display = 'none';
-  //   //console.log('i am validating');
-  //   //console.log(rafterFilePath.files);
-  //   if (rafterFilePath.files.length === 0) {
-  //     alert('no file was selected');
-  //     return false;
-  //   }
-  //   for (let i = 0; i < rafterFilePath.files.length; i++) {
-  //     let oInput = rafterFilePath.files[i];
-  //     console.log(oInput.type);
-  //   // the type is determined automatically during the creation of the Blob.
-  //   // this value cannot be controlled by developer, hence cannot test it.
-  //   /* istanbul ignore if*/
-  //     if (oInput.type === 'text/plain' || oInput.type === 'text/html' || oInput.type === 'application/json') {
-  //     //console.log('type is a plain text file');
-  //       nub.style.display = 'block';
-  //       return true;
-  //     }
-  //     alert('Sorry, ' + oInput.type + ' is an invalid file type.');
-  //     return false;
-  //   }
-  // }
-
-  // uploadRafterFile() {
-  //   const httpClient = this.app.httpClient;
-  //   const rui = this.rafterUserID;
-  //   const fileName = rafterFilePath.files[0].name;
-  //   //const fileType = rafterFilePath.files[0].name;
-  //   const filePath = this.rafterFile.path;
-  //   console.log(fileName);
-  //   let cleanFileName = fileName.replace(/\s/g, '');
-  //   cleanFileName = cleanFileName.replace(/!/g, '');
-  //   async function loaded (evt) {
-  //     console.log('in function loaded');
-  //     console.log(evt.target);
-  //     const fileString = evt.target.result;
-  //     ulrf(fileString);
-  //   }
-  //
-  //   function errorHandler(evt) {
-  //     alert('The file could not be read');
-  //   }
-  //
-  //   async function ulrf (fileString) {
-  //     console.log('this is the file?');
-  //     console.log(fileString);
-  //     console.log(cleanFileName);
-  //     httpClient.fetch('/rafter/vs', {
-  //       method: 'post',
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       },
-  //       body: JSON.stringify({token: sessionStorage.getItem('rafterToken'), userName: rui, command: 'create', rafterFile: {fileType: 'text', name: cleanFileName, path: filePath, content: fileString, createType: 'file'}})
-  //     })
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     console.log(data);
-  //     /* istanbul ignore if */
-  //     if (process.env.NODE_ENV !== 'test') {
-  //       window.location.reload();
-  //     }
-  //   }).catch((err) => {
-  //     console.log(err);
-  //   });
-  //   }
-  //
-  //   this.reader.onload = loaded;
-  //   this.reader.onerror = errorHandler;
-  //   this.reader.readAsText(rafterFilePath.files[0]);
-  // }
 
   checkIfLoggedIn(cep, rlo, sli, cipr) {
     if (window.sessionStorage.getItem('rafterToken') !== null && window.sessionStorage.getItem('rafterToken') !== undefined) {
