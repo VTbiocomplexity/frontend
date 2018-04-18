@@ -211,4 +211,14 @@ export class RafterFileActions {
     // }
   }
 
+  fileNameState(myFile, dnldbt, dfcbt) {
+    document.getElementsByClassName('dnldButton')[0].innerHTML = ('Download<br>' + myFile.name);
+    document.getElementsByClassName('deleteButton')[0].innerHTML = ('Delete<br>' + myFile.name);
+    document.getElementsByClassName('displayButton')[0].innerHTML = ('Display<br>' + myFile.name);
+    if (myFile.state !== 'empty') {
+      dnldbt.style.display = 'block';
+      dfcbt.style.display = 'block';
+    }
+  }
+
 }

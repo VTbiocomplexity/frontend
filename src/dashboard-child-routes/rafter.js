@@ -201,16 +201,17 @@ export class Rafter {
           //console.log('line 86?');
           return rvs('ls', myApp, rui, raf, mtws, hdj[i].id, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions);
         }
+        return rafterFileActions.fileNameState(hdj[i], dnldbt, dfcbt);
         //set Filename
         //console.log(hdj[i].state);
-        document.getElementsByClassName('dnldButton')[0].innerHTML = ('Download<br>' + hdj[i].name);
-        document.getElementsByClassName('deleteButton')[0].innerHTML = ('Delete<br>' + hdj[i].name);
-        document.getElementsByClassName('displayButton')[0].innerHTML = ('Display<br>' + hdj[i].name);
-        if (hdj[i].state !== 'empty') {
-          dnldbt.style.display = 'block';
-          dfcbt.style.display = 'block';
-        }
-        return;
+        // document.getElementsByClassName('dnldButton')[0].innerHTML = ('Download<br>' + hdj[i].name);
+        // document.getElementsByClassName('deleteButton')[0].innerHTML = ('Delete<br>' + hdj[i].name);
+        // document.getElementsByClassName('displayButton')[0].innerHTML = ('Display<br>' + hdj[i].name);
+        // if (hdj[i].state !== 'empty') {
+        //   dnldbt.style.display = 'block';
+        //   dfcbt.style.display = 'block';
+        // }
+        //return;
       }
     }
     if (subDirFiles !== null && subDirFiles !== undefined) {
