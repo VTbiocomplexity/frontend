@@ -113,7 +113,7 @@
             <form style="max-width:2.5in; margin-left:20px">
               <input id="rafterFilePath" type="file" accept="" files.bind="selectedFiles" change.delegate="rafterFileActions.fileTypeValidate()"/>
               <p>&nbsp;</p>
-              <button id="uploadButton" class="button-lib" style="display:none" raised click.trigger="uploadRafterFile()">
+              <button id="uploadButton" class="button-lib" style="display:none" raised click.trigger="rafterFileActions.uploadRafterFile(rafterUserID, rafterFile)">
                 Upload
               </button>
             </form>
