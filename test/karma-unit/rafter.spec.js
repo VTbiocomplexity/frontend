@@ -107,9 +107,9 @@ describe('The Rafter Dashboard', () => {
     expect(rd.showLogin).toBe(true);
   }));
 
-  it('allows user to cancel request to add additional app', testAsync(async function() {
+  it('cancels request to add additional app', testAsync(async function() {
     //rd.showLogin = true;
-    await rd.nevermind();
+    await rd.rafterFileActions.nevermind();
     //expect(handlers.locationReload).toHaveBeenCalled();
   }));
 
@@ -380,14 +380,14 @@ describe('The Rafter Dashboard', () => {
     rd.rafterUser = new RafterUser(rd.app.httpClient);
     await rd.rafterUser.initVol('yoyo');
   }));
-  it('hides the details', testAsync(async function() {
+  it('hides the details (file or folder metadata)', testAsync(async function() {
     document.body.innerHTML = '<div class="content"></div><div class="ic1"></div><div class="ic2"></div>';
-    await rd.hideDetail('ic1', 'ic2', 'content');
+    await rd.rafterFileActions.hideDetail('ic1', 'ic2', 'content');
     expect(document.getElementsByClassName('ic2')[0].style.display).toBe('block');
   }));
-  it('shows the details', testAsync(async function() {
+  it('shows the details (file or folder metadata)', testAsync(async function() {
     document.body.innerHTML = '<div class="content"></div><div class="ic1"></div><div class="ic2"></div>';
-    await rd.showDetail('ic1', 'ic2', 'content');
+    await rd.rafterFileActions.showDetail('ic1', 'ic2', 'content');
     expect(document.getElementsByClassName('ic1')[0].style.display).toBe('block');
   }));
   it('displays a tree menu without a folder', (done) => {

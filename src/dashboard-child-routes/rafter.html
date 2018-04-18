@@ -21,7 +21,7 @@
         <p style="text-align:center;"><i>We are going to try out some Rafter APIs here!</i></p>
         <button style="text-align:center;margin:auto; display:none" class="rafterCheckHome btn" click.delegate="fetchVS('ls')">Display home/${rafterUserID}</button>
       </div>
-      <div class="rafterLogin elevation3" style="max-width:3in; margin:auto; margin-bottom:20px" show.bind="showLogin">
+      <div class="rafterLogin elevation3" style="max-width:3in; margin:auto; margin-bottom:20px; margin-top:10px" show.bind="showLogin">
         <form style="margin-left:8px">
           <label>Rafter App Name</label>
           <input type="text" value.bind="rafter.appName" change.delegate="rafterFileActions.validateLogin(rafter)" keyup.delegate="rafterFileActions.validateLogin(rafter)" style="width:2.65in">
@@ -31,7 +31,7 @@
           <input type="text" value.bind="rafter.secret" change.delegate="rafterFileActions.validateLogin(rafter)" keyup.delegate="rafterFileActions.validateLogin(rafter)" style="width:2.65in">
           <div>
             <p>&nbsp;</p>
-            <button disabled class="rafterLoginButton" click.delegate="handleRafterLogin()">Connect To Rafter</button><span style="margin-left:60px"> </span><button click.delegate="nevermind()">Nevermind</button>
+            <button disabled class="rafterLoginButton" click.delegate="handleRafterLogin()">Connect To Rafter</button><span style="margin-left:60px"> </span><button click.delegate="rafterFileActions.nevermind()">Nevermind</button>
           </div>
           <p><br>Need an account? Follow these <a href="https://docs.google.com/document/d/1BF11gUYfXU8xBSsBW3J2wjK2HWf6NnWzz0y-1XtzoNE/#heading=h.5z7lybzc053j" target="_blank">instructions.</a></p>
         </form>
@@ -59,8 +59,8 @@
                 <div class="displayFileContent"></div>
                 <div style="margin-auto;width:250px; padding-left:98px">
                   <div style="float:left;">
-                    <i class="fa fa-plus-square hoverHand sfd" style="display:none" click.delegate="showDetail('hfd','sfd','homeDirContent')"></i>
-                    <i class="fa fa-minus-square hoverHand hfd" click.delegate="hideDetail('hfd','sfd','homeDirContent')"></i>
+                    <i class="fa fa-plus-square hoverHand sfd" style="display:none" click.delegate="rafterFileActions.showDetail('hfd','sfd','homeDirContent')"></i>
+                    <i class="fa fa-minus-square hoverHand hfd" click.delegate="rafterFileActions.hideDetail('hfd','sfd','homeDirContent')"></i>
                   </div>
                   <div>
                     <p><strong><span class="fileNameHere">File/Folder</span> Metadata</strong></p>
@@ -73,8 +73,8 @@
               <hr>
               <div style="margin-auto;width:250px; padding-left:98px">
                 <div style="float:left;">
-                  <i class="fa fa-plus-square hoverHand sifd" style="display:none" click.delegate="showDetail('hifd', 'sifd', 'subDirContent')"></i>
-                  <i class="fa fa-minus-square hoverHand hifd" click.delegate="hideDetail('hifd', 'sifd', 'subDirContent')"></i>
+                  <i class="fa fa-plus-square hoverHand sifd" style="display:none" click.delegate="rafterFileActions.showDetail('hifd', 'sifd', 'subDirContent')"></i>
+                  <i class="fa fa-minus-square hoverHand hifd" click.delegate="rafterFileActions.hideDetail('hifd', 'sifd', 'subDirContent')"></i>
                 </div>
                 <div><p><strong>Inside Folder Details</strong></p></div>
               </div>
