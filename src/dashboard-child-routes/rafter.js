@@ -213,7 +213,9 @@ export class Rafter {
         return;
       }
     }
-    rafterFileActions.setFileActions(id, subDirFiles, dnldbt, dfcbt);
+    if (subDirFiles !== null && subDirFiles !== undefined) {
+      rafterFileActions.setFileActions(id, subDirFiles, dnldbt, dfcbt);
+    }
     // if (subDirFiles !== null && subDirFiles !== undefined) {
     //   for (let j = 0; j < subDirFiles.length; j++) {
     //     if (id === subDirFiles[j].id) {
