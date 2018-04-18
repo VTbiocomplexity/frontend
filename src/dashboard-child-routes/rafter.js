@@ -56,12 +56,12 @@ export class Rafter {
     }
   }
 
-  nevermind() {
-    /* istanbul ignore if */
-    if (process.env.NODE_ENV !== 'test') {
-      window.location.reload();
-    }
-  }
+  // nevermind() {
+  //   /* istanbul ignore if */
+  //   if (process.env.NODE_ENV !== 'test') {
+  //     window.location.reload();
+  //   }
+  // }
 
   setRafterUserId() {
     let rT = (sessionStorage.getItem('rafterToken'));
@@ -87,17 +87,17 @@ export class Rafter {
     this.setRafterUserId();
   }
 
-  hideDetail(ic1, ic2, content) {
-    document.getElementsByClassName(content)[0].style.display = 'none';
-    document.getElementsByClassName(ic1)[0].style.display = 'none';
-    document.getElementsByClassName(ic2)[0].style.display = 'block';
-  }
+  // hideDetail(ic1, ic2, content) {
+  //   document.getElementsByClassName(content)[0].style.display = 'none';
+  //   document.getElementsByClassName(ic1)[0].style.display = 'none';
+  //   document.getElementsByClassName(ic2)[0].style.display = 'block';
+  // }
 
-  showDetail(ic1, ic2, content) {
-    document.getElementsByClassName(content)[0].style.display = 'block';
-    document.getElementsByClassName(ic1)[0].style.display = 'block';
-    document.getElementsByClassName(ic2)[0].style.display = 'none';
-  }
+  // showDetail(ic1, ic2, content) {
+  //   document.getElementsByClassName(content)[0].style.display = 'block';
+  //   document.getElementsByClassName(ic1)[0].style.display = 'block';
+  //   document.getElementsByClassName(ic2)[0].style.display = 'none';
+  // }
 
   radioClicked() {
     if (document.getElementById('fileType2').checked) {
