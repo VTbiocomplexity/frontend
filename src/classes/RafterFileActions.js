@@ -173,4 +173,24 @@ export class RafterFileActions {
     }
   }
 
+  resetFileActions(mtws, dnldbt, dfcbt) {
+    document.getElementsByClassName('displayFileContent')[0].innerHTML = '';
+    //const dnldbt = document.getElementsByClassName('dnldButton')[0];
+    //const dfcbt = document.getElementsByClassName('displayButton')[0];
+    dnldbt.style.display = 'none';
+    dfcbt.style.display = 'none';
+    document.getElementsByClassName('fileActions')[0].style.display = 'block';
+    document.getElementsByClassName('fileDetailsTitle')[0].style.display = 'block';
+    let ifd = document.getElementsByClassName('insideFolderDetails')[0];
+    if (mtws === null) {
+      ifd.style.display = 'none';
+      document.getElementsByClassName('createNew')[0].style.display = 'none';
+    } else {
+      ifd.style.display = 'block';
+      document.getElementsByClassName('isHomeDir')[0].style.display = 'none';
+      document.getElementsByClassName('isHomeDir')[1].style.display = 'none';
+      document.getElementsByClassName('createNew')[0].style.display = 'block';
+    }
+  }
+
 }
