@@ -104,51 +104,77 @@ export class RafterFileActions {
       return false;
     }
   }
+
+  async ulrf (fileString, cleanFileName, httpClient, rui, filePath) {
+    //console.log('this is the file?');
+    //console.log(fileString);
+    //console.log(cleanFileName);
+    httpClient.fetch('/rafter/vs', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({token: sessionStorage.getItem('rafterToken'), userName: rui, command: 'create', rafterFile: {fileType: 'text', name: cleanFileName, path: filePath, content: fileString, createType: 'file'}})
+    })
+  .then((response) => response.json())
+  .then((data) => {
+    console.log(data);
+    /* istanbul ignore if */
+    if (process.env.NODE_ENV !== 'test') {
+      window.location.reload();
+    }
+  }).catch((err) => {
+    console.log(err);
+  });
+  }
+
   uploadRafterFile(rui, rf) {
     const httpClient = this.httpClient;
+    const ulrf = this.ulrf;
     //const rui = this.rafterUserID;
     const fileName = rafterFilePath.files[0].name;
   //const fileType = rafterFilePath.files[0].name;
     const filePath = rf.path;
-    console.log(fileName);
+    //console.log(fileName);
     let cleanFileName = fileName.replace(/\s/g, '');
     cleanFileName = cleanFileName.replace(/!/g, '');
     async function loaded (evt) {
-      console.log('in function loaded');
-      console.log(evt.target);
+      //console.log('in function loaded');
+      //console.log(evt.target);
       const fileString = evt.target.result;
-      ulrf(fileString);
+      ulrf(fileString, cleanFileName, httpClient, rui, filePath);
     }
 
     function errorHandler(evt) {
       alert('The file could not be read');
     }
 
-    async function ulrf (fileString) {
-      console.log('this is the file?');
-      console.log(fileString);
-      console.log(cleanFileName);
-      httpClient.fetch('/rafter/vs', {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({token: sessionStorage.getItem('rafterToken'), userName: rui, command: 'create', rafterFile: {fileType: 'text', name: cleanFileName, path: filePath, content: fileString, createType: 'file'}})
-      })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      /* istanbul ignore if */
-      if (process.env.NODE_ENV !== 'test') {
-        window.location.reload();
-      }
-    }).catch((err) => {
-      console.log(err);
-    });
-    }
+    // async function ulrf (fileString) {
+    //   console.log('this is the file?');
+    //   console.log(fileString);
+    //   console.log(cleanFileName);
+    //   httpClient.fetch('/rafter/vs', {
+    //     method: 'post',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({token: sessionStorage.getItem('rafterToken'), userName: rui, command: 'create', rafterFile: {fileType: 'text', name: cleanFileName, path: filePath, content: fileString, createType: 'file'}})
+    //   })
+    // .then((response) => response.json())
+    // .then((data) => {
+    //   console.log(data);
+    //   /* istanbul ignore if */
+    //   if (process.env.NODE_ENV !== 'test') {
+    //     window.location.reload();
+    //   }
+    // }).catch((err) => {
+    //   console.log(err);
+    // });
+    // }
 
     this.reader.onload = loaded;
     this.reader.onerror = errorHandler;
     this.reader.readAsText(rafterFilePath.files[0]);
   }
+
 }
