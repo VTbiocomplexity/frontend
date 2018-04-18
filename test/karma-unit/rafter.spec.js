@@ -254,9 +254,9 @@ describe('The Rafter Dashboard', () => {
   it('Validates the file type to be uploaded', testAsync(async function() {
     document.body.innerHTML = '<div><input id="rafterFilePath" type="file" accept=""/><button style="display:none" id="uploadButton"></button></div>';
     window.rafterFilePath = {files: [new Blob()]};
-    expect(rd.rafterFileValidate()).toBe(false);
+    expect(rd.rafterFileActions.fileTypeValidate()).toBe(false);
     window.rafterFilePath = {files: []};
-    expect(rd.rafterFileValidate()).toBe(false);
+    expect(rd.rafterFileActions.fileTypeValidate()).toBe(false);
   }));
 
   it('appears to uploads a rafter file', testAsync(async function() {

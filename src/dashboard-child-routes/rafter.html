@@ -111,7 +111,7 @@
           <div class="fileUpload elevation3" style="min-width:3in; margin-left:30px">
             <p style="text-align:center"><i><strong>Upload a File</strong></i></p>
             <form style="max-width:2.5in; margin-left:20px">
-              <input id="rafterFilePath" type="file" accept="" files.bind="selectedFiles" change.delegate="rafterFileValidate()"/>
+              <input id="rafterFilePath" type="file" accept="" files.bind="selectedFiles" change.delegate="rafterFileActions.fileTypeValidate()"/>
               <p>&nbsp;</p>
               <button id="uploadButton" class="button-lib" style="display:none" raised click.trigger="uploadRafterFile()">
                 Upload
