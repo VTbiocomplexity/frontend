@@ -11,22 +11,22 @@ export class RafterFileActions {
     this.httpClient.fetch('/rafter/vs', { method: 'post', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ command: 'get', fileID: this.rafterFileID})
     }).then((response) => response.blob()).then((blob) => {
-      //console.log(blob);
+    //console.log(blob);
       async function loaded (evt) {
-        //console.log('in function loaded');
-        //console.log(evt.target);
+      //console.log('in function loaded');
+      //console.log(evt.target);
         const fileString = evt.target.result;
-        //console.log(fileString);
+      //console.log(fileString);
         document.getElementsByClassName('displayFileContent')[0].innerHTML = fileString;
       }
-  /* istanbul ignore next */
+    /* istanbul ignore next */
       function errorHandler(evt) {
         alert('The file could not be read');
       }
       this.reader.onload = loaded;
       this.reader.onerror = errorHandler;
       this.reader.readAsText(blob);
-  //console.log(fileContents);
+    //console.log(fileContents);
     }).catch(function (err) {
       console.log(err);
     });
@@ -51,13 +51,13 @@ export class RafterFileActions {
 
   fileDownload() {
     let fileDetails = document.getElementsByClassName('homeDirContent')[0].innerHTML;
-    //console.log(fileDetails);
+  //console.log(fileDetails);
     let fdJson = JSON.parse(fileDetails);
     this.rafterFileID = fdJson.id;
     this.httpClient.fetch('/rafter/vs', { method: 'post', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ command: 'get', fileID: this.rafterFileID})
     }).then((response) => response.blob()).then((blob) => {
-      //console.log(blob);
+  //console.log(blob);
       FileSaver.saveAs(blob, fdJson.name);
     }).catch(function (err) {
       console.log(err);
@@ -67,7 +67,7 @@ export class RafterFileActions {
   valFileName(rf) {
     let rmfb = document.getElementsByClassName('rafterMakeFileButton')[0];
     rmfb.setAttribute('disabled', true);
-    //console.log('check file name');
+  //console.log('check file name');
     if (rf.name !== '') {
       rmfb.removeAttribute('disabled');
     }
@@ -83,8 +83,8 @@ export class RafterFileActions {
   fileTypeValidate() {
     let nub = document.getElementById('uploadButton');
     nub.style.display = 'none';
-    //console.log('i am validating');
-    //console.log(rafterFilePath.files);
+  //console.log('i am validating');
+  //console.log(rafterFilePath.files);
     if (rafterFilePath.files.length === 0) {
       alert('no file was selected');
       return false;
@@ -103,5 +103,52 @@ export class RafterFileActions {
       alert('Sorry, ' + oInput.type + ' is an invalid file type.');
       return false;
     }
+  }
+  uploadRafterFile(rui, rf) {
+    const httpClient = this.httpClient;
+    //const rui = this.rafterUserID;
+    const fileName = rafterFilePath.files[0].name;
+  //const fileType = rafterFilePath.files[0].name;
+    const filePath = rf.path;
+    console.log(fileName);
+    let cleanFileName = fileName.replace(/\s/g, '');
+    cleanFileName = cleanFileName.replace(/!/g, '');
+    async function loaded (evt) {
+      console.log('in function loaded');
+      console.log(evt.target);
+      const fileString = evt.target.result;
+      ulrf(fileString);
+    }
+
+    function errorHandler(evt) {
+      alert('The file could not be read');
+    }
+
+    async function ulrf (fileString) {
+      console.log('this is the file?');
+      console.log(fileString);
+      console.log(cleanFileName);
+      httpClient.fetch('/rafter/vs', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({token: sessionStorage.getItem('rafterToken'), userName: rui, command: 'create', rafterFile: {fileType: 'text', name: cleanFileName, path: filePath, content: fileString, createType: 'file'}})
+      })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      /* istanbul ignore if */
+      if (process.env.NODE_ENV !== 'test') {
+        window.location.reload();
+      }
+    }).catch((err) => {
+      console.log(err);
+    });
+    }
+
+    this.reader.onload = loaded;
+    this.reader.onerror = errorHandler;
+    this.reader.readAsText(rafterFilePath.files[0]);
   }
 }

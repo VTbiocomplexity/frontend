@@ -36,6 +36,7 @@ describe('The Rafter Dashboard', () => {
     rd2 = new Rafter(app2);
     rd2.app.appState = new AppStateStub();
     rd2.activate();
+    rd2.rafterFileActions = new RafterFileActions(rd2.app.httpClient);
     app4 = new App(auth, new HttpMock('rafterInitError'));
     app4.router = new RouterStub();
     app4.activate();
@@ -264,14 +265,14 @@ describe('The Rafter Dashboard', () => {
     window.rafterFilePath = {files: [new Blob()]};
     window.rafterFilePath.files[0].name = 'howdy.txt';
     console.log('do I have a file reader?');
-    rd.reader = FileReader;
+    rd.rafterFileActions.reader = FileReader;
     console.log(rd.reader);
-    rd.reader.readAsText = function() {};
-    rd.reader.dispatchEvent = function() {};
-    rd.uploadRafterFile();
+    rd.rafterFileActions.reader.readAsText = function() {};
+    rd.rafterFileActions.reader.dispatchEvent = function() {};
+    rd.rafterFileActions.uploadRafterFile(rd.rafterUserID, rd.rafterFile);
     let evt = {target: {result: 'howdy'}};
-    rd.reader.onload(evt);
-    rd.reader.onerror();
+    rd.rafterFileActions.reader.onload(evt);
+    rd.rafterFileActions.reader.onerror();
   }));
 
   it('cathes error on vs upload a rafter file', testAsync(async function() {
@@ -279,13 +280,13 @@ describe('The Rafter Dashboard', () => {
     window.rafterFilePath = {files: [new Blob()]};
     window.rafterFilePath.files[0].name = 'howdy.txt';
     //console.log('do I have a file reader?');
-    rd2.reader = FileReader;
+    rd2.rafterFileActions.reader = FileReader;
     //console.log(rd.reader);
-    rd2.reader.readAsText = function() {};
-    rd2.reader.dispatchEvent = function() {};
-    rd2.uploadRafterFile();
+    rd2.rafterFileActions.reader.readAsText = function() {};
+    rd2.rafterFileActions.reader.dispatchEvent = function() {};
+    rd2.rafterFileActions.uploadRafterFile(rd.rafterUserID, rd.rafterFile);
     let evt = {target: {result: 'howdy'}};
-    rd2.reader.onload(evt);
+    rd2.rafterFileActions.reader.onload(evt);
     //rd.reader.onerror();
   }));
 

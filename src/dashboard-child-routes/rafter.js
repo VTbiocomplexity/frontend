@@ -5,11 +5,11 @@ import { RafterFileActions } from '../classes/RafterFileActions';
 const jwtDecode = require('jwt-decode');
 const TreeView = require('js-treeview');
 //const FileSaver = require('file-saver');
-@inject(App, FileReader)
+@inject(App)
 export class Rafter {
-  constructor(app, reader) {
+  constructor(app) {
     this.showLogin = true;
-    this.reader = reader;
+    //this.reader = reader;
     this.app = app;
     this.rafterUserID = '';
     this.rafter = {id: '', secret: '', appName: ''};
@@ -384,53 +384,53 @@ export class Rafter {
   //   }
   // }
 
-  uploadRafterFile() {
-    const httpClient = this.app.httpClient;
-    const rui = this.rafterUserID;
-    const fileName = rafterFilePath.files[0].name;
-    //const fileType = rafterFilePath.files[0].name;
-    const filePath = this.rafterFile.path;
-    console.log(fileName);
-    let cleanFileName = fileName.replace(/\s/g, '');
-    cleanFileName = cleanFileName.replace(/!/g, '');
-    async function loaded (evt) {
-      console.log('in function loaded');
-      console.log(evt.target);
-      const fileString = evt.target.result;
-      ulrf(fileString);
-    }
-
-    function errorHandler(evt) {
-      alert('The file could not be read');
-    }
-
-    async function ulrf (fileString) {
-      console.log('this is the file?');
-      console.log(fileString);
-      console.log(cleanFileName);
-      httpClient.fetch('/rafter/vs', {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({token: sessionStorage.getItem('rafterToken'), userName: rui, command: 'create', rafterFile: {fileType: 'text', name: cleanFileName, path: filePath, content: fileString, createType: 'file'}})
-      })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      /* istanbul ignore if */
-      if (process.env.NODE_ENV !== 'test') {
-        window.location.reload();
-      }
-    }).catch((err) => {
-      console.log(err);
-    });
-    }
-
-    this.reader.onload = loaded;
-    this.reader.onerror = errorHandler;
-    this.reader.readAsText(rafterFilePath.files[0]);
-  }
+  // uploadRafterFile() {
+  //   const httpClient = this.app.httpClient;
+  //   const rui = this.rafterUserID;
+  //   const fileName = rafterFilePath.files[0].name;
+  //   //const fileType = rafterFilePath.files[0].name;
+  //   const filePath = this.rafterFile.path;
+  //   console.log(fileName);
+  //   let cleanFileName = fileName.replace(/\s/g, '');
+  //   cleanFileName = cleanFileName.replace(/!/g, '');
+  //   async function loaded (evt) {
+  //     console.log('in function loaded');
+  //     console.log(evt.target);
+  //     const fileString = evt.target.result;
+  //     ulrf(fileString);
+  //   }
+  //
+  //   function errorHandler(evt) {
+  //     alert('The file could not be read');
+  //   }
+  //
+  //   async function ulrf (fileString) {
+  //     console.log('this is the file?');
+  //     console.log(fileString);
+  //     console.log(cleanFileName);
+  //     httpClient.fetch('/rafter/vs', {
+  //       method: 'post',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify({token: sessionStorage.getItem('rafterToken'), userName: rui, command: 'create', rafterFile: {fileType: 'text', name: cleanFileName, path: filePath, content: fileString, createType: 'file'}})
+  //     })
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     console.log(data);
+  //     /* istanbul ignore if */
+  //     if (process.env.NODE_ENV !== 'test') {
+  //       window.location.reload();
+  //     }
+  //   }).catch((err) => {
+  //     console.log(err);
+  //   });
+  //   }
+  //
+  //   this.reader.onload = loaded;
+  //   this.reader.onerror = errorHandler;
+  //   this.reader.readAsText(rafterFilePath.files[0]);
+  // }
 
   checkIfLoggedIn(cep, rlo, sli, cipr) {
     if (window.sessionStorage.getItem('rafterToken') !== null && window.sessionStorage.getItem('rafterToken') !== undefined) {
