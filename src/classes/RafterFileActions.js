@@ -193,4 +193,22 @@ export class RafterFileActions {
     }
   }
 
+  setFileActions(id, subDirFiles, dnldbt, dfcbt) {
+    if (subDirFiles !== null && subDirFiles !== undefined) {
+      for (let j = 0; j < subDirFiles.length; j++) {
+        if (id === subDirFiles[j].id) {
+          //console.log('i found a match!');
+          document.getElementsByClassName('dnldButton')[0].innerHTML = ('Download<br>' + subDirFiles[j].name);
+          document.getElementsByClassName('deleteButton')[0].innerHTML = ('Delete<br>' + subDirFiles[j].name);
+          document.getElementsByClassName('displayButton')[0].innerHTML = ('Display<br>' + subDirFiles[j].name);
+          if (subDirFiles[j].state !== 'empty') {
+            dnldbt.style.display = 'block';
+            dfcbt.style.display = 'block';
+          }
+          return document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[j]);
+        }
+      }
+    }
+  }
+
 }
