@@ -40,11 +40,11 @@ export class Rafter {
   }
   async removeApp() {
     let appName = document.getElementById('appName2').value;
-    console.log('going to remove: ' + appName);
+    //console.log('going to remove: ' + appName);
     let myIndex = this.appNames.indexOf(appName);
-    console.log(this.user.rafterApps[myIndex]);
+    //console.log(this.user.rafterApps[myIndex]);
     this.user.rafterApps.splice(myIndex, 1);
-    console.log(this.user.rafterApps);
+    //console.log(this.user.rafterApps);
     await this.app.updateById('/user/', this.uid, this.user);
     /* istanbul ignore if */
     if (process.env.NODE_ENV !== 'test') {
@@ -86,12 +86,29 @@ export class Rafter {
     }
   }
 
-  displayTree(tv, nameArr, divId, showFile, hdj, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions) {
+  displayTree(tv, nameArr, divId, showFile, hdj, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles, childArr) {
     let filesInFolder = null; //these are the files that are inside of a subfolder of the home dir
     tv = new TreeView(nameArr, divId);
-
+    //if (subSubDirFiles !== null && subSubDirFiles !== undefined) {
+    //console.log(subSubDirFiles);
+    //console.log(childArr);
+    //find a sub sub folder
+    let subDirIds = [];
+    if (childArr !== undefined) {
+      for (let i = 0; i < childArr.length; i++) {
+        if (childArr[i].isContainer) {
+          //console.log(childArr[i]);
+          subDirIds.push(childArr[i].id);
+          //console.log(subDirIds);
+        }
+      }
+    }
+      //console.log('add click events for the files inside of subsubfolder');
+      //tv = new TreeView(newData, 'treeView');
+      //return tv.expandAll();
+    //}
     let getTreeLeaves = document.getElementsByClassName('tree-leaf-content');
-    console.log(getTreeLeaves);
+    //console.log(getTreeLeaves);
     //console.log(getTreeLeaves.length);
 
     let treeNodeObj;
@@ -103,103 +120,178 @@ export class Rafter {
       //console.log(treeNodeObj.type);
       if (treeNodeObj.isContainer) {
         getTreeLeaves[i].innerHTML = '<div class="tlfolder fa fa-folder"></div>' + getTreeLeaves[i].innerHTML;
-        foldersArr.push({id: treeNodeObj.id, domDiv: getTreeLeaves[i]});
+        //do not add sub sub folders
+        // if (subSubDirFiles !== undefined && subSubDirFiles !== null) {
+        //   //console.log('line 113');
+        //   if (subSubDirFiles[0].container_id !== treeNodeObj.id) {
+        //     console.log('line 115');
+        //     foldersArr.push({id: treeNodeObj.id, domDiv: getTreeLeaves[i]});
+        //   }
+        // } else {
+        //   console.log('line 119');
+        //do not add sub sub folders
+        //for (let z = 0; z < subDirIds.length; z++) {
+        if (subDirIds.indexOf(treeNodeObj.id) === -1) {
+          foldersArr.push({id: treeNodeObj.id, domDiv: getTreeLeaves[i]});
+        }
+        //console.log(subDirIds.indexOf(treeNodeObj.id));
+        // }
       }
     }
-
+    //subSubDirFiles = null;
     //console.log(foldersArr);
     // make folders clickable
 
     for (let j = 0; j < foldersArr.length; j++) {
-      console.log(foldersArr[j]);
+      //console.log(foldersArr[j]);
+      //console.log('find a match for subsubfolder');
+      //console.log(foldersArr[j].id);
+      //console.log(raf.rfid);
+      //if (raf.rfid !== foldersArr[j].id) {
       foldersArr[j].domDiv.addEventListener('click', function(evt) {
           //console.log(evt);
-        showFile(foldersArr[j].id, hdj, raf, rvs, myApp, rui, mtws, tv, showFile, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions);
+        showFile(foldersArr[j].id, null, raf, rvs, myApp, rui, mtws, tv, showFile, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles, hdj);
       });
       if (foldersArr[j].domDiv.nextElementSibling !== null) {
         filesInFolder = foldersArr[j].domDiv.nextElementSibling;
-        console.log(filesInFolder);
+          //console.log(filesInFolder);
       }
+      //}
       //console.log(filesInFolder);
       //console.log(filesInFolder.getElementByClassName('tree-leaf'));
     }
-
+    //if (subSubDirFiles === null) {
+    //home directory click event is here
     tv.on('select', function(evt) {
-      console.log('i clicked the select event from tv');
-      console.log(evt.data.id);
-      showFile(evt.data.id, hdj, raf, rvs, myApp, rui, null, null, null, null, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions);
+        //console.log('i clicked the select event from tv');
+        //console.log(evt.data.id);
+      showFile(evt.data.id, null, raf, rvs, myApp, rui, null, null, null, null, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles, hdj);
     });
+    //}
     if (filesInFolder === null) {
       return console.log('no files inside this subfolder');
     }
-    makeFilesClickable(filesInFolder, showFile, raf, rvs, myApp, rui, subDirFiles, mnj, makeFilesClickable, mtws, tv, displayTree, vsFetch, vsFetchSuccess, rafterFileActions);
+    makeFilesClickable(filesInFolder, showFile, raf, rvs, myApp, rui, subDirFiles, mnj, makeFilesClickable, mtws, tv, displayTree, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles, hdj);
   }
 
-  makeFilesClickable(filesInFolder, showFile, raf, rvs, myApp, rui, subDirFiles, mnj, makeFilesClickable, mtws, tv, displayTree, vsFetch, vsFetchSuccess, rafterFileActions) {
-    if (raf.rfid !== '' && (sessionStorage.getItem('parentId') !== raf.rfid)) {
-      console.log('inside a sub sub folder');
-    }
+  makeFilesClickable(filesInFolder, showFile, raf, rvs, myApp, rui, subDirFiles, mnj, makeFilesClickable, mtws, tv, displayTree, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles, hdj) {
+    // if (raf.rfid !== '' && (sessionStorage.getItem('parentId') !== raf.rfid)) {
+    //   console.log('inside a sub sub folder');
+    // }
     let fif = filesInFolder.getElementsByClassName('tree-leaf');
     let insideFolderDetails = document.getElementsByClassName('subDirContent')[0].innerHTML;
     let allData = JSON.parse(insideFolderDetails);
+    //console.log(allData);
     let fileID, fileIDsJson;
     //console.log('find a folder');
     //console.log(fif);
+    let matchFile = false;
     for (let k = 0; k < fif.length; k++) {
+      console.log(fif[k]);
       fileID = fif[k].getElementsByClassName('tree-leaf-content')[0];
       fileIDsJson = fileID.getAttribute('data-item');
       let fileIDJson = JSON.parse(fileIDsJson);
-      //console.log(fileIDJson.isContainer);
-      fif[k].addEventListener('click', function(evt) {
-        //console.log('I clicked the file inside sub folder');
-        if (!fileIDJson.isContainer) {
-          showFile(fileIDJson.id, allData, raf, rvs, myApp, rui, mtws, tv, showFile, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions);
-        } else {
-          console.log('got me a sub sub folder');
-          document.getElementsByClassName('fileActions')[0].style.display = 'none';
-          console.log(fileIDJson);
-          document.getElementsByClassName('folderName')[0].innerHTML = fileIDJson.name;
-          document.getElementsByClassName('createNew')[0].style.display = 'none';
-          raf.rfid = fileIDJson.id;
+      //if (subSubDirFiles === null || subSubDirFiles === undefined) {
+      //console.log(fif[k]);
+      console.log(fileIDJson.id);
+      if (subSubDirFiles !== null && subSubDirFiles !== undefined) {
+        //console.log(subSubDirFiles.id);
+      //do not put click events into sub sub folders
+
+        for (let zz = 0; zz < subSubDirFiles.length; zz++) {
+          if (subSubDirFiles[zz].id === fileIDJson.id) {
+            console.log('found a match');
+            matchFile = true;
+            fif[k].addEventListener('click', function(evt) {
+              console.log('do nothing');
+              document.getElementsByClassName('deleteButton')[0].style.displays = 'none';
+            });
+          }
+        }
+      }
+      if (!matchFile) {
+        console.log('line209');
+        fif[k].addEventListener('click', function(evt) {
+          console.log('I clicked the file inside sub folder');
+          if (!fileIDJson.isContainer) {
+            showFile(fileIDJson.id, allData, raf, rvs, myApp, rui, mtws, tv, showFile, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles, hdj);
+          } else {
+            console.log('got me a sub sub folder');
+            document.getElementsByClassName('fileActions')[0].style.display = 'none';
+          //console.log(fileIDJson);
+            document.getElementsByClassName('folderName')[0].innerHTML = fileIDJson.name;
+            document.getElementsByClassName('createNew')[0].style.display = 'none';
+            raf.rfid = fileIDJson.id;
           //refresh the inside Folder Details
           //hide the file actions (display, download, delete)
           //tree view opens with sub sub folder content
-          document.getElementsByClassName('displayFileContent')[0].innerHTML = ''; //this is incase someone clicked view button on a file
-          document.getElementsByClassName('subDirContent')[0].innerHTML = '';
-          console.log(document.getElementsByClassName('homeDirContent')[0].innerHTML);
-          rvs('ls', myApp, rui, raf, mtws, null, null, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions);
+            document.getElementsByClassName('displayFileContent')[0].innerHTML = ''; //this is incase someone clicked view button on a file
+            document.getElementsByClassName('subDirContent')[0].innerHTML = '';
+          //console.log(document.getElementsByClassName('homeDirContent')[0].innerHTML);
+            rvs('ls', myApp, rui, raf, mtws, null, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles);
           // const dnldbt = document.getElementsByClassName('dnldButton')[0];
           // const dfcbt = document.getElementsByClassName('displayButton')[0];
           // dnldbt.style.display = 'none';
           // dfcbt.style.display = 'none';
-        }
-      });
+          }
+        });
+      }
     }
   }
 
-  showFileDetails(id, hdj, raf, rvs, myApp, rui, mtws = null, tv, showFile, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions) {
+  showFileDetails(id, allData, raf, rvs, myApp, rui, mtws = null, tv, showFile, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles, hdj) {
     const dnldbt = document.getElementsByClassName('dnldButton')[0];
     const dfcbt = document.getElementsByClassName('displayButton')[0];
+    let matchFile = false;
+    //const dlbt = document.getElementsByClassName('deleteButton')[0];
+    document.getElementsByClassName('deleteButton')[0].style.displays = 'block';
     rafterFileActions.resetFileActions(mtws, dnldbt, dfcbt);
+    console.log(subSubDirFiles);
     if (hdj !== null) {
       for (let i = 0; i < hdj.length; i++) {
         if (id === hdj[i].id) {
           document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(hdj[i]);
-          console.log(document.getElementsByClassName('homeDirContent')[0].innerHTML);
+          //console.log(document.getElementsByClassName('homeDirContent')[0].innerHTML);
           if (hdj[i].isContainer) {
           //console.log('I found a folder');
             document.getElementsByClassName('fileActions')[0].style.display = 'none';
             document.getElementsByClassName('folderName')[0].innerHTML = hdj[i].name;
             raf.path = '/' + hdj[i].name;
+            raf.rfid = '';
           //console.log('line 86?');
-            return rvs('ls', myApp, rui, raf, mtws, hdj[i].id, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions);
+            return rvs('ls', myApp, rui, raf, mtws, hdj[i].id, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles);
           }
           return rafterFileActions.fileNameState(hdj[i], dnldbt, dfcbt);
         }
       }
     }
-    if (subDirFiles !== null && subDirFiles !== undefined) {
-      rafterFileActions.setFileActions(id, subDirFiles, dnldbt, dfcbt);
+    if (subSubDirFiles !== null && subSubDirFiles !== undefined) {
+      //console.log(subSubDirFiles.id);
+    //do not put click events into sub sub folders
+
+      for (let zz = 0; zz < subSubDirFiles.length; zz++) {
+        if (subSubDirFiles[zz].id === id) {
+          console.log('found a match');
+          document.getElementsByClassName('deleteButton')[0].style.display = 'none';
+          matchFile = true;
+          // fif[k].addEventListener('click', function(evt) {
+          //   console.log('do nothing');
+          //   document.getElementsByClassName('deleteButton')[0].style.displays = 'none';
+          // });
+        }
+        //else {
+        //   document.getElementsByClassName('deleteButton')[0].style.displays = 'block';
+        // }
+      }
+    }
+    // if (subSubDirFiles !== null && subSubDirFiles !== undefined) {
+    //   document.getElementsByClassName('deleteButton')[0].style.display = 'none';
+    // }
+    console.log(subDirFiles);
+    if (subDirFiles !== null && subDirFiles !== undefined && !matchFile) {
+      console.log('line292');
+      document.getElementsByClassName('deleteButton')[0].style.display = 'block';
+      rafterFileActions.setFileActions(id, subDirFiles, dnldbt, dfcbt, raf, subSubDirFiles);
     }
   }
 
@@ -218,32 +310,39 @@ export class Rafter {
     this.displayTree(this.tv, nameArr, 'treeView', this.showFileDetails, this.homeDirJson, this.rafterFile, this.rafterVolumeService, this.app, this.rafterUserID, this.makeTreeWithSub, this.displayTree, this.subDirJson, this.makeNewJson, this.makeFilesClickable, this.vsFetch, this.vsFetchSuccess, this.rafterFileActions);
   }
 
-  async makeTreeWithSub(data, hdjId, hdj, tv, showFile, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions) {
-    let childArr = mnj(data);
-    console.log(hdjId);
+  async makeTreeWithSub(data, hdjId, hdj, tv, showFile, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles) {
+    let childArr;
+    //console.log(hdj);
+    //if (subSubDirFiles === null || subSubDirFiles === undefined) {
+    childArr = mnj(data);
+    // }
+    //  = mnj(data);
+    // console.log(childArr);
     if (hdjId !== null) {
       sessionStorage.setItem('parentId', hdjId);
     }
     if (raf.rfid !== '') {
       //console.log(tv.data);
-      console.log(raf.rfid);
+      //console.log(raf.rfid);
       //console.log(hdjId);
       //console.log(data);
       //console.log(childArr);
       let parentId = sessionStorage.getItem('parentId');
       for (let j = 0; j < tv.data.length; j++) {
         if (parentId === tv.data[j].id) {
-          console.log(tv.data[j].children);
+          //console.log(tv.data[j].children);
           for (let k = 0; k < tv.data[j].children.length; k++) {
             if (tv.data[j].children[k].id === raf.rfid) {
-              console.log(tv.data[j].children[k]);
+              //console.log(tv.data[j].children[k]);
               tv.data[j].children[k].children = childArr;
-              console.log(tv.data[j].children[k].children);
+              //console.log(tv.data[j].children[k].children);
             }
           }
         }
       }
-      //return;
+      //subSubDirFiles = data;
+      raf.rfid = '';
+      sessionStorage.removeItem('parentId');
     } else {
       for (let i = 0; i < tv.data.length; i++) {
         if (hdjId === tv.data[i].id) {
@@ -252,7 +351,7 @@ export class Rafter {
       }
     }
     let newData = tv.data;
-    await displayTree(tv, newData, 'treeView', showFile, hdj, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions);
+    await displayTree(tv, newData, 'treeView', showFile, hdj, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles, childArr);
     tv.expandAll();
   }
 
@@ -283,7 +382,7 @@ export class Rafter {
     await this.vsFetch(this.vsFetchSuccess, this.app, this.rafterUserID, cmd, this.rafterFile, false);
   }
 
-  async vsFetch(vsFetchSuccess, myApp, rafterUserID, cmd, myRafterFile, fromSubDir, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, rafterFileActions) {
+  async vsFetch(vsFetchSuccess, myApp, rafterUserID, cmd, myRafterFile, fromSubDir, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, rafterFileActions, subSubDirFiles) {
     return await myApp.httpClient.fetch('/rafter/vs', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
@@ -296,12 +395,12 @@ export class Rafter {
       document.getElementsByClassName('userServiceError')[0].innerHTML = '';
       document.getElementsByClassName('showHideHD')[0].style.display = 'block';
       document.getElementsByClassName('rafterCheckHome')[0].style.display = 'none';
-      console.log(data);
-      console.log(myRafterFile.rfid);
+      //console.log(data);
+      //console.log(myRafterFile.rfid);
       if (myRafterFile.rfid !== '') {
-        console.log('new request by id detected');
-        console.log(fromSubDir);
-        console.log(data);
+        //console.log('new request by id detected');
+        //console.log(fromSubDir);
+        //console.log(data);
       }
       if (fromSubDir) {
         return vsFetchSuccess(data, vsFetchSuccess, myApp, rafterUserID, cmd, myRafterFile, fromSubDir, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, rafterFileActions);
@@ -325,22 +424,24 @@ export class Rafter {
     });
   }
 
-  vsFetchSuccess(data, vsFetchSuccess, myApp, rafterUserID, cmd, myRafterFile, fromSubDir, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, rafterFileActions) {
-    console.log(hdjId);
+  vsFetchSuccess(data, vsFetchSuccess, myApp, rafterUserID, cmd, myRafterFile, fromSubDir, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, rafterFileActions, subSubDirFiles) {
+    //console.log(hdjId);
     document.getElementsByClassName('subDirContent')[0].innerHTML = JSON.stringify(data);
     if (myRafterFile.rfid === '') {
       subDirFiles.push.apply(subDirFiles, data);
+    } else {
+      subSubDirFiles = data;
     }
-    console.log(subDirFiles);
-    mtws(data, hdjId, hdj, tv, showFile, myRafterFile, rvs, myApp, rafterUserID, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions);
+    //console.log(subDirFiles);
+    mtws(data, hdjId, hdj, tv, showFile, myRafterFile, rvs, myApp, rafterUserID, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles);
   }
 
-  rafterVolumeService(cmd, myApp, rafterUserID, myRafterFile, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions) {
-    console.log(hdjId);
-    if (myRafterFile.rfid !== '') {
-      console.log('new request by id detected');
-      //console.log(hdjId);
-    }
+  rafterVolumeService(cmd, myApp, rafterUserID, myRafterFile, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles) {
+    //console.log(hdjId);
+    // if (myRafterFile.rfid !== '') {
+    //   //console.log('new request by id detected');
+    //   //console.log(hdjId);
+    // }
     vsFetch(vsFetchSuccess, myApp, rafterUserID, cmd, myRafterFile, true, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, rafterFileActions);
   }
 
