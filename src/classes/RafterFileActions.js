@@ -194,7 +194,7 @@ export class RafterFileActions {
   }
 
   setFileActions(id, subDirFiles, dnldbt, dfcbt, raf, subSubDirFiles) {
-    // console.log('match?');
+    //console.log('set file actions');
     // console.log(id);
     // console.log(raf.rfid);
     // if (id === raf.rfid) {
@@ -204,6 +204,7 @@ export class RafterFileActions {
     for (let j = 0; j < subDirFiles.length; j++) {
       if (id === subDirFiles[j].id && !subDirFiles[j].isContainer) {
           //console.log('i found a match!');
+        document.getElementsByClassName('deleteButton')[0].style.display = 'block';
         document.getElementsByClassName('dnldButton')[0].innerHTML = ('Download<br>' + subDirFiles[j].name);
         document.getElementsByClassName('deleteButton')[0].innerHTML = ('Delete<br>' + subDirFiles[j].name);
         document.getElementsByClassName('displayButton')[0].innerHTML = ('Display<br>' + subDirFiles[j].name);
@@ -221,6 +222,8 @@ export class RafterFileActions {
   }
 
   fileNameState(myFile, dnldbt, dfcbt) {
+    console.log('file name state');
+    document.getElementsByClassName('deleteButton')[0].style.display = 'block';
     document.getElementsByClassName('dnldButton')[0].innerHTML = ('Download<br>' + myFile.name);
     document.getElementsByClassName('deleteButton')[0].innerHTML = ('Delete<br>' + myFile.name);
     document.getElementsByClassName('displayButton')[0].innerHTML = ('Display<br>' + myFile.name);

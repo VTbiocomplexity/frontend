@@ -240,13 +240,13 @@ export class Rafter {
   }
 
   showFileDetails(id, allData, raf, rvs, myApp, rui, mtws = null, tv, showFile, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles, hdj) {
+    console.log('show file details');
     const dnldbt = document.getElementsByClassName('dnldButton')[0];
     const dfcbt = document.getElementsByClassName('displayButton')[0];
     let matchFile = false;
     //const dlbt = document.getElementsByClassName('deleteButton')[0];
     document.getElementsByClassName('deleteButton')[0].style.displays = 'block';
     rafterFileActions.resetFileActions(mtws, dnldbt, dfcbt);
-    console.log(subSubDirFiles);
     if (hdj !== null) {
       for (let i = 0; i < hdj.length; i++) {
         if (id === hdj[i].id) {
@@ -261,33 +261,34 @@ export class Rafter {
           //console.log('line 86?');
             return rvs('ls', myApp, rui, raf, mtws, hdj[i].id, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles);
           }
+          document.getElementsByClassName('deleteButton')[0].style.displays = 'block';
           return rafterFileActions.fileNameState(hdj[i], dnldbt, dfcbt);
         }
       }
     }
+    //console.log(subSubDirFiles);
     if (subSubDirFiles !== null && subSubDirFiles !== undefined) {
       //console.log(subSubDirFiles.id);
     //do not put click events into sub sub folders
 
       for (let zz = 0; zz < subSubDirFiles.length; zz++) {
         if (subSubDirFiles[zz].id === id) {
-          console.log('found a match');
+          //console.log('found a match');
           document.getElementsByClassName('deleteButton')[0].style.display = 'none';
           matchFile = true;
           // fif[k].addEventListener('click', function(evt) {
           //   console.log('do nothing');
           //   document.getElementsByClassName('deleteButton')[0].style.displays = 'none';
           // });
+        } else {
+          document.getElementsByClassName('deleteButton')[0].style.displays = 'block';
         }
-        //else {
-        //   document.getElementsByClassName('deleteButton')[0].style.displays = 'block';
-        // }
       }
     }
     // if (subSubDirFiles !== null && subSubDirFiles !== undefined) {
     //   document.getElementsByClassName('deleteButton')[0].style.display = 'none';
     // }
-    console.log(subDirFiles);
+    //console.log(subDirFiles);
     if (subDirFiles !== null && subDirFiles !== undefined && !matchFile) {
       console.log('line292');
       document.getElementsByClassName('deleteButton')[0].style.display = 'block';
