@@ -86,23 +86,23 @@ export class Rafter {
     }
   }
 
-  displayTree(tv, nameArr, divId, showFile, hdj, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles, childArr) {
+  displayTree(tv, nameArr, divId, showFile, hdj, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles) {
     let filesInFolder = null; //these are the files that are inside of a subfolder of the home dir
     tv = new TreeView(nameArr, divId);
     //if (subSubDirFiles !== null && subSubDirFiles !== undefined) {
     //console.log(subSubDirFiles);
     //console.log(childArr);
     //find a sub sub folder
-    let subDirIds = [];
-    if (childArr !== undefined) {
-      for (let i = 0; i < childArr.length; i++) {
-        if (childArr[i].isContainer) {
-          //console.log(childArr[i]);
-          subDirIds.push(childArr[i].id);
-          //console.log(subDirIds);
-        }
-      }
-    }
+    //let subDirIds = [];
+    // if (childArr !== undefined) {
+    //   for (let i = 0; i < childArr.length; i++) {
+    //     if (childArr[i].isContainer) {
+    //       //console.log(childArr[i]);
+    //       subDirIds.push(childArr[i].id);
+    //       //console.log(subDirIds);
+    //     }
+    //   }
+    // }
       //console.log('add click events for the files inside of subsubfolder');
       //tv = new TreeView(newData, 'treeView');
       //return tv.expandAll();
@@ -131,9 +131,9 @@ export class Rafter {
         //   console.log('line 119');
         //do not add sub sub folders
         //for (let z = 0; z < subDirIds.length; z++) {
-        if (subDirIds.indexOf(treeNodeObj.id) === -1) {
-          foldersArr.push({id: treeNodeObj.id, domDiv: getTreeLeaves[i]});
-        }
+        //if (subDirIds.indexOf(treeNodeObj.id) === -1) {
+        foldersArr.push({id: treeNodeObj.id, domDiv: getTreeLeaves[i]});
+        //}
         //console.log(subDirIds.indexOf(treeNodeObj.id));
         // }
       }
@@ -352,7 +352,7 @@ export class Rafter {
       }
     }
     let newData = tv.data;
-    await displayTree(tv, newData, 'treeView', showFile, hdj, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles, childArr);
+    await displayTree(tv, newData, 'treeView', showFile, hdj, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles);
     tv.expandAll();
   }
 
