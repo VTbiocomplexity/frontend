@@ -204,7 +204,7 @@ export class Rafter {
             matchFile = true;
             fif[k].addEventListener('click', function(evt) {
               console.log('do nothing');
-              document.getElementsByClassName('deleteButton')[0].style.displays = 'none';
+              document.getElementsByClassName('deleteButton')[0].style.display = 'none';
             });
           }
         }
@@ -245,7 +245,7 @@ export class Rafter {
     const dfcbt = document.getElementsByClassName('displayButton')[0];
     let matchFile = false;
     //const dlbt = document.getElementsByClassName('deleteButton')[0];
-    document.getElementsByClassName('deleteButton')[0].style.displays = 'block';
+    document.getElementsByClassName('deleteButton')[0].style.display = 'block';
     rafterFileActions.resetFileActions(mtws, dnldbt, dfcbt);
     if (hdj !== null) {
       for (let i = 0; i < hdj.length; i++) {
@@ -261,7 +261,7 @@ export class Rafter {
           //console.log('line 86?');
             return rvs('ls', myApp, rui, raf, mtws, hdj[i].id, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles);
           }
-          document.getElementsByClassName('deleteButton')[0].style.displays = 'block';
+          document.getElementsByClassName('deleteButton')[0].style.display = 'block';
           return rafterFileActions.fileNameState(hdj[i], dnldbt, dfcbt);
         }
       }
@@ -276,12 +276,8 @@ export class Rafter {
           //console.log('found a match');
           document.getElementsByClassName('deleteButton')[0].style.display = 'none';
           matchFile = true;
-          // fif[k].addEventListener('click', function(evt) {
-          //   console.log('do nothing');
-          //   document.getElementsByClassName('deleteButton')[0].style.displays = 'none';
-          // });
         } else {
-          document.getElementsByClassName('deleteButton')[0].style.displays = 'block';
+          document.getElementsByClassName('deleteButton')[0].style.display = 'block';
         }
       }
     }
@@ -291,7 +287,7 @@ export class Rafter {
     //console.log(subDirFiles);
     if (subDirFiles !== null && subDirFiles !== undefined && !matchFile) {
       console.log('line292');
-      document.getElementsByClassName('deleteButton')[0].style.display = 'block';
+      //document.getElementsByClassName('deleteButton')[0].style.display = 'block';
       rafterFileActions.setFileActions(id, subDirFiles, dnldbt, dfcbt, raf, subSubDirFiles);
     }
   }
@@ -398,11 +394,11 @@ export class Rafter {
       document.getElementsByClassName('rafterCheckHome')[0].style.display = 'none';
       //console.log(data);
       //console.log(myRafterFile.rfid);
-      if (myRafterFile.rfid !== '') {
-        //console.log('new request by id detected');
-        //console.log(fromSubDir);
-        //console.log(data);
-      }
+      // if (myRafterFile.rfid !== '') {
+      //   //console.log('new request by id detected');
+      //   //console.log(fromSubDir);
+      //   //console.log(data);
+      // }
       if (fromSubDir) {
         return vsFetchSuccess(data, vsFetchSuccess, myApp, rafterUserID, cmd, myRafterFile, fromSubDir, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, rafterFileActions);
       }
