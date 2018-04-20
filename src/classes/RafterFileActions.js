@@ -175,8 +175,6 @@ export class RafterFileActions {
 
   resetFileActions(mtws, dnldbt, dfcbt) {
     document.getElementsByClassName('displayFileContent')[0].innerHTML = '';
-    //const dnldbt = document.getElementsByClassName('dnldButton')[0];
-    //const dfcbt = document.getElementsByClassName('displayButton')[0];
     dnldbt.style.display = 'none';
     dfcbt.style.display = 'none';
     document.getElementsByClassName('fileActions')[0].style.display = 'block';
@@ -193,7 +191,10 @@ export class RafterFileActions {
     }
   }
 
-  setFileActions(id, subDirFiles, dnldbt, dfcbt, raf, subSubDirFiles) {
+  setFileActions(id, subDirFiles, dnldbt, dfcbt, raf, subSubDirFiles, matchFile) {
+    if (matchFile || subDirFiles === null || subDirFiles === undefined) {
+      return;
+    }
     for (let j = 0; j < subDirFiles.length; j++) {
       if (id === subDirFiles[j].id && !subDirFiles[j].isContainer) {
           //console.log('i found a match!');
