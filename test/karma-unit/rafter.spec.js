@@ -439,20 +439,24 @@ describe('The Rafter Dashboard', () => {
     let myObj = {hi: 'howdy', low: 'loud', id: '123', isContainer: true};
     let filesInFolder = {getElementsByClassName: function() { return [{addEventListener: function(type, func) {func();}, getElementsByClassName: function() {return [{getAttribute: function() {return JSON.stringify(myObj);}}];}}, {addEventListener: function(type, func) {func();}, getElementsByClassName: function() {return [{getAttribute: function() {return JSON.stringify(myObj);}}];}}];}};
     rd.app.httpClient = new HttpMock();
-    rd.showFileDetails = function() {};
-    spyOn(rd, 'showFileDetails').and.callThrough();
-    document.body.innerHTML = '<div class="displayFileContent"></div><div class="createNew"></div><div class="folderName"></div><div class="fileActions"></div><div id="divId"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="subDirContent"></div>';
+    let subSubDirFiles = [{id: '123'}];
+    document.body.innerHTML += '<div class="displayFileContent"></div><div class="createNew"></div><div class="folderName"></div><div class="fileActions"></div><div id="divId"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="subDirContent"></div>';
     document.getElementsByClassName('subDirContent')[0].innerHTML = '[{"state":"empty","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"6f1ff340-18cc-11e8-95c2-717499928918","creation_date":"2018-02-23T19:04:55.156Z","name":"file2","owner_id":"JoshuaVSherman","container_id":"a320cc40-17e7-11e8-95c2-717499928918","update_date":"2018-02-23T19:04:55.156Z"},{"state":"empty","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"fb05c9b0-18c3-11e8-95c2-717499928918","creation_date":"2018-02-23T18:04:24.396Z","name":"insideSubFolder1.txt","owner_id":"JoshuaVSherman","container_id":"a320cc40-17e7-11e8-95c2-717499928918","update_date":"2018-02-23T18:04:24.396Z"}]';
-    rd.makeFilesClickable(filesInFolder, rd.showFileDetails, rd.rafterFile, rd.rafterVolumeService, rd.app, null, null, null, null, null, null, null, function() {}, function() {});
-    expect(rd.showFileDetails).not.toHaveBeenCalled();
+    rd.makeFilesClickable(filesInFolder, rd.showFileDetails, rd.rafterFile, rd.rafterVolumeService, rd.app, null, null, null, null, null, null, null, function() {}, function() {}, function() {}, subSubDirFiles, null );
+    expect(document.getElementsByClassName('deleteButton')[0].style.display).toBe('none');
+    subSubDirFiles = [{id: '456'}];
+    rd.makeFilesClickable(filesInFolder, rd.showFileDetails, rd.rafterFile, rd.rafterVolumeService, rd.app, null, null, null, null, null, null, null, function() {}, function() {}, function() {}, subSubDirFiles, null );
+    expect(document.getElementsByClassName('deleteButton')[0].style.display).toBe('none');
     done();
   });
   it('displays the metadata of an empty file after a tree menu click', (done) => {
     rd.app.httpClient = new HttpMock();
     document.body.innerHTML = '<div class="fileActions"></div><button class="displayButton"></button><div class="displayFileContent"></div><button class="deleteButton"></button><button class="dnldButton"></button><div class="fileDetailsTitle"></div><div class="rafterLogout"></div><div class="fileDld"></div><button class="rafterCheckHome"></button><div class="createNew"></div><div id="divId"></div><p class="fileDetailsTitle"></p><div class="isHomeDir"></div><div class="isHomeDir"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div>';
     const nameArr = [{state: 'empty', name: 'filename', id: '123', type: 'unspecified', isContainer: false, children: []}];
+    spyOn(rd, 'rafterFileActions').and.callThrough();
+    rd.showFileDetails('123', nameArr, null, null, null, null, null, null, null, nameArr, null, null, null, null, null, rd.rafterFileActions, null, null);
+    expect(rd.rafterFileActions).not.toHaveBeenCalled();
     rd.showFileDetails('123', nameArr, null, null, null, null, null, null, null, nameArr, null, null, null, null, null, rd.rafterFileActions, null, nameArr);
-    //(id, hdj, raf, rvs, myApp, rui, mtws = null, tv, showFile, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions)
     expect(document.getElementsByClassName('homeDirContent')[0].innerHTML).not.toBe('');
     expect(document.getElementsByClassName('displayButton')[0].style.display).toBe('none');
     done();
@@ -475,6 +479,20 @@ describe('The Rafter Dashboard', () => {
     expect(document.getElementsByClassName('folderName')[0].innerHTML).toBe('myFolder');
     done();
   });
+  it('shows file details for a sub sub folder', testAsync(async function() {
+    rd.app.httpClient = new HttpMock();
+    rd.rafterVolumeService = function() {};
+    document.body.innerHTML = '<div class="fileActions"></div><button class="dnldButton"></button><button class="deleteButton"></button><button class="displayButton"></button><div class="displayFileContent"></div><div class="fileDetailsTitle"></div><div class="rafterLogout"></div><div class="fileDld"></div><div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"><p class="folderName"></p></div><p class="fileDetailsTitle"></p><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div>';
+    const nameArr = [{name: 'myFolder', id: '123', type: 'folder', isContainer: true, children: []}];
+    await rd.showFileDetails('123', nameArr, rd.rafterFile, rd.rafterVolumeService, null, null, null, null, null, null, null, null, null, null, null, rd.rafterFileActions, nameArr, null);
+    expect(document.getElementsByClassName('deleteButton')[0].style.display).toBe('none');
+    document.getElementsByClassName('deleteButton')[0].style.display = 'block';
+    await rd.showFileDetails('456789', nameArr, rd.rafterFile, rd.rafterVolumeService, null, null, null, null, null, null, null, null, null, null, null, rd.rafterFileActions, nameArr, null);
+    expect(document.getElementsByClassName('deleteButton')[0].style.display).toBe('block');
+    await rd.rafterFileActions.setFileActions('123', [{isContainer: true}]);
+    expect(document.getElementsByClassName('deleteButton')[0].style.display).toBe('none');
+    //done();
+  }));
   it('displays the file details that are inside of the home directory', (done) => {
     rd.homeDirJson = {name: 'howdy'};
     rd.navHomeDir();
@@ -516,16 +534,15 @@ describe('The Rafter Dashboard', () => {
   }));
   it('makes a tree with subdirectories after receiving the contents of the folder', testAsync(async function() {
     let data = {files: ['howdy']};
-    //let myRafterFile =
-  // let myFetch = function() {
-  //   return Promise.resolve({
-  //     Headers: this.headers,
-  //     json: () => Promise.resolve(data)
-  //   });
-  // };
-  // let myApp = {httpClient: {fetch: myFetch}};
     spyOn(rd, 'makeTreeWithSub').and.callThrough();
     await rd.vsFetchSuccess(data, rd.vsFetchSuccess, null, null, null, rd.rafterFile, null, rd.makeTreeWithSub, null, null, null, null, null, null, []);
+    expect(rd.makeTreeWithSub).toHaveBeenCalled();
+  }));
+  it('makes a tree with subdirectories after receiving the contents of the sub sub directory', testAsync(async function() {
+    let data = ['howdy'];
+    let subSubDirFiles = [];
+    spyOn(rd, 'makeTreeWithSub').and.callThrough();
+    await rd.vsFetchSuccess(data, rd.vsFetchSuccess, null, null, null, {rfid: '123'}, null, rd.makeTreeWithSub, null, null, null, null, null, null, [], null, null, null, null, subSubDirFiles);
     expect(rd.makeTreeWithSub).toHaveBeenCalled();
   }));
   it('catches error on create a new file', testAsync(async function() {
@@ -583,13 +600,22 @@ describe('The Rafter Dashboard', () => {
     document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="subDirContent"></div>';
     await rd.makeTree([{name: 'unknown', id: '8675309', isContainer: false, children: []}, {name: 'yoyo', id: '123'}]);
   }));
-  it('makes a tree menu with a folder open', testAsync(async function() {
+  it('makes a tree menu with a folder open including sub sub folders', testAsync(async function() {
     rd.displayTree = function() {};
     rd.tv = {expandAll: function() {}, data: [{name: 'myFolder', id: '456', type: 'folder', isContainer: false, children: []}, {name: 'myFolder2', id: '4562', type: 'folder', isContainer: false, children: []}]};
     document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="subDirContent"></div>';
     const data = [{name: 'myFile', id: '123', type: 'file', isContainer: false, children: []}];
     const hdj = [{name: 'myFolder', id: '456', type: 'folder', isContainer: true, children: []}];
+    spyOn(window.sessionStorage, 'setItem').and.callThrough();
+    spyOn(window.sessionStorage, 'removeItem').and.callThrough();
+    await rd.makeTreeWithSub(data, null, hdj, rd.tv, rd.showFileDetails, rd.rafterFile, null, null, null, rd.makeTreeWithSub, rd.displayTree, rd.subDirJson, rd.makeNewJson);
+    expect(window.sessionStorage.setItem).not.toHaveBeenCalled();
     await rd.makeTreeWithSub(data, '456', hdj, rd.tv, rd.showFileDetails, rd.rafterFile, null, null, null, rd.makeTreeWithSub, rd.displayTree, rd.subDirJson, rd.makeNewJson);
+    expect(window.sessionStorage.setItem).toHaveBeenCalled();
+    await rd.makeTreeWithSub(data, '456', hdj, rd.tv, rd.showFileDetails, {rfid: '123'}, null, null, null, rd.makeTreeWithSub, rd.displayTree, rd.subDirJson, rd.makeNewJson);
+    expect(window.sessionStorage.removeItem).toHaveBeenCalled();
+    await rd.makeTreeWithSub(data, '456', hdj, rd.tv, rd.showFileDetails, {rfid: '999999'}, null, null, null, rd.makeTreeWithSub, rd.displayTree, rd.subDirJson, rd.makeNewJson);
+    expect(window.sessionStorage.removeItem).toHaveBeenCalled();
   }));
   it('detects an expired token', (done) => {
     let tkn = {exp: 123};
@@ -667,20 +693,20 @@ describe('The Rafter Dashboard', () => {
   });
   it('reloads the page if sessionStorage was deleted', testAsync(async function() {
   //document.body.innerHTML += '<div class="rafterLogout" style="display:block"></div>';
-    document.getElementsByClassName('rafterLogout')[0].style.displays = 'block';
+    document.getElementsByClassName('rafterLogout')[0].style.display = 'block';
     rd.rafterUser = new RafterUser(rd.app.httpClient);
     let cep = function() {return false;};
     let rlo = function() {sessionStorage.removeItem('rafterToken');};
     let sli = true;
     await rd.checkIfLoggedIn(cep, rlo, sli, rd.rafterUser.checkIfPageReload);
-    document.getElementsByClassName('rafterLogout')[0].style.displays = 'none';
+    document.getElementsByClassName('rafterLogout')[0].style.display = 'none';
   //document.body.innerHTML = '<div class="rafterLogout" style="display:none"></div>';
     await rd.checkIfLoggedIn(cep, rlo, sli, rd.rafterUser.checkIfPageReload);
   //document.body.innerHTML = '';
     await rd.checkIfLoggedIn(cep, rlo, sli, rd.rafterUser.checkIfPageReload);
     document.getElementsByClassName('showHideHD')[0].style.display = 'block';
     await rd.rafterUser.checkIfPageReload();
-  //expect(document.getElementsByClassName('showHideHD')[0].style.display).toBe('none');
+    //expect(document.getElementsByClassName('showHideHD')[0].style.display).toBe('none');
   }));
 
   it('continues to check for expired token when there is a user defined', (done) => {
