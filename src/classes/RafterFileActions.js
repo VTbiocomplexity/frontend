@@ -194,13 +194,6 @@ export class RafterFileActions {
   }
 
   setFileActions(id, subDirFiles, dnldbt, dfcbt, raf, subSubDirFiles) {
-    //console.log('set file actions');
-    // console.log(id);
-    // console.log(raf.rfid);
-    // if (id === raf.rfid) {
-    //   return;
-    // }
-    //if (id !== raf.rfid && (subSubDirFiles === null || subSubDirFiles === undefined)) {
     for (let j = 0; j < subDirFiles.length; j++) {
       if (id === subDirFiles[j].id && !subDirFiles[j].isContainer) {
           //console.log('i found a match!');
@@ -218,7 +211,23 @@ export class RafterFileActions {
         document.getElementsByClassName('deleteButton')[0].style.display = 'none';
       }
     }
-    // }
+  }
+
+  setSubSubFiles(subSubDirFiles, id) {
+    if (subSubDirFiles !== null && subSubDirFiles !== undefined) {
+      //console.log(subSubDirFiles.id);
+    //do not put click events into sub sub folders
+      for (let zz = 0; zz < subSubDirFiles.length; zz++) {
+        if (subSubDirFiles[zz].id === id) {
+          console.log('found a match');
+          document.getElementsByClassName('deleteButton')[0].style.display = 'none';
+          return true;
+        }
+        document.getElementsByClassName('deleteButton')[0].style.display = 'block';
+        return false;
+      }
+    }
+    return false;
   }
 
   fileNameState(myFile, dnldbt, dfcbt) {
