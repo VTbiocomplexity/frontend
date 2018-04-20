@@ -325,16 +325,25 @@ export class Rafter {
       //console.log(data);
       //console.log(childArr);
       let parentId = sessionStorage.getItem('parentId');
-      for (let j = 0; j < tv.data.length; j++) {
+      let j;
+      for (j = 0; j < tv.data.length; j++) {
         if (parentId === tv.data[j].id) {
+          break;
           //console.log(tv.data[j].children);
-          for (let k = 0; k < tv.data[j].children.length; k++) {
-            if (tv.data[j].children[k].id === raf.rfid) {
-              //console.log(tv.data[j].children[k]);
-              tv.data[j].children[k].children = childArr;
-              //console.log(tv.data[j].children[k].children);
-            }
-          }
+          // for (let k = 0; k < tv.data[j].children.length; k++) {
+          //   if (tv.data[j].children[k].id === raf.rfid) {
+          //     //console.log(tv.data[j].children[k]);
+          //     tv.data[j].children[k].children = childArr;
+          //     //console.log(tv.data[j].children[k].children);
+          //   }
+          // }
+        }
+      }
+      for (let k = 0; k < tv.data[j].children.length; k++) {
+        if (tv.data[j].children[k].id === raf.rfid) {
+          //console.log(tv.data[j].children[k]);
+          tv.data[j].children[k].children = childArr;
+          //console.log(tv.data[j].children[k].children);
         }
       }
       //subSubDirFiles = data;
