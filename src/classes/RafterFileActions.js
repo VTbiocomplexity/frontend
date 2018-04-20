@@ -193,11 +193,18 @@ export class RafterFileActions {
     }
   }
 
-  setFileActions(id, subDirFiles, dnldbt, dfcbt) {
-    //if (subDirFiles !== null && subDirFiles !== undefined) {
+  setFileActions(id, subDirFiles, dnldbt, dfcbt, raf, subSubDirFiles) {
+    //console.log('set file actions');
+    // console.log(id);
+    // console.log(raf.rfid);
+    // if (id === raf.rfid) {
+    //   return;
+    // }
+    //if (id !== raf.rfid && (subSubDirFiles === null || subSubDirFiles === undefined)) {
     for (let j = 0; j < subDirFiles.length; j++) {
-      if (id === subDirFiles[j].id) {
+      if (id === subDirFiles[j].id && !subDirFiles[j].isContainer) {
           //console.log('i found a match!');
+        document.getElementsByClassName('deleteButton')[0].style.display = 'block';
         document.getElementsByClassName('dnldButton')[0].innerHTML = ('Download<br>' + subDirFiles[j].name);
         document.getElementsByClassName('deleteButton')[0].innerHTML = ('Delete<br>' + subDirFiles[j].name);
         document.getElementsByClassName('displayButton')[0].innerHTML = ('Display<br>' + subDirFiles[j].name);
@@ -207,11 +214,16 @@ export class RafterFileActions {
         }
         return document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[j]);
       }
+      if (subDirFiles[j].isContainer) {
+        document.getElementsByClassName('deleteButton')[0].style.display = 'none';
+      }
     }
     // }
   }
 
   fileNameState(myFile, dnldbt, dfcbt) {
+    console.log('file name state');
+    document.getElementsByClassName('deleteButton')[0].style.display = 'block';
     document.getElementsByClassName('dnldButton')[0].innerHTML = ('Download<br>' + myFile.name);
     document.getElementsByClassName('deleteButton')[0].innerHTML = ('Delete<br>' + myFile.name);
     document.getElementsByClassName('displayButton')[0].innerHTML = ('Display<br>' + myFile.name);
