@@ -260,7 +260,7 @@ export class Rafter {
           //console.log('line 86?');
             return rvs('ls', myApp, rui, raf, mtws, hdj[i].id, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles);
           }
-          document.getElementsByClassName('deleteButton')[0].style.display = 'block';
+          //document.getElementsByClassName('deleteButton')[0].style.display = 'block';
           return rafterFileActions.fileNameState(hdj[i], dnldbt, dfcbt);
         }
       }
@@ -281,10 +281,10 @@ export class Rafter {
     //   }
     // }
     //console.log(subDirFiles);
-    if (subDirFiles !== null && subDirFiles !== undefined && !matchFile) {
+    //if (subDirFiles !== null && subDirFiles !== undefined && !matchFile) {
       //console.log('line292');
-      rafterFileActions.setFileActions(id, subDirFiles, dnldbt, dfcbt, raf, subSubDirFiles);
-    }
+    rafterFileActions.setFileActions(id, subDirFiles, dnldbt, dfcbt, raf, subSubDirFiles, matchFile);
+    // }
   }
 
   makeNewJson(data) {
