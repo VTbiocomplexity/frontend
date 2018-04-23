@@ -208,8 +208,15 @@ export class RafterFileActions {
         }
         return document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[j]);
       }
-      if (subDirFiles[j].isContainer) {
+      if (subDirFiles[j].isContainer && id === subDirFiles[j].id) {
+        console.log('I clicked a sub sub folder');
+        console.log(subDirFiles[j]);
+        console.log(subDirFiles);
+        console.log(subSubDirFiles);
         document.getElementsByClassName('deleteButton')[0].style.display = 'none';
+        document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[j]);
+        document.getElementsByClassName('subDirContent')[0].innerHTML = JSON.stringify(subSubDirFiles);
+        //return subDirFiles = [];
       }
     }
   }
