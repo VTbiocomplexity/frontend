@@ -80,6 +80,10 @@ export class Rafter {
     if (document.getElementById('fileType2').checked) {
       this.rafterFile.createType = 'folder';
       document.getElementsByClassName('fileTypeSelector')[0].style.display = 'none';
+      //let folderJson = JSON.parse(document.getElementsByClassName('homeDirContent')[0].innerHTML);
+      //console.log(folderJson.id);
+      //this.rafterFile.rfid = folderJson.id;
+      console.log(this.rafterFile);
     } else {
       this.rafterFile.createType = 'file';
       document.getElementsByClassName('fileTypeSelector')[0].style.display = 'block';
@@ -270,6 +274,8 @@ export class Rafter {
           //console.log('I found a folder');
             document.getElementsByClassName('fileActions')[0].style.display = 'none';
             document.getElementsByClassName('folderName')[0].innerHTML = hdj[i].name;
+            document.getElementsByClassName('isHomeDir')[0].style.display = 'block';
+            document.getElementsByClassName('isHomeDir')[1].style.display = 'block';
             raf.path = '/' + hdj[i].name;
             raf.rfid = '';
           //console.log('line 86?');
@@ -377,6 +383,11 @@ export class Rafter {
     document.getElementsByClassName('isHomeDir')[0].style.display = 'block';
     document.getElementsByClassName('isHomeDir')[1].style.display = 'block';
     await this.fetchVS('ls');
+    let top = document.getElementsByClassName('home-header-image')[0];
+    /* istanbul ignore else */
+    if (top !== null && top !== undefined) {
+      top.scrollIntoView();
+    }
   }
 
   async fetchVS(cmd) {
@@ -418,7 +429,7 @@ export class Rafter {
         this.homeDirJson = data;
         this.makeTree(data);
       } else {  //cmd is create
-        myRafterFile = {name: '', createType: 'file', path: '', fileType: 'unspecified', rfid: ''};
+        this.rafterFile = {name: '', createType: 'file', path: '', fileType: 'unspecified', rfid: ''};
         this.navHomeDir();
       }
     }).catch(function (err) {
