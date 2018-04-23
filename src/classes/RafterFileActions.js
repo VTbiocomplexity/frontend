@@ -216,6 +216,7 @@ export class RafterFileActions {
         document.getElementsByClassName('deleteButton')[0].style.display = 'none';
         document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[j]);
         document.getElementsByClassName('subDirContent')[0].innerHTML = JSON.stringify(subSubDirFiles);
+        document.getElementsByClassName('createNew')[0].style.display = 'none';
         //return subDirFiles = [];
       }
     }
@@ -245,6 +246,7 @@ export class RafterFileActions {
         if (subSubDirFiles[zz].id === id) {
           console.log('found a match');
           document.getElementsByClassName('deleteButton')[0].style.display = 'none';
+          document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subSubDirFiles[zz]);
           return true;
         }
         document.getElementsByClassName('deleteButton')[0].style.display = 'block';
