@@ -228,6 +228,18 @@ export class Rafter {
           //tree view opens with sub sub folder content
             document.getElementsByClassName('displayFileContent')[0].innerHTML = ''; //this is incase someone clicked view button on a file
             document.getElementsByClassName('subDirContent')[0].innerHTML = '';
+            console.log('trying to find the sub sub folder metadata');
+            // console.log(subSubDirFiles);
+            // console.log(allData);
+            // console.log(subDirFiles);
+            // console.log(raf.rfid);
+            // console.log(hdj);
+            for (let i = 0; i < subDirFiles.length; i++) {
+              /* istanbul ignore else */
+              if (subDirFiles[i].id === raf.rfid) {
+                document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[i]);
+              }
+            }
           //console.log(document.getElementsByClassName('homeDirContent')[0].innerHTML);
             rvs('ls', myApp, rui, raf, mtws, null, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles);
           // const dnldbt = document.getElementsByClassName('dnldButton')[0];
@@ -241,7 +253,7 @@ export class Rafter {
   }
 
   showFileDetails(id, allData, raf, rvs, myApp, rui, mtws = null, tv, showFile, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles, hdj) {
-    //console.log('show file details');
+    console.log(subSubDirFiles);
     const dnldbt = document.getElementsByClassName('dnldButton')[0];
     const dfcbt = document.getElementsByClassName('displayButton')[0];
     let matchFile = false;
@@ -313,6 +325,8 @@ export class Rafter {
     }
     if (raf.rfid !== '') {
       newData = rafterFileActions.makeSubSubTree(tv.data, raf, childArr);
+      //subSubDirFiles = data;
+      //subDirFiles = [];
       //console.log(tv.data);
       //console.log(raf.rfid);
       //console.log(hdjId);
@@ -396,7 +410,7 @@ export class Rafter {
       //   //console.log(data);
       // }
       if (fromSubDir) {
-        return vsFetchSuccess(data, vsFetchSuccess, myApp, rafterUserID, cmd, myRafterFile, fromSubDir, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, rafterFileActions);
+        return vsFetchSuccess(data, vsFetchSuccess, myApp, rafterUserID, cmd, myRafterFile, fromSubDir, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, rafterFileActions, subSubDirFiles);
       }
       if (cmd === 'ls') {
         this.homeDirJson = data;
@@ -435,7 +449,7 @@ export class Rafter {
     //   //console.log('new request by id detected');
     //   //console.log(hdjId);
     // }
-    vsFetch(vsFetchSuccess, myApp, rafterUserID, cmd, myRafterFile, true, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, rafterFileActions);
+    vsFetch(vsFetchSuccess, myApp, rafterUserID, cmd, myRafterFile, true, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, rafterFileActions, subSubDirFiles);
   }
 
   checkIfLoggedIn(cep, rlo, sli, cipr) {

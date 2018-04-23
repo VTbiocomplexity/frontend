@@ -436,20 +436,23 @@ describe('The Rafter Dashboard', () => {
     expect(rd.showFileDetails).toHaveBeenCalled();
     done();
   });
-  it('detects a sub sub folder click event', (done) => {
+  it('detects a sub sub folder click event', testAsync(async function() {
     let myObj = {hi: 'howdy', low: 'loud', id: '123', isContainer: true};
     let filesInFolder = {getElementsByClassName: function() { return [{addEventListener: function(type, func) {func();}, getElementsByClassName: function() {return [{getAttribute: function() {return JSON.stringify(myObj);}}];}}, {addEventListener: function(type, func) {func();}, getElementsByClassName: function() {return [{getAttribute: function() {return JSON.stringify(myObj);}}];}}];}};
     rd.app.httpClient = new HttpMock();
     let subSubDirFiles = [{id: '123'}];
     document.body.innerHTML += '<div class="displayFileContent"></div><div class="createNew"></div><div class="folderName"></div><div class="fileActions"></div><div id="divId"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="subDirContent"></div>';
     document.getElementsByClassName('subDirContent')[0].innerHTML = '[{"state":"empty","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"6f1ff340-18cc-11e8-95c2-717499928918","creation_date":"2018-02-23T19:04:55.156Z","name":"file2","owner_id":"JoshuaVSherman","container_id":"a320cc40-17e7-11e8-95c2-717499928918","update_date":"2018-02-23T19:04:55.156Z"},{"state":"empty","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"fb05c9b0-18c3-11e8-95c2-717499928918","creation_date":"2018-02-23T18:04:24.396Z","name":"insideSubFolder1.txt","owner_id":"JoshuaVSherman","container_id":"a320cc40-17e7-11e8-95c2-717499928918","update_date":"2018-02-23T18:04:24.396Z"}]';
-    rd.makeFilesClickable(filesInFolder, rd.showFileDetails, rd.rafterFile, rd.rafterVolumeService, rd.app, null, null, null, null, null, null, null, function() {}, function() {}, rd.rafterFileActions, subSubDirFiles, null );
+    //makeFilesClickable(filesInFolder, showFile, raf, rvs, myApp, rui, subDirFiles, mnj, makeFilesClickable, mtws, tv, displayTree, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles, hdj) {
+    await rd.makeFilesClickable(filesInFolder, rd.showFileDetails, rd.rafterFile, rd.rafterVolumeService, rd.app, null, [], null, null, null, null, null, function() {}, function() {}, rd.rafterFileActions, subSubDirFiles, null );
     expect(document.getElementsByClassName('deleteButton')[0].style.display).toBe('none');
     subSubDirFiles = [{id: '456'}];
-    rd.makeFilesClickable(filesInFolder, rd.showFileDetails, rd.rafterFile, rd.rafterVolumeService, rd.app, null, null, null, null, null, null, null, function() {}, function() {}, rd.rafterFileActions, subSubDirFiles, null );
-    expect(document.getElementsByClassName('deleteButton')[0].style.display).toBe('none');
-    done();
-  });
+    await rd.makeFilesClickable(filesInFolder, rd.showFileDetails, {rfid: '123'}, rd.rafterVolumeService, rd.app, null, [{id: '123'}], null, null, null, null, null, function() {}, function() {}, rd.rafterFileActions, subSubDirFiles, null );
+    expect(document.getElementsByClassName('homeDirContent')[0].innerHTML).toBe(JSON.stringify({id: '123'}));
+    // await rd.makeFilesClickable(filesInFolder, rd.showFileDetails, {rfid: '123'}, rd.rafterVolumeService, rd.app, null, [{id: '123'}], null, null, null, null, null, function() {}, function() {}, rd.rafterFileActions, subSubDirFiles, null );
+    // expect(document.getElementsByClassName('homeDirContent')[0].innerHTML).toBe(JSON.stringify({id: '123'}));
+    // done();
+  }));
   it('displays the metadata of an empty file after a tree menu click', (done) => {
     rd.app.httpClient = new HttpMock();
     document.body.innerHTML = '<div class="fileActions"></div><button class="displayButton"></button><div class="displayFileContent"></div><button class="deleteButton"></button><button class="dnldButton"></button><div class="fileDetailsTitle"></div><div class="rafterLogout"></div><div class="fileDld"></div><button class="rafterCheckHome"></button><div class="createNew"></div><div id="divId"></div><p class="fileDetailsTitle"></p><div class="isHomeDir"></div><div class="isHomeDir"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div>';
@@ -483,15 +486,15 @@ describe('The Rafter Dashboard', () => {
   it('shows file details for a sub sub folder', testAsync(async function() {
     rd.app.httpClient = new HttpMock();
     rd.rafterVolumeService = function() {};
-    document.body.innerHTML = '<div class="fileActions"></div><button class="dnldButton"></button><button class="deleteButton"></button><button class="displayButton"></button><div class="displayFileContent"></div><div class="fileDetailsTitle"></div><div class="rafterLogout"></div><div class="fileDld"></div><div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"><p class="folderName"></p></div><p class="fileDetailsTitle"></p><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div>';
+    document.body.innerHTML += '<div class="fileActions"></div><button class="dnldButton"></button><button class="deleteButton"></button><button class="displayButton"></button><div class="displayFileContent"></div><div class="fileDetailsTitle"></div><div class="rafterLogout"></div><div class="fileDld"></div><div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"><p class="folderName"></p></div><p class="fileDetailsTitle"></p><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div>';
     const nameArr = [{name: 'myFolder', id: '123', type: 'folder', isContainer: true, children: []}];
     await rd.showFileDetails('123', nameArr, rd.rafterFile, rd.rafterVolumeService, null, null, null, null, null, null, null, null, null, null, null, rd.rafterFileActions, nameArr, null);
     expect(document.getElementsByClassName('deleteButton')[0].style.display).toBe('none');
     document.getElementsByClassName('deleteButton')[0].style.display = 'block';
     await rd.showFileDetails('456789', nameArr, rd.rafterFile, rd.rafterVolumeService, null, null, null, null, null, null, null, null, null, null, null, rd.rafterFileActions, nameArr, null);
     expect(document.getElementsByClassName('deleteButton')[0].style.display).toBe('block');
-    await rd.rafterFileActions.setFileActions('123', [{isContainer: true}]);
-    expect(document.getElementsByClassName('deleteButton')[0].style.display).toBe('none');
+    await rd.rafterFileActions.setFileActions('123', [{isContainer: true, id: '123'}]);
+    expect(document.getElementsByClassName('homeDirContent')[0].innerHTML).toBe(JSON.stringify({isContainer: true, id: '123'}));
     //done();
   }));
   it('displays the file details that are inside of the home directory', (done) => {
