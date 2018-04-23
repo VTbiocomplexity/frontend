@@ -305,42 +305,45 @@ export class Rafter {
 
   async makeTreeWithSub(data, hdjId, hdj, tv, showFile, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles) {
     let childArr;
+    let newData;
     //console.log(hdj);
     childArr = mnj(data);
     if (hdjId !== null) {
       sessionStorage.setItem('parentId', hdjId);
     }
     if (raf.rfid !== '') {
+      newData = rafterFileActions.makeSubSubTree(tv.data, raf, childArr);
       //console.log(tv.data);
       //console.log(raf.rfid);
       //console.log(hdjId);
       //console.log(data);
       //console.log(childArr);
-      let parentId = sessionStorage.getItem('parentId');
-      let j;
-      for (j = 0; j < tv.data.length; j++) {
-        /* istanbul ignore else */
-        if (parentId === tv.data[j].id) {
-          break;
-        }
-      }
-      for (let k = 0; k < tv.data[j].children.length; k++) {
-        if (tv.data[j].children[k].id === raf.rfid) {
-          //console.log(tv.data[j].children[k]);
-          tv.data[j].children[k].children = childArr;
-          //console.log(tv.data[j].children[k].children);
-        }
-      }
-      raf.rfid = '';
-      sessionStorage.removeItem('parentId');
+      // let parentId = sessionStorage.getItem('parentId');
+      // let j;
+      // for (j = 0; j < tv.data.length; j++) {
+      //   /* istanbul ignore else */
+      //   if (parentId === tv.data[j].id) {
+      //     break;
+      //   }
+      // }
+      // for (let k = 0; k < tv.data[j].children.length; k++) {
+      //   if (tv.data[j].children[k].id === raf.rfid) {
+      //     //console.log(tv.data[j].children[k]);
+      //     tv.data[j].children[k].children = childArr;
+      //     //console.log(tv.data[j].children[k].children);
+      //   }
+      // }
+      // raf.rfid = '';
+      // sessionStorage.removeItem('parentId');
     } else {
       for (let i = 0; i < tv.data.length; i++) {
         if (hdjId === tv.data[i].id) {
           tv.data[i].children = childArr;
         }
       }
+      newData = tv.data;
     }
-    let newData = tv.data;
+    //newData = tv.data;
     await displayTree(tv, newData, 'treeView', showFile, hdj, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles);
     tv.expandAll();
   }

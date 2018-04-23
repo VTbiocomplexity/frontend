@@ -609,13 +609,13 @@ describe('The Rafter Dashboard', () => {
     const hdj = [{name: 'myFolder', id: '456', type: 'folder', isContainer: true, children: []}];
     spyOn(window.sessionStorage, 'setItem').and.callThrough();
     spyOn(window.sessionStorage, 'removeItem').and.callThrough();
-    await rd.makeTreeWithSub(data, null, hdj, rd.tv, rd.showFileDetails, rd.rafterFile, null, null, null, rd.makeTreeWithSub, rd.displayTree, rd.subDirJson, rd.makeNewJson);
+    await rd.makeTreeWithSub(data, null, hdj, rd.tv, rd.showFileDetails, rd.rafterFile, null, null, null, rd.makeTreeWithSub, rd.displayTree, rd.subDirJson, rd.makeNewJson, null, null, null, rd.rafterFileActions);
     expect(window.sessionStorage.setItem).not.toHaveBeenCalled();
-    await rd.makeTreeWithSub(data, '456', hdj, rd.tv, rd.showFileDetails, rd.rafterFile, null, null, null, rd.makeTreeWithSub, rd.displayTree, rd.subDirJson, rd.makeNewJson);
+    await rd.makeTreeWithSub(data, '456', hdj, rd.tv, rd.showFileDetails, rd.rafterFile, null, null, null, rd.makeTreeWithSub, rd.displayTree, rd.subDirJson, rd.makeNewJson, null, null, null, rd.rafterFileActions);
     expect(window.sessionStorage.setItem).toHaveBeenCalled();
-    await rd.makeTreeWithSub(data, '456', hdj, rd.tv, rd.showFileDetails, {rfid: '123'}, null, null, null, rd.makeTreeWithSub, rd.displayTree, rd.subDirJson, rd.makeNewJson);
+    await rd.makeTreeWithSub(data, '456', hdj, rd.tv, rd.showFileDetails, {rfid: '123'}, null, null, null, rd.makeTreeWithSub, rd.displayTree, rd.subDirJson, rd.makeNewJson, null, null, null, rd.rafterFileActions);
     expect(window.sessionStorage.removeItem).toHaveBeenCalled();
-    await rd.makeTreeWithSub(data, '456', hdj, rd.tv, rd.showFileDetails, {rfid: '999999'}, null, null, null, rd.makeTreeWithSub, rd.displayTree, rd.subDirJson, rd.makeNewJson);
+    await rd.makeTreeWithSub(data, '456', hdj, rd.tv, rd.showFileDetails, {rfid: '999999'}, null, null, null, rd.makeTreeWithSub, rd.displayTree, rd.subDirJson, rd.makeNewJson, null, null, null, rd.rafterFileActions);
     expect(window.sessionStorage.removeItem).toHaveBeenCalled();
   }));
   it('detects an expired token', (done) => {
