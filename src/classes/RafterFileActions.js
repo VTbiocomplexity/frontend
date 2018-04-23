@@ -247,6 +247,28 @@ export class RafterFileActions {
     return false;
   }
 
+  makeSubSubTree(tvData, raf, childArr) {
+    let parentId = sessionStorage.getItem('parentId');
+    let j;
+    for (j = 0; j < tvData.length; j++) {
+      /* istanbul ignore else */
+      if (parentId === tvData[j].id) {
+        break;
+      }
+    }
+    for (let k = 0; k < tvData[j].children.length; k++) {
+      if (tvData[j].children[k].id === raf.rfid) {
+        console.log('make the sub sub tree');
+        //console.log(tv.data[j].children[k]);
+        tvData[j].children[k].children = childArr;
+        //console.log(tv.data[j].children[k].children);
+      }
+    }
+    raf.rfid = '';
+    sessionStorage.removeItem('parentId');
+    return tvData;
+  }
+
   fileNameState(myFile, dnldbt, dfcbt) {
     console.log('file name state');
     document.getElementsByClassName('deleteButton')[0].style.display = 'block';
