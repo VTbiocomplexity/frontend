@@ -609,9 +609,9 @@ aurelia-pal-browser@^1.0.0, aurelia-pal-browser@^1.2.1:
   dependencies:
     aurelia-pal "^1.4.0"
 
-aurelia-pal-nodejs@^1.0.0-beta.3.2.0:
-  version "1.0.0-beta.3.2.0"
-  resolved "https://registry.yarnpkg.com/aurelia-pal-nodejs/-/aurelia-pal-nodejs-1.0.0-beta.3.2.0.tgz#ef9366dc9aabcbe7ec21a6908e76e5e455b00bc2"
+aurelia-pal-nodejs@^1.0.0-beta.3.3.0:
+  version "1.0.0-beta.3.3.0"
+  resolved "https://registry.yarnpkg.com/aurelia-pal-nodejs/-/aurelia-pal-nodejs-1.0.0-beta.3.3.0.tgz#2751c410446883c454e6fe5c30e08e29fed94b77"
   dependencies:
     aurelia-pal "^1.1.0"
     jsdom "~11.5.1"
