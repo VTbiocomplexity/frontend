@@ -217,29 +217,31 @@ export class Rafter {
           if (!fileIDJson.isContainer) {
             showFile(fileIDJson.id, allData, raf, rvs, myApp, rui, mtws, tv, showFile, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles, hdj);
           } else {
-            //console.log('got me a sub sub folder');
-            document.getElementsByClassName('fileActions')[0].style.display = 'none';
-          //console.log(fileIDJson);
-            document.getElementsByClassName('folderName')[0].innerHTML = fileIDJson.name;
-            document.getElementsByClassName('createNew')[0].style.display = 'none';
             raf.rfid = fileIDJson.id;
-          //refresh the inside Folder Details
-          //hide the file actions (display, download, delete)
-          //tree view opens with sub sub folder content
-            document.getElementsByClassName('displayFileContent')[0].innerHTML = ''; //this is incase someone clicked view button on a file
-            document.getElementsByClassName('subDirContent')[0].innerHTML = '';
-            console.log('trying to find the sub sub folder metadata');
-            // console.log(subSubDirFiles);
-            // console.log(allData);
-            // console.log(subDirFiles);
-            // console.log(raf.rfid);
-            // console.log(hdj);
-            for (let i = 0; i < subDirFiles.length; i++) {
-              /* istanbul ignore else */
-              if (subDirFiles[i].id === raf.rfid) {
-                document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[i]);
-              }
-            }
+            rafterFileActions.subSubFolderClick(fileIDJson, subDirFiles);
+          //   //console.log('got me a sub sub folder');
+          //   document.getElementsByClassName('fileActions')[0].style.display = 'none';
+          // //console.log(fileIDJson);
+          //   document.getElementsByClassName('folderName')[0].innerHTML = fileIDJson.name;
+          //   document.getElementsByClassName('createNew')[0].style.display = 'none';
+          //   raf.rfid = fileIDJson.id;
+          // //refresh the inside Folder Details
+          // //hide the file actions (display, download, delete)
+          // //tree view opens with sub sub folder content
+          //   document.getElementsByClassName('displayFileContent')[0].innerHTML = ''; //this is incase someone clicked view button on a file
+          //   document.getElementsByClassName('subDirContent')[0].innerHTML = '';
+          //   console.log('trying to find the sub sub folder metadata');
+          //   // console.log(subSubDirFiles);
+          //   // console.log(allData);
+          //   // console.log(subDirFiles);
+          //   // console.log(raf.rfid);
+          //   // console.log(hdj);
+          //   for (let i = 0; i < subDirFiles.length; i++) {
+          //     /* istanbul ignore else */
+          //     if (subDirFiles[i].id === raf.rfid) {
+          //       document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[i]);
+          //     }
+          //   }
           //console.log(document.getElementsByClassName('homeDirContent')[0].innerHTML);
             rvs('ls', myApp, rui, raf, mtws, null, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles);
           // const dnldbt = document.getElementsByClassName('dnldButton')[0];
@@ -253,7 +255,7 @@ export class Rafter {
   }
 
   showFileDetails(id, allData, raf, rvs, myApp, rui, mtws = null, tv, showFile, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles, hdj) {
-    console.log(subSubDirFiles);
+    //console.log(subSubDirFiles);
     const dnldbt = document.getElementsByClassName('dnldButton')[0];
     const dfcbt = document.getElementsByClassName('displayButton')[0];
     let matchFile = false;
