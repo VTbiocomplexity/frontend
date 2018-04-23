@@ -214,6 +214,22 @@ export class RafterFileActions {
     }
   }
 
+  setSubSubClicks(subSubDirFiles, id, fif, k) {
+    if (subSubDirFiles !== null && subSubDirFiles !== undefined) {
+      for (let zz = 0; zz < subSubDirFiles.length; zz++) {
+        if (subSubDirFiles[zz].id === id) {
+        //console.log('found a match');
+          fif[k].addEventListener('click', function(evt) {
+            console.log('do nothing for sub sub click');
+            document.getElementsByClassName('deleteButton')[0].style.display = 'none';
+          });
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   setSubSubFiles(subSubDirFiles, id) {
     if (subSubDirFiles !== null && subSubDirFiles !== undefined) {
       //console.log(subSubDirFiles.id);

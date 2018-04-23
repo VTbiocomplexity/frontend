@@ -431,7 +431,8 @@ describe('The Rafter Dashboard', () => {
     spyOn(rd, 'showFileDetails').and.callThrough();
     document.body.innerHTML = '<div class="fileActions"></div><div id="divId"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="subDirContent"></div>';
     document.getElementsByClassName('subDirContent')[0].innerHTML = '[{"state":"empty","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"6f1ff340-18cc-11e8-95c2-717499928918","creation_date":"2018-02-23T19:04:55.156Z","name":"file2","owner_id":"JoshuaVSherman","container_id":"a320cc40-17e7-11e8-95c2-717499928918","update_date":"2018-02-23T19:04:55.156Z"},{"state":"empty","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"fb05c9b0-18c3-11e8-95c2-717499928918","creation_date":"2018-02-23T18:04:24.396Z","name":"insideSubFolder1.txt","owner_id":"JoshuaVSherman","container_id":"a320cc40-17e7-11e8-95c2-717499928918","update_date":"2018-02-23T18:04:24.396Z"}]';
-    rd.makeFilesClickable(filesInFolder, rd.showFileDetails);
+    rd.makeFilesClickable(filesInFolder, rd.showFileDetails, null, null, null, null, null, null, null, null, null, null, null, null, rd.rafterFileActions);
+    // filesInFolder, showFile, raf, rvs, myApp, rui, subDirFiles, mnj, makeFilesClickable, mtws, tv, displayTree, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles, hdj
     expect(rd.showFileDetails).toHaveBeenCalled();
     done();
   });
@@ -442,10 +443,10 @@ describe('The Rafter Dashboard', () => {
     let subSubDirFiles = [{id: '123'}];
     document.body.innerHTML += '<div class="displayFileContent"></div><div class="createNew"></div><div class="folderName"></div><div class="fileActions"></div><div id="divId"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="subDirContent"></div>';
     document.getElementsByClassName('subDirContent')[0].innerHTML = '[{"state":"empty","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"6f1ff340-18cc-11e8-95c2-717499928918","creation_date":"2018-02-23T19:04:55.156Z","name":"file2","owner_id":"JoshuaVSherman","container_id":"a320cc40-17e7-11e8-95c2-717499928918","update_date":"2018-02-23T19:04:55.156Z"},{"state":"empty","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"fb05c9b0-18c3-11e8-95c2-717499928918","creation_date":"2018-02-23T18:04:24.396Z","name":"insideSubFolder1.txt","owner_id":"JoshuaVSherman","container_id":"a320cc40-17e7-11e8-95c2-717499928918","update_date":"2018-02-23T18:04:24.396Z"}]';
-    rd.makeFilesClickable(filesInFolder, rd.showFileDetails, rd.rafterFile, rd.rafterVolumeService, rd.app, null, null, null, null, null, null, null, function() {}, function() {}, function() {}, subSubDirFiles, null );
+    rd.makeFilesClickable(filesInFolder, rd.showFileDetails, rd.rafterFile, rd.rafterVolumeService, rd.app, null, null, null, null, null, null, null, function() {}, function() {}, rd.rafterFileActions, subSubDirFiles, null );
     expect(document.getElementsByClassName('deleteButton')[0].style.display).toBe('none');
     subSubDirFiles = [{id: '456'}];
-    rd.makeFilesClickable(filesInFolder, rd.showFileDetails, rd.rafterFile, rd.rafterVolumeService, rd.app, null, null, null, null, null, null, null, function() {}, function() {}, function() {}, subSubDirFiles, null );
+    rd.makeFilesClickable(filesInFolder, rd.showFileDetails, rd.rafterFile, rd.rafterVolumeService, rd.app, null, null, null, null, null, null, null, function() {}, function() {}, rd.rafterFileActions, subSubDirFiles, null );
     expect(document.getElementsByClassName('deleteButton')[0].style.display).toBe('none');
     done();
   });
