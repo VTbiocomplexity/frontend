@@ -38,9 +38,7 @@ ratings:
   - "**.jsx"
 exclude_paths:
 - test/
-- static/includes.html
 - node_modules/
 - coverage/
 - dist/
-- bower_components/
 - webpack.config.js
