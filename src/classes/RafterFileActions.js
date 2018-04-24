@@ -99,24 +99,23 @@ export class RafterFileActions {
     }
   }
   async ulrf (fileString, cleanFileName, httpClient, rui, filePath) {
-  //console.log('this is the file?');
-  //console.log(fileString);
-  //console.log(cleanFileName);
+    let folderName = '/' + document.getElementsByClassName('folderName')[0].innerHTML;
+    //console.log(folderName);
+    /* istanbul ignore else */
+    if (folderName !== filePath) {
+      filePath = filePath + folderName;
+    }
+    //console.log(filePath);
     httpClient.fetch('/rafter/vs', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({token: sessionStorage.getItem('rafterToken'), userName: rui, command: 'create', rafterFile: {fileType: 'text', name: cleanFileName, path: filePath, content: fileString, createType: 'file'}})
-    })
-  .then((response) => response.json())
-  .then((data) => {
-    console.log(data);
+    }).then((response) => response.json())
+    .then((data) => {
+      console.log(data);
     /* istanbul ignore if */
-    if (process.env.NODE_ENV !== 'test') {
-      window.location.reload();
-    }
-  }).catch((err) => {
-    console.log(err);
-  });
+      if (process.env.NODE_ENV !== 'test') {window.location.reload();}
+    }).catch((err) => {console.log(err);});
   }
   uploadRafterFile(rui, rf) {
     const httpClient = this.httpClient;
@@ -176,8 +175,8 @@ export class RafterFileActions {
   }
   setFileActions(id, subDirFiles, dnldbt, dfcbt, raf, subSubDirFiles, matchFile, rvs, myApp, rui, mtws, hdj, tv, showFile, displayTree, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions) {
     if (matchFile || subDirFiles === null || subDirFiles === undefined) {return;}
-    console.log('set file actions');
-    //document.getElementsByClassName('deleteButton')[0].style.display = 'none';
+    //console.log('set file actions');
+  //document.getElementsByClassName('deleteButton')[0].style.display = 'none';
     for (let j = 0; j < subDirFiles.length; j++) {
       if (id === subDirFiles[j].id && !subDirFiles[j].isContainer) {
       //console.log('i found a match!');
@@ -192,15 +191,15 @@ export class RafterFileActions {
         return document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[j]);
       }
       if (subDirFiles[j].isContainer && id === subDirFiles[j].id) {
-        console.log('I clicked a sub sub folder');
-        //console.log(subSubDirFiles);
+        //console.log('I clicked a sub sub folder');
+      //console.log(subSubDirFiles);
         document.getElementsByClassName('deleteButton')[0].style.display = 'none';
         document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[j]);
-        //document.getElementsByClassName('subDirContent')[0].innerHTML = '';
+      //document.getElementsByClassName('subDirContent')[0].innerHTML = '';
         raf.rfid = id;
         document.getElementsByClassName('createNew')[0].style.display = 'block';
         rvs('ls', myApp, rui, raf, mtws, null, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles);
-        //document.getElementsByClassName('fileCreate')[0].style.display = 'block';
+      //document.getElementsByClassName('fileCreate')[0].style.display = 'block';
       }
     }
   }
@@ -210,7 +209,7 @@ export class RafterFileActions {
         if (subSubDirFiles[zz].id === id) {
         //console.log('found a match');
           fif[k].addEventListener('click', function(evt) {
-            //console.log('do nothing for sub sub click');
+          //console.log('do nothing for sub sub click');
             document.getElementsByClassName('deleteButton')[0].style.display = 'none';
           });
           return true;
@@ -221,14 +220,14 @@ export class RafterFileActions {
   }
   setSubSubFiles(subSubDirFiles, id) {
     if (subSubDirFiles !== null && subSubDirFiles !== undefined) {
-      console.log('set sub sub files');
+      //console.log('set sub sub files');
     //do not put click events into sub sub folders
       for (let zz = 0; zz < subSubDirFiles.length; zz++) {
         if (subSubDirFiles[zz].id === id) {
-          //console.log('found a match');
+        //console.log('found a match');
           document.getElementsByClassName('deleteButton')[0].style.display = 'block';
           document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subSubDirFiles[zz]);
-          //document.getElementsByClassName('deleteButton')[0].style.display = 'block';
+        //document.getElementsByClassName('deleteButton')[0].style.display = 'block';
           document.getElementsByClassName('dnldButton')[0].innerHTML = ('Download<br>' + subSubDirFiles[zz].name);
           document.getElementsByClassName('deleteButton')[0].innerHTML = ('Delete<br>' + subSubDirFiles[zz].name);
           document.getElementsByClassName('displayButton')[0].innerHTML = ('Display<br>' + subSubDirFiles[zz].name);
@@ -238,19 +237,16 @@ export class RafterFileActions {
           }
           return true;
         }
-        // document.getElementsByClassName('deleteButton')[0].style.display = 'block';
-        // return false;
+      // document.getElementsByClassName('deleteButton')[0].style.display = 'block';
+      // return false;
       }
     }
     return false;
   }
   makeSubSubTree(tvData, raf, childArr) {
-    console.log('make sub sub tree');
-    // if (tvData.length === 0 || tvData === undefined) {
-    //   return tvData;
-    // }
+    //console.log('make sub sub tree');
     let parentId = sessionStorage.getItem('parentId');
-    console.log(parentId);
+    //console.log(parentId);
     let j = 0;
     for (j = 0; j < tvData.length; j++) {
     /* istanbul ignore else */
@@ -258,14 +254,11 @@ export class RafterFileActions {
         break;
       }
     }
-    console.log(tvData);
-    // if (tvData[j] === undefined) {
-    //   return tvData;
-    // }
-    /* istanbul ignore else */
+    //console.log(tvData);
+  /* istanbul ignore else */
     if (tvData[j] !== undefined) {
       for (let k = 0; k < tvData[j].children.length; k++) {
-        console.log(tvData[j].children);
+        //console.log(tvData[j].children);
         if (tvData[j].children[k].id === raf.rfid) {
         //console.log('make the sub sub tree');
         //console.log(tv.data[j].children[k]);
@@ -276,16 +269,7 @@ export class RafterFileActions {
         }
       }
     }
-    // for (let k = 0; k < tvData[j].children.length; k++) {
-    //   if (tvData[j].children[k].id === raf.rfid) {
-    //   //console.log('make the sub sub tree');
-    //   //console.log(tv.data[j].children[k]);
-    //     tvData[j].children[k].children = childArr;
-    //   //console.log(tv.data[j].children[k].children);
-    //   }
-    // }
     raf.rfid = '';
-    //sessionStorage.removeItem('parentId');
     return tvData;
   }
   fileNameState(myFile, dnldbt, dfcbt) {
@@ -300,7 +284,7 @@ export class RafterFileActions {
     }
   }
   subSubFolderClick(fij, subDirFiles, subSubDirFiles) {
-    console.log('got me a sub sub folder');
+    //console.log('got me a sub sub folder');
     document.getElementsByClassName('fileActions')[0].style.display = 'none';
   //console.log(fileIDJson);
     document.getElementsByClassName('folderName')[0].innerHTML = fij.name;
@@ -324,7 +308,7 @@ export class RafterFileActions {
       if (subDirFiles[i].id === fij.id) {
         document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[i]);
         document.getElementsByClassName('createNew')[0].style.display = 'block';
-        //sessionStorage.setItem('rFolderId', fij.id);
+      //sessionStorage.setItem('rFolderId', fij.id);
       }
     }
   }
