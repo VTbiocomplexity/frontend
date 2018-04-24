@@ -396,7 +396,8 @@ describe('The Rafter Dashboard', () => {
     rd.showFileDetails = function() {};
     document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="subDirContent"></div>';
     const nameArr = [{name: 'filename', id: '123', type: 'unspecified', isContainer: false, children: []}];
-    rd.displayTree(rd.tv, nameArr, 'treeView', rd.showFileDetails, rd.homeDirJson, rd.rafterFile, rd.rafterVolumeService, rd.app, rd.rafterUserID, rd.makeTreeWithSub, rd.displayTree);
+    rd.displayTree(rd.tv, nameArr, 'treeView', rd.showFileDetails, rd.homeDirJson, rd.rafterFile, rd.rafterVolumeService, rd.app, rd.rafterUserID, rd.makeTreeWithSub, rd.displayTree, null, null, function() {}, function() {}, function() {}, null, null);
+    // displayTree(tv, nameArr, divId, showFile, hdj, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles) {
     document.getElementsByClassName('tree-leaf-text')[0].click();
     expect(document.getElementsByClassName('tlfolder')[0]).toBe(undefined);
     done();
@@ -406,7 +407,7 @@ describe('The Rafter Dashboard', () => {
     rd.showFileDetails = function() {};
     document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="subDirContent"></div>';
     const nameArr = [{name: 'filename', id: '123', type: 'folder', isContainer: true, children: []}];
-    rd.displayTree(rd.tv, nameArr, 'treeView', rd.showFileDetails, rd.homeDirJson, rd.rafterFile, rd.rafterVolumeService, rd.app, rd.rafterUserID, rd.makeTreeWithSub, rd.displayTree);
+    rd.displayTree(rd.tv, nameArr, 'treeView', rd.showFileDetails, rd.homeDirJson, rd.rafterFile, rd.rafterVolumeService, rd.app, rd.rafterUserID, rd.makeTreeWithSub, rd.displayTree, null, null, function() {}, function() {}, function() {}, null, null);
     document.getElementsByClassName('tree-leaf-text')[0].click();
     expect(document.getElementsByClassName('tlfolder')[0]).not.toBe(undefined);
     done();
@@ -494,7 +495,7 @@ describe('The Rafter Dashboard', () => {
     document.getElementsByClassName('deleteButton')[0].style.display = 'block';
     await rd.showFileDetails('456789', nameArr, rd.rafterFile, rd.rafterVolumeService, null, null, null, null, null, null, null, null, null, null, null, rd.rafterFileActions, nameArr, null);
     expect(document.getElementsByClassName('deleteButton')[0].style.display).toBe('block');
-    await rd.rafterFileActions.setFileActions('123', [{isContainer: true, id: '123'}]);
+    await rd.rafterFileActions.setFileActions('123', [{isContainer: true, id: '123'}], null, null, rd.rafterFile, null, null, function() {});
     expect(document.getElementsByClassName('homeDirContent')[0].innerHTML).toBe(JSON.stringify({isContainer: true, id: '123'}));
     //done();
   }));
