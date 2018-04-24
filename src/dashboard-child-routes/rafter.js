@@ -366,17 +366,12 @@ export class Rafter {
   }
 
   async fetchVS(cmd) {
-    if (this.rafterFile.createType !== 'folder') {
-      this.rafterFile.createType = 'file';
-    }
+    if (this.rafterFile.createType !== 'folder') {this.rafterFile.createType = 'file';}
     this.rafterFile.name = this.rafterFile.name.replace(/\s/g, '');
     this.rafterFile.name = this.rafterFile.name.replace(/!/g, '');
-    if (this.rafterFile.name === '' && cmd === 'create') {
-      this.rafterFile.name = 'unspecified';
-    }
+    if (this.rafterFile.name === '' && cmd === 'create') {this.rafterFile.name = 'unspecified';}
     await this.vsFetch(this.vsFetchSuccess, this.app, this.rafterUserID, cmd, this.rafterFile, false);
   }
-
   async vsFetch(vsFetchSuccess, myApp, rafterUserID, cmd, myRafterFile, fromSubDir, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, rafterFileActions, subSubDirFiles) {
     return await myApp.httpClient.fetch('/rafter/vs', {
       method: 'post',
@@ -401,21 +396,14 @@ export class Rafter {
         this.homeDirJson = data;
         this.makeTree(data);
       } else {  //cmd is create
-        // if (process.env.NODE_ENV !== 'test') {
-        //   window.location.reload();
-        // }
-        //this.rafterFile = {name: '', createType: 'file', path: '', fileType: 'unspecified', rfid: ''};
-        //document.getElementById('fileType1').setAttribute('checked', true);
         this.navHomeDir();
       }
     }).catch(function (err) {
-      console.log('this is the error');
+      //console.log('this is the error');
       console.log(err);
       if (err.status === 500) {
         /* istanbul ignore if */
-        if (process.env.NODE_ENV !== 'test') {
-          window.location.reload();
-        }
+        if (process.env.NODE_ENV !== 'test') {window.location.reload();}
       }
     });
   }
