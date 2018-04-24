@@ -191,14 +191,11 @@ export class RafterFileActions {
       }
       if (subDirFiles[j].isContainer && id === subDirFiles[j].id) {
         console.log('I clicked a sub sub folder');
-      // console.log(subDirFiles[j]);
-      // console.log(subDirFiles);
-      //console.log(subSubDirFiles);
         document.getElementsByClassName('deleteButton')[0].style.display = 'none';
         document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[j]);
         document.getElementsByClassName('subDirContent')[0].innerHTML = JSON.stringify(subSubDirFiles);
-        document.getElementsByClassName('createNew')[0].style.display = 'none';
-      //return subDirFiles = [];
+        document.getElementsByClassName('createNew')[0].style.display = 'block';
+        //document.getElementsByClassName('fileCreate')[0].style.display = 'block';
       }
     }
   }
@@ -208,7 +205,7 @@ export class RafterFileActions {
         if (subSubDirFiles[zz].id === id) {
         //console.log('found a match');
           fif[k].addEventListener('click', function(evt) {
-            console.log('do nothing for sub sub click');
+            //console.log('do nothing for sub sub click');
             document.getElementsByClassName('deleteButton')[0].style.display = 'none';
           });
           return true;
@@ -223,7 +220,7 @@ export class RafterFileActions {
     //do not put click events into sub sub folders
       for (let zz = 0; zz < subSubDirFiles.length; zz++) {
         if (subSubDirFiles[zz].id === id) {
-          console.log('found a match');
+          //console.log('found a match');
           document.getElementsByClassName('deleteButton')[0].style.display = 'none';
           document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subSubDirFiles[zz]);
           return true;
@@ -267,7 +264,7 @@ export class RafterFileActions {
     }
   }
   subSubFolderClick(fij, subDirFiles) {
-  //console.log('got me a sub sub folder');
+    console.log('got me a sub sub folder');
     document.getElementsByClassName('fileActions')[0].style.display = 'none';
   //console.log(fileIDJson);
     document.getElementsByClassName('folderName')[0].innerHTML = fij.name;
@@ -288,6 +285,8 @@ export class RafterFileActions {
     /* istanbul ignore else */
       if (subDirFiles[i].id === fij.id) {
         document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[i]);
+        document.getElementsByClassName('createNew')[0].style.display = 'block';
+        sessionStorage.setItem('rFolderId', fij.id);
       }
     }
   }

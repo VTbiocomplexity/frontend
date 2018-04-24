@@ -53,7 +53,8 @@ describe('The Rafter Dashboard', () => {
     '<div class="homeDirContent">{"state":"analyzing","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"a185e810-af88-11e7-ab0c-717499928918","creation_date":"2017-10-12T20:05:01.841Z","name":"someName"}</div>' +
     '<button class="dnldButton"></button><button class="displayButton"></button><button class="deleteButton"></button><button class="dnldButton"></button><div class="fileDetailsTitle"></div><div class="rafterLogout"></div>' +
     '<div class="fileDld"></div><div class="userServiceError"></div><button class="rafterCheckHome"></button><div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"><p class="folderName"></p></div>' +
-    '<p class="fileDetailsTitle"><div class="fileActions"></div></p><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div><div class="subDirContent"></div><div class="rafterLogout" style="display:block"></div><div class="showHideHD" style="display:block"></div>';
+    '<p class="fileDetailsTitle"><div class="fileActions"></div></p><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div><div class="subDirContent"></div><div class="rafterLogout" style="display:block"></div><div class="showHideHD" style="display:block"></div>' +
+    '<div class="fileTypeSelector"></div><button class="displayButton"></button><div class="displayFileContent"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div><input id="fileType1" type="radio"><input id="fileType2" type="radio" checked><button class="rafterMakeFileButton"></button>';
   });
 
   it('should activate', testAsync(async function() {
@@ -363,7 +364,7 @@ describe('The Rafter Dashboard', () => {
   }));
   it('sets the create to be a new folder', testAsync(async function() {
     rd.rafterFile = {};
-    document.body.innerHTML = '<div class="fileTypeSelector"></div><button class="displayButton"></button><div class="displayFileContent"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div><input id="fileType1" type="radio"><input id="fileType2" type="radio" checked>';
+    // document.body.innerHTML += '<div class="fileTypeSelector"></div><button class="displayButton"></button><div class="displayFileContent"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div class="userServiceError"></div><input id="fileType1" type="radio"><input id="fileType2" type="radio" checked>';
     rd.rafterFile.createType = '';
     await rd.radioClicked();
     expect(rd.rafterFile.createType).toBe('folder');
@@ -509,6 +510,16 @@ describe('The Rafter Dashboard', () => {
     rd.fetchVS('create');
     expect(rd.rafterFile.createType).toBe('folder');
     expect(rd.rafterFile.name).toBe('unspecified');
+    done();
+  });
+  it('does not append the path with sub sub folder', (done) => {
+    rd.rafterFile.createType = 'file';
+    rd.rafterFile.name = 'testFile';
+    rd.rafterFile.path = '/subFolder';
+    document.getElementsByClassName('folderName')[0].innerHTML = 'subFolder';
+    rd.fetchVS('create');
+    expect(rd.rafterFile.path).toBe('/subFolder');
+    //expect(rd.rafterFile.name).toBe('unspecified');
     done();
   });
   it('displays error messages from volume service commands', testAsync(async function() {
