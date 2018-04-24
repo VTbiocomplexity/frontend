@@ -212,9 +212,10 @@ export class Rafter {
     }
   }
   showFileDetails(id, allData, raf, rvs, myApp, rui, mtws = null, tv, showFile, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles, hdj) {
-    console.log(subSubDirFiles);
+    //console.log(subSubDirFiles);
     const dnldbt = document.getElementsByClassName('dnldButton')[0];
     const dfcbt = document.getElementsByClassName('displayButton')[0];
+    document.getElementsByClassName('displayFileContent')[0].style.display = 'none';
     let matchFile = false;
     document.getElementsByClassName('deleteButton')[0].style.display = 'block';
     rafterFileActions.resetFileActions(mtws, dnldbt, dfcbt);

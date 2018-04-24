@@ -17,7 +17,10 @@ export class RafterFileActions {
       //console.log(evt.target);
         const fileString = evt.target.result;
       //console.log(fileString);
-        document.getElementsByClassName('displayFileContent')[0].innerHTML = fileString;
+        let dfc = document.getElementsByClassName('displayFileContent')[0];
+        dfc.innerHTML = fileString;
+        dfc.style.display = 'block';
+        dfc.scrollIntoView();
       }
     /* istanbul ignore next */
       function errorHandler(evt) {
