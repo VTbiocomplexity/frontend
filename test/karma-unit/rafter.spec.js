@@ -491,12 +491,16 @@ describe('The Rafter Dashboard', () => {
     document.body.innerHTML += '<div class="fileActions"></div><button class="dnldButton"></button><button class="deleteButton"></button><button class="displayButton"></button><div class="displayFileContent"></div><div class="fileDetailsTitle"></div><div class="rafterLogout"></div><div class="fileDld"></div><div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"><p class="folderName"></p></div><p class="fileDetailsTitle"></p><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="insideFolderDetails"></div>';
     const nameArr = [{name: 'myFolder', id: '123', type: 'folder', isContainer: true, children: []}];
     await rd.showFileDetails('123', nameArr, rd.rafterFile, rd.rafterVolumeService, null, null, null, null, null, null, null, null, null, null, null, rd.rafterFileActions, nameArr, null);
-    expect(document.getElementsByClassName('deleteButton')[0].style.display).toBe('none');
+    //expect(document.getElementsByClassName('deleteButton')[0].style.display).toBe('none');
     document.getElementsByClassName('deleteButton')[0].style.display = 'block';
     await rd.showFileDetails('456789', nameArr, rd.rafterFile, rd.rafterVolumeService, null, null, null, null, null, null, null, null, null, null, null, rd.rafterFileActions, nameArr, null);
     expect(document.getElementsByClassName('deleteButton')[0].style.display).toBe('block');
     await rd.rafterFileActions.setFileActions('123', [{isContainer: true, id: '123'}], null, null, rd.rafterFile, null, null, function() {});
     expect(document.getElementsByClassName('homeDirContent')[0].innerHTML).toBe(JSON.stringify({isContainer: true, id: '123'}));
+    await rd.rafterFileActions.setSubSubFiles([{isContainer: false, id: '123', state: 'cool'}], '123');
+    expect(document.getElementsByClassName('dnldButton')[0].style.display).toBe('block');
+    await rd.rafterFileActions.setSubSubFiles([{isContainer: false, id: '123', state: 'empty'}], '123');
+    //expect(document.getElementsByClassName('dnldButton')[0].style.display).not.toBe('block');
     //done();
   }));
   it('displays the file details that are inside of the home directory', (done) => {

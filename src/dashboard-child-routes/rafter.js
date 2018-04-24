@@ -159,7 +159,7 @@ export class Rafter {
     //if (subSubDirFiles === null) {
     //home directory click event is here
     tv.on('select', function(evt) {
-      //console.log('i clicked the select event from tv');
+      console.log('i clicked the select event from tv');
         //console.log(evt.data.id);
       showFile(evt.data.id, null, raf, rvs, myApp, rui, null, null, null, null, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles, hdj);
     });
@@ -212,7 +212,7 @@ export class Rafter {
     }
   }
   showFileDetails(id, allData, raf, rvs, myApp, rui, mtws = null, tv, showFile, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles, hdj) {
-    //console.log(subSubDirFiles);
+    console.log(subSubDirFiles);
     const dnldbt = document.getElementsByClassName('dnldButton')[0];
     const dfcbt = document.getElementsByClassName('displayButton')[0];
     let matchFile = false;
@@ -261,7 +261,7 @@ export class Rafter {
   async makeTreeWithSub(data, hdjId, hdj, tv, showFile, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles) {
     let childArr;
     let newData;
-    //console.log(hdj);
+    console.log(tv.data);
     childArr = mnj(data);
     //console.log('child array');
     //console.log(childArr);
@@ -269,7 +269,7 @@ export class Rafter {
     if (hdjId !== null) {
       sessionStorage.setItem('parentId', hdjId);
     }
-    if (raf.rfid !== '' && childArr.length > 0) {
+    if (raf.rfid !== '') {
       newData = rafterFileActions.makeSubSubTree(tv.data, raf, childArr);
     } else {
       for (let i = 0; i < tv.data.length; i++) {
