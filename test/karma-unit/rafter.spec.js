@@ -262,7 +262,7 @@ describe('The Rafter Dashboard', () => {
   }));
 
   it('appears to uploads a rafter file', testAsync(async function() {
-    document.body.innerHTML = '<div><input id="rafterFilePath" type="file" accept=""/><button style="display:none" id="uploadButton"></button></div>';
+    document.body.innerHTML += '<div><input id="rafterFilePath" type="file" accept=""/><button style="display:none" id="uploadButton"></button></div>';
     window.rafterFilePath = {files: [new Blob()]};
     window.rafterFilePath.files[0].name = 'howdy.txt';
     console.log('do I have a file reader?');
@@ -277,7 +277,7 @@ describe('The Rafter Dashboard', () => {
   }));
 
   it('cathes error on vs upload a rafter file', testAsync(async function() {
-    document.body.innerHTML = '<div><input id="rafterFilePath" type="file" accept=""/><button style="display:none" id="uploadButton"></button></div>';
+    document.body.innerHTML += '<div><input id="rafterFilePath" type="file" accept=""/><button style="display:none" id="uploadButton"></button></div>';
     window.rafterFilePath = {files: [new Blob()]};
     window.rafterFilePath.files[0].name = 'howdy.txt';
   //console.log('do I have a file reader?');

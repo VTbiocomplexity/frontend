@@ -242,7 +242,6 @@ export class Rafter {
     //console.log(subSubDirFiles);
     rafterFileActions.setFileActions(id, subDirFiles, dnldbt, dfcbt, raf, subSubDirFiles, matchFile, rvs, myApp, rui, mtws, hdj, tv, showFile, displayTree, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions);
   }
-
   makeNewJson(data) {
     let nameArr = [];
     let nameObj = {};
@@ -252,12 +251,10 @@ export class Rafter {
     }
     return nameArr;
   }
-
   makeTree(data) {
     let nameArr = this.makeNewJson(data);
     this.displayTree(this.tv, nameArr, 'treeView', this.showFileDetails, this.homeDirJson, this.rafterFile, this.rafterVolumeService, this.app, this.rafterUserID, this.makeTreeWithSub, this.displayTree, this.subDirJson, this.makeNewJson, this.makeFilesClickable, this.vsFetch, this.vsFetchSuccess, this.rafterFileActions);
   }
-
   async makeTreeWithSub(data, hdjId, hdj, tv, showFile, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles) {
     let childArr;
     let newData;
@@ -282,7 +279,6 @@ export class Rafter {
     await displayTree(tv, newData, 'treeView', showFile, hdj, raf, rvs, myApp, rui, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles);
     tv.expandAll();
   }
-
   async navHomeDir() {
     let hdc = JSON.stringify(this.homeDirJson);
     this.rafterFile = {name: '', createType: 'file', path: '', fileType: 'unspecified', rfid: ''};
@@ -305,7 +301,6 @@ export class Rafter {
     document.getElementsByClassName('rafterMakeFileButton')[0].setAttribute('disabled', '');
     document.getElementsByClassName('fileTypeSelector')[0].style.display = 'block';
   }
-
   async fetchVS(cmd) {
     if (this.rafterFile.createType !== 'folder') {this.rafterFile.createType = 'file';}
     this.rafterFile.name = this.rafterFile.name.replace(/\s/g, '');
@@ -357,7 +352,6 @@ export class Rafter {
       }
     });
   }
-
   vsFetchSuccess(data, vsFetchSuccess, myApp, rafterUserID, cmd, myRafterFile, fromSubDir, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, rafterFileActions, subSubDirFiles) {
     //console.log(hdjId);
     //console.log('vs fetch');
@@ -375,7 +369,6 @@ export class Rafter {
     //console.log(subDirFiles);
     mtws(data, hdjId, hdj, tv, showFile, myRafterFile, rvs, myApp, rafterUserID, mtws, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles);
   }
-
   rafterVolumeService(cmd, myApp, rafterUserID, myRafterFile, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles) {
     console.log('rafter volume service:' + cmd);
     // if (myRafterFile.rfid !== '') {
@@ -384,7 +377,6 @@ export class Rafter {
     // }
     vsFetch(vsFetchSuccess, myApp, rafterUserID, cmd, myRafterFile, true, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, rafterFileActions, subSubDirFiles);
   }
-
   checkIfLoggedIn(cep, rlo, sli, cipr) {
     if (window.sessionStorage.getItem('rafterToken') !== null && window.sessionStorage.getItem('rafterToken') !== undefined) {
       let rtok = window.sessionStorage.getItem('rafterToken');
@@ -405,7 +397,6 @@ export class Rafter {
       return true;
     }
   }
-
   async attached() {
     const cili = this.checkIfLoggedIn;
     const cep = this.rafterUser.checkExpired;
