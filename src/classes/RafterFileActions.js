@@ -23,16 +23,12 @@ export class RafterFileActions {
         dfc.scrollIntoView();
       }
     /* istanbul ignore next */
-      function errorHandler(evt) {
-        alert('The file could not be read');
-      }
+      function errorHandler(evt) {alert('The file could not be read');}
       this.reader.onload = loaded;
       this.reader.onerror = errorHandler;
       this.reader.readAsText(blob);
     //console.log(fileContents);
-    }).catch(function (err) {
-      console.log(err);
-    });
+    }).catch(function (err) {console.log(err);});
   }
   fileDelete() {
     let fileDetails = document.getElementsByClassName('homeDirContent')[0].innerHTML;
@@ -43,13 +39,9 @@ export class RafterFileActions {
     }).then((response) => response.json()).then((data) => {
       if (data) {
     /* istanbul ignore if */
-        if (process.env.NODE_ENV !== 'test') {
-          window.location.reload();
-        }
+        if (process.env.NODE_ENV !== 'test') {window.location.reload();}
       }
-    }).catch(function (err) {
-      console.log(err);
-    });
+    }).catch(function (err) {console.log(err);});
   }
   fileDownload() {
     let fileDetails = document.getElementsByClassName('homeDirContent')[0].innerHTML;
@@ -61,9 +53,7 @@ export class RafterFileActions {
     }).then((response) => response.blob()).then((blob) => {
   //console.log(blob);
       FileSaver.saveAs(blob, fdJson.name);
-    }).catch(function (err) {
-      console.log(err);
-    });
+    }).catch(function (err) {console.log(err);});
   }
   valFileName(rf) {
     let rmfb = document.getElementsByClassName('rafterMakeFileButton')[0];
