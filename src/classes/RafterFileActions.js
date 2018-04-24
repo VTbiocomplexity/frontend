@@ -48,7 +48,6 @@ export class RafterFileActions {
       console.log(err);
     });
   }
-
   fileDownload() {
     let fileDetails = document.getElementsByClassName('homeDirContent')[0].innerHTML;
   //console.log(fileDetails);
@@ -63,22 +62,17 @@ export class RafterFileActions {
       console.log(err);
     });
   }
-
   valFileName(rf) {
     let rmfb = document.getElementsByClassName('rafterMakeFileButton')[0];
     rmfb.setAttribute('disabled', true);
   //console.log('check file name');
-    if (rf.name !== '') {
-      rmfb.removeAttribute('disabled');
-    }
+    if (rf.name !== '') {rmfb.removeAttribute('disabled');}
   }
   validateLogin(rlf) {
     let submitButton = document.getElementsByClassName('rafterLoginButton')[0];
     if (rlf.id !== '' && rlf.secret !== '' && rlf.appName !== '') {
       submitButton.removeAttribute('disabled');
-    } else {
-      submitButton.setAttribute('disabled', '');
-    }
+    } else {submitButton.setAttribute('disabled', '');}
   }
   fileTypeValidate() {
     let nub = document.getElementById('uploadButton');
@@ -91,7 +85,7 @@ export class RafterFileActions {
     }
     for (let i = 0; i < rafterFilePath.files.length; i++) {
       let oInput = rafterFilePath.files[i];
-      console.log(oInput.type);
+    //console.log(oInput.type);
     // the type is determined automatically during the creation of the Blob.
     // this value cannot be controlled by developer, hence cannot test it.
     /* istanbul ignore if*/
@@ -104,16 +98,13 @@ export class RafterFileActions {
       return false;
     }
   }
-
   async ulrf (fileString, cleanFileName, httpClient, rui, filePath) {
   //console.log('this is the file?');
   //console.log(fileString);
   //console.log(cleanFileName);
     httpClient.fetch('/rafter/vs', {
       method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({token: sessionStorage.getItem('rafterToken'), userName: rui, command: 'create', rafterFile: {fileType: 'text', name: cleanFileName, path: filePath, content: fileString, createType: 'file'}})
     })
   .then((response) => response.json())
@@ -127,7 +118,6 @@ export class RafterFileActions {
     console.log(err);
   });
   }
-
   uploadRafterFile(rui, rf) {
     const httpClient = this.httpClient;
     const ulrf = this.ulrf;
@@ -144,35 +134,29 @@ export class RafterFileActions {
       const fileString = evt.target.result;
       ulrf(fileString, cleanFileName, httpClient, rui, filePath);
     }
-
     function errorHandler(evt) {
       alert('The file could not be read');
     }
-
     this.reader.onload = loaded;
     this.reader.onerror = errorHandler;
     this.reader.readAsText(rafterFilePath.files[0]);
   }
-
   hideDetail(ic1, ic2, content) {
     document.getElementsByClassName(content)[0].style.display = 'none';
     document.getElementsByClassName(ic1)[0].style.display = 'none';
     document.getElementsByClassName(ic2)[0].style.display = 'block';
   }
-
   showDetail(ic1, ic2, content) {
     document.getElementsByClassName(content)[0].style.display = 'block';
     document.getElementsByClassName(ic1)[0].style.display = 'block';
     document.getElementsByClassName(ic2)[0].style.display = 'none';
   }
-
   nevermind() {
-    /* istanbul ignore if */
+  /* istanbul ignore if */
     if (process.env.NODE_ENV !== 'test') {
       window.location.reload();
     }
   }
-
   resetFileActions(mtws, dnldbt, dfcbt) {
     document.getElementsByClassName('displayFileContent')[0].innerHTML = '';
     dnldbt.style.display = 'none';
@@ -190,14 +174,11 @@ export class RafterFileActions {
       document.getElementsByClassName('createNew')[0].style.display = 'block';
     }
   }
-
   setFileActions(id, subDirFiles, dnldbt, dfcbt, raf, subSubDirFiles, matchFile) {
-    if (matchFile || subDirFiles === null || subDirFiles === undefined) {
-      return;
-    }
+    if (matchFile || subDirFiles === null || subDirFiles === undefined) {return;}
     for (let j = 0; j < subDirFiles.length; j++) {
       if (id === subDirFiles[j].id && !subDirFiles[j].isContainer) {
-          //console.log('i found a match!');
+      //console.log('i found a match!');
         document.getElementsByClassName('deleteButton')[0].style.display = 'block';
         document.getElementsByClassName('dnldButton')[0].innerHTML = ('Download<br>' + subDirFiles[j].name);
         document.getElementsByClassName('deleteButton')[0].innerHTML = ('Delete<br>' + subDirFiles[j].name);
@@ -210,18 +191,17 @@ export class RafterFileActions {
       }
       if (subDirFiles[j].isContainer && id === subDirFiles[j].id) {
         console.log('I clicked a sub sub folder');
-        // console.log(subDirFiles[j]);
-        // console.log(subDirFiles);
-        //console.log(subSubDirFiles);
+      // console.log(subDirFiles[j]);
+      // console.log(subDirFiles);
+      //console.log(subSubDirFiles);
         document.getElementsByClassName('deleteButton')[0].style.display = 'none';
         document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[j]);
         document.getElementsByClassName('subDirContent')[0].innerHTML = JSON.stringify(subSubDirFiles);
         document.getElementsByClassName('createNew')[0].style.display = 'none';
-        //return subDirFiles = [];
+      //return subDirFiles = [];
       }
     }
   }
-
   setSubSubClicks(subSubDirFiles, id, fif, k) {
     if (subSubDirFiles !== null && subSubDirFiles !== undefined) {
       for (let zz = 0; zz < subSubDirFiles.length; zz++) {
@@ -237,10 +217,9 @@ export class RafterFileActions {
     }
     return false;
   }
-
   setSubSubFiles(subSubDirFiles, id) {
     if (subSubDirFiles !== null && subSubDirFiles !== undefined) {
-      //console.log(subSubDirFiles.id);
+    //console.log(subSubDirFiles.id);
     //do not put click events into sub sub folders
       for (let zz = 0; zz < subSubDirFiles.length; zz++) {
         if (subSubDirFiles[zz].id === id) {
@@ -255,31 +234,29 @@ export class RafterFileActions {
     }
     return false;
   }
-
   makeSubSubTree(tvData, raf, childArr) {
     let parentId = sessionStorage.getItem('parentId');
     let j;
     for (j = 0; j < tvData.length; j++) {
-      /* istanbul ignore else */
+    /* istanbul ignore else */
       if (parentId === tvData[j].id) {
         break;
       }
     }
     for (let k = 0; k < tvData[j].children.length; k++) {
       if (tvData[j].children[k].id === raf.rfid) {
-        console.log('make the sub sub tree');
-        //console.log(tv.data[j].children[k]);
+      //console.log('make the sub sub tree');
+      //console.log(tv.data[j].children[k]);
         tvData[j].children[k].children = childArr;
-        //console.log(tv.data[j].children[k].children);
+      //console.log(tv.data[j].children[k].children);
       }
     }
     raf.rfid = '';
     sessionStorage.removeItem('parentId');
     return tvData;
   }
-
   fileNameState(myFile, dnldbt, dfcbt) {
-    console.log('file name state');
+  //console.log('file name state');
     document.getElementsByClassName('deleteButton')[0].style.display = 'block';
     document.getElementsByClassName('dnldButton')[0].innerHTML = ('Download<br>' + myFile.name);
     document.getElementsByClassName('deleteButton')[0].innerHTML = ('Delete<br>' + myFile.name);
@@ -289,31 +266,29 @@ export class RafterFileActions {
       dfcbt.style.display = 'block';
     }
   }
-
   subSubFolderClick(fij, subDirFiles) {
-    console.log('got me a sub sub folder');
+  //console.log('got me a sub sub folder');
     document.getElementsByClassName('fileActions')[0].style.display = 'none';
   //console.log(fileIDJson);
     document.getElementsByClassName('folderName')[0].innerHTML = fij.name;
     document.getElementsByClassName('createNew')[0].style.display = 'none';
-    //raf.rfid = fileIDJson.id;
+  //raf.rfid = fileIDJson.id;
   //refresh the inside Folder Details
   //hide the file actions (display, download, delete)
   //tree view opens with sub sub folder content
     document.getElementsByClassName('displayFileContent')[0].innerHTML = ''; //this is incase someone clicked view button on a file
     document.getElementsByClassName('subDirContent')[0].innerHTML = '';
-    console.log('trying to find the sub sub folder metadata');
-    // console.log(subSubDirFiles);
-    // console.log(allData);
-    // console.log(subDirFiles);
-    // console.log(raf.rfid);
-    // console.log(hdj);
+  //console.log('trying to find the sub sub folder metadata');
+  // console.log(subSubDirFiles);
+  // console.log(allData);
+  // console.log(subDirFiles);
+  // console.log(raf.rfid);
+  // console.log(hdj);
     for (let i = 0; i < subDirFiles.length; i++) {
-      /* istanbul ignore else */
+    /* istanbul ignore else */
       if (subDirFiles[i].id === fij.id) {
         document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[i]);
       }
     }
   }
-
 }
