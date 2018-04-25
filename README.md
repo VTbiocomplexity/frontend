@@ -9,8 +9,8 @@
 1. Install node version manager (nvm), close and open terminal afterwards
 2. Use nvm to install Node.js, version listed in package.json<br>```nvm install lts/*```
 3. Install Yarn - see Yarn's installation instructions for your OS.
-4. Install Chrome (needed for browser-based testing)
-5. Clone this repo, then navigate into the project folder
+4. Install Chrome (needed for browser-based testing).
+5. Clone this repo, then navigate into the project folder.
 6. Create a .env file at the project root, then request the contents from an app owner.
 7. ```yarn install```
 
