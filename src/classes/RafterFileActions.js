@@ -184,12 +184,13 @@ export class RafterFileActions {
         return document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[j]);
       }
       if (subDirFiles[j].isContainer && id === subDirFiles[j].id) {
-        //console.log('I clicked a sub sub folder');
+        console.log('I clicked a sub sub folder');
       //console.log(subSubDirFiles);
         document.getElementsByClassName('deleteButton')[0].style.display = 'none';
         document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[j]);
       //document.getElementsByClassName('subDirContent')[0].innerHTML = '';
         raf.rfid = id;
+        console.log(raf.rfid);
         document.getElementsByClassName('createNew')[0].style.display = 'block';
         rvs('ls', myApp, rui, raf, mtws, null, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles);
       //document.getElementsByClassName('fileCreate')[0].style.display = 'block';
@@ -262,7 +263,31 @@ export class RafterFileActions {
         }
       }
     }
+    tvData = this.removeOtherSubSubChildren(tvData, parentId);
+    // //remove all other sub sub folder children from treeView
+    // for (let k = 0; k < tvData.length; k++) {
+    //   if (tvData[k].id !== parentId) {
+    //     //console.log(tvData[k]);
+    //     for (let l = 0; l < tvData[k].children.length; l++) {
+    //       if (tvData[k].children[l].children !== undefined) {
+    //         if (tvData[k].children[l].children.length > 0) {tvData[k].children[l].children = [];}
+    //       }
+    //     }
+    //   }
+    // }
     raf.rfid = '';
+    return tvData;
+  }
+  removeOtherSubSubChildren(tvData, parentId) {
+    console.log('remove all other sub sub folder children from treeView');
+    for (let k = 0; k < tvData.length; k++) {
+      if (tvData[k].id !== parentId) {
+        //console.log(tvData[k]);
+        for (let l = 0; l < tvData[k].children.length; l++) {
+          tvData[k].children[l].children = [];
+        }
+      }
+    }
     return tvData;
   }
   fileNameState(myFile, dnldbt, dfcbt) {
@@ -301,7 +326,6 @@ export class RafterFileActions {
       if (subDirFiles[i].id === fij.id) {
         document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[i]);
         document.getElementsByClassName('createNew')[0].style.display = 'block';
-      //sessionStorage.setItem('rFolderId', fij.id);
       }
     }
   }

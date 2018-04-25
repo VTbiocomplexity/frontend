@@ -191,7 +191,7 @@ describe('The Rafter Dashboard', () => {
     rd3.app.appState = new AppStateStub();
     rd3.activate();
     rd3.rafterFileActions = new RafterFileActions(rd3.app.httpClient);
-    document.body.innerHTML = '<div class="homeDirContent">{"state":"analyzing","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"a185e810-af88-11e7-ab0c-717499928918","creation_date":"2017-10-12T20:05:01.841Z","name":"someName"}</div>';
+    document.body.innerHTML += '<div class="homeDirContent">{"state":"analyzing","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"a185e810-af88-11e7-ab0c-717499928918","creation_date":"2017-10-12T20:05:01.841Z","name":"someName"}</div>';
     rd3.rafterUserID = 'Tester';
     sessionStorage.setItem('rafterToken', JSON.stringify({token: '123'}));
     await rd3.rafterFileActions.fileDownload();
@@ -222,7 +222,8 @@ describe('The Rafter Dashboard', () => {
     rd3.rafterFileActions.reader = new FileReader();
 //console.log(rd3.reader);
     await rd3.rafterFileActions.fileDisplay();
-//expect().toBe();
+    console.log('line 255');
+    console.log(document.getElementsByClassName('displayFileContent')[0].innerHTML);
   }));
 
   it('catches error on attempt to display the content of a file on the webpage', testAsync(async function() {
@@ -243,7 +244,7 @@ describe('The Rafter Dashboard', () => {
     rd3.app.appState = new AppStateStub();
     rd3.activate();
     rd3.rafterFileActions = new RafterFileActions(rd3.app.httpClient);
-    document.body.innerHTML = '<div class="displayFileContent"></div><div class="homeDirContent">{"state":"analyzing","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"a185e810-af88-11e7-ab0c-717499928918","creation_date":"2017-10-12T20:05:01.841Z","name":"someName"}</div>';
+    document.body.innerHTML += '<div class="displayFileContent"></div><div class="homeDirContent">{"state":"analyzing","type":"unspecified","isContainer":false,"readACL":[],"writeACL":[],"computeACL":[],"autometa":{},"usermeta":{},"id":"a185e810-af88-11e7-ab0c-717499928918","creation_date":"2017-10-12T20:05:01.841Z","name":"someName"}</div>';
     rd3.rafterUserID = 'Tester';
     sessionStorage.setItem('rafterToken', JSON.stringify({token: '123'}));
 //console.log('do I have a file reader?');
@@ -624,7 +625,7 @@ describe('The Rafter Dashboard', () => {
     rd.displayTree = function() {};
     rd.tv = {expandAll: function() {}, data: [{name: 'myFolder', id: '456', type: 'folder', isContainer: false, children: []}, {name: 'myFolder2', id: '4562', type: 'folder', isContainer: false, children: []}]};
     document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="subDirContent"></div>';
-    const data = [{name: 'myFile', id: '123', type: 'file', isContainer: false, children: []}];
+    let data = [{name: 'myFile', id: '123', type: 'file', isContainer: false, children: []}];
     const hdj = [{name: 'myFolder', id: '456', type: 'folder', isContainer: true, children: []}];
     spyOn(window.sessionStorage, 'setItem').and.callThrough();
     spyOn(window.sessionStorage, 'removeItem').and.callThrough();
@@ -636,6 +637,18 @@ describe('The Rafter Dashboard', () => {
     expect(window.sessionStorage.removeItem).toHaveBeenCalled();
     await rd.makeTreeWithSub(data, '456', hdj, rd.tv, rd.showFileDetails, {rfid: '999999'}, null, null, null, rd.makeTreeWithSub, rd.displayTree, rd.subDirJson, rd.makeNewJson, null, null, null, rd.rafterFileActions);
     expect(window.sessionStorage.removeItem).toHaveBeenCalled();
+    data = [{name: 'myFile', id: '123', type: 'file', isContainer: false, children: [{id: '1234'}]}, {name: 'myFile', id: '123', type: 'file', isContainer: false, children: [{id: '333'}]}];
+    spyOn(window.sessionStorage, 'getItem').and.callFake(function (key) {
+      return '333';
+    });
+    // let newData = await rd.rafterFileActions.makeSubSubTree(data, rd.rafterFile, []);
+    // expect(newData[0].children[0].children).toBe(undefined);
+    data = [{name: 'myFile', id: '123', type: 'file', isContainer: false, children: [{id: '1234', children: [{id: 'howdy'}]}]}, {name: 'myFile', id: '123', type: 'file', isContainer: false, children: [{id: '333'}]}];
+    let newData = await rd.rafterFileActions.makeSubSubTree(data, rd.rafterFile, []);
+    expect(newData[0].children[0].children.length).toBe(0);
+    data = [{name: 'myFile', id: '123', type: 'file', isContainer: false, children: [{id: '1234', children: []}]}, {name: 'myFile', id: '123', type: 'file', isContainer: false, children: [{id: '333'}]}];
+    newData = await rd.rafterFileActions.makeSubSubTree(data, rd.rafterFile, []);
+    expect(newData[0].children[0].children.length).toBe(0);
   }));
   it('detects an expired token', (done) => {
     let tkn = {exp: 123};
