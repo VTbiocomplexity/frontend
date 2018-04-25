@@ -82,7 +82,7 @@ export class RafterFileActions {
     // the type is determined automatically during the creation of the Blob.
     // this value cannot be controlled by developer, hence cannot test it.
     /* istanbul ignore if*/
-      if (oInput.type === 'text/plain' || oInput.type === 'text/html' || oInput.type === 'application/json') {
+      if (oInput.type === 'text/plain' || oInput.type === 'text/html' || oInput.type === 'application/json' || oInput.type === 'text/xml') {
       //console.log('type is a plain text file');
         nub.style.display = 'block';
         return true;
@@ -91,9 +91,18 @@ export class RafterFileActions {
       return false;
     }
   }
-  async ulrf (fileString, cleanFileName, httpClient, rui, filePath) {
+  async ulrf (fileString, cleanFileName, httpClient, rui, filePath, fType) {
     let folderName = '/' + document.getElementsByClassName('folderName')[0].innerHTML;
-    //console.log(folderName);
+    console.log(fType);
+    if (fType === 'text/plain' || fType === 'text/html') {
+      fType = 'text';
+    } else if (fType === 'application/json') {
+      fType = 'json';
+    } else if (fType === 'text/xml') {
+      fType = 'xml';
+    } else {
+      return alert('file type is: ' + fType);
+    }
     /* istanbul ignore else */
     if (folderName !== filePath) {
       filePath = filePath + folderName;
@@ -102,7 +111,7 @@ export class RafterFileActions {
     httpClient.fetch('/rafter/vs', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({token: sessionStorage.getItem('rafterToken'), userName: rui, command: 'create', rafterFile: {fileType: 'text', name: cleanFileName, path: filePath, content: fileString, createType: 'file'}})
+      body: JSON.stringify({token: sessionStorage.getItem('rafterToken'), userName: rui, command: 'create', rafterFile: {fileType: fType, name: cleanFileName, path: filePath, content: fileString, createType: 'file'}})
     }).then((response) => response.json())
     .then((data) => {
       console.log(data);
@@ -115,7 +124,7 @@ export class RafterFileActions {
     const ulrf = this.ulrf;
   //const rui = this.rafterUserID;
     const fileName = rafterFilePath.files[0].name;
-  //const fileType = rafterFilePath.files[0].name;
+    const fType = rafterFilePath.files[0].type;
     const filePath = rf.path;
   //console.log(fileName);
     let cleanFileName = fileName.replace(/\s/g, '');
@@ -124,7 +133,7 @@ export class RafterFileActions {
     //console.log('in function loaded');
     //console.log(evt.target);
       const fileString = evt.target.result;
-      ulrf(fileString, cleanFileName, httpClient, rui, filePath);
+      ulrf(fileString, cleanFileName, httpClient, rui, filePath, fType);
     }
     function errorHandler(evt) {
       alert('The file could not be read');
