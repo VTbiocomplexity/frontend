@@ -187,14 +187,20 @@ class Login_ {
         //   generateSession(data.email);
         // }
         loginform1[0].style.display = 'none';
-        window.location.href = feurl + '/login/?token=true';
+        /* istanbul ignore if */
+        if (process.env.NODE_ENV !== 'test') {
+          window.location.href = feurl + '/login/?token=true';
+        }
       }
       if (data.message) {
         messagediv.innerHTML = '<p style="text-align:left; padding-left:12px">' + data.message + '</p>';
       }
       if (!data.message && !data.token && data.email) {
         loginform1[0].style.display = 'none';
-        window.location.href = feurl + '/userutil/?email=' + data.email + '&form=reset';
+        /* istanbul ignore if */
+        if (process.env.NODE_ENV !== 'test') {
+          window.location.href = feurl + '/userutil/?email=' + data.email + '&form=reset';
+        }
       }
     })
     .catch((error) => {

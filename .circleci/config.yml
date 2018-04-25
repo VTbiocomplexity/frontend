@@ -4,7 +4,7 @@ jobs:
     working_directory: ~/frontend
     # The primary container is an instance of the first list image listed. Your build commands run in this container.
     docker:
-      - image: circleci/node:8.10.0-browsers
+      - image: circleci/node:8.11.1-browsers
     # The secondary container is an instance of the second listed image which is run in a common network where ports exposed on the primary container are available on localhost.
       #- image: mongo:3.4.4
     steps:
@@ -23,10 +23,19 @@ jobs:
             - node_modules
   test:
     docker:
-      - image: circleci/node:8.10.0-browsers
+      - image: circleci/node:8.11.1-browsers
       #- image: mongo:3.4.4
     steps:
       - checkout
+      - run: #STABLE
+          name: Install Chromedriver latest version
+          command: |
+            sudo apt-get update
+            sudo apt-get install lsb-release libappindicator3-1
+            curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+            sudo dpkg -i google-chrome.deb
+            sudo sed -i 's|HERE/chrome"|HERE/chrome" --no-sandbox|g' /opt/google/chrome/google-chrome
+            rm google-chrome.deb
       - run:
           name: Test install
           command: 'sudo npm install -g npm@latest && sudo npm install -g codeclimate-test-reporter && yarn install'

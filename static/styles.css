@@ -321,7 +321,7 @@ button {
 .tree-leaf .tree-leaf-text {
   cursor: pointer;
   text-align: left;
-  margin-left: 25px;
+  margin-left: 40px;
 }
 
 .tree-leaf .tree-leaf-text:hover { color: #23527c; }
@@ -349,7 +349,8 @@ button {
 
 .tlfolder {
   float: left;
-  padding-left: 10px;
+  padding-left: 25px;
+  padding-right: 4px;
 }
 
 #treeView {
@@ -419,6 +420,13 @@ button[disabled]:hover {
   cursor: hand;
 }
 
+.fileActions {
+  display: none;
+  position: fixed;
+  right: 10px;
+  top: 156px;
+}
+
 @media screen and (max-width: 766px) {
   .drawer {
     background-color: rgb(192, 192, 192);
@@ -433,6 +441,9 @@ button[disabled]:hover {
   }
   .content-block {
     overflow-x: hidden;
+  }
+  ::-webkit-scrollbar:vertical {
+    width: 0;
   }
 }
 
@@ -464,6 +475,10 @@ button[disabled]:hover {
     /* position:absolute;
     bottom:0px; */
     width: 100%;
+  }
+  .fileActions {
+    right: 250px;
+    top: 166px;
   }
 }
 

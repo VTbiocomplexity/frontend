@@ -19,19 +19,19 @@
       <div style="text-align:center: margin-auto; max-width:4in">
         <h3 style="margin:auto; padding-top:10px; padding-bottom:5px;text-align:center"><strong>Rafter Dashboard</strong></h3>
         <p style="text-align:center;"><i>We are going to try out some Rafter APIs here!</i></p>
-        <button style="text-align:center;margin:auto; display:none" class="rafterCheckHome btn" click.delegate="rafterVolumeService('ls')">Display home/${rafterUserID}</button>
+        <button style="text-align:center;margin:auto; display:none" class="rafterCheckHome btn" click.delegate="fetchVS('ls')">Display home/${rafterUserID}</button>
       </div>
-      <div class="rafterLogin elevation3" style="max-width:3in; margin:auto; margin-bottom:20px" show.bind="showLogin">
+      <div class="rafterLogin elevation3" style="max-width:3in; margin:auto; margin-bottom:20px; margin-top:10px" show.bind="showLogin">
         <form style="margin-left:8px">
           <label>Rafter App Name</label>
-          <input type="text" value.bind="rafter.appName" change.delegate="validate()" keyup.delegate="validate()" style="width:2.65in">
+          <input type="text" value.bind="rafter.appName" change.delegate="rafterFileActions.validateLogin(rafter)" keyup.delegate="rafterFileActions.validateLogin(rafter)" style="width:2.65in">
           <label>Rafter App Id</label>
-          <input type="text" value.bind="rafter.id" change.delegate="validate()" keyup.delegate="validate()" style="width:2.65in">
+          <input type="text" value.bind="rafter.id" change.delegate="rafterFileActions.validateLogin(rafter)" keyup.delegate="rafterFileActions.validateLogin(rafter)" style="width:2.65in">
           <label>Rafter App Secret</label>
-          <input type="text" value.bind="rafter.secret" change.delegate="validate()" keyup.delegate="validate()" style="width:2.65in">
+          <input type="text" value.bind="rafter.secret" change.delegate="rafterFileActions.validateLogin(rafter)" keyup.delegate="rafterFileActions.validateLogin(rafter)" style="width:2.65in">
           <div>
             <p>&nbsp;</p>
-            <button disabled class="rafterLoginButton" click.delegate="handleRafterLogin()">Connect To Rafter</button><span style="margin-left:60px"> </span><button click.delegate="nevermind()">Nevermind</button>
+            <button disabled class="rafterLoginButton" click.delegate="handleRafterLogin()">Connect To Rafter</button><span style="margin-left:60px"> </span><button click.delegate="rafterFileActions.nevermind()">Nevermind</button>
           </div>
           <p><br>Need an account? Follow these <a href="https://docs.google.com/document/d/1BF11gUYfXU8xBSsBW3J2wjK2HWf6NnWzz0y-1XtzoNE/#heading=h.5z7lybzc053j" target="_blank">instructions.</a></p>
         </form>
@@ -40,12 +40,12 @@
         <div class="showHideHD" style="display:none">
           <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><i class="fa fa-folder"></i> <a class="rafterHomeLink" click.delegate="navHomeDir()">home/${rafterUserID}</a>
         </div>
-        <div class="fileDetailsTitle fileDld" style="display:none; position:relative; float:right; margin-right:6px;margin-top:-11px">
-          <button class="displayButton btn-primary" type="button" click.delegate="fileDisplay()">Display</button>
+        <div class="fileActions">
+          <button class="displayButton btn-primary" type="button" click.delegate="rafterFileActions.fileDisplay()">Display</button>
           <p style="font-size:4px; margin:0">&nbsp;</p>
-          <button class="dnldButton btn-success" type="button" click.delegate="fileDownload()">Download</button>
+          <button class="dnldButton btn-success" type="button" click.delegate="rafterFileActions.fileDownload()">Download</button>
           <p style="font-size:4px; margin:0">&nbsp;</p>
-          <button class="deleteButton btn-danger" type="button" click.delegate="fileDelete()">Delete</button>
+          <button class="deleteButton btn-danger" type="button" click.delegate="rafterFileActions.fileDelete()">Delete</button>
         </div>
         <div id="treeView" style="max-width:2in; margin-left:86px; min-height:100px"></div>
       </div>
@@ -56,25 +56,27 @@
             <div class="fileMeta">
               <div class="fileDetailsTitle" style="display:none">
                 <hr>
-                <div class="displayFileContent"></div>
-                <div>
-                  <div style="float:left; margin-left:33%; margin-right: -33%">
-                    <i class="fa fa-plus-square hoverHand sfd" style="display:none" click.delegate="showDetail('hfd','sfd','homeDirContent')"></i>
-                    <i class="fa fa-minus-square hoverHand hfd" click.delegate="hideDetail('hfd','sfd','homeDirContent')"></i>
+                <div class="displayFileContent elevation3" style="margin-bottom:10px; width:100%; margin-left:0; margin-right:0; max-width:100%; display:none"></div>
+                <div style="width:250px; padding-left:98px">
+                  <div style="float:left;">
+                    <i class="fa fa-plus-square hoverHand sfd" style="display:none" click.delegate="rafterFileActions.showDetail('hfd','sfd','homeDirContent')"></i>
+                    <i class="fa fa-minus-square hoverHand hfd" click.delegate="rafterFileActions.hideDetail('hfd','sfd','homeDirContent')"></i>
                   </div>
-                  <div><p>&nbsp;&nbsp;&nbsp;<strong>File/Folder Details</strong></p></div>
+                  <div>
+                    <p><strong><span class="fileNameHere">File/Folder</span> Metadata</strong></p>
+                  </div>
                 </div>
               </div>
               <p class="homeDirContent" style="margin:10px;text-align:left;overflow-x:auto"></p>
             </div>
             <div class="insideFolderDetails" style="display:none">
               <hr>
-              <div>
-                <div style="float:left; margin-left:32%; margin-right:-26%">
-                  <i class="fa fa-plus-square hoverHand sifd" style="display:none" click.delegate="showDetail('hifd', 'sifd', 'subDirContent')"></i>
-                  <i class="fa fa-minus-square hoverHand hifd" click.delegate="hideDetail('hifd', 'sifd', 'subDirContent')"></i>
+              <div style="width:250px; padding-left:98px">
+                <div style="float:left;">
+                  <i class="fa fa-plus-square hoverHand sifd" style="display:none" click.delegate="rafterFileActions.showDetail('hifd', 'sifd', 'subDirContent')"></i>
+                  <i class="fa fa-minus-square hoverHand hifd" click.delegate="rafterFileActions.hideDetail('hifd', 'sifd', 'subDirContent')"></i>
                 </div>
-                <div><p>&nbsp;&nbsp;&nbsp;<strong>Inside of Folder Details</strong></p></div>
+                <div><p><strong>Inside Folder Details</strong></p></div>
               </div>
               <p class="subDirContent" style="margin:10px;text-align:left;;overflow-x:auto"></p>
             </div>
@@ -92,7 +94,7 @@
                 <label for="fileType2" style="display:inline">Folder</label>
               </div>
               <label>Name<span style="font-weight:normal;font-style:italic;font-size:9pt"> (no spaces)</span></label>
-              <input class="form-control" type="text" value.bind="rafterFile.name" style="width: 1.75in">
+              <input input.delegate="rafterFileActions.valFileName(rafterFile)" class="form-control rfn" type="text" value.bind="rafterFile.name" style="width: 1.75in">
               <div class="fileTypeSelector">
                 <label>Type</label>
                 <select id="fileType" class="form-control" value.bind="rafterFile.fileType" style="margin-top:0;width: 1.75in">
@@ -101,7 +103,8 @@
               </div>
               <p style="margin:0">&nbsp;</p>
               <div class="rafterFile" style="max-width:2in;text-align:left">
-                <button style="text-align:center" class="rafterMakeFileButton" click.delegate="rafterVolumeService('create')">Create</button>
+                <button disabled style="text-align:center" class="rafterMakeFileButton" click.delegate="fetchVS('create')">Create</button>
+                <span class="userServiceError" style="color:red; margin-left:10px"></span>
               </div>
             </form>
           </div>
@@ -109,9 +112,9 @@
           <div class="fileUpload elevation3" style="min-width:3in; margin-left:30px">
             <p style="text-align:center"><i><strong>Upload a File</strong></i></p>
             <form style="max-width:2.5in; margin-left:20px">
-              <input id="rafterFilePath" type="file" accept="" files.bind="selectedFiles" change.delegate="rafterFileValidate()"/>
+              <input id="rafterFilePath" type="file" accept="" files.bind="selectedFiles" change.delegate="rafterFileActions.fileTypeValidate()"/>
               <p>&nbsp;</p>
-              <button id="uploadButton" class="button-lib" style="display:none" raised click.trigger="uploadRafterFile()">
+              <button id="uploadButton" class="button-lib" style="display:none" raised click.trigger="rafterFileActions.uploadRafterFile(rafterUserID, rafterFile)">
                 Upload
               </button>
             </form>
