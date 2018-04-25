@@ -624,7 +624,7 @@ describe('The Rafter Dashboard', () => {
     rd.displayTree = function() {};
     rd.tv = {expandAll: function() {}, data: [{name: 'myFolder', id: '456', type: 'folder', isContainer: false, children: []}, {name: 'myFolder2', id: '4562', type: 'folder', isContainer: false, children: []}]};
     document.body.innerHTML = '<div id="divId"></div><div class="homeDirContent"></div><div class="showHideHD" style="display:none"></div><div id="treeView"></div><div class="subDirContent"></div>';
-    const data = [{name: 'myFile', id: '123', type: 'file', isContainer: false, children: []}];
+    let data = [{name: 'myFile', id: '123', type: 'file', isContainer: false, children: []}];
     const hdj = [{name: 'myFolder', id: '456', type: 'folder', isContainer: true, children: []}];
     spyOn(window.sessionStorage, 'setItem').and.callThrough();
     spyOn(window.sessionStorage, 'removeItem').and.callThrough();
@@ -636,6 +636,18 @@ describe('The Rafter Dashboard', () => {
     expect(window.sessionStorage.removeItem).toHaveBeenCalled();
     await rd.makeTreeWithSub(data, '456', hdj, rd.tv, rd.showFileDetails, {rfid: '999999'}, null, null, null, rd.makeTreeWithSub, rd.displayTree, rd.subDirJson, rd.makeNewJson, null, null, null, rd.rafterFileActions);
     expect(window.sessionStorage.removeItem).toHaveBeenCalled();
+    data = [{name: 'myFile', id: '123', type: 'file', isContainer: false, children: [{id: '1234'}]}, {name: 'myFile', id: '123', type: 'file', isContainer: false, children: [{id: '333'}]}];
+    spyOn(window.sessionStorage, 'getItem').and.callFake(function (key) {
+      return '333';
+    });
+    let newData = await rd.rafterFileActions.makeSubSubTree(data, rd.rafterFile, []);
+    expect(newData[0].children[0].children).toBe(undefined);
+    data = [{name: 'myFile', id: '123', type: 'file', isContainer: false, children: [{id: '1234', children: [{id: 'howdy'}]}]}, {name: 'myFile', id: '123', type: 'file', isContainer: false, children: [{id: '333'}]}];
+    newData = await rd.rafterFileActions.makeSubSubTree(data, rd.rafterFile, []);
+    expect(newData[0].children[0].children.length).toBe(0);
+    data = [{name: 'myFile', id: '123', type: 'file', isContainer: false, children: [{id: '1234', children: []}]}, {name: 'myFile', id: '123', type: 'file', isContainer: false, children: [{id: '333'}]}];
+    newData = await rd.rafterFileActions.makeSubSubTree(data, rd.rafterFile, []);
+    expect(newData[0].children[0].children.length).toBe(0);
   }));
   it('detects an expired token', (done) => {
     let tkn = {exp: 123};
