@@ -10,7 +10,7 @@ checks:
       threshold: 31
   method-complexity:
     config:
-      threshold: 9
+      threshold: 10
   similar-code:
     config:
       threshold: 100
@@ -38,9 +38,7 @@ ratings:
   - "**.jsx"
 exclude_paths:
 - test/
-- static/includes.html
 - node_modules/
 - coverage/
 - dist/
-- bower_components/
 - webpack.config.js

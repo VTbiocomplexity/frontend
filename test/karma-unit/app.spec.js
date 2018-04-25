@@ -97,16 +97,16 @@ describe('the App module', () => {
     done();
   });
 
-  it('does not display the mobile menu hamburger when in widescreen', testAsync(async function() {
-    document.body.innerHTML = '<div id="mobilemenutoggle"></div>';
-    // document.style = 'width:600px';
-    // document.width = 600;
-    // window.resizeTo(500, 600);
-    // document.documentElement.clientWidth =  600;
-    let ws = app1.widescreen;
-    expect(ws).toBe(true);
-    //done();
-  }));
+  // it('does not display the mobile menu hamburger when in widescreen', testAsync(async function() {
+  //   document.body.innerHTML = '<div id="mobilemenutoggle"></div>';
+  //   // document.style = 'width:600px';
+  //   // document.width = 600;
+  //   // window.resizeTo(500, 600);
+  //   // document.documentElement.clientWidth =  600;
+  //   let ws = app1.widescreen;
+  //   expect(ws).toBe(true);
+  //   //done();
+  // }));
 
   it('gets the current styles', (done) => {
     //let routre = new RouterStub();

@@ -20,7 +20,7 @@ class Register_ {
     '</td></tr><tr><th colspan="1">Email Address <span style="color:red">*</span></th><th colspan="1">Password <span style="color:red">*</span></th></tr><tr><td colspan="1">' +
     '<input class="email" type="email" name="email" style="width:100%;" required></td>' + '<td><input style="width:100%" class="password" pattern=".{8,}" title="8 characters minimum" type="password" name="password" style="width:100%;" required>' +
     '</td></tr>' +
-    '<tr><th colspan="2">Role / Organization</th></tr><tr><td colspan="2"><input style="width:100%" class="organization" type="text" name="affiliation" value=""></td></tr>' +
+    '<tr><th colspan="2">Job Title</th></tr><tr><td colspan="2"><input style="width:100%" class="organization" type="text" name="affiliation" value=""></td></tr>' +
     '<tr><th colspan="2">Area of Expertise</th></tr><tr><td colspan="2"><div><input style="width:100%;" class="expertise" type="text" name="expertise" value=""></div></td></tr>' +
     '<tr><th colspan="2">Other Interests</th></tr><tr><td colspan="2"><div><textarea style="width:100%;" class="interests" rows="5" cols="50" name="interests" style="height:75px;" value=""></textarea></div></td></tr>' +
     '</tbody></table><p><span style="color:red">*</span> <i>Indicates required field</i></p></div><div style="text-align:center;padding:2px;margin:10px;">' +
@@ -155,7 +155,10 @@ class Register_ {
       } else {
         document.getElementsByClassName('RegistrationForm')[0].style.display = 'none';
         if (data.email) {
-          window.location.href = process.env.FrontendUrl + '/userutil/?email=' + data.email;
+          /* istanbul ignore if */
+          if (process.env.NODE_ENV !== 'test') {
+            window.location.href = process.env.FrontendUrl + '/userutil/?email=' + data.email;
+          }
         }
       }
     })
@@ -170,7 +173,10 @@ class Register_ {
     if (process.env.FrontendUrl !== undefined) {
       feurl = process.env.FrontendUrl;
     }
-    window.location.href = feurl + '/userutil/?form=prefs';
+    /* istanbul ignore if */
+    if (process.env.NODE_ENV !== 'test') {
+      window.location.href = feurl + '/userutil/?form=prefs';
+    }
   }
 
 }
