@@ -263,7 +263,23 @@ export class RafterFileActions {
         }
       }
     }
-    //remove all other sub sub folder children from treeView
+    tvData = this.removeOtherSubSubChildren(tvData, parentId);
+    // //remove all other sub sub folder children from treeView
+    // for (let k = 0; k < tvData.length; k++) {
+    //   if (tvData[k].id !== parentId) {
+    //     //console.log(tvData[k]);
+    //     for (let l = 0; l < tvData[k].children.length; l++) {
+    //       if (tvData[k].children[l].children !== undefined) {
+    //         if (tvData[k].children[l].children.length > 0) {tvData[k].children[l].children = [];}
+    //       }
+    //     }
+    //   }
+    // }
+    raf.rfid = '';
+    return tvData;
+  }
+  removeOtherSubSubChildren(tvData, parentId) {
+    console.log('remove all other sub sub folder children from treeView');
     for (let k = 0; k < tvData.length; k++) {
       if (tvData[k].id !== parentId) {
         //console.log(tvData[k]);
@@ -274,7 +290,6 @@ export class RafterFileActions {
         }
       }
     }
-    raf.rfid = '';
     return tvData;
   }
   fileNameState(myFile, dnldbt, dfcbt) {
