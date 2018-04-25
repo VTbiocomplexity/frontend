@@ -284,9 +284,7 @@ export class RafterFileActions {
       if (tvData[k].id !== parentId) {
         //console.log(tvData[k]);
         for (let l = 0; l < tvData[k].children.length; l++) {
-          if (tvData[k].children[l].children !== undefined) {
-            if (tvData[k].children[l].children.length > 0) {tvData[k].children[l].children = [];}
-          }
+          tvData[k].children[l].children = [];
         }
       }
     }
