@@ -1,6 +1,7 @@
+import { inject } from 'aurelia-framework';
+import { App } from '../app';
+
 const Uact = require('../classes/UserAccount.js');
-import {inject} from 'aurelia-framework';
-import {App} from '../app';
 @inject(App)
 export class UserAccount {
   constructor(app) {
@@ -23,8 +24,8 @@ export class UserAccount {
   }
 
   checkUserRole() {
-    let button = document.getElementsByClassName('updateprofbutton')[0];
-    let errMessages = document.getElementsByClassName('formerrors')[0];
+    const button = document.getElementsByClassName('updateprofbutton')[0];
+    const errMessages = document.getElementsByClassName('formerrors')[0];
     if (this.user.userType === '') {
       button.setAttribute('disabled', true);
       return errMessages.innerHTML += '<p>Select a primary user type.</p>';
@@ -33,16 +34,16 @@ export class UserAccount {
     if (errMessages.innerHTML === '') {
       button.removeAttribute('disabled');
     }
-    //document.getElementsByClassName('formerrors')[0].innerHTML = '';
+    // document.getElementsByClassName('formerrors')[0].innerHTML = '';
   }
 
   checkName() {
-    let button = document.getElementsByClassName('updateprofbutton')[0];
-    let errMessages = document.getElementsByClassName('formerrors')[0];
-    let fname = document.getElementsByClassName('uprofFirstName')[0].value;
-    let fspace = fname.split(' ');
-    let lname = document.getElementsByClassName('uprofLastName')[0].value;
-    let lspace = lname.split(' ');
+    const button = document.getElementsByClassName('updateprofbutton')[0];
+    const errMessages = document.getElementsByClassName('formerrors')[0];
+    const fname = document.getElementsByClassName('uprofFirstName')[0].value;
+    const fspace = fname.split(' ');
+    const lname = document.getElementsByClassName('uprofLastName')[0].value;
+    const lspace = lname.split(' ');
     if (fname === '' || lname === '' || fspace.length > 1 || lspace.length > 1) {
       button.setAttribute('disabled', true);
       if (errMessages.innerHTML.indexOf('<p>Name is not valid, please fix</p>') === -1) {
@@ -61,9 +62,9 @@ export class UserAccount {
   }
 
   changeUserEmail() {
-    let isemailvalid = document.getElementsByClassName('uprofEmail')[0].checkValidity();
-    let emValue = document.getElementsByClassName('uprofEmail')[0].value;
-    let edot = emValue.split('.');
+    const isemailvalid = document.getElementsByClassName('uprofEmail')[0].checkValidity();
+    const emValue = document.getElementsByClassName('uprofEmail')[0].value;
+    const edot = emValue.split('.');
     if (isemailvalid && edot.length > 1) {
       document.getElementsByClassName('formerrors')[0].innerHTML = '';
       this.userActClass.changeUserEmail();

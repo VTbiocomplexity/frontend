@@ -1,5 +1,5 @@
-exports.showHideElements2 = function(appName, objofElements) {
-  let objKeys = Object.keys(objofElements);
+exports.showHideElements2 = function (appName, objofElements) {
+  const objKeys = Object.keys(objofElements);
   let element;
   for (let i = 0; i < objKeys.length; i++) {
     for (j = 0; j < objofElements[objKeys[i]].length; j++) {
@@ -13,8 +13,8 @@ exports.showHideElements2 = function(appName, objofElements) {
   }
 };
 
-exports.nevermind = function(className) {
-  let regform1 = document.getElementsByClassName(className);
+exports.nevermind = function (className) {
+  const regform1 = document.getElementsByClassName(className);
   if (regform1[0] !== undefined) {
     regform1[0].style.display = 'none';
   }

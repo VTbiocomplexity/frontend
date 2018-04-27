@@ -1,18 +1,18 @@
 import React from 'react';
-//import {shallow, mount} from 'enzyme';
-import {shallow} from 'enzyme';
-//import renderer from 'react-test-renderer';
-//import ReactComponent from '../../src/components/react-comp.js';
-import HWcomp from '../../src/components/react-comp.js';
+// import {shallow, mount} from 'enzyme';
+import { shallow } from 'enzyme';
+// import renderer from 'react-test-renderer';
+// import ReactComponent from '../../src/components/react-comp.js';
+import HWcomp from '../../src/components/react-comp';
 
 describe('the App module', () => {
-  //let element;
+  // let element;
   let RC;
   beforeEach(() => {
-    //document.body.innerHTML = '<div><div class="home"></div></div>';
-    //element = document.getElementsByClassName('home')[0];
-    //console.log(element);
-    //console.log(new ReactComponent());
+    // document.body.innerHTML = '<div><div class="home"></div></div>';
+    // element = document.getElementsByClassName('home')[0];
+    // console.log(element);
+    // console.log(new ReactComponent());
   });
   it('RC text should be "Hello World" ', () => {
     RC = shallow(<HWcomp />);

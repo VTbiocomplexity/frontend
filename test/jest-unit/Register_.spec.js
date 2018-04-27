@@ -1,13 +1,13 @@
 const Register_ = require('../../src/classes/Register_.js');
 
-let reg = new Register_();
+const reg = new Register_();
 
 describe('The Register module', () => {
   it('hides a registration form with click Cancel button', () => {
     document.body.innerHTML = '<div class="home"></div>';
     reg.startup();
     document.getElementsByClassName('nevermind')[0].click();
-    let regform = document.getElementsByClassName('RegistrationForm');
+    const regform = document.getElementsByClassName('RegistrationForm');
     expect(regform[0].style.display).toBe('none');
   });
 
@@ -15,23 +15,23 @@ describe('The Register module', () => {
     document.body.innerHTML = '<div class="home"></div>';
     reg.startup('');
     document.getElementsByClassName('email')[0].value = 'google.@gmail.com';
-    document.getElementsByClassName('email')[0].checkValidity = function() {return false;};
-    document.getElementsByClassName('password')[0].checkValidity = function() {return true;};
-    let evt = {target: {displayError: reg.displayRegError, validateGoogle: reg.validateGoogle}};
+    document.getElementsByClassName('email')[0].checkValidity = function () { return false; };
+    document.getElementsByClassName('password')[0].checkValidity = function () { return true; };
+    const evt = { target: { displayError: reg.displayRegError, validateGoogle: reg.validateGoogle } };
     reg.validateReg(evt);
-    let registbutton = document.getElementsByClassName('registerbutton')[0];
+    const registbutton = document.getElementsByClassName('registerbutton')[0];
     expect(registbutton.style.display).toBe('none');
   });
 
   it('hides the submit button when registration form is not valid name', () => {
     document.body.innerHTML = '<div class="home"></div>';
     reg.startup('PATRIC');
-    document.getElementsByClassName('password')[0].checkValidity = function() {return true;};
-    document.getElementsByClassName('email')[0].checkValidity = function() {return true;};
+    document.getElementsByClassName('password')[0].checkValidity = function () { return true; };
+    document.getElementsByClassName('email')[0].checkValidity = function () { return true; };
     document.getElementsByClassName('firstname')[0].value = '';
-    let evt = {target: {displayError: reg.displayRegError, validateGoogle: reg.validateGoogle}};
+    const evt = { target: { displayError: reg.displayRegError, validateGoogle: reg.validateGoogle } };
     reg.validateReg(evt);
-    let registbutton = document.getElementsByClassName('registerbutton')[0];
+    const registbutton = document.getElementsByClassName('registerbutton')[0];
     expect(registbutton.style.display).toBe('none');
   });
 
@@ -41,11 +41,11 @@ describe('The Register module', () => {
     document.getElementsByClassName('email')[0].value = 'google.@gb.com';
     document.getElementsByClassName('firstname')[0].value = 'Bob';
     document.getElementsByClassName('lastname')[0].value = 'Smith';
-    document.getElementsByClassName('email')[0].checkValidity = function() {return true;};
-    document.getElementsByClassName('password')[0].checkValidity = function() {return false;};
-    let evt = {target: {displayError: reg.displayRegError, validateGoogle: reg.validateGoogle}};
+    document.getElementsByClassName('email')[0].checkValidity = function () { return true; };
+    document.getElementsByClassName('password')[0].checkValidity = function () { return false; };
+    const evt = { target: { displayError: reg.displayRegError, validateGoogle: reg.validateGoogle } };
     reg.validateReg(evt);
-    let registbutton = document.getElementsByClassName('registerbutton')[0];
+    const registbutton = document.getElementsByClassName('registerbutton')[0];
     expect(registbutton.style.display).toBe('none');
   });
 
@@ -56,14 +56,14 @@ describe('The Register module', () => {
     document.getElementsByClassName('lastname')[0].value = 'Smith';
     document.getElementsByClassName('email')[0].value = 'joe@smith.com';
     document.getElementsByClassName('password')[0].value = '123456789';
-    const mockvalidity = function() {
+    const mockvalidity = function () {
       return true;
     };
     document.getElementsByClassName('password')[0].checkValidity = mockvalidity;
     document.getElementsByClassName('email')[0].checkValidity = mockvalidity;
-    let evt = {target: {displayError: reg.displayRegError, validateGoogle: reg.validateGoogle}};
+    const evt = { target: { displayError: reg.displayRegError, validateGoogle: reg.validateGoogle } };
     reg.validateReg(evt);
-    let registbutton = document.getElementsByClassName('registerbutton')[0];
+    const registbutton = document.getElementsByClassName('registerbutton')[0];
     expect(registbutton.style.display).toBe('block');
     document.body.innerHTML = '';
   });
@@ -75,14 +75,14 @@ describe('The Register module', () => {
     document.getElementsByClassName('lastname')[0].value = 'Smith';
     document.getElementsByClassName('email')[0].value = 'joe@smith.com';
     document.getElementsByClassName('password')[0].value = '123456789';
-    const mockvalidity = function() {
+    const mockvalidity = function () {
       return false;
     };
-    document.getElementsByClassName('password')[0].checkValidity = function() {return true;};
+    document.getElementsByClassName('password')[0].checkValidity = function () { return true; };
     document.getElementsByClassName('email')[0].checkValidity = mockvalidity;
-    let evt = {target: {displayError: reg.displayRegError, validateGoogle: reg.validateGoogle}};
+    const evt = { target: { displayError: reg.displayRegError, validateGoogle: reg.validateGoogle } };
     reg.validateReg(evt);
-    let registbutton = document.getElementsByClassName('registerbutton')[0];
+    const registbutton = document.getElementsByClassName('registerbutton')[0];
     expect(registbutton.style.display).toBe('none');
     document.body.innerHTML = '';
   });
@@ -96,19 +96,19 @@ describe('The Register module', () => {
     document.getElementsByClassName('email')[0].value = 'joe@smith.com';
     document.getElementsByClassName('password')[0].value = '123456789';
     // document.getElementsByClassName('pas')[0].value = 'CoolApp';
-    const mockfetch = function(url, data) {
+    const mockfetch = function (url, data) {
       this.headers = {};
       this.headers.url = url;
       this.headers.method = data.method;
       return Promise.resolve({
         Headers: this.headers,
-        json: () => Promise.resolve({success: true })
+        json: () => Promise.resolve({ success: true })
       });
     };
-    let evt = {target: {fetchClient: mockfetch, runFetch: reg.runFetch}};
-    //reg.fetch = mockfetch;
+    const evt = { target: { fetchClient: mockfetch, runFetch: reg.runFetch } };
+    // reg.fetch = mockfetch;
     reg.createUser(evt).then(() => {
-      let messagediv1 = document.getElementsByClassName('registererror')[0];
+      const messagediv1 = document.getElementsByClassName('registererror')[0];
       expect(messagediv1.innerHTML).toBe('');
     });
   });
@@ -120,19 +120,19 @@ describe('The Register module', () => {
     document.getElementsByClassName('lastname')[0].value = 'Smith';
     document.getElementsByClassName('email')[0].value = 'joe@smith.com';
     document.getElementsByClassName('password')[0].value = '123456789';
-    const mockfetch = function(url, data) {
+    const mockfetch = function (url, data) {
       this.headers = {};
       this.headers.url = url;
       this.headers.method = data.method;
       return Promise.resolve({
         Headers: this.headers,
-        json: () => Promise.resolve({message: 'error' })
+        json: () => Promise.resolve({ message: 'error' })
       });
     };
-    let evt = {target: {fetchClient: mockfetch, runFetch: reg.runFetch}};
-    //reg.fetch = mockfetch;
+    const evt = { target: { fetchClient: mockfetch, runFetch: reg.runFetch } };
+    // reg.fetch = mockfetch;
     reg.createUser(evt).then(() => {
-      let messagediv1 = document.getElementsByClassName('registererror')[0];
+      const messagediv1 = document.getElementsByClassName('registererror')[0];
       expect(messagediv1.innerHTML).toMatch(/error/);
     });
   });
@@ -144,18 +144,18 @@ describe('The Register module', () => {
     document.getElementsByClassName('lastname')[0].value = 'Smith';
     document.getElementsByClassName('email')[0].value = 'joe@smith.com';
     document.getElementsByClassName('password')[0].value = '123456789';
-    const mockfetch = function(url, data) {
+    const mockfetch = function (url, data) {
       this.headers = {};
       this.headers.url = url;
       this.headers.method = data.method;
       return Promise.resolve({
         Headers: this.headers,
-        json: () => Promise.reject({error: 'rejected' })
+        json: () => Promise.reject(new Error({ error: 'rejected' }))
       });
     };
-    let evt = {target: {fetchClient: mockfetch, runFetch: reg.runFetch}};
+    const evt = { target: { fetchClient: mockfetch, runFetch: reg.runFetch } };
     return reg.createUser(evt)
-    .catch((e) => expect(e).toBeTruthy());
+      .catch(e => expect(e).toBeTruthy());
   });
 
   it('it initiates an email varification', () => {
@@ -165,16 +165,16 @@ describe('The Register module', () => {
     document.getElementsByClassName('lastname')[0].value = 'Smith';
     document.getElementsByClassName('email')[0].value = 'joe@smith.com';
     document.getElementsByClassName('password')[0].value = '123456789';
-    const mockfetch = function(url, data) {
+    const mockfetch = function (url, data) {
       this.headers = {};
       this.headers.url = url;
       this.headers.method = data.method;
       return Promise.resolve({
         Headers: this.headers,
-        json: () => Promise.resolve({email: 'joe@smith.com' })
+        json: () => Promise.resolve({ email: 'joe@smith.com' })
       });
     };
-    let evt = {target: {fetchClient: mockfetch, runFetch: reg.runFetch}};
+    const evt = { target: { fetchClient: mockfetch, runFetch: reg.runFetch } };
     reg.createUser(evt).then((data) => {
       expect(data.email).toBe('joe@smith.com');
     });

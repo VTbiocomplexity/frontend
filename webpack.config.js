@@ -1,6 +1,7 @@
 const path = require('path');
 const dotenv = require('dotenv');
-dotenv.config({path: '.env'});
+
+dotenv.config({ path: '.env' });
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -8,9 +9,9 @@ const { AureliaPlugin, ModuleDependenciesPlugin } = require('aurelia-webpack-plu
 const { optimize: { CommonsChunkPlugin }, ProvidePlugin } = require('webpack');
 const webpack = require('webpack');
 // config helpers:
-const ensureArray = (config) => config && (Array.isArray(config) ? config : [config]) || [];
+const ensureArray = config => config && (Array.isArray(config) ? config : [config]) || [];
 const when = (condition, config, negativeConfig) =>
-condition ? ensureArray(config) : ensureArray(negativeConfig);
+  (condition ? ensureArray(config) : ensureArray(negativeConfig));
 
 // primary config:
 const title = 'NDSSL';
@@ -23,11 +24,13 @@ const cssRules = [
   { loader: 'css-loader' },
   {
     loader: 'postcss-loader',
-    options: { plugins: () => [require('autoprefixer')({ browsers: ['last 2 versions'] })]}
+    options: { plugins: () => [require('autoprefixer')({ browsers: ['last 2 versions'] })] }
   }
 ];
 
-module.exports = ({production, server, extractCss, coverage} = {}) => ({
+module.exports = ({
+  production, server, extractCss, coverage
+} = {}) => ({
   resolve: {
     extensions: ['.js'],
     modules: [srcDir, 'node_modules']
@@ -49,7 +52,7 @@ module.exports = ({production, server, extractCss, coverage} = {}) => ({
     historyApiFallback: true,
     port: parseInt(process.env.PORT, 10)
   },
-  //devtool: (process.env.NODE_ENV !== 'production') ? 'inline-source-map' : false,
+  // devtool: (process.env.NODE_ENV !== 'production') ? 'inline-source-map' : false,
   // server: {port: parseInt(process.env.PORT, 10)},
   module: {
     rules: [
@@ -71,20 +74,23 @@ module.exports = ({production, server, extractCss, coverage} = {}) => ({
         use: cssRules
       },
       { test: /\.html$/i, loader: 'html-loader' },
-      { test: /\.js$/i, loader: 'babel-loader', exclude: nodeModulesDir,
-        options: coverage ? { sourceMap: 'inline', plugins: [ 'istanbul' ] } : {}
+      {
+        test: /\.js$/i,
+        loader: 'babel-loader',
+        exclude: nodeModulesDir,
+        options: coverage ? { sourceMap: 'inline', plugins: ['istanbul'] } : {}
       },
-    { test: /\.json$/i, loader: 'json-loader' },
-    // use Bluebird as the global Promise implementation:
-    { test: /[\/\\]node_modules[\/\\]bluebird[\/\\].+\.js$/, loader: 'expose-loader?Promise' },
-    // exposes jQuery globally as $ and as jQuery:
-    { test: require.resolve('jquery'), loader: 'expose-loader?$!expose-loader?jQuery' },
-    // embed small images and fonts as Data Urls and larger ones as files:
-    { test: /\.(png|gif|jpg|cur)$/i, loader: 'url-loader', options: { limit: 8192 } },
-    { test: /\.woff2(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'url-loader', options: { limit: 10000, mimetype: 'application/font-woff2' } },
-    { test: /\.woff(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'url-loader', options: { limit: 10000, mimetype: 'application/font-woff' } },
-    // load these fonts normally, as files:
-    { test: /\.(ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'file-loader' }
+      { test: /\.json$/i, loader: 'json-loader' },
+      // use Bluebird as the global Promise implementation:
+      { test: /[\/\\]node_modules[\/\\]bluebird[\/\\].+\.js$/, loader: 'expose-loader?Promise' },
+      // exposes jQuery globally as $ and as jQuery:
+      { test: require.resolve('jquery'), loader: 'expose-loader?$!expose-loader?jQuery' },
+      // embed small images and fonts as Data Urls and larger ones as files:
+      { test: /\.(png|gif|jpg|cur)$/i, loader: 'url-loader', options: { limit: 8192 } },
+      { test: /\.woff2(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'url-loader', options: { limit: 10000, mimetype: 'application/font-woff2' } },
+      { test: /\.woff(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'url-loader', options: { limit: 10000, mimetype: 'application/font-woff' } },
+      // load these fonts normally, as files:
+      { test: /\.(ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'file-loader' }
     ]
   },
   plugins: [
@@ -112,11 +118,11 @@ module.exports = ({production, server, extractCss, coverage} = {}) => ({
       ]
     }),
     new ProvidePlugin({
-      'Promise': 'bluebird',
-      '$': 'jquery',
-      'jQuery': 'jquery',
+      Promise: 'bluebird',
+      $: 'jquery',
+      jQuery: 'jquery',
       'window.jQuery': 'jquery',
-      'Popper': ['popper.js', 'default']
+      Popper: ['popper.js', 'default']
     }),
     new HtmlWebpackPlugin({
       template: 'index.ejs',
@@ -129,20 +135,19 @@ module.exports = ({production, server, extractCss, coverage} = {}) => ({
         title, server, baseUrl
       }
     }),
-    new CopyWebpackPlugin(
-      [{ from: 'static/favicon.ico', to: 'favicon.ico' },
+    new CopyWebpackPlugin([{ from: 'static/favicon.ico', to: 'favicon.ico' },
       // { from: 'static/includes.html', to: 'includes.html' },
-    { from: 'static/imgs', to: 'static/imgs' }]
-  ),
+      { from: 'static/imgs', to: 'static/imgs' }]),
     new webpack.EnvironmentPlugin(['NODE_ENV', 'AuthProductionBaseURL', 'PORT', 'BackendUrl', 'GoogleClientId', 'userRoles', 'FrontendUrl']),
-    new webpack.DefinePlugin({'process.env': Object.keys(process.env).reduce((o, k) => {
-      o[k] = JSON.stringify(process.env[k]);
-      return o;
-    }, {})}
-),
-  //   new CopyWebpackPlugin([
-  // { from: 'bower_components/webcomponentsjs/webcomponents.min.js', to: 'webcomponents.min.js' }
-  //   ]),
+    new webpack.DefinePlugin({
+      'process.env': Object.keys(process.env).reduce((o, k) => {
+        o[k] = JSON.stringify(process.env[k]);
+        return o;
+      }, {})
+    }),
+    //   new CopyWebpackPlugin([
+    // { from: 'bower_components/webcomponentsjs/webcomponents.min.js', to: 'webcomponents.min.js' }
+    //   ]),
     ...when(extractCss, new ExtractTextPlugin({
       filename: production ? '[contenthash].css' : '[id].css',
       allChunks: true
@@ -151,7 +156,7 @@ module.exports = ({production, server, extractCss, coverage} = {}) => ({
       name: ['common']
     })),
     ...when(production, new CopyWebpackPlugin([
-  { from: 'static/favicon.ico', to: 'favicon.ico' }
+      { from: 'static/favicon.ico', to: 'favicon.ico' }
     ]))
   ]
 });

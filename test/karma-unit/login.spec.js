@@ -1,12 +1,12 @@
-import {Login} from '../../src/login';
-import {RouterStub, AuthStub, HttpMock} from './commons';
-import {App} from '../../src/app';
+import { Login } from '../../src/login';
+import { RouterStub, AuthStub, HttpMock } from './commons';
+import { App } from '../../src/app';
 
 class AuthStub1 extends AuthStub {
   authenticated = true;
-  authenticate(name, f = false, o = null) {
+  authenticate(name) {
     return Promise.resolve({
-      name: name,
+      name,
       token: 'heyvgyuv38t327rvuiqt78b934ujwehgyq89ery8t'
     });
   }
@@ -23,33 +23,22 @@ describe('the Login module', () => {
 
   beforeEach(() => {
     auth = new AuthStub1();
-    //auth.setToken({sub: 'aowifjawifhiawofjo'});
+    // auth.setToken({sub: 'aowifjawifhiawofjo'});
     app1 = new AppStub(auth, new HttpMock());
     app1.router = new RouterStub();
     app1.authenticated = false;
-    //app1.activate();
+    // app1.activate();
     login = new Login(app1);
-    //login.app.appState = new AppStateStub();
-    //login.activate();
-    //sut.app.appState = new AppStateStub();
-    //sut.app.authenticated = false;
   });
 
   it('authenticates a google user', (done) => {
-    login.app.authenticate('google').then((data) => {
+    login.app.authenticate('google').then(() => {
       login.app.checkUser();
       expect(login.app.auth.token).toBe('heyvgyuv38t327rvuiqt78b934ujwehgyq89ery8t');
       expect(login.app.auth.isAuthenticated()).toBe(true);
       done();
     }, null);
   });
-
-  // it('should display the registeration form', (done) => {
-  //   document.body.innerHTML = '<div class="home" style="max-width:5in; margin:auto"></div>';
-  //   login.app.showRegister('yoyo');
-  //   expect(document.getElementsByClassName('RegistrationForm')[0].style.display).toBe('');
-  //   done();
-  // });
 
   it('should display the login form', (done) => {
     document.body.innerHTML = '<div class="home" style="max-width:5in; margin:auto"></div>';
@@ -65,18 +54,14 @@ describe('the Login module', () => {
   });
 
   it('should set the token and send the user to the dashboard if logged in', (done) => {
-    spyOn(window.localStorage, 'getItem').and.callFake(function (key, value) {
-      return '1234';
-    });
+    spyOn(window.localStorage, 'getItem').and.callFake(() => '1234');
     login.app.checkIfLoggedIn();
     expect(login.app.auth.isAuthenticated()).toBe(true);
     done();
   });
   it('should not set the token and not send the user to the dashboard if not logged in', (done) => {
     login.app.authenticated = false;
-    spyOn(window.localStorage, 'getItem').and.callFake(function (key, value) {
-      return null;
-    });
+    spyOn(window.localStorage, 'getItem').and.callFake(() => null);
     login.app.checkIfLoggedIn();
     expect(login.app.authenticated).toBe(false);
     done();

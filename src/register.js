@@ -1,8 +1,9 @@
-import {inject} from 'aurelia-framework';
-import {App} from './app';
+import { inject } from 'aurelia-framework';
+import { App } from './app';
+
 const Register_ = require('./classes/Register_.js');
 @inject(App)
-export class Register {
+export default class Register {
   constructor(app) {
     this.app = app;
     this.registerClass = new Register_();
