@@ -10,9 +10,7 @@ function testAsync(runAsync) {
 // let dv = new Developer();
 
 describe('the Developer Module', () => {
-  let dv;
-  let auth;
-  let app;
+  let dv, auth, app;
   beforeEach(() => {
     auth = new AuthStub();
     auth.setToken({ sub: '3456' });

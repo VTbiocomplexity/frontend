@@ -1,4 +1,4 @@
-export class AppState {
+export default class AppState {
   constructor(httpClient) {
     this.httpClient = httpClient;
     this.user = {};

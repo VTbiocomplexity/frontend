@@ -11,9 +11,7 @@ function testAsync(runAsync) {
 }
 
 describe('the User Account Module', () => {
-  let app1;
-  let auth;
-  let ua;
+  let ua, auth, app1;
   beforeEach(() => {
     auth = new AuthStub();
     auth.setToken({ sub: 'aowifjawifhiawofjo' });

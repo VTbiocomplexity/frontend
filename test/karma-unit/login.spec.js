@@ -17,10 +17,7 @@ class AppStub extends App {
 }
 
 describe('the Login module', () => {
-  let login;
-  let app1;
-  let auth;
-
+  let login, app1, auth;
   beforeEach(() => {
     auth = new AuthStub1();
     // auth.setToken({sub: 'aowifjawifhiawofjo'});

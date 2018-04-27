@@ -3,7 +3,7 @@ import { App } from '../app';
 
 const Uact = require('../classes/UserAccount.js');
 @inject(App)
-export class UserAccount {
+export default class UserAccount {
   constructor(app) {
     this.app = app;
     this.userActClass = {};
@@ -18,25 +18,20 @@ export class UserAccount {
   attached() {
     this.userActClass = new Uact(this.uid);
     this.checkUserRole();
-    // let optionRequired = document.getElementById('optrequired');
-    // console.log(optionRequired);
-    // optionRequired.innerHTML += ' <span style="red">*</span>';
   }
-
   checkUserRole() {
     const button = document.getElementsByClassName('updateprofbutton')[0];
     const errMessages = document.getElementsByClassName('formerrors')[0];
     if (this.user.userType === '') {
       button.setAttribute('disabled', true);
-      return errMessages.innerHTML += '<p>Select a primary user type.</p>';
+      errMessages.innerHTML += '<p>Select a primary user type.</p>';
+      return;
     }
     errMessages.innerHTML = errMessages.innerHTML.replace('<p>Select a primary user type.</p>', '');
     if (errMessages.innerHTML === '') {
       button.removeAttribute('disabled');
     }
-    // document.getElementsByClassName('formerrors')[0].innerHTML = '';
   }
-
   checkName() {
     const button = document.getElementsByClassName('updateprofbutton')[0];
     const errMessages = document.getElementsByClassName('formerrors')[0];

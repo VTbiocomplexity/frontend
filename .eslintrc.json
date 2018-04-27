@@ -9,6 +9,17 @@
      "func-names": [0, "never"],
      "max-len": ["error", { "code": 150 }],
      "class-methods-use-this": [0, "never"],
-     "no-underscore-dangle": [0, "never"]
+     "no-underscore-dangle": [0, "never"],
+     "one-var-declaration-per-line":[0, "never"],
+     "one-var": [2, {
+     "var": "never",
+     "let": "always",
+     "const": "never"
+ }],
+ "prefer-destructuring": [0, "never"],
+ "react/prefer-stateless-function": [0, "never"],
+ "no-plusplus": [0, "never"],
+ "no-param-reassign":[0, "never"],
+ "consistent-return": [0, "never"]
   }
 }

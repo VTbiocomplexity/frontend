@@ -1,7 +1,7 @@
 import { inject } from 'aurelia-framework';
 import { App } from './app';
 @inject(App)
-export class Dashboard {
+export default class Dashboard {
   constructor(app) {
     this.app = app;
   }

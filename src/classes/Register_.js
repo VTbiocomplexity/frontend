@@ -14,17 +14,26 @@ class Register_ {
     this.appName = appName;
     const regform = document.createElement('div');
     regform.className = 'RegistrationForm';
-    regform.innerHTML = '<h2 style="margin-top:20px;padding:4px;font-size:1.2em;text-align:center;background:#eee;"><span class="appName"></span>User Registration</h2>' + '<form class=""><div style="padding:2px; margin:10px;"><table><tbody>' +
+    regform.innerHTML = '<h2 style="margin-top:20px;padding:4px;font-size:1.2em;text-align:center;background:#eee;">' +
+    '<span class="appName"></span>User Registration</h2>' +
+    '<form class=""><div style="padding:2px; margin:10px;"><table><tbody>' +
     '<tr><th>First Name <span style="color:red">*</span></th><th>Last Name <span style="color:red">*</span></th></tr><tr><td width="50%">' +
     '<input class="firstname" type="text" name="first_name" style="width:100%;" required>' +
     '</td><td><input class="lastname" type="text" name="last_name" style="width:100%;" required>' +
-    '</td></tr><tr><th colspan="1">Email Address <span style="color:red">*</span></th><th colspan="1">Password <span style="color:red">*</span></th></tr><tr><td colspan="1">' +
-    '<input class="email" type="email" name="email" style="width:100%;" required></td>' + '<td><input style="width:100%" class="password" pattern=".{8,}" title="8 characters minimum" type="password" name="password" style="width:100%;" required>' +
+    '</td></tr><tr><th colspan="1">Email Address <span style="color:red">*</span></th>' +
+    '<th colspan="1">Password <span style="color:red">*</span></th></tr><tr><td colspan="1">' +
+    '<input class="email" type="email" name="email" style="width:100%;" required></td>' +
+    '<td><input style="width:100%" class="password" pattern=".{8,}" title="8 characters minimum" ' +
+    'type="password" name="password" style="width:100%;" required>' +
     '</td></tr>' +
-    '<tr><th colspan="2">Job Title</th></tr><tr><td colspan="2"><input style="width:100%" class="organization" type="text" name="affiliation" value=""></td></tr>' +
-    '<tr><th colspan="2">Area of Expertise</th></tr><tr><td colspan="2"><div><input style="width:100%;" class="expertise" type="text" name="expertise" value=""></div></td></tr>' +
-    '<tr><th colspan="2">Other Interests</th></tr><tr><td colspan="2"><div><textarea style="width:100%;" class="interests" rows="5" cols="50" name="interests" style="height:75px;" value=""></textarea></div></td></tr>' +
-    '</tbody></table><p><span style="color:red">*</span> <i>Indicates required field</i></p></div><div style="text-align:center;padding:2px;margin:10px;">' +
+    '<tr><th colspan="2">Job Title</th></tr><tr><td colspan="2"><input style="width:100%" class="organization"' +
+    ' type="text" name="affiliation" value=""></td></tr>' +
+    '<tr><th colspan="2">Area of Expertise</th></tr><tr><td colspan="2"><div><input style="width:100%;" ' +
+    'class="expertise" type="text" name="expertise" value=""></div></td></tr>' +
+    '<tr><th colspan="2">Other Interests</th></tr><tr><td colspan="2"><div><textarea style="width:100%;" ' +
+    'class="interests" rows="5" cols="50" name="interests" style="height:75px;" value=""></textarea></div></td></tr>' +
+    '</tbody></table><p><span style="color:red">*</span> <i>Indicates required field</i></p></div>' +
+    '<div style="text-align:center;padding:2px;margin:10px;">' +
     '<div class="registererror" style="color:red"></div>' +
     '<div><button type="button" class="registerbutton" style="display:none; margin-bottom:-22px">Register New User</button>' +
     '<button class="nevermind" type="button" style="margin-top:2px">Cancel</button></div></div></form>';
@@ -63,9 +72,11 @@ class Register_ {
     element.addEventListener('focus', this.validateReg);
     element.addEventListener('keydown', this.validateReg);
     element.addEventListener('keyup', this.validateReg);
+    /* eslint-disable */
     element.displayError = this.displayRegError;
     element.validateGoogle = this.validateGoogle;
     element.appName = appName;
+    /* eslint-enable */
   }
 
   validateReg(evt) {
@@ -83,9 +94,7 @@ class Register_ {
     const pspace = password.split(' ');
     const googleAccount = validateGoogle(email, appName);
     const validpass = document.getElementsByClassName('password')[0];
-    let nameError = false;
-    let pwError = false;
-    let emError = false;
+    let nameError = false, pwError = false, emError = false;
     if (fname === '' || lname === '' || fspace.length > 1 || lspace.length > 1) {
       nameError = true;
     }
@@ -98,7 +107,7 @@ class Register_ {
     displayError(nameError, emError, pwError, googleAccount);
   }
 
-  validateGoogle(email, appName) {
+  validateGoogle(email) {
     let googleAccount = false;
     if (email.split('@gmail').length > 1 || email.split('@vt.edu').length > 1 || email.split('@bi.vt.edu').length > 1) {
       googleAccount = true;

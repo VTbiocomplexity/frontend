@@ -1,12 +1,12 @@
+import { noView, inject, customElement } from 'aurelia-framework';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import HWComp from './react-comp';
-import { noView, inject, customElement } from 'aurelia-framework';
 
 @noView()
 @inject(Element)
 @customElement('hello-world')
-export class HelloWorld {
+export default class HelloWorld {
   constructor(element) {
     this.element = element;
   }

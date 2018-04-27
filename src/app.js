@@ -1,15 +1,15 @@
+import { HttpClient, json } from 'aurelia-fetch-client';
 import { PLATFORM } from 'aurelia-pal';
 import { inject, bindable } from 'aurelia-framework';
 import { AuthorizeStep, AuthService } from 'aurelia-auth';
-import { UserAccess } from './classes/UserAccess.js';
-import { HttpClient, json } from 'aurelia-fetch-client';
-import { AppState } from './classes/AppState.js';
+import { UserAccess } from './classes/UserAccess';
+import { AppState } from './classes/AppState';
 
 System.import('isomorphic-fetch');
 System.import('whatwg-fetch');
 const Hammer = require('hammerjs');
 @inject(AuthService, HttpClient)
-export class App {
+export default class App {
   constructor(auth, httpClient) {
     this.auth = auth;
     this.httpClient = httpClient;
@@ -54,8 +54,8 @@ export class App {
   }
 
   authenticate(name) {
-    let ret;
-    ret = this.auth.authenticate(name, false, {});
+    // let ret;
+    const ret = this.auth.authenticate(name, false, {});
     ret.then((data) => {
       this.auth.setToken(data.token);
     }, undefined);
@@ -90,12 +90,12 @@ export class App {
     return isWide;
   }
 
-  clickFunc() {
+  clickFunc(evt) {
     const drawer = document.getElementsByClassName('drawer')[0];
     const toggleIcon = document.getElementsByClassName('mobile-menu-toggle')[0];
-    console.log(event.target.className);
+    // console.log(event.target.className);
     /* istanbul ignore else */
-    if (event.target.className !== 'menu-item') {
+    if (evt.target.className !== 'menu-item') {
       document.getElementsByClassName('swipe-area')[0].style.display = 'none';
       drawer.style.display = 'none';
       $(drawer).parent().css('display', 'none');
@@ -157,15 +157,17 @@ export class App {
     return result;
   }
 
-  setFooter(style) {
+  setFooter() {
     const footer = document.getElementById('wjfooter');
     const color = '';
     /* istanbul ignore else */
     if (footer !== null) {
       footer.style.backgroundColor = '#2a222a';
       footer.innerHTML = `${'<div style="text-align: center">' +
-      '<span>&nbsp;&nbsp;</span><a target="_blank" style="color:'}${color}"  href="https://www.facebook.com/biocomplexity/"><i class="fa fa-facebook-square fa-2x"></i></a>` +
-      `<span>&nbsp;&nbsp;</span><a target="_blank" style="color:${color}"  href="https://twitter.com/ndssl_bi"><i class="fa fa-twitter fa-2x"></i></a><br>` +
+      '<span>&nbsp;&nbsp;</span><a target="_blank" style="color:'}${color}"  href="https://www.facebook.com/biocomplexity/">'+
+      '<i class="fa fa-facebook-square fa-2x"></i></a>` +
+      `<span>&nbsp;&nbsp;</span><a target="_blank" style="color:${color}"  href="https://twitter.com/ndssl_bi">'+
+      '<i class="fa fa-twitter fa-2x"></i></a><br>` +
       '</span></div>';
     }
   }
@@ -196,10 +198,17 @@ export class App {
     config.options.pushState = true;
     config.options.root = '/';
     config.addPipelineStep('authorize', AuthorizeStep);// Is the actually Authorization to get into the /dashboard
-    config.addPipelineStep('authorize', this.userAccess);// provides access controls to prevent users from certain /dashboard child routes when not their userType (role)
+    // provides access controls to prevent users from certain /dashboard child routes when not their userType (role)
+    config.addPipelineStep('authorize', this.userAccess);
     config.map([
       {
-        route: 'dashboard', name: 'dashboard-router', moduleId: PLATFORM.moduleName('./dashboard-router'), nav: false, title: '', auth: true, settings: 'fa fa-tachometer'
+        route: 'dashboard',
+        name: 'dashboard-router',
+        moduleId: PLATFORM.moduleName('./dashboard-router'),
+        nav: false,
+        title: '',
+        auth: true,
+        settings: 'fa fa-tachometer'
       },
       {
         route: 'login', name: 'login', moduleId: PLATFORM.moduleName('./login'), nav: false, title: 'Login', settings: 'fa fa-sign-in'
@@ -214,7 +223,12 @@ export class App {
         route: 'userutil', name: 'userutil', moduleId: PLATFORM.moduleName('./userutil'), nav: false, title: ''
       },
       {
-        route: 'react-example', name: 'react-example', moduleId: PLATFORM.moduleName('./react-example'), nav: false, title: 'React Example', settings: ''
+        route: 'react-example',
+        name: 'react-example',
+        moduleId: PLATFORM.moduleName('./react-example'),
+        nav: false,
+        title: 'React Example',
+        settings: ''
       }
     ]);
     config.fallbackRoute('/');

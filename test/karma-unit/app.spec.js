@@ -17,9 +17,7 @@ class AuthStub2 extends AuthStub {
 }
 
 describe('the App module', () => {
-  let app1;
-  let app2;
-  let app4;
+  let app1, app2, app4;
   beforeEach(() => {
     app1 = new App(new AuthStub(), new HttpMock());
     app1.auth.setToken({ sub: 'token' });

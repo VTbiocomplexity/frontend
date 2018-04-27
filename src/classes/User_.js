@@ -16,7 +16,8 @@ class User_ {
   createVerifyCodeForm() {
     let formTitle = '';
     const passInput = '<tr class="pwheader"><th style="border:none; text-align:left">Password</th></tr>' +
-    '<tr class="pwinput"><td><input class="loginpass" pattern=".{8,}" title="8 characters minimum" type="password" name="password" style="width:300px;" value="" required></td></tr>';
+    '<tr class="pwinput"><td><input class="loginpass" pattern=".{8,}" title="8 characters minimum"' +
+    ' type="password" name="password" style="width:300px;" value="" required></td></tr>';
     const emailVarifyForm = document.createElement('div');
     if (this.formType === 'reset') {
       formTitle = 'Reset Your Password';
@@ -32,7 +33,8 @@ class User_ {
     `</td></tr><tr><td> </td></tr>${passInput}<tr><td> </td></tr><tr><th style="text-align:left">Code</th></tr><tr><td>` +
     '<input type="number" title="5 digit code" name="code" class="code" style="width:150px;" required" value=""></td></tr>' +
     '</tbody></table></div><div style="text-align:center;padding:2px;margin:10px;">' +
-    '<div><button style="display:none; margin-bottom:-22px;" type="button" class="regbutton">Submit</button><button type="button" onclick="userClass.nevermind(&apos;RegistrationForm&apos;)">Cancel</button></div></div></form>' +
+    '<div><button style="display:none; margin-bottom:-22px;" type="button" class="regbutton">' +
+    'Submit</button><button type="button" onclick="userClass.nevermind(&apos;RegistrationForm&apos;)">Cancel</button></div></div></form>' +
     '<div class="loginerror" style="color:red"></div>';
     const home = document.getElementsByClassName('home');
     home[0].insertBefore(emailVarifyForm, home[0].childNodes[0]);
@@ -80,7 +82,7 @@ class User_ {
     element.addEventListener('focus', this.validateForm);
     element.addEventListener('keydown', this.validateForm);
     element.addEventListener('keyup', this.validateForm);
-    element.formType = this.formType;
+    element.formType = this.formType; //eslint-disable-line
   }
 
   validateForm(evt) {
@@ -128,7 +130,12 @@ class User_ {
   resetPasswd(evt) {
     const fetchClient = evt.target.fetchClient;
     const runFetch = evt.target.runFetch;
-    const bodyData = { email: document.getElementsByClassName('email')[0].value, resetCode: document.getElementsByClassName('code')[0].value, password: document.getElementsByClassName('loginpass')[0].value };
+    const bodyData = {
+      email: document.getElementsByClassName('email')[0].value,
+      resetCode:
+    document.getElementsByClassName('code')[0].value,
+      password: document.getElementsByClassName('loginpass')[0].value
+    };
     const fetchData = { method: 'PUT', body: JSON.stringify(bodyData), headers: { Accept: 'application/json', 'Content-Type': 'application/json' } };
     return runFetch(fetchClient, process.env.BackendUrl, '/auth/passwdreset', fetchData);
   }
@@ -161,10 +168,9 @@ class User_ {
   }
 
   nevermind(className) {
-    let regform1 = [];
+    let regform1 = [], feurl = 'http://localhost:7000';
     regform1 = document.getElementsByClassName(className);
     regform1[0].style.display = 'none';
-    let feurl = 'http://localhost:7000';
     /* istanbul ignore if */
     if (process.env.FrontendUrl !== undefined) {
       feurl = process.env.FrontendUrl;
@@ -179,7 +185,12 @@ class User_ {
     const fetchClient = evt.target.fetchClient;
     const runFetch = evt.target.runFetch;
     console.log('using your pin to validate your new email address now ...');
-    const bodyData = { changeemail: document.getElementsByClassName('email')[0].value, resetCode: document.getElementsByClassName('code')[0].value, email: localStorage.getItem('userEmail') };
+    const bodyData = {
+      changeemail: document.getElementsByClassName('email')[0].value,
+      resetCode:
+    document.getElementsByClassName('code')[0].value,
+      email: localStorage.getItem('userEmail')
+    };
     const fetchData = {
       method: 'PUT',
       body: JSON.stringify(bodyData),

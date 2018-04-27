@@ -1,6 +1,6 @@
 const jwtDecode = require('jwt-decode');
 
-export class RafterUser {
+export default class RafterUser {
   constructor(httpClient) {
     this.httpClient = httpClient;
   }
@@ -22,7 +22,7 @@ export class RafterUser {
     } return true;
   }
 
-  checkIfPageReload(sli) {
+  checkIfPageReload() {
     let reloadPage = false;
     const showHideHD = document.getElementsByClassName('showHideHD')[0];
     const rafterCheckHome = document.getElementsByClassName('rafterCheckHome')[0];
@@ -32,18 +32,18 @@ export class RafterUser {
       if (showHideHD.style.display === 'block') {
         // console.log('why is logout button?');
         reloadPage = true;
-        showHideHD.style.display === 'none';
+        showHideHD.style.display = 'none';
       }
     }
     if (rafterCheckHome !== null && rafterCheckHome !== undefined) {
       if (rafterCheckHome.style.display === 'block') {
         // console.log('why is logout button?');
         reloadPage = true;
-        rafterCheckHome.style.display === 'none';
+        rafterCheckHome.style.display = 'none';
       }
     }
     // console.log('you are not logged in');
-    sli = true;
+    // sli = true;
     /* istanbul ignore next */
     if (process.env.NODE_ENV !== 'test' && reloadPage) {
       // console.log('am i here?');
@@ -60,17 +60,15 @@ export class RafterUser {
       body: JSON.stringify({ token: mToken })
     })
       .then(response => response.json())
-      .then(data =>
+      .then(() =>
       // console.log(data);
-        true,
-      // document.getElementsByClassName('rafterLogout')[0].style.display = 'block';
-      ).catch(err =>
+        true).catch(() =>
       // console.log(err);
         false);
   }
 
   initRafter(ruid, rObj, uid, interval, sli) {
-    rObj.uid = uid;
+    rObj.uid = uid; //eslint-disable-line
     const userServiceError = document.getElementsByClassName('userServiceError')[0];
     const message = 'Wrong app id or app secret';
     // console.log(JSON.stringify(rObj));
@@ -86,7 +84,7 @@ export class RafterUser {
           window.sessionStorage.setItem('rafterToken', data);
           const user = jwtDecode(data);
           // console.log(user);
-          ruid = user.sub;
+          ruid = user.sub; //eslint-disable-line
           if (userServiceError !== null && userServiceError !== undefined) { userServiceError.innerHTML = ''; }
           this.initVol(data);
           /* istanbul ignore if */

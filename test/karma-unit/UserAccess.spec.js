@@ -2,18 +2,14 @@ import { AppState } from '../../src/classes/AppState';
 import { UserAccess } from '../../src/classes/UserAccess';
 
 describe('The UserAccess module unit tests', () => {
-  let appState;
+  let appState, userAccess, next;
   const routingContext = { params: { childRoute: 'user-account' } };
   const roles = ['foo', 'charity'];
-  let userAccess;
-  let next;
-
   beforeEach(() => {
     appState = new AppState();
     appState.setRoles(roles);
     userAccess = new UserAccess(appState);
   });
-
   it('should not require authentication', (done) => {
     next = function () {
       done();
@@ -21,7 +17,6 @@ describe('The UserAccess module unit tests', () => {
     routingContext.config = { auth: false };
     userAccess.run(routingContext, next);
   });
-
   it('should require auth, but requested dashboard, so do not check role', (done) => {
     next = function () {
       done();

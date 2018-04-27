@@ -1,13 +1,13 @@
-let config;
+// let config;
 let myBaseUrl;
-if (window.location.hostname === 'localhost' || process.env.NODE_ENV && process.env.NODE_ENV.match(/dev/i)
+if (window.location.hostname === 'localhost' || process.env.NODE_ENV.match(/dev/i)
 ) {
   myBaseUrl = process.env.BackendUrl;
 } else {
   myBaseUrl = process.env.AuthProductionBaseURL;
 }
 
-config = {
+const config = {
   httpInterceptor: true,
   loginOnSignup: true,
   baseUrl: myBaseUrl,

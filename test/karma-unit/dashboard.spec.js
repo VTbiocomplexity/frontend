@@ -10,9 +10,7 @@ function testAsync(runAsync) {
 }
 
 describe('the Dashboard module', () => {
-  let dashboard;
-  let auth;
-  let app;
+  let dashboard, auth, app;
   beforeEach(() => {
     auth = new AuthStub();
     auth.setToken({ sub: '3456' });

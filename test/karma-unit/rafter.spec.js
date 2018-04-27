@@ -19,15 +19,7 @@ function testAsync(runAsync) {
 }
 
 describe('The Rafter Dashboard', () => {
-  let rd;
-  let rd2;
-  let auth;
-  let app;
-  let app2;
-  let app4;
-  let rd4;
-  let rd5;
-  let app5;
+  let app5, rd5, rd4, app4, app2, app, auth, rd, rd2;
   beforeEach(() => {
     auth = new AuthStub();
     auth.setToken({
@@ -1148,7 +1140,7 @@ describe('The Rafter Dashboard', () => {
         id: '333'
       }]
     }];
-    let newData = await rd.rafterFileActions.makeSubSubTree(data, rd.rafterFile, []);
+    let newData = await rd.rafterFileActions.makeSubSubTree(data, rd.rafterFile, []); //eslint-disable-line
     expect(newData[0].children[0].children.length).toBe(0);
     data = [{
       name: 'myFile',
@@ -1172,15 +1164,11 @@ describe('The Rafter Dashboard', () => {
     expect(newData[0].children[0].children.length).toBe(0);
   }));
   it('detects an expired token', (done) => {
-    let tkn = {
-      exp: 123
-    };
+    let isValid, tkn = { exp: 123 };
     rd.rafterUser = new RafterUser();
-    let isValid = rd.rafterUser.checkExpired(tkn);
+    isValid = rd.rafterUser.checkExpired(tkn);
     expect(isValid).toBe(false);
-    tkn = {
-      exp: 999999999999
-    };
+    tkn = { exp: 999999999999 };
     isValid = rd.rafterUser.checkExpired(tkn);
     expect(isValid).toBe(true);
     done();

@@ -1,6 +1,6 @@
 const FileSaver = require('file-saver');
 
-export class RafterFileActions {
+export default class RafterFileActions {
   constructor(httpClient) {
     this.httpClient = httpClient;
     this.reader = new FileReader();
@@ -26,7 +26,7 @@ export class RafterFileActions {
         dfc.scrollIntoView();
       }
       /* istanbul ignore next */
-      function errorHandler(evt) { alert('The file could not be read'); }
+      function errorHandler() { alert('The file could not be read'); }
       this.reader.onload = loaded;
       this.reader.onerror = errorHandler;
       this.reader.readAsText(blob);
@@ -149,7 +149,7 @@ export class RafterFileActions {
       const fileString = evt.target.result;
       ulrf(fileString, cleanFileName, httpClient, rui, filePath, fType);
     }
-    function errorHandler(evt) {
+    function errorHandler() {
       alert('The file could not be read');
     }
     this.reader.onload = loaded;
@@ -189,7 +189,10 @@ export class RafterFileActions {
       document.getElementsByClassName('createNew')[0].style.display = 'block';
     }
   }
-  setFileActions(id, subDirFiles, dnldbt, dfcbt, raf, subSubDirFiles, matchFile, rvs, myApp, rui, mtws, hdj, tv, showFile, displayTree, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions) {
+  setFileActions(
+    id, subDirFiles, dnldbt, dfcbt, raf, subSubDirFiles, matchFile, rvs, myApp,
+    rui, mtws, hdj, tv, showFile, displayTree, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions
+  ) {
     if (matchFile || subDirFiles === null || subDirFiles === undefined) { return; }
     // console.log('set file actions');
     // document.getElementsByClassName('deleteButton')[0].style.display = 'none';
@@ -204,7 +207,8 @@ export class RafterFileActions {
           document.getElementsByClassName('dnldButton')[0].style.display = 'block';
           document.getElementsByClassName('displayButton')[0].style.display = 'block';
         }
-        return document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[j]);
+        document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[j]);
+        return;
       }
       if (subDirFiles[j].isContainer && id === subDirFiles[j].id) {
         console.log('I clicked a sub sub folder');
@@ -215,7 +219,10 @@ export class RafterFileActions {
         raf.rfid = id;
         console.log(raf.rfid);
         document.getElementsByClassName('createNew')[0].style.display = 'block';
-        rvs('ls', myApp, rui, raf, mtws, null, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles);
+        rvs(
+          'ls', myApp, rui, raf, mtws, null, hdj, tv, showFile, rvs,
+          displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles
+        );
       // document.getElementsByClassName('fileCreate')[0].style.display = 'block';
       }
     }
@@ -225,7 +232,7 @@ export class RafterFileActions {
       for (let zz = 0; zz < subSubDirFiles.length; zz++) {
         if (subSubDirFiles[zz].id === id) {
         // console.log('found a match');
-          fif[k].addEventListener('click', (evt) => {
+          fif[k].addEventListener('click', () => {
           // console.log('do nothing for sub sub click');
             document.getElementsByClassName('deleteButton')[0].style.display = 'none';
           });
