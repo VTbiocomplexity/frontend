@@ -333,7 +333,7 @@ export class Rafter {
         this.navHomeDir();
       }).catch((err) => {
       // console.log('this is the error');
-        console.log(err);
+        // console.log(err);
         /* istanbul ignore next */
         if (err.status === 500 && process.env.NODE_ENV !== 'test') { window.location.reload(); }
       });

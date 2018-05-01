@@ -15,31 +15,24 @@ export class App {
     this.httpClient = httpClient;
     this.menuToggled = false;
   }
-
   dashboardTitle = 'Dashboard';
   role = '';
   email = '';
   password = '';
   authenticated = false;
   token = '';
-
   @bindable
   drawerWidth = '175px';
-
   @bindable
   contentWidth = '0px';
-
   @bindable
   fullmenu = true;
-
   async activate() {
     this.configHttpClient();
     this.appState = new AppState(this.httpClient);
     this.userAccess = new UserAccess(this.appState);
     await this.checkUser();
-    // console.log('hello!');
   }
-
   checkIfLoggedIn() {
     const token = localStorage.getItem('ndssl_id_token');
     if (token !== null) {
@@ -48,20 +41,14 @@ export class App {
       this.router.navigate('dashboard');
     }
   }
-
-  showForm(appName, className) {
-    className.startup(appName);
-  }
-
+  showForm(appName, className) { className.startup(appName); }
   authenticate(name) {
-    // let ret;
     const ret = this.auth.authenticate(name, false, {});
     ret.then((data) => {
       this.auth.setToken(data.token);
     }, undefined);
     return ret;
   }
-
   get widescreen() {
     const isWide = document.documentElement.clientWidth > 766;
     const drawer = document.getElementsByClassName('drawer')[0];
@@ -89,11 +76,9 @@ export class App {
     }
     return isWide;
   }
-
   clickFunc(evt) {
     const drawer = document.getElementsByClassName('drawer')[0];
     const toggleIcon = document.getElementsByClassName('mobile-menu-toggle')[0];
-    // console.log(event.target.className);
     /* istanbul ignore else */
     if (evt.target.className !== 'menu-item') {
       document.getElementsByClassName('swipe-area')[0].style.display = 'none';
@@ -103,7 +88,6 @@ export class App {
       document.getElementsByClassName('page-host')[0].style.overflow = 'auto';
     }
   }
-
   toggleMobileMenu(toggle) {
     document.getElementsByClassName('page-host')[0].style.overflow = 'auto';
     if (toggle !== 'close') {
@@ -128,14 +112,12 @@ export class App {
       document.getElementsByClassName('swipe-area')[0].style.display = 'none';
     }
   }
-
   close() {
     console.log('going to close the menu if not widescreen');
     if (!this.widescreen) {
       this.toggleMobileMenu('close');
     }
   }
-
   get currentStyles() {
     let result = {};
     const style = 'wj';
@@ -156,7 +138,6 @@ export class App {
     this.setFooter(style);
     return result;
   }
-
   setFooter() {
     const footer = document.getElementById('wjfooter');
     const color = '';
@@ -171,7 +152,6 @@ export class App {
       '</span></div>';
     }
   }
-
   configHttpClient() {
     this.backend = '';
     /* istanbul ignore else */
@@ -192,7 +172,6 @@ export class App {
         .withInterceptor(this.auth.tokenInterceptor); // Adds bearer token to every HTTP request.
     });
   }
-
   configureRouter(config, router) {
     config.title = 'NDSSL';
     config.options.pushState = true;
@@ -234,7 +213,6 @@ export class App {
     config.fallbackRoute('/');
     this.router = router;
   }
-
   async checkUser() {
     if (this.auth.isAuthenticated()) {
       this.authenticated = true; // Logout element is reliant upon a local var;
@@ -242,7 +220,6 @@ export class App {
       this.user = await this.appState.getUser(uid);
     }
   }
-
   logout() {
     this.authenticated = false;
     this.auth.logout('/')
@@ -252,7 +229,6 @@ export class App {
         console.log('Promise fulfilled, logged out');
       });
   }
-
   async updateById(route, id, dataObj) {
     console.log('update by id');
     await fetch;
