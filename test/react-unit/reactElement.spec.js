@@ -1,4 +1,4 @@
-import {HelloWorld} from '../../src/components/react-element';
+import { HelloWorld } from '../../src/components/react-element';
 
 describe('++ react Element tests', () => {
   let rc;

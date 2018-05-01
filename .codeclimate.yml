@@ -7,7 +7,7 @@ prepare:
 checks:
   method-lines:
     config:
-      threshold: 31
+      threshold: 32
   method-complexity:
     config:
       threshold: 10
