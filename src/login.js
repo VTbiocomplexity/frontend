@@ -3,7 +3,7 @@ import { App } from './app';
 
 const Login_ = require('./classes/Login_.js');
 @inject(App)
-export default class Login {
+export class Login {
   constructor(app) {
     this.app = app;
     this.login_Class = new Login_();

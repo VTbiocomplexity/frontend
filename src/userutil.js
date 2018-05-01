@@ -1,6 +1,6 @@
 const User_ = require('./classes/User_.js');
 
-export default class UserUtil {
+export class UserUtil {
   constructor() {
     this.userClass = {};
   }

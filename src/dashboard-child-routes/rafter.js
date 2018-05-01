@@ -6,7 +6,7 @@ import { RafterFileActions } from '../classes/RafterFileActions';
 const jwtDecode = require('jwt-decode');
 const TreeView = require('js-treeview');
 @inject(App)
-export default class Rafter {
+export class Rafter {
   constructor(app) {
     this.showLogin = true;
     this.app = app;
@@ -325,9 +325,7 @@ export default class Rafter {
             fromSubDir, mtws, hdjId, hdj, tv, showFile, rvs, displayTree, subDirFiles, mnj, makeFilesClickable,
             vsFetch, rafterFileActions, subSubDirFiles
           );
-          return;
-        }
-        if (cmd === 'ls') {
+        } else if (cmd === 'ls' && !fromSubDir) {
           this.homeDirJson = data;
           this.makeTree(data);
           return;
@@ -336,10 +334,8 @@ export default class Rafter {
       }).catch((err) => {
       // console.log('this is the error');
         console.log(err);
-        if (err.status === 500) {
-        /* istanbul ignore if */
-          if (process.env.NODE_ENV !== 'test') { window.location.reload(); }
-        }
+        /* istanbul ignore next */
+        if (err.status === 500 && process.env.NODE_ENV !== 'test') { window.location.reload(); }
       });
   }
   vsFetchSuccess(

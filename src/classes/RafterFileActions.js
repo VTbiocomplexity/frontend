@@ -1,6 +1,6 @@
 const FileSaver = require('file-saver');
 
-export default class RafterFileActions {
+export class RafterFileActions {
   constructor(httpClient) {
     this.httpClient = httpClient;
     this.reader = new FileReader();
@@ -83,9 +83,9 @@ export default class RafterFileActions {
       alert('no file was selected');
       return false;
     }
-    for (let i = 0; i < rafterFilePath.files.length; i++) {
-      const oInput = rafterFilePath.files[i];
-      // console.log(oInput.type);
+    let oInput;
+    for (let i = 0; i < rafterFilePath.files.length; i += 1) {
+      oInput = rafterFilePath.files[i];
       // the type is determined automatically during the creation of the Blob.
       // this value cannot be controlled by developer, hence cannot test it.
       /* istanbul ignore if */
@@ -94,9 +94,9 @@ export default class RafterFileActions {
         nub.style.display = 'block';
         return true;
       }
-      alert(`Sorry, ${oInput.type} is an invalid file type.`);
-      return false;
     }
+    alert(`Sorry, ${oInput.type} is an invalid file type.`);
+    return false;
   }
   async ulrf(fileString, cleanFileName, httpClient, rui, filePath, fType) {
     const folderName = `/${document.getElementsByClassName('folderName')[0].innerHTML}`;
@@ -115,7 +115,7 @@ export default class RafterFileActions {
       filePath += folderName;
     }
     // console.log(filePath);
-    httpClient.fetch('/rafter/vs', {
+    return httpClient.fetch('/rafter/vs', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -196,7 +196,7 @@ export default class RafterFileActions {
     if (matchFile || subDirFiles === null || subDirFiles === undefined) { return; }
     // console.log('set file actions');
     // document.getElementsByClassName('deleteButton')[0].style.display = 'none';
-    for (let j = 0; j < subDirFiles.length; j++) {
+    for (let j = 0; j < subDirFiles.length; j += 1) {
       if (id === subDirFiles[j].id && !subDirFiles[j].isContainer) {
       // console.log('i found a match!');
         document.getElementsByClassName('deleteButton')[0].style.display = 'block';
@@ -229,7 +229,7 @@ export default class RafterFileActions {
   }
   setSubSubClicks(subSubDirFiles, id, fif, k) {
     if (subSubDirFiles !== null && subSubDirFiles !== undefined) {
-      for (let zz = 0; zz < subSubDirFiles.length; zz++) {
+      for (let zz = 0; zz < subSubDirFiles.length; zz += 1) {
         if (subSubDirFiles[zz].id === id) {
         // console.log('found a match');
           fif[k].addEventListener('click', () => {
@@ -246,7 +246,7 @@ export default class RafterFileActions {
     if (subSubDirFiles !== null && subSubDirFiles !== undefined) {
       // console.log('set sub sub files');
     // do not put click events into sub sub folders
-      for (let zz = 0; zz < subSubDirFiles.length; zz++) {
+      for (let zz = 0; zz < subSubDirFiles.length; zz += 1) {
         if (subSubDirFiles[zz].id === id) {
         // console.log('found a match');
           document.getElementsByClassName('deleteButton')[0].style.display = 'block';
@@ -272,7 +272,7 @@ export default class RafterFileActions {
     const parentId = sessionStorage.getItem('parentId');
     // console.log(parentId);
     let j = 0;
-    for (j = 0; j < tvData.length; j++) {
+    for (j = 0; j < tvData.length; j += 1) {
     /* istanbul ignore else */
       if (parentId === tvData[j].id) {
         break;
@@ -281,7 +281,7 @@ export default class RafterFileActions {
     // console.log(tvData);
     /* istanbul ignore else */
     if (tvData[j] !== undefined) {
-      for (let k = 0; k < tvData[j].children.length; k++) {
+      for (let k = 0; k < tvData[j].children.length; k += 1) {
         // console.log(tvData[j].children);
         if (tvData[j].children[k].id === raf.rfid) {
         // console.log('make the sub sub tree');
@@ -310,10 +310,10 @@ export default class RafterFileActions {
   }
   removeOtherSubSubChildren(tvData, parentId) {
     console.log('remove all other sub sub folder children from treeView');
-    for (let k = 0; k < tvData.length; k++) {
+    for (let k = 0; k < tvData.length; k += 1) {
       if (tvData[k].id !== parentId) {
         // console.log(tvData[k]);
-        for (let l = 0; l < tvData[k].children.length; l++) {
+        for (let l = 0; l < tvData[k].children.length; l += 1) {
           tvData[k].children[l].children = [];
         }
       }
@@ -351,7 +351,7 @@ export default class RafterFileActions {
     // console.log(subDirFiles);
     // console.log(raf.rfid);
     // console.log(hdj);
-    for (let i = 0; i < subDirFiles.length; i++) {
+    for (let i = 0; i < subDirFiles.length; i += 1) {
     /* istanbul ignore else */
       if (subDirFiles[i].id === fij.id) {
         document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[i]);

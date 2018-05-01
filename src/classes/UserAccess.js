@@ -1,4 +1,4 @@
-export default class UserAccess {
+export class UserAccess {
   constructor(appState) {
     this.appState = appState;
   }

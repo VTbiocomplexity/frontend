@@ -3,7 +3,7 @@ import { App } from './app';
 
 const Register_ = require('./classes/Register_.js');
 @inject(App)
-export default class Register {
+export class Register {
   constructor(app) {
     this.app = app;
     this.registerClass = new Register_();

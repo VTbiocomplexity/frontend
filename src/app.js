@@ -9,7 +9,7 @@ System.import('isomorphic-fetch');
 System.import('whatwg-fetch');
 const Hammer = require('hammerjs');
 @inject(AuthService, HttpClient)
-export default class App {
+export class App {
   constructor(auth, httpClient) {
     this.auth = auth;
     this.httpClient = httpClient;

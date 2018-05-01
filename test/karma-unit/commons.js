@@ -167,7 +167,7 @@ class HttpMock {
           json: () => Promise.resolve('{"error": "you fail"}')
         });
       }
-      return Promise.reject(new Errror({
+      return Promise.reject(new Error({
         Headers: this.headers,
         json: () => Promise.reject(new Error({ message: 'error' }))
       }));

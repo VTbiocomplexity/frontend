@@ -1,4 +1,4 @@
-export default class ReactExample {
+export class ReactExample {
   constructor() {
     this.reactElementInner = null;
   }

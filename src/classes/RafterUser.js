@@ -1,6 +1,6 @@
 const jwtDecode = require('jwt-decode');
 
-export default class RafterUser {
+export class RafterUser {
   constructor(httpClient) {
     this.httpClient = httpClient;
   }
@@ -42,11 +42,8 @@ export default class RafterUser {
         rafterCheckHome.style.display = 'none';
       }
     }
-    // console.log('you are not logged in');
-    // sli = true;
     /* istanbul ignore next */
     if (process.env.NODE_ENV !== 'test' && reloadPage) {
-      // console.log('am i here?');
       window.location.reload();
     }
   }

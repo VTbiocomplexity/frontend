@@ -3,7 +3,7 @@ import { App } from '../app';
 
 const Uact = require('../classes/UserAccount.js');
 @inject(App)
-export default class UserAccount {
+export class UserAccount {
   constructor(app) {
     this.app = app;
     this.userActClass = {};

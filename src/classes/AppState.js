@@ -1,17 +1,13 @@
-export default class AppState {
+export class AppState {
   constructor(httpClient) {
     this.httpClient = httpClient;
     this.user = {};
     this.is_auth = false;
     this.roles = [];
-    // this.isOhafLogin = false;
-    // this.newUser = false;
   }
-
   getUserID() {
     return this.user._id;
   }
-
   getUser(uid) {
     // console.log('appState getUser');
     if (this.getUserID() !== undefined) {
@@ -33,7 +29,6 @@ export default class AppState {
         }
       });
   }
-
   checkUserRole() {
     if (this.user.userType !== 'Developer') {
       const thisuserrole = this.user.userType;
@@ -41,38 +36,23 @@ export default class AppState {
     } else {
       const validRoles = JSON.parse(process.env.userRoles).roles;
       const validRolesLowerCase = [];
-      for (let i = 0; i < validRoles.length; i++) {
+      for (let i = 0; i < validRoles.length; i += 1) {
         validRolesLowerCase.push(validRoles[i].toLowerCase());
       }
       this.setRoles(validRolesLowerCase); // developer access to all user roles
       // console.log(validRoles.toLowerCase());
     }
   }
-
   setUser(input) {
     // console.log('appState setUser');
     // console.log(this.user);
     this.user = input;
   }
-
-  // setNewUser(input) {
-  //   this.newUser = input;
-  // }
-
-  // getAuth() {
-  //   return (this.is_auth);
-  // }
-  //
-  // setAuth(input) {
-  //   this.is_auth = input;
-  // }
-
   getRoles() {
     return new Promise((resolve) => {
       resolve(this.roles);
     });
   }
-
   setRoles(input) {
     this.roles = input;
     // console.log('user roles are ' + this.roles);

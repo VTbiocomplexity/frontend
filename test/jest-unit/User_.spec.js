@@ -1,32 +1,32 @@
 const User_ = require('../../src/classes/User_.js');
 
-let mockfetch, user = new User_();
-// const mockStorage = {
-//   setItem() {
-//   // do nothing
-//   },
-//   getItem() {
-//   // do nothing
-//   },
-//   removeItem() {
-//   // do nothing
-//   }
-// };
-// window.localStorage = mockStorage;
+const mockStorage = {
+  setItem() {
+  // do nothing
+  },
+  getItem() {
+  // do nothing
+  },
+  removeItem() {
+  // do nothing
+  }
+};
+window.localStorage = mockStorage;
 document.body.innerHTML = '<div><div class="home"></div></div>';
+let mockfetch, user = new User_();
 describe('The User_ module', () => {
-  beforeEach(() => {
-    // window.localStorage = mockStorage;
-    spyOn(window.localStorage, 'getItem').and.callFake(() => {
-      // do nothing
-    });
-    spyOn(window.localStorage, 'setItem').and.callFake(() => {
-    // do nothing
-    });
-    spyOn(window.localStorage, 'removeItem').and.callFake(() => {
-    // do nothing
-    });
-  });
+  // beforeEach(() => {
+  //   // window.localStorage = mockStorage;
+  //   spyOn(window.localStorage, 'getItem').and.callFake(() => {
+  //     // do nothing
+  //   });
+  //   spyOn(window.localStorage, 'setItem').and.callFake(() => {
+  //   // do nothing
+  //   });
+  //   spyOn(window.localStorage, 'removeItem').and.callFake(() => {
+  //   // do nothing
+  //   });
+  // });
   it('generates a email varification form', () => {
     user.verifyEmail();
     expect(document.body.innerHTML).toMatch(/Verify Your Email Address/);

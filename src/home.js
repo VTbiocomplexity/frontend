@@ -1,6 +1,6 @@
 // import {computedFrom} from 'aurelia-framework';
 
-export default class Home {
+export class Home {
   heading = 'Welcome to the NDSSL App';
   // firstName = 'John';
   // lastName = 'Doe';

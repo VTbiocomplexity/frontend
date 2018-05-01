@@ -1,4 +1,4 @@
-export default class PageObjectSkeleton {
+export class PageObjectSkeleton {
   getCurrentPageTitle() {
     return browser.getTitle();
   }

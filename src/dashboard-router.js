@@ -1,6 +1,6 @@
 import { PLATFORM } from 'aurelia-pal';
 
-export default class DashboardRouter {
+export class DashboardRouter {
   heading = 'Dashboard Router';
   configureRouter(config, router) {
     config.map([

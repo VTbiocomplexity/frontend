@@ -6,7 +6,7 @@ import HWComp from './react-comp';
 @noView()
 @inject(Element)
 @customElement('hello-world')
-export default class HelloWorld {
+export class HelloWorld {
   constructor(element) {
     this.element = element;
   }
