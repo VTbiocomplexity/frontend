@@ -44,9 +44,7 @@ export class App {
   showForm(appName, className) { className.startup(appName); }
   authenticate(name) {
     const ret = this.auth.authenticate(name, false, {});
-    ret.then((data) => {
-      this.auth.setToken(data.token);
-    }, undefined);
+    ret.then((data) => { this.auth.setToken(data.token); }, undefined);
     return ret;
   }
   get widescreen() {
@@ -62,18 +60,16 @@ export class App {
         mobileMenuToggle.style.display = 'block';
       }
     }
-    if (isWide) {
-      if (drawer !== null && drawer !== undefined) {
-        this.contentWidth = '187px';
-        drawer.style.display = 'block';
-        $(drawer).parent().css('display', 'block');
-        mobileMenuToggle.style.display = 'none';
-      }
+    // if (isWide) {
+    if (isWide && drawer !== null && drawer !== undefined) {
+      this.contentWidth = '187px';
+      drawer.style.display = 'block';
+      $(drawer).parent().css('display', 'block');
+      mobileMenuToggle.style.display = 'none';
     }
+    // }
     const mainP = document.getElementsByClassName('main-panel')[0];
-    if (mainP !== null && mainP !== undefined) {
-      mainP.style.marginRight = this.contentWidth;
-    }
+    if (mainP !== null && mainP !== undefined) { mainP.style.marginRight = this.contentWidth; }
     return isWide;
   }
   clickFunc(evt) {
@@ -113,10 +109,8 @@ export class App {
     }
   }
   close() {
-    console.log('going to close the menu if not widescreen');
-    if (!this.widescreen) {
-      this.toggleMobileMenu('close');
-    }
+    // console.log('going to close the menu if not widescreen');
+    if (!this.widescreen) { this.toggleMobileMenu('close'); }
   }
   get currentStyles() {
     let result = {};
@@ -132,9 +126,7 @@ export class App {
     };
     result.sidebarImagePath = '../static/imgs/BI_logo2.jpg';
     /* istanbul ignore else */
-    if (mobilemenutoggle !== null) {
-      mobilemenutoggle.style.backgroundColor = '#2a222a';
-    }
+    if (mobilemenutoggle !== null) { mobilemenutoggle.style.backgroundColor = '#2a222a'; }
     this.setFooter(style);
     return result;
   }
@@ -155,9 +147,7 @@ export class App {
   configHttpClient() {
     this.backend = '';
     /* istanbul ignore else */
-    if (process.env.NODE_ENV !== 'production') {
-      this.backend = process.env.BackendUrl;
-    }
+    if (process.env.NODE_ENV !== 'production') { this.backend = process.env.BackendUrl; }
     this.httpClient.configure((httpConfig) => {
       httpConfig
         .withDefaults({
@@ -226,19 +216,19 @@ export class App {
       .then(() => {
         localStorage.clear();
         sessionStorage.clear();
-        console.log('Promise fulfilled, logged out');
+        // console.log('Promise fulfilled, logged out');
       });
   }
   async updateById(route, id, dataObj) {
-    console.log('update by id');
+    // console.log('update by id');
     await fetch;
     return this.httpClient.fetch(route + id, {
       method: 'put',
       body: json(dataObj)
     })
       .then(response => response.json())
-      .then((data) => {
-        console.log(data);
+      .then(() => {
+        // console.log(data);
       }).catch((error) => {
         console.log(error);
       });
