@@ -78,9 +78,8 @@ class UserAct {
       }
     };
     return this.fetch(`${process.env.BackendUrl}/user/${this.uid}`, fetchData)
-      .then(response => response.json())
-      .then((data) => {
-        console.log(data);
+      .then(response => response.json()).then((data) => {
+        // console.log(data);
         if (data.message) {
           document.getElementsByClassName('formerrors')[0].innerHTML = `<p>${data.message}</p>`;
         } else {
