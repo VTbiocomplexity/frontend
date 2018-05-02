@@ -190,8 +190,8 @@ export class Rafter {
         if (id === hdj[i].id) {
           document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(hdj[i]);
           if (hdj[i].isContainer) {
-            console.log('i clicked a container');
-            console.log(hdj[i]);
+            // console.log('i clicked a container');
+            // console.log(hdj[i]);
             document.getElementsByClassName('fileActions')[0].style.display = 'none';
             document.getElementsByClassName('folderName')[0].innerHTML = hdj[i].name;
             document.getElementsByClassName('isHomeDir')[0].style.display = 'block';
