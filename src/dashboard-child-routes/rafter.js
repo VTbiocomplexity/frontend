@@ -39,7 +39,11 @@ export class Rafter {
       await this.handleRafterLogin('autoInitRafter');
     }
   }
-  rafterAddApp() { this.showLogin = true; }
+  rafterAddApp() {
+    this.showLogin = true;
+    document.getElementsByClassName('fileActions')[0].style.display = 'none';
+    document.getElementsByClassName('homeDirLink')[0].style.display = 'none';
+  }
   async removeApp() {
     const appName = document.getElementById('appName2').value;
     const myIndex = this.appNames.indexOf(appName);
