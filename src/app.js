@@ -131,17 +131,18 @@ export class App {
     return result;
   }
   setFooter() {
-    const footer = document.getElementById('wjfooter');
+    const footer = document.getElementById('ndssl_footer');
     const color = '';
     /* istanbul ignore else */
     if (footer !== null) {
       footer.style.backgroundColor = '#2a222a';
-      footer.innerHTML = `${'<div style="text-align: center">' +
-      '<span>&nbsp;&nbsp;</span><a target="_blank" style="color:'}${color}"  href="https://www.facebook.com/biocomplexity/">'+
-      '<i class="fa fa-facebook-square fa-2x"></i></a>` +
-      `<span>&nbsp;&nbsp;</span><a target="_blank" style="color:${color}"  href="https://twitter.com/ndssl_bi">'+
-      '<i class="fa fa-twitter fa-2x"></i></a><br>` +
-      '</span></div>';
+      footer.innerHTML = '<div style="text-align: center">' +
+      '<span>&nbsp;&nbsp;</span><a target="_blank" style="color:' +
+       `${color}` +
+      'href="https://www.facebook.com/biocomplexity/">' +
+      '<i class="fa fa-facebook-square fa-2x"></i></a><span>&nbsp;&nbsp;</span><a target="_blank" style="color:' +
+      `${color}` +
+      'href="https://twitter.com/ndssl_bi"><i class="fa fa-twitter fa-2x"></i></a><br></span></div>';
     }
   }
   configHttpClient() {
