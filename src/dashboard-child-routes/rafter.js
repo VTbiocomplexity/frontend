@@ -295,7 +295,8 @@ export class Rafter {
     if (cmd === 'create') {
       const folderName = `/${document.getElementsByClassName('folderName')[0].innerHTML}`;
       console.log(folderName);
-      if (folderName !== this.rafterFile.path) {
+      const isHome = folderName.includes('home');
+      if (folderName !== this.rafterFile.path && !isHome) {
         this.rafterFile.path = this.rafterFile.path + folderName;
       }
       console.log(this.rafterFile.path);

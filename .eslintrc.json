@@ -21,7 +21,6 @@
       "var": "never",
       "let": "always",
       "const": "never"
-    }],
-    "react/prefer-stateless-function": [0, "never"]
+    }]
   }
 }
