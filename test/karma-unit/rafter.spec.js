@@ -913,6 +913,17 @@ describe('The Rafter Dashboard', () => {
     );
     expect(rd.makeTreeWithSub).toHaveBeenCalled();
   }));
+  it('allows delete of folders if they are empty', testAsync(async () => {
+    const fa = document.getElementsByClassName('fileActions')[0];
+    fa.style.display = 'none';
+    const data = [];
+    spyOn(rd, 'makeTreeWithSub').and.callThrough();
+    await rd.vsFetchSuccess(
+      data, rd.vsFetchSuccess, null, null, null, rd.rafterFile, null,
+      rd.makeTreeWithSub, null, null, null, null, null, null, []
+    );
+    expect(fa.style.display).toBe('block');
+  }));
   it('makes a tree with subdirectories after receiving the contents of the sub sub directory', testAsync(async () => {
     const data = ['howdy'];
     const subSubDirFiles = [];

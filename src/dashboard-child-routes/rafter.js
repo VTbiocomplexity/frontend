@@ -161,7 +161,7 @@ export class Rafter {
       if (!matchFile) {
         // console.log('line209');
         fif[k].addEventListener('click', () => {
-          // console.log('I clicked the file inside sub folder');
+          console.log('I clicked the file inside sub folder');
           if (!fileIDJson.isContainer) {
             showFile(
               fileIDJson.id, allData, raf, rvs, myApp, rui, mtws, tv, showFile, displayTree, subDirFiles,
@@ -190,6 +190,8 @@ export class Rafter {
         if (id === hdj[i].id) {
           document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(hdj[i]);
           if (hdj[i].isContainer) {
+            console.log('i clicked a container');
+            console.log(hdj[i]);
             document.getElementsByClassName('fileActions')[0].style.display = 'none';
             document.getElementsByClassName('folderName')[0].innerHTML = hdj[i].name;
             document.getElementsByClassName('isHomeDir')[0].style.display = 'block';
@@ -351,12 +353,21 @@ export class Rafter {
     document.getElementsByClassName('subDirContent')[0].innerHTML = JSON.stringify(data);
     if (myRafterFile.rfid === '') {
       subDirFiles.push(...data);
+      console.log(data);
     } else {
       nsdf = data;
       let homeDirC = document.getElementsByClassName('homeDirContent')[0].innerHTML;
       homeDirC = JSON.parse(homeDirC);
       nid = homeDirC.container_id;
       document.getElementsByClassName('folderName')[0].innerHTML = homeDirC.name;
+    }
+    if (data.length === 0) {
+      console.log('allow delete empty folder');
+      document.getElementsByClassName('fileActions')[0].style.display = 'block';
+      const folderName = document.getElementsByClassName('folderName')[0].innerHTML;
+      const deleteButton = document.getElementsByClassName('deleteButton')[0];
+      deleteButton.innerHTML = `Delete<br>${folderName}`;
+      deleteButton.style.display = 'block';
     }
     mtws(
       data, nid, hdj, tv, showFile, myRafterFile, rvs, myApp, rafterUserID, mtws,
