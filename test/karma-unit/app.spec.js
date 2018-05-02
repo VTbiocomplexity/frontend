@@ -112,7 +112,7 @@ describe('the App module', () => {
   it('gets the current styles', (done) => {
     // let routre = new RouterStub();
     // routre.currentInstruction.config.name = 'ohaf';
-    document.body.innerHTML = '<div id="wjfooter" class="footer"><i id="mobilemenutoggle"></i></div>';
+    document.body.innerHTML = '<div id="ndssl_footer" class="footer"><i id="mobilemenutoggle"></i></div>';
     // app1.router = routre;
     const cs = app1.currentStyles;
     expect(cs).toBeDefined();
