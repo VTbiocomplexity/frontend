@@ -68,7 +68,7 @@ describe('The Rafter Dashboard', () => {
       '<div class="fileDld"></div><div class="userServiceError"></div><button class="rafterCheckHome"></button>' +
       '<div class="createNew"></div><div class="isHomeDir"></div><div class="isHomeDir"></div><div id="divId"><p class="folderName"></p></div>' +
       '<p class="fileDetailsTitle"><div class="fileActions"></div></p><div class="homeDirContent">' +
-      '</div><div class="showHideHD" style="display:none">' +
+      '</div><div class="showHideHD" style="display:none"><div class="homeDirLink"></div>' +
       '</div><div id="treeView"></div><div class="insideFolderDetails"></div><div class="subDirContent">' +
       '</div><div class="rafterLogout" style="display:block">' +
       '</div><div class="showHideHD" style="display:block"></div>' +
