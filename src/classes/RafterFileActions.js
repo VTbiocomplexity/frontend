@@ -4,7 +4,7 @@ export class RafterFileActions {
   constructor(httpClient) {
     this.httpClient = httpClient;
     this.reader = new FileReader();
-    this.reader2 = new FileReader();
+    // this.reader2 = new FileReader();
   }
   fileDisplay() {
     const fileDetails = document.getElementsByClassName('homeDirContent')[0].innerHTML;
@@ -188,11 +188,11 @@ export class RafterFileActions {
       return alert(`file type is: ${fType}`);
     }
     const isHome = folderName.includes('home');
-    console.log(isHome);
+    // console.log(isHome);
     /* istanbul ignore else */
     if (folderName !== filePath && !isHome) { filePath += folderName; }
-    console.log('line192');
-    console.log(filePath);
+    // console.log('line192');
+    // console.log(filePath);
     return httpClient.fetch('/rafter/vs', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
