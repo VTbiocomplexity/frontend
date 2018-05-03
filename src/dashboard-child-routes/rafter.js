@@ -186,10 +186,10 @@ export class Rafter {
     document.getElementsByClassName('deleteButton')[0].style.display = 'block';
     rafterFileActions.resetFileActions(mtws, dnldbt, dfcbt);
     if (hdj !== null) {
-      console.log('rafter line 189');
+      // console.log('rafter line 189');
       for (let i = 0; i < hdj.length; i += 1) {
         if (id === hdj[i].id) {
-          console.log('match');
+          // console.log('match');
           document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(hdj[i]);
           if (hdj[i].isContainer) {
             // console.log('i clicked a container');
