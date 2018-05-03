@@ -297,8 +297,15 @@ describe('The Rafter Dashboard', () => {
     rd3.rafterFileActions.reader = new FileReader();
     // console.log(rd3.reader);
     await rd3.rafterFileActions.fileDisplay();
-    console.log('line 255');
-    console.log(document.getElementsByClassName('displayFileContent')[0].innerHTML);
+    expect(document.getElementsByClassName('displayFileContent')[0].innerHTML.includes('<img')).toBe(false);
+    rd3.rafterFileActions.reader = new FileReader();
+    let fjson = { type: 'jpg' };
+    fjson = JSON.stringify(fjson);
+    document.getElementsByClassName('homeDirContent')[0].innerHTML = fjson;
+    await rd3.rafterFileActions.fileDisplay();
+    // console.log('what to expect?');
+    // console.log(document.getElementsByClassName('displayFileContent')[0].innerHTML);
+    // expect(document.getElementsByClassName('displayFileContent')[0].innerHTML.includes('<img')).toBe(true);
   }));
 
   it('catches error on attempt to display the content of a file on the webpage', testAsync(async () => {
@@ -336,7 +343,13 @@ describe('The Rafter Dashboard', () => {
     await rd3.rafterFileActions.fileDisplay();
     // expect(rd.uid).toBe('3456');
   }));
-
+  it('sets the file type for jpg and png', testAsync(async () => {
+    spyOn(rd.rafterFileActions.httpClient, 'fetch').and.callThrough();
+    rd.rafterFileActions.ulrf(null, null, rd.rafterFileActions.httpClient, null, null, 'image/jpeg');
+    expect(rd.rafterFileActions.httpClient.fetch).toHaveBeenCalled();
+    rd.rafterFileActions.ulrf(null, null, null, null, null, 'image/png');
+    expect(rd.rafterFileActions.httpClient.fetch).toHaveBeenCalled();
+  }));
   it('Validates the file type to be uploaded', testAsync(async () => {
     document.body.innerHTML = '<div><input id="rafterFilePath" type="file" accept=""/><button style="display:none" id="uploadButton"></button></div>';
     window.rafterFilePath = {
@@ -395,6 +408,16 @@ describe('The Rafter Dashboard', () => {
     window.rafterFilePath.files[0].name = 'yo';
     rd.rafterFileActions.uploadRafterFile(rd.rafterUserID, rd.rafterFile);
     rd.rafterFileActions.reader.onload(evt);
+    spyOn(rd.rafterFileActions.reader, 'readAsDataURL').and.callThrough();
+    window.rafterFilePath = {
+      files: [new Blob([JSON.stringify(debug, null, 2)], {
+        type: 'image/jpeg'
+      })]
+    };
+    window.rafterFilePath.files[0].name = 'yo';
+    rd.rafterFileActions.uploadRafterFile(rd.rafterUserID, rd.rafterFile);
+    expect(rd.rafterFileActions.reader.readAsDataURL).toHaveBeenCalled();
+    // rd.rafterFileActions.reader.onload(evt);
     rd.rafterFileActions.reader.onerror();
   }));
 
