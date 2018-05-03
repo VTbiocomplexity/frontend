@@ -8,6 +8,7 @@ export class RafterFileActions {
   fileDisplay() {
     const fileDetails = document.getElementsByClassName('homeDirContent')[0].innerHTML;
     const fdJson = JSON.parse(fileDetails);
+    // console.log(fdJson.type);
     this.rafterFileID = fdJson.id;
     this.httpClient.fetch('/rafter/vs', {
       method: 'post',
@@ -18,10 +19,21 @@ export class RafterFileActions {
       async function loaded(evt) {
       // console.log('in function loaded');
       // console.log(evt.target);
-        const fileString = evt.target.result;
+        // const readResult = evt.target.result;
         // console.log(fileString);
         const dfc = document.getElementsByClassName('displayFileContent')[0];
-        dfc.innerHTML = fileString;
+        console.log(fdJson.type);
+        if (fdJson.type !== 'jpg' && fdJson.type !== 'png') {
+          dfc.innerHTML = evt.target.result;
+        } else {
+          dfc.innerHTML = '';
+          console.log(evt.target.result);
+          const image = new Image();
+          image.width = document.documentElement.clientWidth - 20;
+          image.title = fdJson.name;
+          image.src = await evt.target.result;
+          dfc.appendChild(image);
+        }
         dfc.style.display = 'block';
         dfc.scrollIntoView();
       }
@@ -29,7 +41,11 @@ export class RafterFileActions {
       function errorHandler() { alert('The file could not be read'); }
       this.reader.onload = loaded;
       this.reader.onerror = errorHandler;
+      // if (fdJson.type !== 'jpg' && fdJson.type !== 'png') {
       this.reader.readAsText(blob);
+      // } else {
+      // this.reader.readAsDataURL(blob);
+      // }
     // console.log(fileContents);
     }).catch((err) => { console.log(err); });
   }
@@ -84,12 +100,13 @@ export class RafterFileActions {
       return false;
     }
     let oInput;
+    const validTypes = ['text/plain', 'text/html', 'application/json', 'text/xml', 'image/jpeg', 'image/png'];
     for (let i = 0; i < rafterFilePath.files.length; i += 1) {
       oInput = rafterFilePath.files[i];
       // the type is determined automatically during the creation of the Blob.
       // this value cannot be controlled by developer, hence cannot test it.
       /* istanbul ignore if */
-      if (oInput.type === 'text/plain' || oInput.type === 'text/html' || oInput.type === 'application/json' || oInput.type === 'text/xml') {
+      if (validTypes.indexOf(oInput.type) !== -1) {
       // console.log('type is a plain text file');
         nub.style.display = 'block';
         return true;
@@ -100,20 +117,23 @@ export class RafterFileActions {
   }
   async ulrf(fileString, cleanFileName, httpClient, rui, filePath, fType) {
     const folderName = `/${document.getElementsByClassName('folderName')[0].innerHTML}`;
-    console.log(fType);
+    // console.log(fType);
+    // console.log(fileString);
     if (fType === 'text/plain' || fType === 'text/html') {
       fType = 'text';
     } else if (fType === 'application/json') {
       fType = 'json';
     } else if (fType === 'text/xml') {
       fType = 'xml';
+    } else if (fType === 'image/jpeg') {
+      fType = 'jpg';
+    } else if (fType === 'image/png') {
+      fType = 'png';
     } else {
       return alert(`file type is: ${fType}`);
     }
     /* istanbul ignore else */
-    if (folderName !== filePath) {
-      filePath += folderName;
-    }
+    if (folderName !== filePath) { filePath += folderName; }
     // console.log(filePath);
     return httpClient.fetch('/rafter/vs', {
       method: 'post',
@@ -127,8 +147,8 @@ export class RafterFileActions {
         }
       })
     }).then(response => response.json())
-      .then((data) => {
-        console.log(data);
+      .then(() => {
+        // console.log(data);
         /* istanbul ignore if */
         if (process.env.NODE_ENV !== 'test') { window.location.reload(); }
       }).catch((err) => { console.log(err); });
@@ -147,6 +167,7 @@ export class RafterFileActions {
     // console.log('in function loaded');
     // console.log(evt.target);
       const fileString = evt.target.result;
+      console.log(fileString);
       ulrf(fileString, cleanFileName, httpClient, rui, filePath, fType);
     }
     function errorHandler() {
@@ -154,7 +175,12 @@ export class RafterFileActions {
     }
     this.reader.onload = loaded;
     this.reader.onerror = errorHandler;
-    this.reader.readAsText(rafterFilePath.files[0]);
+    if (fType.includes('image')) {
+      console.log('line 178');
+      this.reader.readAsDataURL(rafterFilePath.files[0]);
+    } else {
+      this.reader.readAsText(rafterFilePath.files[0]);
+    }
   }
   hideDetail(ic1, ic2, content) {
     document.getElementsByClassName(content)[0].style.display = 'none';
