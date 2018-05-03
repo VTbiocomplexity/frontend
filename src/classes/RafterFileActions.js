@@ -100,13 +100,13 @@ export class RafterFileActions {
       return false;
     }
     let oInput;
+    const validTypes = ['text/plain', 'text/html', 'application/json', 'text/xml', 'image/jpeg', 'image/png'];
     for (let i = 0; i < rafterFilePath.files.length; i += 1) {
       oInput = rafterFilePath.files[i];
       // the type is determined automatically during the creation of the Blob.
       // this value cannot be controlled by developer, hence cannot test it.
       /* istanbul ignore if */
-      if (oInput.type === 'text/plain' || oInput.type === 'text/html' || oInput.type === 'application/json' ||
-      oInput.type === 'text/xml' || oInput.type === 'image/jpeg' || oInput.type === 'image/png') {
+      if (validTypes.indexOf(oInput.type) !== -1) {
       // console.log('type is a plain text file');
         nub.style.display = 'block';
         return true;
@@ -117,8 +117,8 @@ export class RafterFileActions {
   }
   async ulrf(fileString, cleanFileName, httpClient, rui, filePath, fType) {
     const folderName = `/${document.getElementsByClassName('folderName')[0].innerHTML}`;
-    console.log(fType);
-    console.log(fileString);
+    // console.log(fType);
+    // console.log(fileString);
     if (fType === 'text/plain' || fType === 'text/html') {
       fType = 'text';
     } else if (fType === 'application/json') {
@@ -133,9 +133,7 @@ export class RafterFileActions {
       return alert(`file type is: ${fType}`);
     }
     /* istanbul ignore else */
-    if (folderName !== filePath) {
-      filePath += folderName;
-    }
+    if (folderName !== filePath) { filePath += folderName; }
     // console.log(filePath);
     return httpClient.fetch('/rafter/vs', {
       method: 'post',
@@ -149,8 +147,8 @@ export class RafterFileActions {
         }
       })
     }).then(response => response.json())
-      .then((data) => {
-        console.log(data);
+      .then(() => {
+        // console.log(data);
         /* istanbul ignore if */
         if (process.env.NODE_ENV !== 'test') { window.location.reload(); }
       }).catch((err) => { console.log(err); });
