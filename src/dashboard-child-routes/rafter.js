@@ -434,6 +434,7 @@ export class Rafter {
         document.getElementsByClassName('appSelector')[1].style.display = 'block';
       }
       await this.rafterUser.initVol(rT);
+      document.getElementsByClassName('rafterLogin')[0].style.display = 'none';
     }
   }
 }

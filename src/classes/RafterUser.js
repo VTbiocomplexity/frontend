@@ -59,9 +59,10 @@ export class RafterUser {
       .then(response => response.json())
       .then(() =>
       // console.log(data);
-        true).catch(() =>
-      // console.log(err);
-        false);
+        true).catch((err) => {
+        console.log(err);
+        return false;
+      });
   }
 
   initRafter(ruid, rObj, uid, interval, sli) {
@@ -83,9 +84,9 @@ export class RafterUser {
           // console.log(user);
           ruid = user.sub; //eslint-disable-line
           if (userServiceError !== null && userServiceError !== undefined) { userServiceError.innerHTML = ''; }
-          this.initVol(data);
+          // this.initVol(data);
           /* istanbul ignore if */
-          if (process.env.NODE_ENV !== 'test') { window.location.reload(); }
+          // if (process.env.NODE_ENV !== 'test') { window.location.reload(); }
         } else {
           if (userServiceError !== null && userServiceError !== undefined) { userServiceError.innerHTML = message; }
           if (!sli) {
