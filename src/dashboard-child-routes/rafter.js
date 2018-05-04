@@ -80,6 +80,10 @@ export class Rafter {
     }
     await this.rafterUser.initRafter(this.rafterUserID, this.rafter, this.user._id, this.interval, this.showLogin);
     this.setRafterUserId();
+    /* istanbul ignore if */
+    if (option === 'changeApp' && process.env.NODE_ENV !== 'test') {
+      window.location.reload();
+    }
   }
   radioClicked() {
     if (document.getElementById('fileType2').checked) {
