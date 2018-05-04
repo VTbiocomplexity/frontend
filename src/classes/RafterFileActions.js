@@ -360,21 +360,22 @@ export class RafterFileActions {
     // do not put click events into sub sub folders
       for (let zz = 0; zz < subSubDirFiles.length; zz += 1) {
         if (subSubDirFiles[zz].id === id) {
-        // console.log('found a match');
-          const dlbt = document.getElementsByClassName('dnldButton')[0];
-          document.getElementsByClassName('deleteButton')[0].style.display = 'block';
-          document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subSubDirFiles[zz]);
+          this.setFileActionButtons(subSubDirFiles[zz]);
+          // console.log('found a match');
+          // const dlbt = document.getElementsByClassName('dnldButton')[0];
           // document.getElementsByClassName('deleteButton')[0].style.display = 'block';
-          dlbt.innerHTML = (`Download<br>${subSubDirFiles[zz].name}`);
-          document.getElementsByClassName('deleteButton')[0].innerHTML = (`Delete<br>${subSubDirFiles[zz].name}`);
-          document.getElementsByClassName('displayButton')[0].innerHTML = (`Display<br>${subSubDirFiles[zz].name}`);
-          if (subSubDirFiles[zz].state !== 'empty') {
-            dlbt.style.display = 'block';
-            document.getElementsByClassName('displayButton')[0].style.display = 'block';
-          }
-          if (subSubDirFiles[zz].type === 'jpg' || subSubDirFiles[zz].type === 'png') {
-            dlbt.style.display = 'none';
-          }
+          // document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subSubDirFiles[zz]);
+          // // document.getElementsByClassName('deleteButton')[0].style.display = 'block';
+          // dlbt.innerHTML = (`Download<br>${subSubDirFiles[zz].name}`);
+          // document.getElementsByClassName('deleteButton')[0].innerHTML = (`Delete<br>${subSubDirFiles[zz].name}`);
+          // document.getElementsByClassName('displayButton')[0].innerHTML = (`Display<br>${subSubDirFiles[zz].name}`);
+          // if (subSubDirFiles[zz].state !== 'empty') {
+          //   dlbt.style.display = 'block';
+          //   document.getElementsByClassName('displayButton')[0].style.display = 'block';
+          // }
+          // if (subSubDirFiles[zz].type === 'jpg' || subSubDirFiles[zz].type === 'png') {
+          //   dlbt.style.display = 'none';
+          // }
           return true;
         }
       // document.getElementsByClassName('deleteButton')[0].style.display = 'block';
@@ -382,6 +383,23 @@ export class RafterFileActions {
       }
     }
     return false;
+  }
+  setFileActionButtons(ssdf) {
+    console.log('set file action buttons for sub sub dir files');
+    const dlbt = document.getElementsByClassName('dnldButton')[0];
+    document.getElementsByClassName('deleteButton')[0].style.display = 'block';
+    document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(ssdf);
+    // document.getElementsByClassName('deleteButton')[0].style.display = 'block';
+    dlbt.innerHTML = (`Download<br>${ssdf.name}`);
+    document.getElementsByClassName('deleteButton')[0].innerHTML = (`Delete<br>${ssdf.name}`);
+    document.getElementsByClassName('displayButton')[0].innerHTML = (`Display<br>${ssdf.name}`);
+    if (ssdf.state !== 'empty') {
+      dlbt.style.display = 'block';
+      document.getElementsByClassName('displayButton')[0].style.display = 'block';
+    }
+    if (ssdf.type === 'jpg' || ssdf.type === 'png') {
+      dlbt.style.display = 'none';
+    }
   }
   makeSubSubTree(tvData, raf, childArr) {
     // console.log('make sub sub tree');
