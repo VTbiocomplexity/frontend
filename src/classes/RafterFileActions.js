@@ -275,41 +275,61 @@ export class RafterFileActions {
       document.getElementsByClassName('createNew')[0].style.display = 'block';
     }
   }
+  setFileClicks(sdf) {
+    console.log('set file clicks');
+    const dlbt = document.getElementsByClassName('dnldButton')[0];
+    document.getElementsByClassName('deleteButton')[0].style.display = 'block';
+    dlbt.innerHTML = (`Download<br>${sdf.name}`);
+    // dlbt.style.display = 'block';
+    // console.log(subDirFiles[j].type);
+    document.getElementsByClassName('deleteButton')[0].innerHTML = (`Delete<br>${sdf.name}`);
+    document.getElementsByClassName('displayButton')[0].innerHTML = (`Display<br>${sdf.name}`);
+    if (sdf.state !== 'empty') {
+      dlbt.style.display = 'block';
+      document.getElementsByClassName('displayButton')[0].style.display = 'block';
+    }
+    document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(sdf);
+    if (sdf.type === 'jpg' || sdf.type === 'png') {
+      dlbt.style.display = 'none';
+    }
+  }
   setFileActions(
     id, subDirFiles, dnldbt, dfcbt, raf, subSubDirFiles, matchFile, rvs, myApp,
     rui, mtws, hdj, tv, showFile, displayTree, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions
   ) {
     if (matchFile || subDirFiles === null || subDirFiles === undefined) { return; }
-    console.log('set file actions');
+    // console.log('set file actions');
     // document.getElementsByClassName('deleteButton')[0].style.display = 'none';
     for (let j = 0; j < subDirFiles.length; j += 1) {
       if (id === subDirFiles[j].id && !subDirFiles[j].isContainer) {
-        console.log('i found a match!');
-        const dlbt = document.getElementsByClassName('dnldButton')[0];
-        document.getElementsByClassName('deleteButton')[0].style.display = 'block';
-        dlbt.innerHTML = (`Download<br>${subDirFiles[j].name}`);
-        // dlbt.style.display = 'block';
-        console.log(subDirFiles[j].type);
-        document.getElementsByClassName('deleteButton')[0].innerHTML = (`Delete<br>${subDirFiles[j].name}`);
-        document.getElementsByClassName('displayButton')[0].innerHTML = (`Display<br>${subDirFiles[j].name}`);
-        if (subDirFiles[j].state !== 'empty') {
-          dlbt.style.display = 'block';
-          document.getElementsByClassName('displayButton')[0].style.display = 'block';
-        }
-        document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[j]);
-        if (subDirFiles[j].type === 'jpg' || subDirFiles[j].type === 'png') {
-          dlbt.style.display = 'none';
-        }
+        // console.log('i found a match!');
+        rafterFileActions.setFileClicks(subDirFiles[j]);
         return;
+        // const dlbt = document.getElementsByClassName('dnldButton')[0];
+        // document.getElementsByClassName('deleteButton')[0].style.display = 'block';
+        // dlbt.innerHTML = (`Download<br>${subDirFiles[j].name}`);
+        // // dlbt.style.display = 'block';
+        // // console.log(subDirFiles[j].type);
+        // document.getElementsByClassName('deleteButton')[0].innerHTML = (`Delete<br>${subDirFiles[j].name}`);
+        // document.getElementsByClassName('displayButton')[0].innerHTML = (`Display<br>${subDirFiles[j].name}`);
+        // if (subDirFiles[j].state !== 'empty') {
+        //   dlbt.style.display = 'block';
+        //   document.getElementsByClassName('displayButton')[0].style.display = 'block';
+        // }
+        // document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[j]);
+        // if (subDirFiles[j].type === 'jpg' || subDirFiles[j].type === 'png') {
+        //   dlbt.style.display = 'none';
+        // }
+        // return;
       }
       if (subDirFiles[j].isContainer && id === subDirFiles[j].id) {
-        console.log('I clicked a sub sub folder');
+        // console.log('I clicked a sub sub folder');
         // console.log(subSubDirFiles);
         document.getElementsByClassName('deleteButton')[0].style.display = 'none';
         document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(subDirFiles[j]);
         // document.getElementsByClassName('subDirContent')[0].innerHTML = '';
         raf.rfid = id;
-        console.log(raf.rfid);
+        // console.log(raf.rfid);
         document.getElementsByClassName('createNew')[0].style.display = 'block';
         rvs(
           'ls', myApp, rui, raf, mtws, null, hdj, tv, showFile, rvs,

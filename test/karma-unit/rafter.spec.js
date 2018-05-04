@@ -840,19 +840,27 @@ describe('The Rafter Dashboard', () => {
       null, null, null, null, null, null, rd.rafterFileActions, nameArr, null
     );
     expect(document.getElementsByClassName('deleteButton')[0].style.display).toBe('block');
-    await rd.rafterFileActions.setFileActions('123', [{
-      isContainer: true,
-      id: '123'
-    }], null, null, rd.rafterFile, null, null, () => {});
+    // id, subDirFiles, dnldbt, dfcbt, raf, subSubDirFiles, matchFile, rvs, myApp,
+    // rui, mtws, hdj, tv, showFile, displayTree, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions
+    await rd.rafterFileActions.setFileActions(
+      '123', [{
+        isContainer: true,
+        id: '123'
+      }], null, null, rd.rafterFile, null, null, () => {}, null, null, null, null, null, null, null,
+      null, null, null, null, rd.rafterFileActions
+    );
     expect(document.getElementsByClassName('homeDirContent')[0].innerHTML).toBe(JSON.stringify({
       isContainer: true,
       id: '123'
     }));
-    await rd.rafterFileActions.setFileActions('123', [{
-      isContainer: false,
-      id: '123',
-      type: 'jpg'
-    }], null, null, rd.rafterFile, null, null, () => {});
+    await rd.rafterFileActions.setFileActions(
+      '123', [{
+        isContainer: false,
+        id: '123',
+        type: 'jpg'
+      }], null, null, rd.rafterFile, null, null, () => {}, null, null, null, null, null, null, null,
+      null, null, null, null, rd.rafterFileActions
+    );
     expect(document.getElementsByClassName('homeDirContent')[0].innerHTML).toBe(JSON.stringify({
       isContainer: false,
       id: '123',
