@@ -1,13 +1,9 @@
 ---
 version: "2"
-prepare:
-  fetch:
-  - url: https://raw.githubusercontent.com/aurelia/tools/master/.eslintrc.json
-    path: node_modules/aurelia-tools/.eslintrc.json
 checks:
   method-lines:
     config:
-      threshold: 31
+      threshold: 32
   method-complexity:
     config:
       threshold: 10
@@ -41,4 +37,3 @@ exclude_paths:
 - node_modules/
 - coverage/
 - dist/
-- webpack.config.js

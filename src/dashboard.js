@@ -1,5 +1,5 @@
-import {inject} from 'aurelia-framework';
-import {App} from './app';
+import { inject } from 'aurelia-framework';
+import { App } from './app';
 @inject(App)
 export class Dashboard {
   constructor(app) {

@@ -1,5 +1,6 @@
-import {inject} from 'aurelia-framework';
-import {App} from './app';
+import { inject } from 'aurelia-framework';
+import { App } from './app';
+
 const Login_ = require('./classes/Login_.js');
 @inject(App)
 export class Login {

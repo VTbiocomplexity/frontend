@@ -322,6 +322,8 @@ button {
   cursor: pointer;
   text-align: left;
   margin-left: 40px;
+  max-width: 1.25in;
+  word-wrap: break-word;
 }
 
 .tree-leaf .tree-leaf-text:hover { color: #23527c; }

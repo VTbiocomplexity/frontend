@@ -1,5 +1,5 @@
-import {AppState} from '../../src/classes/AppState.js';
-import {HttpMock} from './commons';
+import { AppState } from '../../src/classes/AppState';
+import { HttpMock } from './commons';
 
 function testAsync(runAsync) {
   return (done) => {
@@ -9,12 +9,12 @@ function testAsync(runAsync) {
 
 describe('The AppState module unit tests', () => {
   let appState;
-  //let roles = ['developer', 'Volunteer'];
-  let user = {'userName': 'John Doe', '_id': 'foo'};
-  let userDeveloper = {'userName': 'John Doe', '_id': 'foo', 'userType': 'Developer'};
+  // let roles = ['developer', 'Volunteer'];
+  const user = { userName: 'John Doe', _id: 'foo' };
+  const userDeveloper = { userName: 'John Doe', _id: 'foo', userType: 'Developer' };
 
   beforeEach(() => {
-    appState = new AppState(new HttpMock);
+    appState = new AppState(new HttpMock());
   });
 
   it('should set and then get the corresponding value of the user', (done) => {
@@ -25,18 +25,18 @@ describe('The AppState module unit tests', () => {
     });
   });
 
-  it('should set a developer user', testAsync(async function() {
+  it('should set a developer user', testAsync(async () => {
     await appState.setUser(userDeveloper);
     await appState.checkUserRole();
-    let devroles = await appState.getRoles();
+    const devroles = await appState.getRoles();
     expect(appState.user._id).toBe('foo');
     expect(devroles.includes('developer')).toBe(true);
-    //done();
+    // done();
   }));
-  it('should fetch the user when the user is not defined', testAsync(async function() {
+  it('should fetch the user when the user is not defined', testAsync(async () => {
     appState.user = {};
     await appState.getUser('123');
-    //await dashboard.activate();
+    // await dashboard.activate();
     expect(appState.user.name).toBe('Iddris Elba');
   }));
 });

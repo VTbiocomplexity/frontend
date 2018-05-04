@@ -1,6 +1,7 @@
 require('aurelia-polyfills');
 require('aurelia-pal-browser').initialize();
 require('babel-polyfill');
+
 Error.stackTraceLimit = Infinity;
 
 const srcContext = require.context(
@@ -9,7 +10,7 @@ const srcContext = require.context(
   // recursive:
   true,
   // tests in /src folder regex:
-  /\.spec\.[tj]s$/
+  /\.spec\.[tj]s$/,
 );
 
 const testContext = require.context(
@@ -18,7 +19,7 @@ const testContext = require.context(
   // recursive:
   true,
   // tests in ./karma-unit folder regex:
-  /\.spec\.[tj]s$/
+  /\.spec\.[tj]s$/,
 );
 
 function requireAllInContext(requireContext) {

@@ -36,18 +36,18 @@
           <p><br>Need an account? Follow these <a href="https://docs.google.com/document/d/1BF11gUYfXU8xBSsBW3J2wjK2HWf6NnWzz0y-1XtzoNE/#heading=h.5z7lybzc053j" target="_blank">instructions.</a></p>
         </form>
       </div>
-      <div class="homeDirLink" style="margin-top:30px; margin-bottom:30px">
+      <div class="homeDirLink" style="margin-top:60px; margin-bottom:30px">
         <div class="showHideHD" style="display:none">
           <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><i class="fa fa-folder"></i> <a class="rafterHomeLink" click.delegate="navHomeDir()">home/${rafterUserID}</a>
         </div>
         <div class="fileActions">
-          <button class="displayButton btn-primary" type="button" click.delegate="rafterFileActions.fileDisplay()">Display</button>
+          <button class="displayButton btn-primary" style="max-width:1.25in; word-wrap: break-word;" type="button" click.delegate="rafterFileActions.fileDisplay()">Display</button>
           <p style="font-size:4px; margin:0">&nbsp;</p>
-          <button class="dnldButton btn-success" type="button" click.delegate="rafterFileActions.fileDownload()">Download</button>
+          <button class="dnldButton btn-success" style="max-width:1.25in; word-wrap: break-word;" type="button" click.delegate="rafterFileActions.fileDownload()">Download</button>
           <p style="font-size:4px; margin:0">&nbsp;</p>
-          <button class="deleteButton btn-danger" type="button" click.delegate="rafterFileActions.fileDelete()">Delete</button>
+          <button class="deleteButton btn-danger" style="max-width:1.25in; word-wrap: break-word;" type="button" click.delegate="rafterFileActions.fileDelete()">Delete</button>
         </div>
-        <div id="treeView" style="max-width:2in; margin-left:86px; min-height:100px"></div>
+        <div id="treeView" style="max-width:2in; min-height:100px"></div>
       </div>
       <div style="margin:auto; text-align:center"><p class="userServiceError" style="color:red; margin-top:-20px"></p></div>
       <div show.bind="!showLogin">
@@ -122,5 +122,8 @@
         </div>
       </div>
     </div>
+    <!-- <div class="canvasDiv" style="display">
+      <canvas id="myCanvas"></canvas>
+    </div> -->
   </div>
 </template>
