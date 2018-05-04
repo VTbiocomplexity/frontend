@@ -64,7 +64,6 @@ export class RafterUser {
         return false;
       });
   }
-
   initRafter(ruid, rObj, uid, interval, sli) {
     rObj.uid = uid; //eslint-disable-line
     const userServiceError = document.getElementsByClassName('userServiceError')[0];
@@ -74,10 +73,6 @@ export class RafterUser {
       method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(rObj)
     })
       .then(response => response.json()).then((data) => {
-      // console.log('am i on line 71?');
-      // console.log(data);
-      // console.log(typeof data);
-      // console.log(data.includes('error'));
         if (!data.includes('error')) {
           window.sessionStorage.setItem('rafterToken', data);
           const user = jwtDecode(data);
