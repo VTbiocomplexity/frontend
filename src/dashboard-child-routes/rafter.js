@@ -186,8 +186,10 @@ export class Rafter {
     document.getElementsByClassName('deleteButton')[0].style.display = 'block';
     rafterFileActions.resetFileActions(mtws, dnldbt, dfcbt);
     if (hdj !== null) {
+      // console.log('rafter line 189');
       for (let i = 0; i < hdj.length; i += 1) {
         if (id === hdj[i].id) {
+          // console.log('match');
           document.getElementsByClassName('homeDirContent')[0].innerHTML = JSON.stringify(hdj[i]);
           if (hdj[i].isContainer) {
             // console.log('i clicked a container');
@@ -204,6 +206,9 @@ export class Rafter {
               rvs, displayTree, subDirFiles, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions, subSubDirFiles
             );
           }
+          // if (hdj[i].type === 'jpg' || hdj[i].type === 'jpg') {
+          //   console.log('graphic file');
+          // }
           return rafterFileActions.fileNameState(hdj[i], dnldbt, dfcbt);
         }
       }

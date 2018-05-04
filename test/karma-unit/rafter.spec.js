@@ -840,20 +840,47 @@ describe('The Rafter Dashboard', () => {
       null, null, null, null, null, null, rd.rafterFileActions, nameArr, null
     );
     expect(document.getElementsByClassName('deleteButton')[0].style.display).toBe('block');
-    await rd.rafterFileActions.setFileActions('123', [{
-      isContainer: true,
-      id: '123'
-    }], null, null, rd.rafterFile, null, null, () => {});
+    // id, subDirFiles, dnldbt, dfcbt, raf, subSubDirFiles, matchFile, rvs, myApp,
+    // rui, mtws, hdj, tv, showFile, displayTree, mnj, makeFilesClickable, vsFetch, vsFetchSuccess, rafterFileActions
+    await rd.rafterFileActions.setFileActions(
+      '123', [{
+        isContainer: true,
+        id: '123'
+      }], null, null, rd.rafterFile, null, null, () => {}, null, null, null, null, null, null, null,
+      null, null, null, null, rd.rafterFileActions
+    );
     expect(document.getElementsByClassName('homeDirContent')[0].innerHTML).toBe(JSON.stringify({
       isContainer: true,
       id: '123'
     }));
+    await rd.rafterFileActions.setFileActions(
+      '123', [{
+        isContainer: false,
+        id: '123',
+        type: 'jpg'
+      }], null, null, rd.rafterFile, null, null, () => {}, null, null, null, null, null, null, null,
+      null, null, null, null, rd.rafterFileActions
+    );
+    expect(document.getElementsByClassName('homeDirContent')[0].innerHTML).toBe(JSON.stringify({
+      isContainer: false,
+      id: '123',
+      type: 'jpg'
+    }));
+    expect(document.getElementsByClassName('dnldButton')[0].style.display).toBe('none');
     await rd.rafterFileActions.setSubSubFiles([{
       isContainer: false,
       id: '123',
       state: 'cool'
     }], '123');
     expect(document.getElementsByClassName('dnldButton')[0].style.display).toBe('block');
+    document.getElementsByClassName('dnldButton')[0].style.display = 'block';
+    await rd.rafterFileActions.setSubSubFiles([{
+      isContainer: false,
+      id: '123',
+      state: 'cool',
+      type: 'jpg'
+    }], '123');
+    expect(document.getElementsByClassName('dnldButton')[0].style.display).toBe('none');
     await rd.rafterFileActions.setSubSubFiles([{
       isContainer: false,
       id: '123',
@@ -868,6 +895,18 @@ describe('The Rafter Dashboard', () => {
     };
     rd.navHomeDir();
     expect(document.getElementsByClassName('subDirContent')[0].innerHTML).toBe(JSON.stringify(rd.homeDirJson));
+    done();
+  });
+  it('does not have a download button for graphic files inside the home directory', (done) => {
+    rd.rafterFileActions.fileNameState(
+      { type: 'jpg' }, document.getElementsByClassName('dnldButton')[0],
+      document.getElementsByClassName('displayButton')[0]
+    );
+    // = {
+    //   name: 'howdy'
+    // };
+    // rd.navHomeDir();
+    expect(document.getElementsByClassName('dnldButton')[0].style.display).toBe('none');
     done();
   });
   it('does not default to create file when folder was selected and set the file name to unspecified when blank', (done) => {
